@@ -67,7 +67,7 @@ public class EntradaSalidaDAO {
 		return DataSourceFacade.getStrategy().getConnectionCommiteable();
 	}
 	
-	public void actualizaCantidadPendienteParaOtrosPV(ArrayList<EntradaSalidaDetalleQuickView> pvdList) throws DAOException {
+	public void actualizaCantidadPendienteParaOtrosES(ArrayList<EntradaSalidaDetalleQuickView> pvdList) throws DAOException {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -102,19 +102,20 @@ public class EntradaSalidaDAO {
 			logger.info("pedidoVentaId=" + pedidoVentaId + ", codigosBuscar= ->" + codigosBuscar + "<-");
 
 			ps = conn.prepareStatement(
-					"SELECT AP.CANTIDAD,PVD.PRODUCTO_CODIGO_BARRAS,PVD.ALMACEN_ID,SUM(PVD.CANTIDAD) TOT_CANTIDAD \n"
-					+ "FROM   PEDIDO_VENTA_DETALLE PVD,PEDIDO_VENTA PV,ALMACEN_PRODUCTO AP\n"
+					"SELECT AP.CANTIDAD,ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID,SUM(ESD.CANTIDAD) TOT_CANTIDAD \n"
+					+ "FROM   ENTRADA_SALIDA_DETALLE ESD,ENTRADA_SALIDA ES,ALMACEN_PRODUCTO AP\n"
 					+ "WHERE  1 = 1 \n"
-					+ "AND    PVD.PRODUCTO_CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS\n"
-					+ "AND    PVD.ALMACEN_ID = AP.ALMACEN_ID\n"
-					+ "AND    PVD.PEDIDO_VENTA_ID = PV.ID \n"
-					+ "AND    PV.ESTADO_ID IN (1,2,4)\n"
-					+ "AND    PV.ID <> ? \n"
-					+ "AND    PVD.PRODUCTO_CODIGO_BARRAS IN ("
+					+ "AND    ESD.PRODUCTO_CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS\n"
+					+ "AND    ESD.ALMACEN_ID = AP.ALMACEN_ID\n"
+					+ "AND    ESD.ENTRADA_SALIDA_ID = ES.ID \n"
+					+ "AND    ES.ESTADO_ID IN (1,2,4)\n"
+					+ "AND    ES.ID <> ? \n"
+					+ "AND    ES.TIPO_MOV = 30 \n"		
+					+ "AND    ESD.PRODUCTO_CODIGO_BARRAS IN ("
 					+ codigosBuscar
 					+ ")\n"
-					+ "GROUP BY PVD.PRODUCTO_CODIGO_BARRAS,PVD.ALMACEN_ID\n"
-					+ "ORDER BY PVD.PRODUCTO_CODIGO_BARRAS,PVD.ALMACEN_ID,PVD.ID");
+					+ "GROUP BY ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID\n"
+					+ "ORDER BY ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID,ESD.ID");
 
 			ps.setInt(1, pedidoVentaId);
 
@@ -163,7 +164,7 @@ public class EntradaSalidaDAO {
 		try {
 			conn = getConnection();
 			ps = conn.prepareStatement(
-					"SELECT	ES.ID,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
+					"SELECT	ES.ID,ES.TIPO_MOV,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
 					+ "CFD.ID AS CFD_ID,\n"
 					+ "S.NOMBRE AS SUCURSAL_NOMBRE,\n"
 					+ "E.DESCRIPCION AS E_DESCRIPCION,\n"
@@ -187,6 +188,7 @@ public class EntradaSalidaDAO {
 					+ "LEFT JOIN METODO_DE_PAGO MP  ON ES.METODO_DE_PAGO_ID = MP.ID\n"
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ID = ?\n"
+					+ "AND       ES.TIPO_MOV = 30\n"		
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.FECHA_CREO DESC");
@@ -197,6 +199,7 @@ public class EntradaSalidaDAO {
 			while (rs.next()) {
 				x = new EntradaSalidaQuickView();
 				x.setId((Integer) rs.getObject("ID"));
+				x.setTipoMov((Integer) rs.getObject("TIPO_MOV"));
 				x.setSucursalId((Integer) rs.getObject("SUCURSAL_ID"));
 				x.setEstadoId((Integer) rs.getObject("ESTADO_ID"));
 				x.setFechaCreo((Timestamp) rs.getObject("FECHA_CREO"));
@@ -369,7 +372,7 @@ public class EntradaSalidaDAO {
 			conn = getConnection();
 
 			ps = conn.prepareStatement(
-					"SELECT	ES.ID,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
+					"SELECT	ES.ID,ES.TIPO_MOV,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
 					+ "CFD.ID AS CFD_ID,\n"
 					+ "S.NOMBRE AS SUCURSAL_NOMBRE,\n"
 					+ "E.DESCRIPCION AS E_DESCRIPCION,\n"
@@ -394,6 +397,7 @@ public class EntradaSalidaDAO {
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ESTADO_ID IN(1,2,4,8)\n"
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
+					+ "AND       ES.TIPO_MOV  = 30\n"		
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.FECHA_CREO DESC");
 
@@ -401,6 +405,7 @@ public class EntradaSalidaDAO {
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
 				x.setId((Integer) rs.getObject("ID"));
+				x.setTipoMov((Integer) rs.getObject("TIPO_MOV"));
 				x.setSucursalId((Integer) rs.getObject("SUCURSAL_ID"));
 				x.setEstadoId((Integer) rs.getObject("ESTADO_ID"));
 				x.setFechaCreo((Timestamp) rs.getObject("FECHA_CREO"));
@@ -466,7 +471,7 @@ public class EntradaSalidaDAO {
 			conn = getConnection();
 
 			ps = conn.prepareStatement(
-					"SELECT	ES.ID,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
+					"SELECT	ES.ID,ES.TIPO_MOV,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,\n"
 					+ "CFD.ID AS CFD_ID,\n"
 					+ "S.NOMBRE AS SUCURSAL_NOMBRE,\n"
 					+ "E.DESCRIPCION AS E_DESCRIPCION,\n"
@@ -491,6 +496,7 @@ public class EntradaSalidaDAO {
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ESTADO_ID > 8\n"
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
+					+ "AND       ES.TIPO_MOV  = 30\n"		
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.FECHA_CREO DESC");
 
@@ -498,6 +504,7 @@ public class EntradaSalidaDAO {
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
 				x.setId((Integer) rs.getObject("ID"));
+				x.setTipoMov((Integer) rs.getObject("TIPO_MOV"));
 				x.setSucursalId((Integer) rs.getObject("SUCURSAL_ID"));
 				x.setEstadoId((Integer) rs.getObject("ESTADO_ID"));
 				x.setFechaCreo((Timestamp) rs.getObject("FECHA_CREO"));
@@ -564,10 +571,10 @@ public class EntradaSalidaDAO {
 			conn = getConnectionCommiteable();
 
 			Timestamp now = new Timestamp(System.currentTimeMillis());
-			ps = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA(SUCURSAL_ID,ESTADO_ID,FECHA_CREO,USUARIO_EMAIL_CREO,CLIENTE_ID,FORMA_DE_PAGO_ID,METODO_DE_PAGO_ID,FACTOR_IVA,COMENTARIOS,CFD_ID,NUMERO_TICKET,CAJA,IMPORTE_RECIBIDO,APROBACION_VISA_MASTERCARD,PORCENTAJE_DESCUENTO_CALCULADO,PORCENTAJE_DESCUENTO_EXTRA,CONDICIONES_DE_PAGO,NUM_DE_CUENTA) "
-					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			ps = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA(TIPO_MOV,ESTADO_ID,FECHA_CREO,USUARIO_EMAIL_CREO,CLIENTE_ID,FORMA_DE_PAGO_ID,METODO_DE_PAGO_ID,FACTOR_IVA,COMENTARIOS,CFD_ID,NUMERO_TICKET,CAJA,IMPORTE_RECIBIDO,APROBACION_VISA_MASTERCARD,PORCENTAJE_DESCUENTO_CALCULADO,PORCENTAJE_DESCUENTO_EXTRA,CONDICIONES_DE_PAGO,NUM_DE_CUENTA) "
+					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			int ci = 1;
-			ps.setObject(ci++, x.getId());
+			ps.setObject(ci++, x.getTipoMov());
 			ps.setObject(ci++, x.getSucursalId());
 			ps.setObject(ci++, x.getEstadoId());
 			ps.setObject(ci++, now);
@@ -671,11 +678,11 @@ public class EntradaSalidaDAO {
 			conn = getConnectionCommiteable();
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 
-			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET SUCURSAL_ID=?,ESTADO_ID=?,FECHA_CREO=?,USUARIO_EMAIL_CREO=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=? "
+			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET TIPO_MOV=?,SUCURSAL_ID=?,ESTADO_ID=?,FECHA_CREO=?,USUARIO_EMAIL_CREO=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=? "
 					+ " WHERE ID=?");
 
 			int ci = 1;
-			ps.setObject(ci++, x.getId());
+			ps.setObject(ci++, x.getTipoMov());
 			ps.setObject(ci++, x.getSucursalId());
 			ps.setObject(ci++, x.getEstadoId());
 			ps.setObject(ci++, x.getFechaCreo());
@@ -730,7 +737,7 @@ public class EntradaSalidaDAO {
 			psESE.setString(ciESE++, "--EDITADO--");
 
 			psESE.setInt(ciESE++, x.getId());
-			psESE.setInt(ciESE++, Constants.ESTADO_VERIFICADO);
+			psESE.setInt(ciESE++, x.getEstadoId());
 
 			psESE.executeUpdate();
 
@@ -833,8 +840,15 @@ public class EntradaSalidaDAO {
 
 			for (EntradaSalidaDetalle pvd : pvdList) {
 				psESD.clearParameters();
-
-				psESD.setInt(1, -1 * pvd.getCantidad());
+				
+				if(x.getTipoMov() == Constants.TIPO_MOV_SALIDA_ALMACEN || 
+						x.getTipoMov() == Constants.TIPO_MOV_SALIDA_DEV){
+				
+					psESD.setInt(1, -1 * pvd.getCantidad());
+				} else if(x.getTipoMov() == Constants.TIPO_MOV_ENTRADA_ALMACEN || 
+						x.getTipoMov() == Constants.TIPO_MOV_ENTRADA_ALMACEN_DEV){				
+					psESD.setInt(1, pvd.getCantidad());
+				}
 				psESD.setString(2, pvd.getProductoCodigoBarras());
 				psESD.setInt(3, pvd.getAlmacenId());
 
@@ -845,7 +859,7 @@ public class EntradaSalidaDAO {
 
 				psMHP.setInt(ci++, pvd.getAlmacenId());
 				psMHP.setTimestamp(ci++, now);
-				psMHP.setInt(ci++, Constants.TIPO_MOV_SALIDA_ALMACEN);
+				psMHP.setInt(ci++, x.getTipoMov());
 				psMHP.setInt(ci++, pvd.getCantidad());
 				psMHP.setObject(ci++, null);
 				psMHP.setObject(ci++, null);
@@ -885,111 +899,6 @@ public class EntradaSalidaDAO {
 
 			conn.commit();
 
-		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
-			try {
-				conn.rollback();
-			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
-			}
-			throw new DAOException("InUpdate:" + ex.getMessage());
-		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-					conn.close();
-				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
-					throw new DAOException("Closing:" + ex.getMessage());
-				}
-			}
-		}
-		return r;
-	}
-
-	public int update(EntradaSalida x) throws DAOException {
-		PreparedStatement ps = null;
-		int r = -1;
-		Connection conn = null;
-		try {
-			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET SUCURSAL_ID=?,ESTADO_ID=?,FECHA_ACTUALIZACION=?,USUARIO_EMAIL=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,DESCUENTO_APLICADO=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=? "
-					+ " WHERE ID=?");
-
-			int ci = 1;
-			ps.setInt(ci++, x.getSucursalId());
-			ps.setInt(ci++, x.getEstadoId());
-			ps.setTimestamp(ci++, x.getFechaCreo());
-			ps.setString(ci++, x.getUsuarioEmailCreo());
-			if (x.getClienteId() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getClienteId());
-			}
-			if (x.getFormaDePagoId() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getFormaDePagoId());
-			}
-			if (x.getMetodoDePagoId() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getMetodoDePagoId());
-			}
-			ps.setDouble(ci++, x.getFactorIva());
-			if (x.getComentarios() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setString(ci++, x.getComentarios());
-			}
-			if (x.getCfdId() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getCfdId());
-			}
-			if (x.getNumeroTicket() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setString(ci++, x.getNumeroTicket());
-			}
-			if (x.getCaja() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getCaja());
-			}
-			if (x.getImporteRecibido() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setDouble(ci++, x.getImporteRecibido());
-			}
-			if (x.getAprobacionVisaMastercard() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setString(ci++, x.getAprobacionVisaMastercard());
-			}
-			if (x.getPorcentajeDescuentoCalculado() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getPorcentajeDescuentoCalculado());
-			}
-			if (x.getPorcentajeDescuentoExtra() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setInt(ci++, x.getPorcentajeDescuentoExtra());
-			}
-			if (x.getCondicionesDePago() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setString(ci++, x.getCondicionesDePago());
-			}
-			if (x.getNumDeCuenta() == null) {
-				ps.setObject(ci++, null);
-			} else {
-				ps.setString(ci++, x.getNumDeCuenta());
-			}
-			ps.setInt(ci++, x.getId());
-
-			r = ps.executeUpdate();
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			try {

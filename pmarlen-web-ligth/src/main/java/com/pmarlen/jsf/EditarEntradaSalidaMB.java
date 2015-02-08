@@ -143,6 +143,14 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		editar(this.pedidoVenta.getId());
 		return "/pages/cliente";
 	}
+
+	public EntradaSalidaQuickView getPedidoVenta() {
+		return pedidoVenta;
+	}
+
+	public EntradaSalidaFooter getPedidoVentaFooter() {
+		return pedidoVentaFooter;
+	}
 	
 	public List<EntradaSalidaDetalleQuickView> getEntityList() {
 		return entityList;
@@ -470,7 +478,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	
 	public void actualizarTotales(){		
 		try {
-			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosPV(entityList);
+			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
 			pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
 			logger.info("OK, calculaTotalesDesde");
 		}catch(DAOException de){

@@ -3,7 +3,7 @@
   <!--
 	parent.version=${project.parent.version}
 	-->
-  <Resource DEVEOnBorrow="true" DEVEWhileIdle="true" auth="Container" 
+  <Resource testOnBorrow="true" testWhileIdle="true" auth="Container" 
 			driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="10" logAbandoned="true" maxActive="15" maxIdle="8" maxWait="20000" minIdle="4" 
 			name="jdbc/PMARLEN_BACKEND_DS" 
 			removeAbandoned="true" removeAbandonedTimeout="60" timeBetweenEvictionRunsMillis="5000" type="javax.sql.DataSource" 

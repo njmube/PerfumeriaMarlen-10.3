@@ -36,14 +36,10 @@ C) Building with Maven 3.x
 
     3.1 - Compile test(or skip), instal and deploy in tomcat.
 
-	mvn  clean install -P preprod
-
-	mvn  tomcat:deploy -P preprod
-
-	mvn  tomcat:undeploy -P preprod
+	mvn clean install -pl pmarlen-web-ligth tomcat7:deploy
 
     3.2 - Explore development database
 
-	mysql --default-character-set=utf8 -u PMARLEN_TEST -pPMARLEN_TEST_PASSWORD PMARLEN_DB_DEVE
+	mysql --default-character-set=utf8 -u PMDB103_DEVE_USR -pPMDB103_DEVE_PWD PMDB103_DEVE
 	
 ----------------------------------------------------------------------------------------------------------------------------

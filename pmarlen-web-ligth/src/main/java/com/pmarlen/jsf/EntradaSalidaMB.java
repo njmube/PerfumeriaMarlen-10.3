@@ -15,6 +15,7 @@ import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
+import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.model.Constants;
 import com.pmarlen.web.common.view.messages.Messages;
 import com.pmarlen.web.security.managedbean.SessionUserMB;
@@ -50,8 +51,8 @@ public class EntradaSalidaMB implements Serializable{
 	private static List<SelectItem> tipoAlmacenList;
 	private ArrayList<EntradaSalidaDetalleQuickView> entityList;
 	private EntradaSalidaDetalleQuickView selectedEntity;
-	private EntradaSalida entradaSalida;
-	private EntradaSalidaFooter entradaSalidaFooter;
+	private EntradaSalida pedidoVenta;
+	private EntradaSalidaFooter pedidoVentaFooter;
 	private ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
 	private EntradaSalidaDetalleQuickView resultadoBusquedaSI;
 	
@@ -78,8 +79,8 @@ public class EntradaSalidaMB implements Serializable{
 	@PostConstruct
 	public void init() {
 		logger.info("->init.");
-		entradaSalida = new EntradaSalida();
-		entradaSalidaFooter= new EntradaSalidaFooter();
+		pedidoVenta = new EntradaSalida();
+		pedidoVentaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
 		cantidadAgregarBusqueda = 1;
@@ -99,6 +100,15 @@ public class EntradaSalidaMB implements Serializable{
 		init();
 		return "/pages/cliente";
 	}
+	
+	public EntradaSalida getPedidoVenta() {
+		return pedidoVenta;
+	}
+
+	public EntradaSalidaFooter getPedidoVentaFooter() {
+		return pedidoVentaFooter;
+	}
+	
 	
 	public List<EntradaSalidaDetalleQuickView> getEntityList() {
 		return entityList;
@@ -423,14 +433,14 @@ public class EntradaSalidaMB implements Serializable{
 	
 	public void actualizarTotales(){
 		logger.info("->actualizarTotales:");
-		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
+		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.info("->onClienteListChange:clienteId="+entradaSalida.getClienteId());
+		logger.info("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
-			if(c.getId().equals(entradaSalida.getClienteId())){
+			if(c.getId().equals(pedidoVenta.getClienteId())){
 				clienteSeleccionado = c;
 				break;
 			}
@@ -441,7 +451,7 @@ public class EntradaSalidaMB implements Serializable{
 		logger.info("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
-				entradaSalida.setClienteId(c.getId());
+				pedidoVenta.setClienteId(c.getId());
 				clienteSeleccionado = c;
 				break;
 			}
@@ -466,7 +476,7 @@ public class EntradaSalidaMB implements Serializable{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+entradaSalida.getFormaDePagoId());
+		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
 	}
 	
 	public List<SelectItem> getMetodoDePagoList() {
@@ -487,7 +497,7 @@ public class EntradaSalidaMB implements Serializable{
 	}
 
 	public void onMetodoDePagoListChange() {
-		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+entradaSalida.getMetodoDePagoId());
+		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
 	}
 	
 	private ArrayList<SelectItem> descuentoEspecialList;
@@ -504,16 +514,12 @@ public class EntradaSalidaMB implements Serializable{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+entradaSalida.getPorcentajeDescuentoExtra());
+		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
 		actualizarTotales();
 	}
 
-	public EntradaSalida getEntradaSalida() {
-		return entradaSalida;
-	}
-
 	public void setEntradaSalida(EntradaSalida entradaSalida) {
-		this.entradaSalida = entradaSalida;
+		this.pedidoVenta = entradaSalida;
 	}
 
 	public void setTablaExpandida(boolean tablaExpandida) {
@@ -533,7 +539,7 @@ public class EntradaSalidaMB implements Serializable{
 	}
 	
 	public void comentariosChanged() {
-		logger.info("->comentariosChanged:comentarios="+entradaSalida.getComentarios());		
+		logger.info("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
 	}
 
 	public void onResultadoBusquedaChange() {
@@ -613,9 +619,9 @@ public class EntradaSalidaMB implements Serializable{
 		crearPedido=false;
 		
 		if(entityList!=null && entityList.size()>0 &&
-				entradaSalida.getClienteId()!=null && entradaSalida.getClienteId() > 0 && clienteSeleccionado!=null &&
-				entradaSalida.getFormaDePagoId()!=null && entradaSalida.getFormaDePagoId()> 0 &&
-				entradaSalida.getMetodoDePagoId()!=null && entradaSalida.getMetodoDePagoId()> 0 ){
+				pedidoVenta.getClienteId()!=null && pedidoVenta.getClienteId() > 0 && clienteSeleccionado!=null &&
+				pedidoVenta.getFormaDePagoId()!=null && pedidoVenta.getFormaDePagoId()> 0 &&
+				pedidoVenta.getMetodoDePagoId()!=null && pedidoVenta.getMetodoDePagoId()> 0 ){
 			crearPedido=true;
 		}
 		
@@ -630,15 +636,15 @@ public class EntradaSalidaMB implements Serializable{
 	public void guardar() {
 		logger.info("->guardar:");
 		try{
-			entradaSalida.setCaja(1);
-			entradaSalida.setFactorIva(Constants.IVA);
-			entradaSalida.setNumDeCuenta(null);
-			entradaSalida.setNumeroTicket("0");
-			entradaSalida.setSucursalId(sessionUserMB.getSucursalId());
-			entradaSalida.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());	
+			pedidoVenta.setCaja(1);
+			pedidoVenta.setFactorIva(Constants.IVA);
+			pedidoVenta.setNumDeCuenta(null);
+			pedidoVenta.setNumeroTicket("0");
+			pedidoVenta.setSucursalId(sessionUserMB.getSucursalId());
+			pedidoVenta.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());	
 						
-			EntradaSalidaDAO.getInstance().insert(entradaSalida,entityList);
-			logger.info("->guardar:entradaSalida.id:"+entradaSalida.getId());
+			EntradaSalidaDAO.getInstance().insert(pedidoVenta,entityList);
+			logger.info("->guardar:entradaSalida.id:"+pedidoVenta.getId());
 			
 			pedidoFinalizado = true;
 			cadenaBusqueda = null;
@@ -646,7 +652,7 @@ public class EntradaSalidaMB implements Serializable{
 			resultadoBusquedaList = null;
 			conservarBusqueda = false;
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO EL PEDIDO #"+entradaSalida.getId()) );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO EL PEDIDO #"+pedidoVenta.getId()) );
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -670,15 +676,11 @@ public class EntradaSalidaMB implements Serializable{
 	}
 	
 	public void onComentariosChange() {
-		logger.info("->onComentariosChange:comentarios="+entradaSalida.getComentarios());
+		logger.info("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.info("->onCondicionesChange:CondicionesDePago="+entradaSalida.getCondicionesDePago());
-	}
-
-	public EntradaSalidaFooter getEntradaSalidaFooter() {
-		return entradaSalidaFooter;
+		logger.info("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
