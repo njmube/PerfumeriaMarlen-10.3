@@ -74,6 +74,7 @@ public class Constants {
 
 	private static String version   = null;
 	private static String buildTime = null;
+	private static String gitSHA1   = null;
 	private static String mavenBuildTimeStamp = null;
 
 	private static Properties pro =null;
@@ -110,6 +111,13 @@ public class Constants {
 		}
 		return buildTime;
 	}
+
+	public static String getGitSHA1() {
+		if (gitSHA1 == null) {
+			gitSHA1 = getPro().getProperty("git-sha-1");
+		}
+		return gitSHA1;
+	}	
 	
 	public static String getMD5Encrypted(String e) {
 

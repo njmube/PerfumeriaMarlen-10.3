@@ -4,6 +4,8 @@
 	System.out.println("login.jsp->["+request.getSession().getId()+"]: timeOut="+(to/1000)+" secs. ="+((to/1000/60.0))+" mins.");
 
 %>
+<%@page import="com.pmarlen.model.Constants"%>
+
 <html>
     <head>
 		<title>PMARLEN</title>
@@ -81,6 +83,14 @@
 					</td>
 				</tr>
 			</table>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<p style="text-align: center; font-size: small;">
+				Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. <%=Constants.getServerVersion()%> / Construido: <%=Constants.getBuildTimestamp()%> / GitRevId [<%=Constants.getGitSHA1()%>]
+			</p>
 		</td>
 	</tr>
 </table>

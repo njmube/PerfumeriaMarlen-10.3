@@ -35,5 +35,9 @@ public class SystemInfoMB  implements Serializable{
 	public String getBuildTimestamp() {
 		return Constants.getBuildTimestamp();	
 	}
+	
+	public String getGitSHA1() {
+		return Constants.getGitSHA1();
+	}
 
 }
