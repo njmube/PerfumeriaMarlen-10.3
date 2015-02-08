@@ -689,9 +689,6 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		try{						
 			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
 			logger.info("pedidoVenta.cfdVentaId:"+pedidoVenta.getCfdId());
-			if(pedidoVenta.getCfdId()==0){
-				pedidoVenta.setCfdId(null);
-			}
 			EntradaSalidaDAO.getInstance().update(pedidoVenta,entityList,sessionUserMB.getUsuarioAuthenticated());
 			logger.info("OK Guardar.");
 			
