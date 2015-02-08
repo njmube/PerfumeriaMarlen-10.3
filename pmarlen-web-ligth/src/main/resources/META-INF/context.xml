@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context allowLinking="true" antiJARLocking="true" crossContext="true" path="/pmarlen-web-ligth" reloadable="true">
+	<!--
+	parent.version=${project.parent.version}
+	-->
+	<Resource	name="jdbc/PMARLEN_BACKEND_DS" DEVEOnBorrow="true" DEVEWhileIdle="true" auth="Container" 
+				factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="10" logAbandoned="true" maxActive="15"
+				maxIdle="8" maxWait="20000" minIdle="4" password="PMDB103_DEVE_PWD" driverClassName="com.mysql.jdbc.Driver" 
+				removeAbandoned="true" removeAbandonedTimeout="60" timeBetweenEvictionRunsMillis="5000" type="javax.sql.DataSource" 
+				url="jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true" 
+				username="PMDB103_DEVE_USR" validationQuery="select 1"/>
+
+	<Realm		className="org.apache.catalina.realm.JDBCRealm"  
+				driverName="com.mysql.jdbc.Driver" 
+				connectionURL="jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true" 
+				connectionName="PMDB103_DEVE_USR"  connectionPassword="PMDB103_DEVE_PWD"
+				digest="MD5" 
+				roleNameCol="PERFIL" 
+				userCredCol="PASSWORD" 
+				userNameCol="EMAIL" 
+				userRoleTable="USUARIO_PERFIL" 
+				userTable="USUARIO"/>
+</Context>

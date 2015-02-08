@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        Cliente
+    </ui:define>
+
+    <ui:define name="body-title">
+        Cliente
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="form1">
+			
+			<h:panelGrid columns="1" cellpadding="5" id="panel">
+				
+				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+				
+				<p:dataTable var="cliente" value="#{clienteMB.entityList}"
+							 paginator="true"
+							 rows="#{clienteMB.viewRows}"
+							 id="clientes"
+							 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{clienteMB.sizeList}]"
+							 rowsPerPageTemplate="10,25,100">
+					<f:facet name="header">
+						OPCIONES :
+						<p:commandButton	value="NUEVO" update=":form1:panel, :form2:dlg1Panel1" 
+											actionListener="#{clienteMB.preprareForNew}" 
+											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
+						
+						<p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+						<p:columnToggler datasource="clientes" trigger="toggler" />
+					</f:facet>
+
+					<p:column headerText="Id" sortBy="id">
+						<h:outputText value="#{cliente.id}" />
+					</p:column>
+
+					<p:column headerText="RFC" sortBy="rfc">
+						<h:outputText value="#{cliente.rfc}" />
+					</p:column>
+
+					<p:column headerText="RAZON SOCIAL" sortBy="razonSocial">
+						<h:outputText value="#{cliente.razonSocial}" />
+					</p:column>
+
+					<p:column headerText="NOMBRE ESTABLECIMIENTO" sortBy="nombreEstablecimiento">
+						<h:outputText value="#{cliente.nombreEstablecimiento}" />
+					</p:column>
+					
+					<p:column headerText="CONTACTO" sortBy="contacto">
+						<h:outputText value="#{cliente.contacto}" />
+					</p:column>
+					
+					<p:column headerText="TELEFONOS" sortBy="telefonos">
+						<h:outputText value="#{cliente.telefonos}" />
+					</p:column>
+					
+					<p:column headerText="EMAIL" sortBy="email">
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+
+					<p:column headerText="DIRECCIÓN" sortBy="direccion">
+						<h:outputText value="#{cliente.direccion}" />
+					</p:column>
+
+					<p:column headerText="OBSERVACIONES" sortBy="observaciones">
+						<h:outputText value="#{cliente.observaciones}" />
+					</p:column>
+
+
+					<p:column headerText="SELECT">
+
+						<p:commandButton	value="X2" update=":form1:panel, :form2:dlg1Panel1" 
+											actionListener="#{clienteMB.setSelectedEntity}" 
+											icon="ui-icon-check" onsuccess="PF('dlg1').show();"/>
+
+					</p:column>
+					<f:facet name="footer">
+						xx-xx
+					</f:facet>
+				</p:dataTable>
+
+			</h:panelGrid>
+
+		</h:form>
+		
+		<h:form id="form2">
+			<p:dialog header="FORM Dialog" widgetVar="dlg1" minHeight="300" minWidth="400" modal="true" closable="false" resizable="true">
+				<h:panelGrid columns="1" cellpadding="5" id="dlg1Panel1" width="100%">
+					
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+					<h:panelGrid id="grid" columns="2" cellpadding="5" width="100%" 
+								 columnClasses="columnWidth30 rightAlign, columnWidth70 leftAlign">
+
+						<h:outputLabel for="cliente_id" value="ID:" style="font-weight:bold"/>                    
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_id" value="#{clienteMB.selectedEntity.id}" required="true" label="Id" size="3">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+							<p:message for="cliente_id" />	
+						</h:panelGrid>
+
+						<h:outputLabel for="cliente_rfc" value="RFC:" style="font-weight:bold"/>                    
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_rfc" value="#{clienteMB.selectedEntity.rfc}" required="true" label="RFC:" size="13">
+								<f:validateLength minimum="12" maximum="13" />
+							</p:inputText>
+							<p:message for="cliente_rfc" />
+						</h:panelGrid>
+						
+						<h:outputLabel for="cliente_razonSocial" value="RAZON SOCIAL:" style="font-weight:bold"/>                    
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_razonSocial" value="#{clienteMB.selectedEntity.razonSocial}" required="true" label="Razon Social:" size="25">
+								<f:validateLength minimum="5" maximum="128" />
+							</p:inputText>
+							<p:message for="cliente_razonSocial" />
+						</h:panelGrid>
+						
+						<h:outputLabel for="cliente_nombreEstablecimiento" value="Nombre Establecimiento:" style="font-weight:bold"/>                    
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_nombreEstablecimiento" value="#{clienteMB.selectedEntity.nombreEstablecimiento}" required="false" label="Nombre Establecimiento:" size="25">
+								<f:validateLength minimum="5" maximum="128" />
+							</p:inputText>
+							<p:message for="cliente_nombreEstablecimiento" />
+						</h:panelGrid>
+
+						<h:outputLabel for="cliente_contacto" value="Contacto:" style="font-weight:bold"/>
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_contacto" value="#{clienteMB.selectedEntity.contacto}" required="false" label="Contacto:" size="25">
+								<f:validateLength minimum="2" maximum="128" />
+							</p:inputText>
+							<p:message for="cliente_contacto" />
+						</h:panelGrid>						
+						
+						<h:outputLabel for="cliente_telefonos" value="Telefonos:" style="font-weight:bold"/>
+						<h:panelGrid columns="1" cellpadding="1">
+							<p:inputText id="cliente_telefonos" value="#{clienteMB.selectedEntity.telefonos}" required="false" label="Telefonos:" size="15">
+								<f:validateLength minimum="5" maximum="128" />
+								<f:validateRegex pattern="[0-9]+([-,X]+[0-9]+)*" for="cliente_telefonos"/>
+							</p:inputText>
+							<p:message for="cliente_telefonos" />
+						</h:panelGrid>					
+					</h:panelGrid>
+
+					<h:panelGrid columns="1" cellpadding="5" width="100%">
+						<h:panelGroup>
+							<p:commandButton	value="GUARDAR" icon="ui-icon-check" 
+												validateClient="true" style="margin-right:10px"
+												ajax="true"
+												actionListener="#{clienteMB.save}"
+												oncomplete="executeAfterUpdate()"
+												update=":form1:clientes, grid, updatedBeforeOnComplete"/>
+
+							<p:commandButton	value="CANCELAR" update="grid" icon="ui-icon-check" 
+												ajax="true" process="@this"
+												oncomplete="PF('dlg1').hide();">
+								<p:resetInput target="grid" />
+							</p:commandButton>
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGroup id="updatedBeforeOnComplete">
+						<script language="JavaScript" type="text/javascript">
+							//
+							function executeAfterUpdate() {
+								//alert('facesContext.maximumSeverity=#{facesContext.maximumSeverity}, facesContext.messageList=#{facesContext.messageList}, facesContext.validationFailed=#{facesContext.validationFailed}');
+								if ( #{facesContext.maximumSeverity==null or facesContext.maximumSeverity.ordinal=='1' or not facesContext.validationFailed} ) {
+									//alert('ok, close dialog !');
+									PF('dlg1').hide();
+								}
+							}
+							//
+						</script>
+					</h:panelGroup>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

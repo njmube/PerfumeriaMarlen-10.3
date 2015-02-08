@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.pmarlen.erp</groupId>
+		<artifactId>pmarlen-parent</artifactId>
+		<version>10.3</version>
+	</parent>
+	<artifactId>pmarlen-rest-services</artifactId>
+	<version>${project.parent.version}</version>
+	<name>Perfumeria Marlen 10.3 - REST Services</name>
+	<packaging>war</packaging>
+
+	<properties>
+		<jackson.version>1.9.13</jackson.version>
+		<jdk.version>1.6</jdk.version>
+	</properties>
+
+	<!-- ======================== DEPENDENCIES ==================== -->
+
+	<dependencies>
+		<!-- ================= MAIN DEPENDENCIES ============ --> 
+		<dependency>
+			<groupId>com.pmarlen.erp</groupId>
+			<artifactId>pmarlen-backend</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
+
+		<!-- ================= LIBRARY DEPENDENCIES ============ --> 
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+
+		<!-- Jackson JSON Mapper -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

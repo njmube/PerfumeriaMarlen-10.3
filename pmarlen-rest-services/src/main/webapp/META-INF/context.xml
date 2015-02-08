@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context allowLinking="true" antiJARLocking="true" crossContext="true" path="/pmarlen-rest-services" reloadable="true">
+  <!--
+	parent.version=${project.parent.version}
+	-->
+  <Resource DEVEOnBorrow="true" 
+			DEVEWhileIdle="true" 
+			auth="Container" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
+			initialSize="10" 
+			logAbandoned="true" 
+			maxActive="15" 
+			maxIdle="8" 
+			maxWait="20000" 
+			minIdle="4" 
+			name="jdbc/PMARLEN_DB_DEVE_DS" 
+			username="PMARLEN_DEVE" 
+			password="PMARLEN_DEVE_PASSWORD" 
+			removeAbandoned="true" removeAbandonedTimeout="60" timeBetweenEvictionRunsMillis="5000" 
+			type="javax.sql.DataSource" 
+			url="jdbc:mysql://localhost/PMARLEN_DB_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true" 
+			validationQuery="select 1"/>
+</Context>

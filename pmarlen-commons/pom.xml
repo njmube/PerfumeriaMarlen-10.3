@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.pmarlen.erp</groupId>
+		<artifactId>pmarlen-parent</artifactId>
+		<version>10.3</version>
+	</parent>
+	<artifactId>pmarlen-commons</artifactId>
+	<version>${project.parent.version}</version>
+	<name>Perfumeria Marlen 10.3 - Commons</name>
+
+	<!-- ======================== DEPENDENCIES ==================== -->
+
+	<dependencies>
+		<!-- ================= MAIN DEPENDENCIES ============ --> 
+		<!--
+		<dependency>
+			<groupId>com.pmarlen.erp</groupId>
+			<artifactId>pmarlen-jpa-entity</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		-->
+		<!-- ================= LIBRARY DEPENDENCIES ============ --> 
+
+		<!-- Derby database -->
+
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+ <!--
+		<dependency>
+			<groupId>org.slf4j</groupId>  
+			<artifactId>com.springsource.slf4j.api</artifactId> 
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
+			<version>${slf4j.version}</version>
+		</dependency>   
+		-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+            	
+		<!--
+		  No Commons Logging -
+		  Based on http://day-to-day-stuff.blogspot.com/2007/07/no-more-commons-logging.html
+		<dependency>
+		  <groupId>org.apache.commons</groupId>
+		  <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+		  <version>99.0-does-not-exist</version>
+		  <scope>provided</scope>
+		</dependency>
+		-->
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${zxing.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>5.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>${jasperfonts.version}</version>
+		</dependency>
+        
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${groovy.version}</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+	</dependencies>
+  
+	<build>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<compress/>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin> 
+				<artifactId>maven-antrun-plugin</artifactId> 
+				<executions> 
+					<execution> 
+						<id>set-build-time</id> 
+						<phase>process-resources</phase> 
+						<configuration> 
+							<tasks> 
+								<echo message="======================= set-build-time, in process-resources phase : version_timeStamp=${version_timeStamp}  ==============>>>"/>
+							</tasks> 
+						</configuration> 
+						<goals> 
+							<goal>run</goal> 
+						</goals> 
+					</execution> 
+				</executions> 
+			</plugin>
+			
+			<plugin>
+				<groupId>com.keyboardsamurais.maven</groupId>
+				<artifactId>maven-timestamp-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<propertyName>version_timeStamp</propertyName>
+					<timestampPattern>yyyy/MM/dd HH:mm</timestampPattern>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<!--
+		<profile>
+			<id>preprod</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+							<executions>
+								<execution>
+								   <phase>package</phase>
+									<goals>
+										<goal>copy-dependencies</goal>
+									</goals>
+									<configuration>
+										<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								   </configuration>
+								 </execution>
+							</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		-->
+	</profiles>
+
+</project>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        Producto
+    </ui:define>
+
+    <ui:define name="body-title">
+        Producto
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="form1">
+
+			<h:panelGrid columns="1" cellpadding="5" id="panel" width="100%">
+
+				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+
+				<p:dataGrid   var="producto" value="#{productoCatSimple.entityList}"
+							 columns="4" rows="24" paginator="true" 
+							 id="productoTable"
+							 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{productoCatSimple.sizeList}]"
+							 rowsPerPageTemplate="12,24,40">
+
+					<p:panel header="#{producto.codigoBarras}" style="text-align:center">
+
+						<h:panelGrid columns="1" style="width:100%">
+
+							<h:outputText value="#{producto.nombre}" />
+
+							<h:outputText value="#{producto.presentacion}" />
+							
+							<h:outputText value="#{producto.marca}" />
+							
+							<h:outputText value="#{producto.linea}" />
+							
+							<h:outputText value="#{producto.contenido} #{producto.unidadMedida}" />
+							
+							<p:commandButton update="@form" icon="ui-icon-cart"/>
+							
+							<p:graphicImage value="/images/turboload/Logo_T2.gif" alt="(LOGO)" title="IMG"/>
+
+						</h:panelGrid></p:panel>
+
+					<f:facet name="footer">
+						xx-xx
+					</f:facet>
+				</p:dataGrid>
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

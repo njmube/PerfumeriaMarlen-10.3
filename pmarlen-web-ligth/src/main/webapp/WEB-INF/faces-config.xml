@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config	xmlns="http://java.sun.com/xml/ns/javaee"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+				http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+				version="2.0">
+
+    <application>
+				
+        <locale-config>
+            <default-locale>es_MX</default-locale>
+            <supported-locale>es_MX</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+
+        <message-bundle>com.pmarlen.web.common.view.properties.UIMessages</message-bundle>
+
+        <resource-bundle>
+            <base-name>com.pmarlen.web.common.view.properties.UIMessages</base-name>
+            <var>UIMessages</var>
+        </resource-bundle>
+		<resource-bundle>
+			<base-name>com.pmarlen.web.common.view.properties.UIEntityLabels</base-name>
+            <var>UIEntityLabels</var>
+		</resource-bundle>
+		
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<!--
+		<action-listener>org.primefaces.application.DialogNavigationHandler</action-listener>
+		
+		<action-listener>org.primefaces.application.DialogViewHandler</action-listener>
+		-->
+		
+    </application>
+
+</faces-config>

@@ -1,0 +1,312 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        DEVOLUCION PEDIDOS DE VENTA
+    </ui:define>
+
+    <ui:define name="body-title">
+        DEVOLUCIONES PROCEDENTES DE PEDIDOS DE VENTA
+    </ui:define>
+
+
+    <ui:define name="body">		
+		<h:panelGrid columns="2" cellpadding="0" id="panel0" columnClasses="columnWidth75 centerAlign, columnWidth25 leftAlign topAlign topTAlign" width="100%">
+			<h:panelGrid columns="1" cellpadding="0" id="panelL" width="100%" columnClasses="leftAlign">
+
+				<h:form id="form1" rendered="true">					
+					<h:panelGrid columns="1" cellpadding="0" id="panel1" width="100%" columnClasses="leftAlign">
+
+						<p:outputLabel for="almacen" value="ALMACÉN :" />
+
+						<p:selectOneMenu id="almacen" value="#{devolucionPedidoMB.tipoAlmacen}" style="width:125px" disabled="#{devolucionPedidoMB.pedidoFinalizado}">							
+							<f:selectItems  value="#{devolucionPedidoMB.tipoAlmacenList}"/>
+							<p:ajax listener="#{devolucionPedidoMB.onTipoAlmacenChange}" process="@all" update=":form1,:form2,:form2a,:form3,:form4"/>
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
+
+						<h:panelGroup rendered="true">
+							<p:inputText id="cadenaBusqueda" value="#{devolucionPedidoMB.cadenaBusqueda}" size="50" maxlength="128" valueChangeListener="#{devolucionPedidoMB.cadenaBusquedaChanged}"
+										 title="BUSCAR PRODUCTOS CONTENGAN EL TEXTO" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+								<p:ajax event="change" listener="#{devolucionPedidoMB.buscarXCadena()}" process=":form1" update="panel1,:form2,:form2a"/>
+							</p:inputText>						
+
+							<p:commandButton icon="ui-icon-search" update=":form2:panel2" actionListener="#{devolucionPedidoMB.buscarXBoton}" rendered="false" disabled="#{devolucionPedidoMB.pedidoFinalizado}"/>
+
+							<p:selectBooleanButton   id="conservarBusqueda" value="#{devolucionPedidoMB.conservarBusqueda}" onLabel="CONSERVAR RESULT." offLabel="LIMPIAR RESULT." 
+													 onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+								<p:ajax process=":form1" update=":form1" listener="#{devolucionPedidoMB.conservarBusquedaChanged}" />
+							</p:selectBooleanButton>
+
+						</h:panelGroup>
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form2" rendered="true">
+					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  /> 
+
+					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
+
+						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
+
+						<h:panelGroup rendered="true">
+							<p:inputText value="#{devolucionPedidoMB.cantidadAgregarBusqueda}" size="3" maxlength="5" rendered="false" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+
+							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{devolucionPedidoMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" disabled="#{devolucionPedidoMB.pedidoFinalizado}"/>
+
+							<p:outputLabel value=" x " />
+							<p:selectOneMenu id="resultadoBusqueda" value="#{devolucionPedidoMB.resultadoBusquedaSelected}" disabled="#{devolucionPedidoMB.pedidoFinalizado}">							
+								<f:selectItems  value="#{devolucionPedidoMB.resultadoBusqueda}"/>
+								<p:ajax process=":form2:panel2" listener="#{devolucionPedidoMB.onResultadoBusquedaChange}" update=":form2:panel2" />							
+							</p:selectOneMenu>
+
+							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" rendered="#{not empty devolucionPedidoMB.resultadoBusqueda}"
+											 disabled="#{devolucionPedidoMB.pedidoFinalizado}"/>
+
+							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
+								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
+									<h:outputText value="LINEA :" />
+									<h:outputText value="#{devolucionPedidoMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
+
+									<h:outputText value="MARCA :" />
+									<h:outputText value="#{devolucionPedidoMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
+
+									<h:outputText value="CANTIDAD ACTUAL :" />
+									<h:outputText value="#{devolucionPedidoMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
+
+									<h:outputText value="CONTENIDO :" />
+									<h:outputText value="#{devolucionPedidoMB.resultadoBusquedaSI.productoContenido} #{devolucionPedidoMB.resultadoBusquedaSI.productoUnidadMedida}" class="bold_text" />
+
+									<h:outputText value="PRECIO :" />
+									<h:outputText value="#{devolucionPedidoMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
+										<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+									</h:outputText>
+								</h:panelGrid>
+							</p:overlayPanel>
+							<p:spacer width="10"/>
+							<p:commandButton value="+"  actionListener="#{devolucionPedidoMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{devolucionPedidoMB.pedidoFinalizado}"
+											 process=":form2" update=":form1,:form2,growl,:form3,:form4:panel4_3"  
+											 rendered="#{not empty devolucionPedidoMB.resultadoBusqueda}"
+											 oncomplete="updateComponentsOnWindowResize();"/>
+						</h:panelGroup>
+					</h:panelGrid>
+				</h:form>
+				<h:form id="form2a" rendered="true">
+
+					<h:panelGrid columns="1" cellpadding="0" id="panel2a" columnClasses="leftAlign" width="100%">
+						<p:outputLabel value="CANTIDAD x CODIGO :" />
+
+						<h:panelGroup>
+							<p:inputText value="#{devolucionPedidoMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+
+							<p:spinner id="cantidadAgregarCodigoSpinner" value="#{devolucionPedidoMB.cantidadAgregarCodigo}" min="1" max="9999" size="1" disabled="#{devolucionPedidoMB.pedidoFinalizado}"/>
+
+							<p:outputLabel value=" x " />
+							<p:inputText value="#{devolucionPedidoMB.codigo}" size="15" maxlength="15" valueChangeListener="#{devolucionPedidoMB.codigoChanged}"
+										 title="BUSCAR PRODUCTOS CONTENGAN EL TEXTO" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+								<p:ajax  event="change" listener="#{devolucionPedidoMB.buscarXCodigo}" 
+										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
+										 oncomplete="updateComponentsOnWindowResize();"/>
+							</p:inputText>						
+
+						</h:panelGroup>						
+
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form3" rendered="true">
+
+					<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
+						<p:dataTable  var="pvd" value="#{devolucionPedidoMB.entityList}"
+									  id="pvdTable" widgetVar="wv_pvdTable" emptyMessage="-- SIN ELEMENTOS --" 
+									  scrollable="true" draggableRows="true"
+									  editable="true" editMode="cell" 
+									  scrollHeight="200" >
+							<p:ajax event="rowReorder" listener="#{devolucionPedidoMB.onRowReorder}" update=":form3:panel3" />
+							<f:facet name="header">
+								OPCIONES :
+								<p:commandButton value="VER + COLUMNAS" actionListener="#{devolucionPedidoMB.expandirTabla}" process=":form3" update=":form3:panel3" rendered="#{!devolucionPedidoMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();"/>
+								<p:commandButton value="VER - COLUMNAS" actionListener="#{devolucionPedidoMB.contraerTabla}" process=":form3" update=":form3:panel3" rendered="#{devolucionPedidoMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();"/>
+							</f:facet>
+
+							<p:column headerText="." width="5%">
+								<p:commandButton icon="ui-icon-trash" actionListener="#{devolucionPedidoMB.deleteRow(pvd.rowId)}" 
+												 title="rowId=#{pvd.rowId}" process=":form3" update=":form3,:form4:panel4_3"
+												 oncomplete="updateComponentsOnWindowResize();" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+									<p:confirm header="ELIMINAR" message="¿ SEGURO QUE QUIERE ELIMINAR ?" icon="ui-icon-alert" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="#" width="5%">								
+								 <p:cellEditor>
+									<f:facet name="output"><h:outputText value="#{pvd.cantidad}" /></f:facet>
+									<f:facet name="input">
+										<p:spinner value="#{pvd.cantidad}" min="1" max="9999" size="1" valueChangeListener="#{devolucionPedidoMB.cantidadDetalleChanged}"  >
+											<p:ajax process="@this" event="change" listener="#{devolucionPedidoMB.cantidadDetalleCambio(pvd.rowId)}" update=":form4:panel4_3a"/>
+										</p:spinner>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="ALM." width="5%" >
+								<h:outputText value="1RA" rendered="#{pvd.apTipoAlmacen eq 1}" class="centerAlignColumn"/>
+								<h:outputText value="OPO" rendered="#{pvd.apTipoAlmacen eq 2}" class="centerAlignColumn"/>
+								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
+							</p:column>
+
+							<p:column headerText="CODIGO" width="15%">
+								<h:outputText value="#{pvd.productoCodigoBarras}" />
+							</p:column>
+
+							<p:column headerText="LINEA" rendered="#{devolucionPedidoMB.tablaExpandida}">
+								<h:outputText value="#{pvd.productoLinea}" />
+							</p:column>
+
+							<p:column headerText="MARCA" rendered="#{devolucionPedidoMB.tablaExpandida}">
+								<h:outputText value="#{pvd.productoMarca}" />
+							</p:column>
+
+							<p:column headerText="NOMBRE" rendered="#{devolucionPedidoMB.tablaExpandida}">
+								<h:outputText value="#{pvd.productoNombre}" />
+							</p:column>
+
+							<p:column headerText="PRESN." rendered="#{devolucionPedidoMB.tablaExpandida}">
+								<h:outputText value="#{pvd.productoPresentacion}" />
+							</p:column>
+
+							<p:column headerText="CONT." rendered="#{devolucionPedidoMB.tablaExpandida}">
+								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
+							</p:column>
+
+							<p:column headerText="PRECIO" width="10%">
+								<h:outputText value="#{pvd.precioVenta}" title="#{devolucionPedidoMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="IMPORTE" width="10%">
+								<h:outputText value="#{pvd.cantidad * pvd.precioVenta}" title="#{devolucionPedidoMB.getImporteDesglosado(pvd.cantidad * pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<f:facet name="footer">
+								<h:outputText value="ELEMENTOS : #{devolucionPedidoMB.sizeList}" rendered="true"/>
+							</f:facet>
+						</p:dataTable>
+
+					</h:panelGrid>
+				</h:form>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
+				<h:form id="form4">
+					
+					<h:panelGrid columns="1" id="panel4_2" cellpadding="0" columnClasses="leftAlign" width="100%">
+
+
+						<p:outputLabel value="COMENTARIOS :" />
+
+						<h:inputTextarea id="comentarios" value="#{devolucionPedidoMB.pedidoVenta.comentarios}" cols="30" rows="2"
+										 title="COMENTARIOS ACERCA DEL PEDIDO" disabled="#{devolucionPedidoMB.pedidoFinalizado}">
+							<p:ajax		 event="blur" listener="#{devolucionPedidoMB.onComentariosChange}" 
+									  process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputTextarea>
+
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" id="panel4_3" cellpadding="0" columnClasses="centerAlign" width="100%">
+						<p:spacer width="10"/>
+						<h:panelGrid id="panel4_3a" columns="2" cellpadding="0" columnClasses="columnWidth60 rightAlign, columnWidth40 rightAlign" width="100%">
+							<h:outputText value="SUBTOTAL :" />
+							<h:outputText value="#{devolucionPedidoMB.pedidoVentaFooter.subTotalNoGrabado}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="I.V.A. :" />
+							<h:outputText value="#{devolucionPedidoMB.pedidoVentaFooter.importeIVA}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="T O T A L :" styleClass="bold_text"/>
+							<h:outputText value="#{devolucionPedidoMB.pedidoVentaFooter.total}" styleClass="bold_text">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+						</h:panelGrid>
+						<p:spacer width="10" rendered="#{not devolucionPedidoMB.pedidoFinalizado}"/>
+						<h:panelGrid columns="2" rendered="#{not devolucionPedidoMB.pedidoFinalizado}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
+							<p:commandButton value="CANCELAR" actionListener="#{devolucionPedidoMB.cancelar}" process="@all" rendered="#{not devolucionPedidoMB.pedidoFinalizado}" icon="ui-icon-cancel"
+											 update=":form1,:form2,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+								<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR ?" icon="ui-icon-alert" />
+							</p:commandButton>						
+
+							<p:commandButton value="GUARDAR"  actionListener="#{devolucionPedidoMB.guardar}" disabled="#{not devolucionPedidoMB.crearPedido}" icon="ui-icon-play"
+											 process="@all" update=":form1,:form2,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+								<p:confirm header="CREAR DEVOLUCION" message="¿ SEGURO TERMINÓ Y QUIERE GUARDAR LA DEVOLUCION ?" icon="ui-icon-alert" />
+							</p:commandButton>
+						</h:panelGrid>
+
+						<p:spacer width="10" height="10" />
+
+						<p:confirmDialog global="true" showEffect="bounce" hideEffect="explode" styleClass="centerAlign">
+							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
+								<p:commandButton value="SI, OK"    type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="NO, NUNCA" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</h:panelGrid>
+								
+						</p:confirmDialog>
+
+						<div id="debugDivOutput">						
+						</div>
+					</h:panelGrid>
+
+				</h:form>
+			</h:panelGrid>
+
+
+		</h:panelGrid>
+		<script>
+			var counterResized = 0;
+			function updateComponentsOnWindowResize() {
+
+				//var txt="";
+				//txt+="["+counterResized+"]Resized:(" + $(window).width() + " x  " + $(window).height() +"), table height:"+$(".ui-datatable-scrollable-body").height();
+				//$("#debugDivOutput").html(txt);
+				setDataTableHeight();
+				counterResized++;
+			}
+
+			function setDataTableHeight() {
+				var winHeight = $(window).height();
+
+				var scrollHeight = winHeight - 450;
+
+				var scrollBody = $(".ui-datatable-scrollable-body");
+				scrollBody.height(scrollHeight);
+
+			}
+
+			$(document).ready(function() {
+
+				$(window).resize(function() {
+					updateComponentsOnWindowResize();
+				});
+
+				updateComponentsOnWindowResize();
+
+			});
+		</script>		
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,192 @@
+/*
+user: #{sessionUserMB.usuarioAuthenticated.nombreCompleto}
+*/
+/* 
+    Created on : 19/08/2014, 05:07:46 PM
+    Author     : alfredo
+*/
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 80%;
+}
+
+.no-rounded-panel{
+	border-radius: 0px; 
+	border: none;
+}
+
+.preferencesPanel{
+    
+}
+
+body{
+	background-color:  #DCEBF2;
+}
+
+.footer-bar {
+	background: none repeat scroll 0 0 darkblue;
+    border-top: 3px solid orange;
+	color: yellow;
+    font: 50% 'Droid Sans',arial,sans-serif;
+	width: 100%;
+	left: 0px;
+    height: 30px;
+    margin: 0;
+    padding: 5px 0 0;
+    text-align: center;
+	bottom: 0px;
+	position: fixed;
+	display: block;
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.bold_text {
+	font-weight:bold; 
+}
+
+.common_component_bold {
+	font-weight:bold; 	
+	font-family: Arial,Helvetica,sans-serif;
+}
+
+.common_font_component {
+	font-family: Arial,Helvetica,sans-serif;
+}
+
+.littleLabel_bold_right {
+	display:block;
+	font-weight:bold;
+	text-align:right;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size:8px;
+}
+
+.inputCant{
+	text-align:right;	
+}
+
+.common_font_littleComponent {
+	font-family: Arial,Helvetica,sans-serif;
+	font-size:10px;
+}
+.columnWidth2{
+	width: 2%;
+}
+
+.columnWidth5{
+	width: 5%;
+}
+
+.columnWidth10{
+	width: 10%;
+}
+
+.columnWidth15{
+	width: 15%;
+}
+
+.columnWidth20{
+	width: 20%;
+}
+
+.columnWidth25{
+	width: 25%;
+}
+
+.columnWidth30{
+	width: 30%;
+}
+
+.columnWidth35{
+	width: 35%;
+}
+
+.columnWidth40{
+	width: 40%;
+}
+
+.columnWidth45{
+	width: 45%;
+}
+
+.columnWidth50{
+	width: 50%;
+}
+
+.columnWidth60{
+	width: 60%;
+}
+
+.columnWidth65{
+	width: 65%;
+}
+
+.columnWidth70{
+	width: 70%;
+}
+
+.columnWidth75{
+	width: 75%;
+}
+
+.columnWidth80{
+	width: 80%;
+}
+
+.columnWidth85{
+	width: 85%;
+}
+
+.columnWidth90{
+	width: 90%;
+}
+
+.columnWidth95{
+	width: 95%;
+}
+
+.centerAlign {
+	text-align: center;
+}
+
+.leftAlign {
+	text-align: left;
+}
+
+.rightAlign {
+	text-align: right;
+}
+
+.leftAlignColumn {
+	text-align: left;
+	float:left;
+}
+
+.rightAlignColumn {
+	text-align: right;
+	float:right;
+}
+
+.centerAlignColumn {
+	display: inline-block;
+}
+
+.topAlign {
+	vertical-align: top;
+}
+
+.topTAlign {
+	vertical-align: text-top;
+}
+
+.bottomAlign {
+	vertical-align: bottom;
+}
+
+.bottomTAlign {
+	vertical-align: text-bottom;
+}

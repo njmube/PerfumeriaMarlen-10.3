@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="13"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
+	<parameter name="fechaHoraImpr" class="java.lang.String"/>
+	<parameter name="usuarioImpr" class="java.lang.String"/>
+	<parameter name="pedidoVentaId" class="java.lang.String"/>
+	<parameter name="direccion" class="java.lang.String"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="rfc" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="subtotal" class="java.lang.String"/>
+	<parameter name="iva" class="java.lang.String"/>
+	<parameter name="descuento" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.String"/>
+	<parameter name="importeLetra" class="java.lang.String"/>
+	<parameter name="LeyendaFotter" class="java.lang.String"/>
+	<parameter name="formaDePago" class="java.lang.String"/>
+	<parameter name="metodoDePago" class="java.lang.String"/>
+	<parameter name="printImages" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipoAlmacen" class="java.lang.String"/>
+	<parameter name="pedidoVentaEstado" class="java.lang.String"/>
+	<parameter name="comentarios" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from orders where orderid < 10255]]>
+	</queryString>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="clave" class="java.lang.Integer"/>
+	<field name="codigoBarras" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="precio" class="java.lang.String"/>
+	<field name="importe" class="java.lang.String"/>
+	<field name="desc" class="java.lang.String"/>
+	<field name="unidadMedida" class="java.lang.String"/>
+	<background>
+		<band height="736" splitType="Stretch">
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement uuid="27c523cd-df0f-4822-976b-902c89e2b894" x="86" y="187" width="384" height="375">
+					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["reports/PMarlen_Logo_MarcaDeAgua.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="188" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{rfc} != null]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="78" y="137" width="270" height="25"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="0" y="137" width="78" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="0" y="124" width="78" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLIENTE :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="78" y="124" width="270" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="78" y="161" width="96" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{formaDePago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="0" y="161" width="78" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FORMA DE PAGO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2" x="387" y="63" width="169" height="17"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOTA DE PEDIDO]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a" x="116" y="15" width="271" height="45">
+					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["reports/PMarlen_nombre.jpg"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement uuid="27c523cd-df0f-4822-976b-902c89e2b894" x="0" y="0" width="116" height="102">
+					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["reports/PMarlen_Logo_3.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2" x="387" y="30" width="99" height="17" forecolor="#000080">
+					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[S.A. DE C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02" x="365" y="136" width="94" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA IMPRESIÓN :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="622c8ccb-d1be-4a9f-815d-c1a2c9234bd2" x="459" y="136" width="97" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHoraImpr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="70031f4c-1ae5-4f4c-bc0a-b903f64bd738" x="365" y="150" width="94" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[USUARIO GENERÓ:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="6b3b4a28-2b65-4393-a953-5470e41b8649" x="459" y="150" width="97" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c5b9342f-7610-4652-8b07-405331e43de1" x="459" y="100" width="34" height="14" forecolor="#FF0000"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pedidoVentaId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2e312a8e-20ff-401b-b1ed-219713c12164" x="387" y="100" width="69" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Pedido :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1b231743-4e61-4224-91f9-f33d7f1d1349" x="459" y="164" width="97" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioImpr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e9d8b640-a5f0-44e7-ba6b-df8ee31c0fca" x="365" y="164" width="94" height="14">
+					<printWhenExpression><![CDATA[$P{usuarioImpr}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[USUARIO IMPRIMIÓ:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7ec71bc0-8b03-4a6e-bfc0-432d3a1caefb" x="387" y="80" width="169" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{tipoAlmacen}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="996cda3e-9c01-423d-ac2f-9be01e810bc5" x="135" y="75" width="213" height="29"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MARTÍN AZCATEPEC, TÉCAMAC. EDO. DE MÉX. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701" x="135" y="104" width="213" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[http://perfumeriamarlen.com.mx]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="dc4ecdc6-85a9-404c-9097-b2e386c283cf" x="459" y="114" width="97" height="14" forecolor="#FF3300"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pedidoVentaEstado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f9e2880d-651f-42f0-956f-2ca1182c5c48" x="0" y="174" width="78" height="14">
+					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[COMENTARIOS :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a7439d65-983a-44b8-944e-a67dd349e511" x="78" y="174" width="252" height="14">
+					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comentarios}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="21b67f0b-61cc-450e-adad-1521975fa14f" x="174" y="161" width="78" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MÉTODO DE PAGO :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ab988d6c-e533-4c6c-9c50-17ec851eb52c" x="252" y="161" width="113" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{metodoDePago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="749c7a0b-80f1-4018-87f3-d4796f54ea21" x="387" y="114" width="69" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estatus :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="0" y="0" width="37" height="12"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="37" y="0" width="79" height="12"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="116" y="0" width="315" height="12"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE / DESCRIPCIÓN  (CONTENIDO / UxCj.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="431" y="0" width="55" height="12"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PRECIO U.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="486" y="0" width="70" height="12"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310" x="0" y="0" width="37" height="12"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd" x="431" y="0" width="55" height="12"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7" x="116" y="0" width="315" height="12"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd" x="486" y="0" width="70" height="12"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310" x="37" y="0" width="79" height="12"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigoBarras}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="12" splitType="Stretch">
+			<line>
+				<reportElement uuid="228a99fd-2379-4af8-a1b6-5f2dc8a3a4dc" x="0" y="11" width="556" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement uuid="24a40db5-b112-40f3-b0b1-fe640272085a" x="528" y="4" width="28" height="7"/>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f16cbde2-31be-427f-af13-625c4add8aa1" x="431" y="4" width="97" height="7"/>
+				<textElement textAlignment="Right">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="51cbe128-639a-44a7-817e-03a4d9902a8e" x="174" y="0" width="213" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="59">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="486" y="0" width="70" height="14"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="486" y="14" width="70" height="14"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descuento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0520cc06-b769-4a56-a09c-26bfe0084802" x="486" y="29" width="70" height="14"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="421" y="0" width="65" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[SUBTOTAL :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="421" y="14" width="65" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[DESCUENTO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ed43173-89c5-4942-b022-deaf25bafde0" x="421" y="29" width="65" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL :]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="228a99fd-2379-4af8-a1b6-5f2dc8a3a4dc" x="0" y="58" width="556" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement uuid="24a40db5-b112-40f3-b0b1-fe640272085a" x="528" y="51" width="28" height="7"/>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f16cbde2-31be-427f-af13-625c4add8aa1" x="431" y="51" width="97" height="7"/>
+				<textElement textAlignment="Right">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b5b582a1-0be7-4a12-b75b-a544d96a7afe" x="174" y="47" width="213" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

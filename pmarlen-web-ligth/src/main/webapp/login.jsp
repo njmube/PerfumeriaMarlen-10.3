@@ -1,0 +1,88 @@
+<%@ page pageEncoding="UTF-8" %>
+<%
+	long to = request.getSession().getMaxInactiveInterval()*1000 + 3000;	
+	System.out.println("login.jsp->["+request.getSession().getId()+"]: timeOut="+(to/1000)+" secs. ="+((to/1000/60.0))+" mins.");
+
+%>
+<html>
+    <head>
+		<title>PMARLEN</title>
+		<script type="text/JavaScript">
+		<!--
+		var redirectTime = "<%=to%>";
+		var redirectURL  = "<%=request.getContextPath()%>/";
+		function timedRedirect() {
+			setTimeout("location.href = redirectURL;",redirectTime);
+		}
+		//   -->
+		</script>
+		
+
+    </head>
+
+    <body style="background-color: #DCEBF2;" onload="timedRedirect();">	
+		<br/>
+		<br/>		
+        <form action="j_security_check" method="post" id="loginForm">
+
+			<table class="login_table_panel" border="0" align="center">
+				<tr>
+					<td colspan="3">
+						<img src="<%=request.getContextPath()%>/images/PM_NewLogo_1.png"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" valign="middle" align="center" style="background-color:gray;">
+						ACCESO A SISTEMA DE PERFUMER&Iacute;A MARLEN
+					</td>
+				</tr>
+				<tr>
+					<td width="20%" rowspan="6" valign="middle" align="center" >
+						<img src="<%=request.getContextPath()%>/images/secure.gif" />
+					</td>
+				</tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td width="20%" align="right">
+						<span style="font-size : 10px;">USUARIO :</span>
+					</td>
+					<td align="left">
+						<input type="text" name="j_username" value="" size="30"/>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%" align="right">
+						<span style="font-size : 10px;">PASSWORD :</span>
+					</td>
+					<td align="left">
+						<input type="password" name="j_password" value="" size="15"/>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="3">
+						<%
+							if (request.getParameter("error") != null) {
+						%>
+							ERROR EN USUARIO O PASSWORD
+						<%
+							} else {
+						%>
+						<%    
+							}
+						%>									
+					</td>
+				</tr>												
+
+				<tr>
+					<td colspan="3" width="100%" align="center">										
+						<input type="submit" value="ENTRAR" />
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>	
+</html>
