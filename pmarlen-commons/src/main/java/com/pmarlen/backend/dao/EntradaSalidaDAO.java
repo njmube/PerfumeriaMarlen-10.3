@@ -773,12 +773,11 @@ public class EntradaSalidaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnectionCommiteable();
-			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET ESTADO_ID=?,FECHA_ACTUALIZACION=? WHERE ID=?");
+			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET ESTADO_ID=? WHERE ID=?");
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 
 			int ci = 1;
 			ps.setInt(ci++, Constants.ESTADO_VERIFICADO);
-			ps.setTimestamp(ci++, now);
 			ps.setInt(ci++, x.getId());
 
 			r = ps.executeUpdate();
@@ -872,11 +871,10 @@ public class EntradaSalidaDAO {
 			psESD.close();
 			psMHP.close();
 
-			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET ESTADO_ID=?,FECHA_ACTUALIZACION=? WHERE ID=?");
+			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET ESTADO_ID=? WHERE ID=?");
 
 			int ci = 1;
 			ps.setInt(ci++, Constants.ESTADO_SURTIDO);
-			ps.setTimestamp(ci++, now);
 			ps.setInt(ci++, x.getId());
 
 			r = ps.executeUpdate();
