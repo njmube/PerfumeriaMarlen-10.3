@@ -180,6 +180,35 @@
 				</plugins>
 			</build>			
 		</profile>
+		<profile>
+			<id>srv1-test</id>
+			<build>
+				<finalName>${artifactId}</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>2.3.2</version>
+						<configuration>
+							<source>1.6</source>
+							<target>1.6</target>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<url>http://localhost:7080/manager/text</url>
+							<server>tomcat-7-dev</server>
+							<path>/pmarlen-web-ligth</path>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>			
+		</profile>
 		
 	</profiles>	
 	
