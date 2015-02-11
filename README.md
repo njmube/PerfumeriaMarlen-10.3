@@ -29,7 +29,7 @@ C) Building with Maven 3.x
     Add these lines to $(M2_HOME)/config/config.xml
 
     <server>
-      <id>tomcat-6-0-X</id>
+      <id>tomcat-7-dev</id>
       <username>admin_user_for_deploy</username>
       <password>secret_password_for_admin</password>
     </server>

@@ -64,7 +64,7 @@ public class EntradaSalidaMB implements Serializable{
 	
 	private int cantidadAgregarCodigo;
 	private String codigo;
-	
+	private boolean autorizaDescuento = true;
 	private boolean tablaExpandida = false;
 	private boolean crearPedido;
 	private boolean pedidoFinalizado = false;
@@ -93,6 +93,7 @@ public class EntradaSalidaMB implements Serializable{
 		resultadoBusquedaList = null;
 		conservarBusqueda = false;
 		pedidoFinalizado = false;
+		autorizaDescuento = true;
 	}
 
 	public String reset() {
@@ -641,7 +642,8 @@ public class EntradaSalidaMB implements Serializable{
 			pedidoVenta.setNumDeCuenta(null);
 			pedidoVenta.setNumeroTicket("0");
 			pedidoVenta.setSucursalId(sessionUserMB.getSucursalId());
-			pedidoVenta.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());	
+			pedidoVenta.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());
+			pedidoVenta.setAutorizaDescuento(autorizaDescuento?1:0);
 						
 			EntradaSalidaDAO.getInstance().insert(pedidoVenta,entityList);
 			logger.info("->guardar:entradaSalida.id:"+pedidoVenta.getId());
@@ -685,5 +687,22 @@ public class EntradaSalidaMB implements Serializable{
 	
 	public String getImporteDesglosado(double f){
 		return Constants.getImporteDesglosado(f);
+	}
+	
+	public boolean isAutorizaDescuento(){
+		return this.autorizaDescuento;
+	}
+	
+	public void setAutorizaDescuento(boolean autorizaDescuento){
+		this.autorizaDescuento = autorizaDescuento;
+	}
+	
+	public void onAutorizaDescuentoChange(){
+		logger.info("autorizaDescuento="+this.autorizaDescuento);
+		pedidoVenta.setAutorizaDescuento(this.autorizaDescuento?1:0);
+		if(!this.autorizaDescuento){
+			this.pedidoVenta.setPorcentajeDescuentoExtra(0);
+		}
+		actualizarTotales();
 	}
 }

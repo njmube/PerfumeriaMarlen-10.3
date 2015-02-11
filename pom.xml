@@ -17,8 +17,8 @@
 		<url>http://perfumeriamanrlen.com.mx</url>
 	</organization>
 
-	<scm>		
-		<connection>scm:git:git://github.com/tracktopell/PerfumeriaMarlen-10.2.git</connection>
+	<scm>
+		<connection>scm:git:git://github.com/tracktopell/PerfumeriaMarlen-10.3.git</connection>
 	</scm>
 	
 	<developers>
@@ -120,7 +120,7 @@
 		</dependency>
             
 	</dependencies>
-
+<!--
 	<reporting>   
 		<plugins>  
 			<plugin>      
@@ -132,5 +132,5 @@
 			       
 		</plugins> 	
 	</reporting>
-	
+ -->	
 </project>

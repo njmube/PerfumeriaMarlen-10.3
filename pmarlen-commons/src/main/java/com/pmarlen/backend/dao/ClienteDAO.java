@@ -116,7 +116,7 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION FROM CLIENTE");
+			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION FROM CLIENTE ORDER BY RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO");
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {

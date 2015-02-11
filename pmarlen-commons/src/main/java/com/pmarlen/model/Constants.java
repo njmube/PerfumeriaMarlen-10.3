@@ -146,11 +146,11 @@ public class Constants {
 	public static final LinkedHashMap<Integer,String> descuentos = new LinkedHashMap<Integer,String>();
 	
 	static {
-		descuentos.put(DESCUENTO_0,  "SIN DESCUENTO");
-		descuentos.put(DESCUENTO_2,  "2 %");
-		descuentos.put(DESCUENTO_5,  "5 %");
-		descuentos.put(DESCUENTO_7,  "7 %");
-		descuentos.put(DESCUENTO_10, "10 %");		
+		descuentos.put(DESCUENTO_0,  "SOLO DESC. NORMAL");
+		descuentos.put(DESCUENTO_2,  "+ 2% EXTRA");
+		descuentos.put(DESCUENTO_5,  "+ 5% EXTRA");
+		descuentos.put(DESCUENTO_7,  "+ 7% EXTRA");
+		descuentos.put(DESCUENTO_10, "+10% EXTRA");		
 	}
 	
 	public static final LinkedHashMap<Integer,String> tipoAlmacen = new LinkedHashMap<Integer,String>();

@@ -1,19 +1,19 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/templates/mainWithMenu.xhtml">
+				xmlns:p="http://primefaces.org/ui"
+				template="/WEB-INF/templates/mainWithMenu.xhtml">
 
-    <ui:define name="title">
-        PEDIDO VENTA
-    </ui:define>
+	<ui:define name="title">
+		PEDIDO VENTA
+	</ui:define>
 
-    <ui:define name="body-title">
-        <h:outputText value="PEDIDO VENTA"/>
-    </ui:define>
+	<ui:define name="body-title">
+		<h:outputText value="PEDIDO VENTA"/>
+	</ui:define>
 
-    <ui:define name="body">		
+	<ui:define name="body">		
 		<h:panelGrid columns="2" cellpadding="0" id="panel0" columnClasses="columnWidth75 centerAlign, columnWidth25 leftAlign topAlign topTAlign" width="100%">
 			<h:panelGrid columns="1" cellpadding="0" id="panelL" width="100%" columnClasses="leftAlign">
 
@@ -278,13 +278,21 @@
 							<p:ajax listener="#{entradaSalidaMB.onFormaDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 						</p:selectOneMenu>
 
-						<p:outputLabel value="DESCUENTO EXTRA :" />
+						<p:outputLabel value="DESCUENTO :" />
+						<h:panelGroup>
+							<p:inputSwitch id="autorizaDescuento" value="#{entradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" >
+								<p:ajax listener="#{entradaSalidaMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+							</p:inputSwitch>
+							<p:spacer width="10"/>
+							<p:selectOneMenu id="descuentoEspecial" value="#{entradaSalidaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{entradaSalidaMB.pedidoFinalizado}" rendered="#{entradaSalidaMB.autorizaDescuento}">
+								<f:selectItems  value="#{entradaSalidaMB.descuentoEspacialList}"/>
+								<p:ajax listener="#{entradaSalidaMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+							</p:selectOneMenu>
 
-						<p:selectOneMenu id="descuentoEspecial" value="#{entradaSalidaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{entradaSalidaMB.pedidoFinalizado}">							
-							<f:selectItems  value="#{entradaSalidaMB.descuentoEspacialList}"/>
-							<p:ajax listener="#{entradaSalidaMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</p:selectOneMenu>
-
+						</h:panelGroup>
+												
+						
+						
 						<p:outputLabel value="COMENTARIOS :" />
 
 						<h:inputTextarea id="comentarios" value="#{entradaSalidaMB.pedidoVenta.comentarios}" cols="30" rows="2"
@@ -341,7 +349,7 @@
 
 						<p:spacer width="10" height="10" />
 
-						<h:outputText    value="PEDIDO ID : ##{entradaSalidaMB.pedidoVenta.id}" rendered="#{not empty entradaSalidaMB.pedidoVenta and entradaSalidaMB.pedidoFinalizado}"/>
+						<h:outputText	value="PEDIDO ID : ##{entradaSalidaMB.pedidoVenta.id}" rendered="#{not empty entradaSalidaMB.pedidoVenta and entradaSalidaMB.pedidoFinalizado}"/>
 
 						<p:spacer width="10" height="10" />
 
@@ -350,7 +358,7 @@
 
 						<p:confirmDialog global="true" showEffect="bounce" hideEffect="explode" styleClass="centerAlign">
 							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
-								<p:commandButton value="SI, OK"    type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="SI, OK"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 								<p:commandButton value="NO, NUNCA" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 							</h:panelGrid>
 								

@@ -52,26 +52,29 @@ public class EntradaSalidaFooter implements Serializable{
 			
 		}
 		descuentoCalculado = 0;
-		if (subTotalBruto >= 5000 && subTotalBruto < 10000) {				
-			descuentoCalculado = 5;
-			importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
-		} else if (subTotalBruto >= 10000) {
-			descuentoCalculado = 10;
-			importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
-		}
-		
-		descuentoExtra = pv.getPorcentajeDescuentoExtra();
-		if(descuentoExtra == null){
-			descuentoExtra = 0;
-		}
-		importeDescuentoExtra    = (subTotalBruto * descuentoExtra)/100.0;
-		descuentoAplicado        = descuentoCalculado + descuentoExtra;		
-		importeDescuentoAplicado = importeDescuentoCalculado + importeDescuentoExtra;
-		
+		descuentoExtra = 0;
+		descuentoAplicado =0;
+		importeDescuentoExtra = 0.0;
+		importeDescuentoAplicado = 0.0;
+		if(pv.getAutorizaDescuento()!=null && pv.getAutorizaDescuento().intValue()==1){			
+			if (subTotalBruto >= 5000 && subTotalBruto < 10000) {				
+				descuentoCalculado = 5;
+				importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
+			} else if (subTotalBruto >= 10000) {
+				descuentoCalculado = 10;
+				importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
+			}
+			descuentoExtra = pv.getPorcentajeDescuentoExtra();
+			if(descuentoExtra == null){
+				descuentoExtra = 0;
+			}
+			importeDescuentoExtra    = (subTotalBruto * descuentoExtra)/100.0;
+			descuentoAplicado        = descuentoCalculado + descuentoExtra;		
+			importeDescuentoAplicado = importeDescuentoCalculado + importeDescuentoExtra;
+		} 
 		pv.setPorcentajeDescuentoCalculado(descuentoCalculado);
-		
 		importeDescuentoExtra = (subTotalBruto * descuentoExtra)/100.0;
-		
+
 		total = subTotalNoGrabado + importeIVA - importeDescuentoAplicado ;		
 	}
 
