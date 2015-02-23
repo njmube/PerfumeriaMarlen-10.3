@@ -699,10 +699,25 @@ public class EntradaSalidaMB implements Serializable{
 	
 	public void onAutorizaDescuentoChange(){
 		logger.info("autorizaDescuento="+this.autorizaDescuento);
+		if(this.autorizaDescuento){
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"DESCUENTO",  " SE AUTORIZÓ LA POLITICA DE DESCUENTO") );
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"DESCUENTO",  " SE BLOQUEÓ LA POLITICA DE DESCUENTO") );
+		}
 		pedidoVenta.setAutorizaDescuento(this.autorizaDescuento?1:0);
 		if(!this.autorizaDescuento){
 			this.pedidoVenta.setPorcentajeDescuentoExtra(0);
 		}
 		actualizarTotales();
+	}
+	
+	public String getPoliticaDescuento(){
+		if(this.autorizaDescuento){
+			return "POLITICA: De 5,000 a 10,000 = -5%, > 10,000 = -10%";
+		}else{
+			return "NO HAY DESCUENTO";
+		}
 	}
 }

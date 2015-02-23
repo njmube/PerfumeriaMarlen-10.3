@@ -64,26 +64,23 @@ public class AlmacenDAO {
 		return DataSourceFacade.getStrategy().getConnectionCommiteable();
 	}
 
-    public Almacen findBy(Almacen x) throws DAOException, EntityNotFoundException{
-		Almacen r = null;
+    
+	public ArrayList<Almacen> findBySucursal(int sucursalId) throws DAOException {
+		ArrayList<Almacen> r = new ArrayList<Almacen>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,TIPO_ALMACEN,SUCURSAL_ID FROM ALMACEN "+
-					"WHERE ID=?"
-			);
-			ps.setInt(1, x.getId());
-			
+			ps = conn.prepareStatement("SELECT ID,TIPO_ALMACEN,SUCURSAL_ID FROM ALMACEN WHERE SUCURSAL_ID=?");
+			ps.setInt(1, sucursalId);
 			rs = ps.executeQuery();
-			if(rs.next()) {
-				r = new Almacen();
-				r.setId((Integer)rs.getObject("ID"));
-				r.setTipoAlmacen((Integer)rs.getObject("TIPO_ALMACEN"));
-				r.setSucursalId((Integer)rs.getObject("SUCURSAL_ID"));
-			} else {
-				throw new EntityNotFoundException("ALMACEN NOT FOUND FOR ID="+x.getId());
+			while(rs.next()) {
+				Almacen x = new Almacen();
+				x.setId((Integer)rs.getObject("ID"));
+				x.setTipoAlmacen((Integer)rs.getObject("TIPO_ALMACEN"));
+				x.setSucursalId((Integer)rs.getObject("SUCURSAL_ID"));
+				r.add(x);
 			}
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
@@ -101,7 +98,8 @@ public class AlmacenDAO {
 			}
 		}
 		return r;		
-	}
+	};
+    
 
     public ArrayList<Almacen> findAll() throws DAOException {
 		ArrayList<Almacen> r = new ArrayList<Almacen>();

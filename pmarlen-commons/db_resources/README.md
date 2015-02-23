@@ -15,3 +15,4 @@ java -cp model/jpa-builder-0.9.5.jar com.tracktopell.dao.builder.jpa.UpdateResou
 mysql --default-character-set=utf8 -u PMARLEN_DB_USER -pPMARLEN_DB_PASSWORD PMARLEN_BACKEND_DB
 
 
+mysql --default-character-set=utf8 -u PMDB103_DEVE_USR -pPMDB103_DEVE_PWD PMDB103_DEVE

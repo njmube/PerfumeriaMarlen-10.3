@@ -25,6 +25,8 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	private String productoContenido;
 	
 	private String productoUnidadMedida;
+	
+	private String productoUnidadEmpaque;
     
     private String productoIndustria;
     
@@ -54,10 +56,13 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	}
 		
 	public String toStringShorten() {
-		return  "["+
-				this.getProductoCodigoBarras() +"] "+
-				this.productoNombre  +"/"+
-				this.productoPresentacion  +
+//		return  "["+
+//				this.getProductoCodigoBarras() +"] "+
+//				this.productoNombre  +"/"+
+//				this.productoPresentacion  +
+//				Constants.dfCurrency.format(this.getPrecioVenta());
+		return  this.productoNombre  +"/"+
+				this.productoPresentacion  +" "+
 				Constants.dfCurrency.format(this.getPrecioVenta());
 	}
 
@@ -200,6 +205,16 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	public void setProductoUnidadMedida(String productoUnidadDeMedida) {
 		this.productoUnidadMedida = productoUnidadDeMedida;
 	}
+
+	public String getProductoUnidadEmpaque() {
+		return productoUnidadEmpaque;
+	}
+
+	public void setProductoUnidadEmpaque(String productoUnidadEmpaque) {
+		this.productoUnidadEmpaque = productoUnidadEmpaque;
+	}
+	
+	
 
 	public void setCanPendteEnOtrosPV(int canPendteEnOtrosPV) {
 		this.canPendteEnOtrosPV = canPendteEnOtrosPV;

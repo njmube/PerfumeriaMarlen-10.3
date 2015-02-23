@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        Producto
+    </ui:define>
+
+    <ui:define name="body-title">
+        Producto
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="form1">
+
+			<h:panelGrid columns="1" cellpadding="5" id="panel1" width="100%" columnClasses="leftAlign">				
+				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+				<h:panelGrid columns="2" cellpadding="0" width="100%" columnClasses="columnWidth20 rightAlign, columnWidth80 leftAlign">
+					<p:outputLabel for="almacen" value="TIPO DE ALMACÉN :" />
+
+					<p:selectOneMenu id="almacen" value="#{inventarioMB.almacenId}" >				
+						<f:selectItems  value="#{inventarioMB.almacenList}"/>					
+						<p:ajax listener="#{inventarioMB.onTipoAlmacenChange}" process=":form1:almacen" update=":form1:"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<p:dataTable	id="inventarioTable" var="ap" value="#{inventarioMB.entityList}"
+								rows="20" paginator="true"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15">
+					
+					<p:column headerText="ALMACEN DESC">
+						<h:outputText value="#{ap.almacenTipoDescripcion}" title="ALMACEN_ID=#{ap.almacenId}" />
+					</p:column>
+
+					<p:column headerText="CANTIDAD" sortBy="#{ap.cantidad}">
+						<p:commandButton    actionListener="#{inventarioMB.updateMovsHisProducto(ap.almacenId, ap.productoCodigoBarras)}"
+											update=":form1:panel1,:form2:dlg2table1"
+											icon="ui-icon-clock" onsuccess="PF('dlg2').show();"
+											title="VER HISTORIAL DE MOVIMIENTOS"/>
+						<p:spacer width="10"/>
+						<h:outputText value="#{ap.cantidad}" />
+					</p:column>
+
+					<p:column headerText="PRECIO" sortBy="#{ap.precio}">
+						<h:outputText value="#{ap.precio}" />
+					</p:column>
+
+					<p:column headerText="CODIGO" sortBy="#{ap.productoCodigoBarras}">
+						<h:outputText value="#{ap.productoCodigoBarras}" />
+					</p:column>
+					
+					<p:column headerText="NOMBRE" sortBy="#{ap.productoNombre}">
+						<h:outputText value="#{ap.productoNombre}" />
+					</p:column>
+					
+					<p:column headerText="INDUSTRIA" sortBy="#{ap.productoIndustria}">
+						<h:outputText value="#{ap.productoIndustria}" />
+					</p:column>
+					
+					<p:column headerText="LINEA" sortBy="#{ap.productoLinea}">
+						<h:outputText value="#{ap.productoLinea}" />
+					</p:column>
+					
+					<p:column headerText="MARCA" sortBy="#{ap.productoMarca}">
+						<h:outputText value="#{ap.productoMarca}" />
+					</p:column>
+					
+					<p:column headerText="CONTENIDO" sortBy="#{ap.productoContenido}">
+						<h:outputText value="#{ap.productoContenido} #{ap.productoUnidadMedida} (#{ap.productoUnidadEmpaque})" />
+					</p:column>
+					
+					<p:column headerText="UBICACIÓN" sortBy="#{ap.ubicacion}">
+						<h:outputText value="#{ap.ubicacion}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</h:form>
+		
+		<h:form id="form2">
+		
+			<p:dialog header="HISTORICO DE MOVIMIENTOS " widgetVar="dlg2"  modal="true" height="400" width="600">
+				<p:dataTable id="dlg2table1" value="#{inventarioMB.movsHisProducto}" var="mhp" scrollable="true" scrollHeight="370">
+					
+					<p:column headerText="FECHA">
+						<h:outputText value="#{mhp.fecha}" />
+					</p:column>
+
+					<p:column headerText="T.MOV.">
+						<h:outputText value="#{mhp.tipoMovimiento}" />
+					</p:column>
+					
+					<p:column headerText="ENTRADA">
+						<h:outputText value="#{mhp.cantidad}" rendered="#{mhp.entrada}"/>
+						<h:outputText value="" rendered="#{not mhp.entrada}"/>
+					</p:column>
+					
+					<p:column headerText="SALIDA">
+						<h:outputText value="#{mhp.cantidad}" rendered="#{mhp.salida}"/>
+						<h:outputText value="" rendered="#{not mhp.salida}"/>
+					</p:column>
+					
+					<p:column headerText="SALDO">
+						<h:outputText value="#{mhp.saldo}" />
+					</p:column>
+					
+
+				</p:dataTable>
+			</p:dialog> 
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

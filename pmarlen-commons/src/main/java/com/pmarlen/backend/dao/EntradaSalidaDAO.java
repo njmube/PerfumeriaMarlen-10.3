@@ -309,7 +309,7 @@ public class EntradaSalidaDAO {
 			conn = getConnection();
 
 			ps = conn.prepareStatement(
-					"SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,AP.PRECIO,AP.CANTIDAD,ESD.ID AS ESD_ID,A.ID AS ALMACEN_ID,A.TIPO_ALMACEN,ESD.CANTIDAD AS CANTIDAD_ESD,ESD.PRECIO_VENTA\n"
+					"SELECT   P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,ESD.ID AS ESD_ID,A.ID AS ALMACEN_ID,A.TIPO_ALMACEN,ESD.CANTIDAD AS CANTIDAD_ESD,ESD.PRECIO_VENTA\n"
 					+ "FROM   ENTRADA_SALIDA ES,\n"
 					+ "       ENTRADA_SALIDA_DETALLE ESD,\n"
 					+ "       PRODUCTO P,\n"
@@ -578,7 +578,7 @@ public class EntradaSalidaDAO {
 			ps = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA(TIPO_MOV,SUCURSAL_ID,ESTADO_ID,FECHA_CREO,USUARIO_EMAIL_CREO,CLIENTE_ID,FORMA_DE_PAGO_ID,METODO_DE_PAGO_ID,FACTOR_IVA,COMENTARIOS,CFD_ID,NUMERO_TICKET,CAJA,IMPORTE_RECIBIDO,APROBACION_VISA_MASTERCARD,PORCENTAJE_DESCUENTO_CALCULADO,PORCENTAJE_DESCUENTO_EXTRA,CONDICIONES_DE_PAGO,NUM_DE_CUENTA,AUTORIZA_DESCUENTO) "
 					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			int ci = 1;
-			ps.setObject(ci++, Constants.TIPO_MOV_SALIDA_ALMACEN);
+			ps.setObject(ci++, Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
 			ps.setObject(ci++, x.getSucursalId());
 			ps.setObject(ci++, Constants.ESTADO_SINCRONIZADO);
 			ps.setObject(ci++, now);
@@ -838,20 +838,17 @@ public class EntradaSalidaDAO {
 			psESD = conn.prepareStatement("UPDATE ALMACEN_PRODUCTO SET CANTIDAD = CANTIDAD + ? "
 					+ " WHERE PRODUCTO_CODIGO_BARRAS=? AND ALMACEN_ID=?");
 
-			psMHP = conn.prepareStatement("INSERT INTO MOVIMIENTO_HISTORICO_PRODUCTO(ALMACEN_ID,FECHA,TIPO_MOVIMIENTO,CANTIDAD,COSTO,PRECIO,USUARIO_EMAIL,PRODUCTO_CODIGO_BARRAS) "
-					+ " VALUES(?,?,?,?,?,?,?,?)");
+			psMHP = conn.prepareStatement("INSERT INTO MOVIMIENTO_HISTORICO_PRODUCTO(ALMACEN_ID,FECHA,TIPO_MOVIMIENTO,CANTIDAD,COSTO,PRECIO,USUARIO_EMAIL,PRODUCTO_CODIGO_BARRAS,ENTRADA_SALIDA_ID) "
+					+ " VALUES(?,?,?,?,?,?,?,?,?)");
 
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 
 			for (EntradaSalidaDetalle pvd : pvdList) {
 				psESD.clearParameters();
 				
-				if(x.getTipoMov() == Constants.TIPO_MOV_SALIDA_ALMACEN || 
-						x.getTipoMov() == Constants.TIPO_MOV_SALIDA_DEV){
-				
+				if(x.getTipoMov() >= Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA && x.getTipoMov() < Constants.TIPO_MOV_OTRO){					
 					psESD.setInt(1, -1 * pvd.getCantidad());
-				} else if(x.getTipoMov() == Constants.TIPO_MOV_ENTRADA_ALMACEN || 
-						x.getTipoMov() == Constants.TIPO_MOV_ENTRADA_ALMACEN_DEV){				
+				} else if(x.getTipoMov() >= Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA &&  x.getTipoMov() < Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA){				
 					psESD.setInt(1, pvd.getCantidad());
 				}
 				psESD.setString(2, pvd.getProductoCodigoBarras());
@@ -870,6 +867,7 @@ public class EntradaSalidaDAO {
 				psMHP.setObject(ci++, null);
 				psMHP.setString(ci++, u.getEmail());
 				psMHP.setString(ci++, pvd.getProductoCodigoBarras());
+				psMHP.setInt   (ci++, x.getId());
 
 				r = psMHP.executeUpdate();
 

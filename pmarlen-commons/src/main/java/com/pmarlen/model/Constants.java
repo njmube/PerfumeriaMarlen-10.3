@@ -43,10 +43,17 @@ public class Constants {
 	public static final int ESTADO_CANCELADO = 65536;
 	//--------------------------------------------------------------------------
 	public static final int TIPO_MOV_CREACION = 10;
-	public static final int TIPO_MOV_ENTRADA_ALMACEN = 20;
-	public static final int TIPO_MOV_ENTRADA_ALMACEN_DEV = 21;
-	public static final int TIPO_MOV_SALIDA_ALMACEN = 30;
-	public static final int TIPO_MOV_SALIDA_DEV = 31;
+	
+	public static final int TIPO_MOV_ENTRADA_ALMACEN_COMPRA     = 20;
+	public static final int TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION = 21;
+	public static final int TIPO_MOV_ENTRADA_ALMACEN_TRASPASO   = 22;
+	
+	public static final int TIPO_MOV_SALIDA_ALMACEN_VENTA = 30;
+	public static final int TIPO_MOV_SALIDA_DEVOLUCION    = 31;
+	public static final int TIPO_MOV_SALIDA_TRASPASO      = 32;
+	public static final int TIPO_MOV_SALIDA_MERMA         = 33;	
+	
+	public static final int TIPO_MOV_OTRO = 40;
 	public static final int TIPO_MOV_MODIFICACION_COSTO_O_PRECIO = 50;
 	public static final int TIPO_MOV_MODIFICACION_CODIGOBARRAS = 51;
 	public static final int TIPO_MOV_MODIFICACION_NOMBRE_DESCRIPCION = 52;
@@ -57,9 +64,15 @@ public class Constants {
 	public static final int ALMACEN_REGALIAS = 3;
 	//--------------------------------------------------------------------------
 	public static final int DESCUENTO_0 = 0;
+	public static final int DESCUENTO_1 = 1;
 	public static final int DESCUENTO_2 = 2;
+	public static final int DESCUENTO_3 = 3;
+	public static final int DESCUENTO_4 = 4;	
 	public static final int DESCUENTO_5 = 5;
+	public static final int DESCUENTO_6 = 6;	
 	public static final int DESCUENTO_7 = 7;
+	public static final int DESCUENTO_8 = 8;	
+	public static final int DESCUENTO_9 = 9;
 	public static final int DESCUENTO_10=10;
 	
 	public static final double IVA     = 0.16;
@@ -133,7 +146,7 @@ public class Constants {
 
 	public static String getDescripcionTipoAlmacen(int tipoAlmacen) {
 		if (tipoAlmacen == ALMACEN_PRINCIPAL) {
-			return "PRINCIPAL";
+			return "1RA LINEA";
 		} else if (tipoAlmacen == ALMACEN_OPORTUNIDAD) {
 			return "OPORTUNIDAD";
 		} else if (tipoAlmacen == ALMACEN_REGALIAS) {
@@ -147,9 +160,15 @@ public class Constants {
 	
 	static {
 		descuentos.put(DESCUENTO_0,  "SOLO DESC. NORMAL");
+		descuentos.put(DESCUENTO_1,  "+ 1% EXTRA");
 		descuentos.put(DESCUENTO_2,  "+ 2% EXTRA");
+		descuentos.put(DESCUENTO_3,  "+ 3% EXTRA");
+		descuentos.put(DESCUENTO_4,  "+ 4% EXTRA");
 		descuentos.put(DESCUENTO_5,  "+ 5% EXTRA");
+		descuentos.put(DESCUENTO_6,  "+ 6% EXTRA");
 		descuentos.put(DESCUENTO_7,  "+ 7% EXTRA");
+		descuentos.put(DESCUENTO_8,  "+ 8% EXTRA");
+		descuentos.put(DESCUENTO_9,  "+ 9% EXTRA");
 		descuentos.put(DESCUENTO_10, "+10% EXTRA");		
 	}
 	

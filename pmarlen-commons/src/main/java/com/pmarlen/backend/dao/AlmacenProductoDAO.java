@@ -9,23 +9,24 @@
 
 package com.pmarlen.backend.dao;
 
-import java.util.ArrayList;
+import com.pmarlen.backend.model.*;
+import com.pmarlen.backend.model.quickviews.AlmacenProductoQuickView;
+import com.pmarlen.model.Constants;
+import com.tracktopell.jdbc.DataSourceFacade;
 
 import java.io.ByteArrayInputStream;
 
-import java.sql.SQLException;
+import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Blob;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;	
 
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import java.util.logging.Level;
-
-import com.pmarlen.backend.model.*;
-import com.tracktopell.jdbc.DataSourceFacade;
+import java.util.logging.Logger;
 
 /**
  * Class for AlmacenProductoDAO of Table ALMACEN_PRODUCTO.
@@ -105,23 +106,72 @@ public class AlmacenProductoDAO {
 		return r;		
 	}
 
-    public ArrayList<AlmacenProducto> findAll() throws DAOException {
-		ArrayList<AlmacenProducto> r = new ArrayList<AlmacenProducto>();
+    public ArrayList<AlmacenProductoQuickView> findAllByAlmacen(int almacenId) throws DAOException {
+		ArrayList<AlmacenProductoQuickView> r = new ArrayList<AlmacenProductoQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ALMACEN_ID,PRODUCTO_CODIGO_BARRAS,CANTIDAD,PRECIO,UBICACION FROM ALMACEN_PRODUCTO");
+			/*
+SELECT    AP.ALMACEN_ID,AP.PRODUCTO_CODIGO_BARRAS,AP.CANTIDAD,AP.PRECIO,AP.UBICACION,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE
+FROM      PRODUCTO P
+LEFT JOIN ALMACEN_PRODUCTO AP  ON P.CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS
+WHERE     1=1
+AND       AP.ALMACEN_ID=1
+ORDER BY  P.NOMBRE,P.PRESENTACION
+			
+SELECT    AP.ALMACEN_ID,AP.PRODUCTO_CODIGO_BARRAS,AP.CANTIDAD,P.NOMBRE
+FROM      PRODUCTO P
+LEFT JOIN ALMACEN_PRODUCTO AP  ON P.CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS
+WHERE     1=1
+AND       AP.ALMACEN_ID=1
+ORDER BY  P.NOMBRE,P.PRESENTACION
+			
+SELECT   * 
+FROM     MOVIMIENTO_HISTORICO_PRODUCTO 
+WHERE    1=1
+AND      ALMACEN_ID=1 
+AND     PRODUCTO_CODIGO_BARRAS='7891024136089'
+			
+			
+SELECT   ALMACEN_ID,PRODUCTO_CODIGO_BARRAS,COUNT(1) 
+FROM     MOVIMIENTO_HISTORICO_PRODUCTO 
+WHERE    1=1
+AND      ALMACEN_ID=1 
+GROUP BY ALMACEN_ID,PRODUCTO_CODIGO_BARRAS
+			
+			*/
+			ps = conn.prepareStatement(
+					"SELECT    AP.ALMACEN_ID,AP.PRODUCTO_CODIGO_BARRAS,AP.CANTIDAD,AP.PRECIO,AP.UBICACION,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,A.TIPO_ALMACEN\n" +
+					"FROM      ALMACEN A,PRODUCTO P\n" +
+					"LEFT JOIN ALMACEN_PRODUCTO AP  ON P.CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS\n" +
+					"WHERE     1=1\n" +
+					"AND       AP.ALMACEN_ID=?\n" +
+					"AND       AP.ALMACEN_ID=A.ID\n" +
+					"ORDER BY  P.NOMBRE,P.PRESENTACION");
+			ps.setInt(1, almacenId);
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				AlmacenProducto x = new AlmacenProducto();
+				AlmacenProductoQuickView x = new AlmacenProductoQuickView();
 				x.setAlmacenId((Integer)rs.getObject("ALMACEN_ID"));
 				x.setProductoCodigoBarras((String)rs.getObject("PRODUCTO_CODIGO_BARRAS"));
 				x.setCantidad((Integer)rs.getObject("CANTIDAD"));
 				x.setPrecio((Double)rs.getObject("PRECIO"));
 				x.setUbicacion((String)rs.getObject("UBICACION"));
+				
+				x.setProductoNombre(rs.getString("NOMBRE"));
+				x.setProductoPresentacion(rs.getString("PRESENTACION"));
+				x.setProductoIndustria(rs.getString("INDUSTRIA"));
+				x.setProductoMarca(rs.getString("MARCA"));
+				x.setProductoLinea(rs.getString("LINEA"));
+				x.setProductoContenido(rs.getString("CONTENIDO"));
+				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
+				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));
+				
+				x.setAlmacenTipoDescripcion(Constants.getDescripcionTipoAlmacen(rs.getInt("TIPO_ALMACEN")).toUpperCase());
+				
 				r.add(x);
 			}
 		}catch(SQLException ex) {
@@ -141,7 +191,7 @@ public class AlmacenProductoDAO {
 		}
 		return r;		
 	};
-    
+	
     public int insert(AlmacenProducto x) throws DAOException {
 		PreparedStatement ps = null;
 		int r = -1;

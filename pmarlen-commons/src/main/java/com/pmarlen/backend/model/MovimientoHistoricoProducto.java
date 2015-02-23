@@ -62,6 +62,12 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
     * producto codigo barras
     */
     private String productoCodigoBarras;
+	
+	/**
+	 * entrada Salida Id
+	 */
+	
+	private Integer entradaSalidaId;
 
     /** 
      * Default Constructor
@@ -152,7 +158,15 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
         this.productoCodigoBarras = v;
     }
 
+	public Integer getEntradaSalidaId() {
+		return entradaSalidaId;
+	}
 
+	public void setEntradaSalidaId(Integer entradaSalidaId) {
+		this.entradaSalidaId = entradaSalidaId;
+	}
+	
+	
     @Override
     public int hashCode() {
         int hash = 0;
@@ -217,7 +231,9 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
 		sb.append(s);
 		// String
 		sb.append(this.productoCodigoBarras);
-
+		sb.append(s);
+		// Integer
+		sb.append(this.entradaSalidaId);
 		return ser;
 	}
 
@@ -253,7 +269,9 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
 			// String
 			this.productoCodigoBarras = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
-
+			// Integer
+			this.entradaSalidaId = srcSpplited[nf].equals("null")?null:Integer.parseInt(srcSpplited[nf]);
+			
 		}catch(Exception e){
 			throw new MissingFormatArgumentException("Exception scanning for["+nf+"] from string ->"+srcSpplited[nf]+"<-");
 		}

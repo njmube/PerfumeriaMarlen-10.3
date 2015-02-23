@@ -6,11 +6,11 @@
 				template="/WEB-INF/templates/mainWithMenu.xhtml">
 
 	<ui:define name="title">
-		PEDIDO VENTA
+		PMarlen:PedidoVenta
 	</ui:define>
 
 	<ui:define name="body-title">
-		<h:outputText value="PEDIDO VENTA"/>
+		<h:outputText value="NUEVO PEDIDO VENTA"/>
 	</ui:define>
 
 	<ui:define name="body">		
@@ -48,67 +48,61 @@
 
 				<h:form id="form2" rendered="true">
 					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  /> 
+					<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
+						<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
+							<h:outputText value="CODIGO :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoCodigoBarras}" class="bold_text"/>
 
+							<h:outputText value="LINEA :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
+
+							<h:outputText value="MARCA :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
+
+							<h:outputText value="CANTIDAD ACTUAL :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
+
+							<h:outputText value="CONTENIDO :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoContenido} (#{entradaSalidaMB.resultadoBusquedaSI.productoUnidadMedida})" class="bold_text" />
+
+							<h:outputText value="PRECIO :" />
+							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+						</h:panelGrid>
+					</p:overlayPanel>
 					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
 
 						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
 
-						<h:panelGroup rendered="true">
-							<p:inputText value="#{entradaSalidaMB.cantidadAgregarBusqueda}" size="3" maxlength="5" rendered="false" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-								<f:convertNumber integerOnly="true"/>
-							</p:inputText>
-
+						<h:panelGroup>
 							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{entradaSalidaMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
-
 							<p:outputLabel value=" x " />
-							<p:selectOneMenu id="resultadoBusqueda" value="#{entradaSalidaMB.resultadoBusquedaSelected}" disabled="#{entradaSalidaMB.pedidoFinalizado}">							
+							<p:selectOneMenu id="resultadoBusqueda" value="#{entradaSalidaMB.resultadoBusquedaSelected}" disabled="#{entradaSalidaMB.pedidoFinalizado}" rendered="true">
 								<f:selectItems  value="#{entradaSalidaMB.resultadoBusqueda}"/>
 								<p:ajax process=":form2:panel2" listener="#{entradaSalidaMB.onResultadoBusquedaChange}" update=":form2:panel2" />							
 							</p:selectOneMenu>
 
-							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
+							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" 
+											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
 											 disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
 
-							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
-								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
-									<h:outputText value="LINEA :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
-
-									<h:outputText value="MARCA :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
-
-									<h:outputText value="CANTIDAD ACTUAL :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
-
-									<h:outputText value="CONTENIDO :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoContenido} #{entradaSalidaMB.resultadoBusquedaSI.productoUnidadMedida}" class="bold_text" />
-
-									<h:outputText value="PRECIO :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
-										<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-									</h:outputText>
-								</h:panelGrid>
-							</p:overlayPanel>
-							<p:spacer width="10"/>
+							<p:spacer width="10" rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"/>
 							<p:commandButton value="+"  actionListener="#{entradaSalidaMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{entradaSalidaMB.pedidoFinalizado}"
 											 process=":form2" update=":form1,:form2,growl,:form3,:form4:panel4_3"  
 											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
 											 oncomplete="updateComponentsOnWindowResize();"/>
 						</h:panelGroup>
+
 					</h:panelGrid>
 				</h:form>
 				<h:form id="form2a" rendered="true">
 
 					<h:panelGrid columns="1" cellpadding="0" id="panel2a" columnClasses="leftAlign" width="100%">
 						<p:outputLabel value="CANTIDAD x CODIGO :" />
-
+						
 						<h:panelGroup>
-							<p:inputText value="#{entradaSalidaMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-								<f:convertNumber integerOnly="true"/>
-							</p:inputText>
-
 							<p:spinner id="cantidadAgregarCodigoSpinner" value="#{entradaSalidaMB.cantidadAgregarCodigo}" min="1" max="9999" size="1" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
-
 							<p:outputLabel value=" x " />
 							<p:inputText value="#{entradaSalidaMB.codigo}" size="15" maxlength="15" valueChangeListener="#{entradaSalidaMB.codigoChanged}"
 										 title="BUSCAR PRODUCTOS CONTENGAN EL TEXTO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
@@ -116,8 +110,7 @@
 										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
 										 oncomplete="updateComponentsOnWindowResize();"/>
 							</p:inputText>						
-
-						</h:panelGroup>						
+						</h:panelGroup>
 
 					</h:panelGrid>
 				</h:form>
@@ -270,6 +263,9 @@
 							<f:selectItems  value="#{entradaSalidaMB.metodoDePagoList}"/>
 							<p:ajax listener="#{entradaSalidaMB.onMetodoDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 						</p:selectOneMenu>
+						
+						<p:outputLabel value="NÚMERO DE CUENTA :" />
+						<p:inputText value="#{entradaSalidaMB.pedidoVenta.numDeCuenta}" size="20"/>
 
 						<p:outputLabel value="FORMA DE PAGO :" />
 
@@ -278,11 +274,13 @@
 							<p:ajax listener="#{entradaSalidaMB.onFormaDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 						</p:selectOneMenu>
 
-						<p:outputLabel value="DESCUENTO :" />
+						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
 						<h:panelGroup>
 							<p:inputSwitch id="autorizaDescuento" value="#{entradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" >
 								<p:ajax listener="#{entradaSalidaMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:inputSwitch>
+							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{entradaSalidaMB.politicaDescuento}" />
+
 							<p:spacer width="10"/>
 							<p:selectOneMenu id="descuentoEspecial" value="#{entradaSalidaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{entradaSalidaMB.pedidoFinalizado}" rendered="#{entradaSalidaMB.autorizaDescuento}">
 								<f:selectItems  value="#{entradaSalidaMB.descuentoEspacialList}"/>
@@ -291,23 +289,22 @@
 
 						</h:panelGroup>
 												
-						
-						
-						<p:outputLabel value="COMENTARIOS :" />
-
-						<h:inputTextarea id="comentarios" value="#{entradaSalidaMB.pedidoVenta.comentarios}" cols="30" rows="2"
-										 title="COMENTARIOS ACERCA DEL PEDIDO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-							<p:ajax		 event="blur" listener="#{entradaSalidaMB.onComentariosChange}" 
-									  process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</h:inputTextarea>
-						
 						<p:outputLabel value="CONDICIONES :" />
 
-						<h:inputTextarea id="condiciones" value="#{entradaSalidaMB.pedidoVenta.condicionesDePago}" cols="30" rows="2"
+						<h:inputText id="condiciones" value="#{entradaSalidaMB.pedidoVenta.condicionesDePago}" size="30"
 										 title="CONDICIONES DEL PEDIDO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
 							<p:ajax		 event="blur" listener="#{entradaSalidaMB.onCondicionesChange}" 
 										 process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</h:inputTextarea>
+						</h:inputText>
+						
+						<p:outputLabel value="COMENTARIOS :" />
+
+						<h:inputText id="comentarios" value="#{entradaSalidaMB.pedidoVenta.comentarios}" size="30"
+										 title="COMENTARIOS ACERCA DEL PEDIDO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
+							<p:ajax		 event="blur" listener="#{entradaSalidaMB.onComentariosChange}" 
+									  process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputText>
+
 					</h:panelGrid>
 					
 					<h:panelGrid columns="1" id="panel4_3" cellpadding="0" columnClasses="centerAlign" width="100%">
