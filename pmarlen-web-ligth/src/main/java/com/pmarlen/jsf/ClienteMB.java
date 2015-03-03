@@ -18,8 +18,8 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name="clienteMB")
 @SessionScoped
-public class ClienteMB  implements Serializable{
-	private final Logger logger = Logger.getLogger(ClienteMB.class.getSimpleName());
+public class ClienteMB  {
+	private transient final Logger logger = Logger.getLogger(ClienteMB.class.getSimpleName());
 	List<Cliente> entityList;
 	Integer viewRows;
 	Cliente selectedEntity;

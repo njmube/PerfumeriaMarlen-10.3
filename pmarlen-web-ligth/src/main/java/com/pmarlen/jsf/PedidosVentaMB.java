@@ -29,8 +29,8 @@ import org.primefaces.event.ReorderEvent;
 
 @ManagedBean(name="pedidosVentaMB")
 @SessionScoped
-public class PedidosVentaMB  implements Serializable{
-	private static Logger logger = Logger.getLogger("pedidosVentaMB");
+public class PedidosVentaMB  {
+	private transient static Logger logger = Logger.getLogger("pedidosVentaMB");
 	
 	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
 	private EditarEntradaSalidaMB editarEntradaSalidaMB;	

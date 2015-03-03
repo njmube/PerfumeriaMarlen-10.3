@@ -119,8 +119,8 @@
 							<p:menuitem value="RESPALDO" url="/pages/pendiente.jsf" icon="ui-icon-alert"></p:menuitem>
 						</p:submenu>
 
-						<f:facet name="options">									
-							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}">
+						<f:facet name="options">
+							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}" >
 								<p:menuitem value="AYUDA" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-help"/>
 								<p:menuitem value="INFORMACIÓN USUARIO" url="/logout" icon="ui-icon-contact" />
 								<p:menuitem value="WEB-MAIL" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-mail-closed"/>

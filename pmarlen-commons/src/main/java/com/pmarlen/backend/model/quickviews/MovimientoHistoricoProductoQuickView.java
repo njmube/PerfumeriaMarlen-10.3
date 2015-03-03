@@ -14,12 +14,23 @@ import com.pmarlen.model.Constants;
  * @author alfredo
  */
 public class MovimientoHistoricoProductoQuickView extends MovimientoHistoricoProducto {
+	private int rowId;
 	private int afectado;
 	private int saldo;
+	private String tipoMovDesc;
 
 	public MovimientoHistoricoProductoQuickView() {
 	}
 
+	public void setRowId(int rowId) {
+		this.rowId = rowId;
+	}
+
+	public int getRowId() {
+		return rowId;
+	}
+
+	
 	/**
 	 * @return the afectado
 	 */
@@ -32,6 +43,14 @@ public class MovimientoHistoricoProductoQuickView extends MovimientoHistoricoPro
 	 */
 	public void setAfectado(int afectado) {
 		this.afectado = afectado;
+	}
+
+	public String getTipoMovDesc() {
+		return tipoMovDesc;
+	}
+
+	public void setTipoMovDesc(String tipoMovDesc) {
+		this.tipoMovDesc = tipoMovDesc;
 	}
 
 	/**

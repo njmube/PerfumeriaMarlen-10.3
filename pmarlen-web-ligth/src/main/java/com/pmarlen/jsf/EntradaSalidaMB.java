@@ -44,8 +44,8 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name="entradaSalidaMB")
 @SessionScoped
-public class EntradaSalidaMB implements Serializable{
-	private static Logger logger = Logger.getLogger("EntradaSalidaMB");
+public class EntradaSalidaMB{	
+	private static transient Logger logger = Logger.getLogger("EntradaSalidaMB");
 	private List<SelectItem> resultadoBusquedaList;
 	private static final int LONG_MIN_DESC_CTE = 60;
 	private static List<SelectItem> tipoAlmacenList;
@@ -66,6 +66,7 @@ public class EntradaSalidaMB implements Serializable{
 	private String codigo;
 	private boolean autorizaDescuento = true;
 	private boolean tablaExpandida = false;
+	private boolean tableDraggableEnabled = false;
 	private boolean crearPedido;
 	private boolean pedidoFinalizado = false;
 	
@@ -78,7 +79,6 @@ public class EntradaSalidaMB implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		logger.info("->init.");
 		pedidoVenta = new EntradaSalida();
 		pedidoVentaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
@@ -91,9 +91,12 @@ public class EntradaSalidaMB implements Serializable{
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
-		conservarBusqueda = false;
+		conservarBusqueda = true;
 		pedidoFinalizado = false;
 		autorizaDescuento = true;
+		tablaExpandida = false;
+		tableDraggableEnabled = false;
+		logger.info("OK");
 	}
 
 	public String reset() {
@@ -159,7 +162,13 @@ public class EntradaSalidaMB implements Serializable{
 		logger.info("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
 		if(cadenaBusqueda.trim().length()>3) {	
 			try {
-				resultadoBusqueda = ProductoDAO.getInstance().findAllExclusiveByDesc(this.tipoAlmacen, cadenaBusqueda);
+				boolean modoExclusivo = false;
+				if(cadenaBusqueda.matches("([ ]+)*\\((.)+\\)([ ]+)*")){
+					modoExclusivo = true;
+				}
+				String cadenaBusquedaQuery = cadenaBusqueda.replace("(", "").replace(")", "");
+				
+				resultadoBusqueda = ProductoDAO.getInstance().findAllByDesc(this.tipoAlmacen, cadenaBusquedaQuery,modoExclusivo);
 				resultadoBusquedaSI = null;
 				if(resultadoBusqueda != null && resultadoBusqueda.size()>0){
 					FacesContext context = FacesContext.getCurrentInstance();         
@@ -538,7 +547,23 @@ public class EntradaSalidaMB implements Serializable{
 	public void contraerTabla() {
 		this.tablaExpandida = false;
 	}
+
+	public boolean isTableDraggableEnabled() {
+		return tableDraggableEnabled;
+	}
 	
+	public void activarMover() {
+		this.tableDraggableEnabled = true;
+		FacesContext context = FacesContext.getCurrentInstance();         
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"OPCIONES DE TABLA",  "AHORA PUEDE ARRASTRAR LOS RENGLONES PARA MOVER ENTRE ELEMENTOS DEL DETALLE") );			
+	}
+
+	public void desactivarMover() {
+		this.tableDraggableEnabled = false;
+		FacesContext context = FacesContext.getCurrentInstance();         
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"OPCIONES DE TABLA",  "AHORA PUEDE SELECCIONAR EL TEXTO DE LOS RENGLONES DEL DETALLE DEL LOS ELEMENTOS DEL DETALLE") );			
+	}
+
 	public void comentariosChanged() {
 		logger.info("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
 	}
@@ -688,6 +713,10 @@ public class EntradaSalidaMB implements Serializable{
 	public String getImporteDesglosado(double f){
 		return Constants.getImporteDesglosado(f);
 	}
+
+	public String getImporteMoneda(double f){
+		return Constants.getImporteMoneda(f);
+	}
 	
 	public boolean isAutorizaDescuento(){
 		return this.autorizaDescuento;
@@ -719,5 +748,12 @@ public class EntradaSalidaMB implements Serializable{
 		}else{
 			return "NO HAY DESCUENTO";
 		}
+	}
+	
+	public String getCodigoTableWidth(){
+		if(this.tablaExpandida)
+			return "20%";
+		else
+			return "60%";
 	}
 }

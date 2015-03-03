@@ -156,6 +156,37 @@ public class Constants {
 		}
 	}
 	
+	public static String getDescripcionTipoMov(int tipoMov) {
+		if (tipoMov == TIPO_MOV_CREACION) {
+			return "PRODUCTO CREADO";
+		} else if (tipoMov == TIPO_MOV_ENTRADA_ALMACEN_COMPRA) {
+			return "ENTRADA POR COMPRA";
+		} else if (tipoMov == TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION) {
+			return "ENTRADA POR DEVOLUCION CTE";
+		} else if (tipoMov == TIPO_MOV_ENTRADA_ALMACEN_TRASPASO) {
+			return "ENTRADA POR TRASPASO";
+		} else if (tipoMov == TIPO_MOV_SALIDA_ALMACEN_VENTA) {
+			return "SALIDA POR VENTA";
+		} else if (tipoMov == TIPO_MOV_SALIDA_DEVOLUCION) {
+			return "SALIDA POR DEVOLUCIÓN PROV";
+		} else if (tipoMov == TIPO_MOV_SALIDA_TRASPASO) {
+			return "SALIDA POR TRASPASO";
+		} else if (tipoMov == TIPO_MOV_SALIDA_MERMA) {
+			return "SALIDA POR MERMA";
+		} else if (tipoMov == TIPO_MOV_OTRO) {
+			return "OTRO MOVIMIENTO";
+		} else if (tipoMov == TIPO_MOV_MODIFICACION_COSTO_O_PRECIO) {
+			return "MODIFICACIÓN COSTO/PRECIO";
+		} else if (tipoMov == TIPO_MOV_MODIFICACION_CODIGOBARRAS) {
+			return "MODIFICACIÓN COSTO/PRECIO";
+		} else if (tipoMov == TIPO_MOV_MODIFICACION_NOMBRE_DESCRIPCION) {
+			return "MODIFICACIÓN NOMBRE/DESCRIPCIÓN";
+		} else {
+			return "OTRO";
+		}
+
+	}
+	
 	public static final LinkedHashMap<Integer,String> descuentos = new LinkedHashMap<Integer,String>();
 	
 	static {

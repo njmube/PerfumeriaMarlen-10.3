@@ -18,13 +18,14 @@
 
 			<h:panelGrid columns="1" cellpadding="5" id="panel1" width="100%" columnClasses="leftAlign">				
 				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-				<h:panelGrid columns="2" cellpadding="0" width="100%" columnClasses="columnWidth20 rightAlign, columnWidth80 leftAlign">
+				<h:panelGrid columns="4" cellpadding="0" width="100%" columnClasses="columnWidth20 rightAlign, columnWidth80 leftAlign,columnWidth20 rightAlign, columnWidth80 leftAlign">
 					<p:outputLabel for="almacen" value="TIPO DE ALMACÉN :" />
 
 					<p:selectOneMenu id="almacen" value="#{inventarioMB.almacenId}" >				
 						<f:selectItems  value="#{inventarioMB.almacenList}"/>					
 						<p:ajax listener="#{inventarioMB.onTipoAlmacenChange}" process=":form1:almacen" update=":form1:"/>
 					</p:selectOneMenu>
+					
 				</h:panelGrid>
 
 				<p:dataTable	id="inventarioTable" var="ap" value="#{inventarioMB.entityList}"
@@ -38,7 +39,7 @@
 
 					<p:column headerText="CANTIDAD" sortBy="#{ap.cantidad}">
 						<p:commandButton    actionListener="#{inventarioMB.updateMovsHisProducto(ap.almacenId, ap.productoCodigoBarras)}"
-											update=":form1:panel1,:form2:dlg2table1"
+											update=":form1:panel1,:form2:dlg2table1,:form2:chart"
 											icon="ui-icon-clock" onsuccess="PF('dlg2').show();"
 											title="VER HISTORIAL DE MOVIMIENTOS"/>
 						<p:spacer width="10"/>
@@ -83,15 +84,19 @@
 		
 		<h:form id="form2">
 		
-			<p:dialog header="HISTORICO DE MOVIMIENTOS " widgetVar="dlg2"  modal="true" height="400" width="600">
-				<p:dataTable id="dlg2table1" value="#{inventarioMB.movsHisProducto}" var="mhp" scrollable="true" scrollHeight="370">
+			<p:dialog header="HISTORICO DE MOVIMIENTOS " widgetVar="dlg2"  modal="true" width="750" height="360" >
+				<p:dataTable id="dlg2table1" value="#{inventarioMB.movsHisProducto}" var="mhp" scrollable="true" scrollHeight="290">
+					
+					<p:column headerText="#EVENTO">
+						<h:outputText value="#{mhp.rowId}" />
+					</p:column>
 					
 					<p:column headerText="FECHA">
 						<h:outputText value="#{mhp.fecha}" />
 					</p:column>
 
 					<p:column headerText="T.MOV.">
-						<h:outputText value="#{mhp.tipoMovimiento}" />
+						<h:outputText value="#{mhp.tipoMovDesc}" />
 					</p:column>
 					
 					<p:column headerText="ENTRADA">
@@ -110,6 +115,7 @@
 					
 
 				</p:dataTable>
+				<p:chart id="chart" type="line" model="#{inventarioMB.historicoMovsLCM}" style="height:300px;width: 880px;" rendered="false"/>
 			</p:dialog> 
 			
 		</h:form>

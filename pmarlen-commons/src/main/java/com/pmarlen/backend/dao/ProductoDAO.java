@@ -122,7 +122,7 @@ public class ProductoDAO {
 		try {
 			conn = getConnection();
 
-			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
@@ -156,8 +156,9 @@ public class ProductoDAO {
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
 				x.setProductoMarca(rs.getString("MARCA"));
 				x.setProductoLinea(rs.getString("LINEA"));
-				x.setProductoContenido(rs.getString("CONTENIDO") + " " + rs.getString("UNIDAD_MEDIDA"));
+				x.setProductoContenido(rs.getString("CONTENIDO"));
 				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
+				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));
 
 				x.setApPrecio(rs.getDouble("PRECIO"));
 				x.setApCantidad(rs.getInt("CANTIDAD"));
@@ -187,7 +188,8 @@ public class ProductoDAO {
 		return x;
 	}
 
-	public ArrayList<EntradaSalidaDetalleQuickView> findAllExclusiveByDesc(int almacenId, String desc) throws DAOException {
+	public ArrayList<EntradaSalidaDetalleQuickView> findAllByDesc(int almacenId, String desc,boolean exclusive) throws DAOException {
+		logger.info("almacenId="+almacenId+", desc="+desc+", exclusive="+exclusive);
 		ArrayList<EntradaSalidaDetalleQuickView> r = new ArrayList<EntradaSalidaDetalleQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -196,26 +198,36 @@ public class ProductoDAO {
 
 			String allWords[] = desc.split("[ ]+");
 			StringBuffer regExpAll = new StringBuffer();
+			int countWords=0;
 			for (String w : allWords) {
-				regExpAll.append("AND UPPER(CONCAT(P.CODIGO_BARRAS,'|',P.NOMBRE,'|',P.PRESENTACION,'|',P.INDUSTRIA,'|',P.MARCA,'|',P.LINEA,'|',P.CONTENIDO,'|',P.UNIDAD_MEDIDA,'|',AP.PRECIO,'|',AP.CANTIDAD)) REGEXP '.*");
+				if(countWords>0){
+					if(exclusive){
+						regExpAll.append("AND");
+					}else {
+						regExpAll.append("OR");
+					}
+				}
+				regExpAll.append(" UPPER(CONCAT(P.CODIGO_BARRAS,'|',P.NOMBRE,'|',P.PRESENTACION,'|',P.INDUSTRIA,'|',P.MARCA,'|',P.LINEA)) REGEXP '.*");
 				regExpAll.append(w);
-				regExpAll.append(".*' ");
+				regExpAll.append(".*'\n");
+				countWords++;
 			}
 
 			conn = getConnection();
-
-			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			String extendedQuery = "SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
 					+ "AND    AP.ALMACEN_ID=?\n"
 					+ "AND    AP.ALMACEN_ID=A.ID\n"
-					+ "AND    UPPER(CONCAT(P.CODIGO_BARRAS,'|',P.NOMBRE,'|',P.PRESENTACION,'|',P.INDUSTRIA,'|',P.MARCA,'|',P.LINEA,'|',P.CONTENIDO,'|',P.UNIDAD_MEDIDA,'|',AP.PRECIO,'|',AP.CANTIDAD)) "
+					+ "AND(\n"
 					+ regExpAll
-					+ "ORDER BY P.NOMBRE,P.PRESENTACION,P.LINEA,P.MARCA");
-			/*
+					+ ")\n"
+					+ "ORDER BY P.NOMBRE,P.PRESENTACION,P.LINEA,P.MARCA";
 
-			 */
+			ps = conn.prepareStatement(extendedQuery);
+			
+			logger.info("Query->"+extendedQuery+"<-");
 			ps.setInt(1, almacenId);
 
 			rs = ps.executeQuery();
@@ -229,8 +241,9 @@ public class ProductoDAO {
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
 				x.setProductoMarca(rs.getString("MARCA"));
 				x.setProductoLinea(rs.getString("LINEA"));
-				x.setProductoContenido(rs.getString("CONTENIDO") + " " + rs.getString("UNIDAD_MEDIDA"));
+				x.setProductoContenido(rs.getString("CONTENIDO"));
 				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
+				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));
 
 				x.setApPrecio(rs.getDouble("PRECIO"));
 				x.setApCantidad(rs.getInt("CANTIDAD"));

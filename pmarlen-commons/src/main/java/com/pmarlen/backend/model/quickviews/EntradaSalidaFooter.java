@@ -21,6 +21,7 @@ public class EntradaSalidaFooter implements Serializable{
 	private Double importeDescuentoAplicado;
 	private Double importeIVA;
 	private Double total;
+	private Integer totalUnidades;
 
 	public EntradaSalidaFooter() {
 		reset();
@@ -37,13 +38,16 @@ public class EntradaSalidaFooter implements Serializable{
 		this.importeDescuentoAplicado = 0.0;
 		this.importeIVA = 0.0;
 		this.total = 0.0;
+		this.totalUnidades = 0;
 	}
 	
 	public void calculaTotalesDesde(EntradaSalida pv,ArrayList<? extends EntradaSalidaDetalle> dvpList){
 		reset();
 		double importeReg = 0.0;
 		double importeRegNG = 0.0;
+		totalUnidades = 0;
 		for(EntradaSalidaDetalle dvp: dvpList){
+			totalUnidades     += dvp.getCantidad();
 			importeReg         = dvp.getCantidad()*dvp.getPrecioVenta();
 			importeIVA        += importeReg - (importeReg / Constants.MAS_IVA);
 			importeRegNG       = (importeReg / Constants.MAS_IVA);
@@ -86,24 +90,10 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param subTotalNoGrabado the subTotalNoGrabado to set
-	 */
-	public void setSubTotalNoGrabado(Double subTotalNoGrabado) {
-		this.subTotalNoGrabado = subTotalNoGrabado;
-	}
-
-	/**
 	 * @return the subTotalBruto
 	 */
 	public Double getSubTotalBruto() {
 		return subTotalBruto;
-	}
-
-	/**
-	 * @param subTotalBruto the subTotalBruto to set
-	 */
-	public void setSubTotalBruto(Double subTotalBruto) {
-		this.subTotalBruto = subTotalBruto;
 	}
 
 	/**
@@ -114,24 +104,10 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param descuentoCalculado the descuentoCalculado to set
-	 */
-	public void setDescuentoCalculado(Integer descuentoCalculado) {
-		this.descuentoCalculado = descuentoCalculado;
-	}
-
-	/**
 	 * @return the descuentoExtra
 	 */
 	public Integer getDescuentoExtra() {
 		return descuentoExtra;
-	}
-
-	/**
-	 * @param descuentoExtra the descuentoExtra to set
-	 */
-	public void setDescuentoExtra(Integer descuentoExtra) {
-		this.descuentoExtra = descuentoExtra;
 	}
 
 	/**
@@ -142,24 +118,10 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param descuentoAplicado the descuentoAplicado to set
-	 */
-	public void setDescuentoAplicado(Integer descuentoAplicado) {
-		this.descuentoAplicado = descuentoAplicado;
-	}
-
-	/**
 	 * @return the importeDescuentoCalculado
 	 */
 	public Double getImporteDescuentoCalculado() {
 		return importeDescuentoCalculado;
-	}
-
-	/**
-	 * @param importeDescuentoCalculado the importeDescuentoCalculado to set
-	 */
-	public void setImporteDescuentoCalculado(Double importeDescuentoCalculado) {
-		this.importeDescuentoCalculado = importeDescuentoCalculado;
 	}
 
 	/**
@@ -170,24 +132,10 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param importeDescuentoExtra the importeDescuentoExtra to set
-	 */
-	public void setImporteDescuentoExtra(Double importeDescuentoExtra) {
-		this.importeDescuentoExtra = importeDescuentoExtra;
-	}
-
-	/**
 	 * @return the importeDescuentoAplicado
 	 */
 	public Double getImporteDescuentoAplicado() {
 		return importeDescuentoAplicado;
-	}
-
-	/**
-	 * @param importeDescuentoAplicado the importeDescuentoAplicado to set
-	 */
-	public void setImporteDescuentoAplicado(Double importeDescuentoAplicado) {
-		this.importeDescuentoAplicado = importeDescuentoAplicado;
 	}
 
 	/**
@@ -198,13 +146,6 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param importeIVA the importeIVA to set
-	 */
-	public void setImporteIVA(Double importeIVA) {
-		this.importeIVA = importeIVA;
-	}
-
-	/**
 	 * @return the total
 	 */
 	public Double getTotal() {
@@ -212,10 +153,10 @@ public class EntradaSalidaFooter implements Serializable{
 	}
 
 	/**
-	 * @param total the total to set
+	 * @return the totalUnidades
 	 */
-	public void setTotal(Double total) {
-		this.total = total;
+	public Integer getTotalUnidades() {
+		return totalUnidades;
 	}
 
 }

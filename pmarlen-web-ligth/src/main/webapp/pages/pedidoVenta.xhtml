@@ -10,7 +10,7 @@
 	</ui:define>
 
 	<ui:define name="body-title">
-		<h:outputText value="NUEVO PEDIDO VENTA"/>
+		<h:outputText value="PEDIDO VENTA"/>
 	</ui:define>
 
 	<ui:define name="body">		
@@ -19,8 +19,7 @@
 
 				<h:form id="form1" rendered="true">					
 					<h:panelGrid columns="1" cellpadding="0" id="panel1" width="100%" columnClasses="leftAlign">
-
-						<p:outputLabel for="almacen" value="ALMACÉN :" />
+						<p:outputLabel for="almacen" value="ALMACÉN :" title="CAMBIAR EL ALMACÉN PARA HACER LA SELECCION DE UN NUEVO PRODUCTO HASTA AGREGARLO"/>
 
 						<p:selectOneMenu id="almacen" value="#{entradaSalidaMB.tipoAlmacen}" style="width:125px" disabled="#{entradaSalidaMB.pedidoFinalizado}">							
 							<f:selectItems  value="#{entradaSalidaMB.tipoAlmacenList}"/>
@@ -28,72 +27,71 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
-
-						<h:panelGroup rendered="true">
-							<p:inputText id="cadenaBusqueda" value="#{entradaSalidaMB.cadenaBusqueda}" size="50" maxlength="128" valueChangeListener="#{entradaSalidaMB.cadenaBusquedaChanged}"
-										 title="BUSCAR PRODUCTOS CONTENGAN EL TEXTO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-								<p:ajax event="change" listener="#{entradaSalidaMB.buscarXCadena()}" process=":form1" update="panel1,:form2,:form2a"/>
-							</p:inputText>						
-
-							<p:commandButton icon="ui-icon-search" update=":form2:panel2" actionListener="#{entradaSalidaMB.buscarXBoton}" rendered="false" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
-
-							<p:selectBooleanButton   id="conservarBusqueda" value="#{entradaSalidaMB.conservarBusqueda}" onLabel="CONSERVAR RESULT." offLabel="LIMPIAR RESULT." 
-													 onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-								<p:ajax process=":form1" update=":form1" listener="#{entradaSalidaMB.conservarBusquedaChanged}" />
-							</p:selectBooleanButton>
-
-						</h:panelGroup>
+						<h:panelGrid columns="2" cellpadding="0">
+							<h:panelGroup rendered="true">
+								<p:inputText id="cadenaBusqueda" value="#{entradaSalidaMB.cadenaBusqueda}" size="50" maxlength="128" valueChangeListener="#{entradaSalidaMB.cadenaBusquedaChanged}"
+											 title="BUSCAR PRODUCTOS CON PALABRAS COINCIDAD CON: NOMBRE,PRESENTACIÓN,LINEA,MARCA; Y PARA UNA BUSQUEDA MAS PRECISA ENCERRAR ENTRE ( .... )" disabled="#{entradaSalidaMB.pedidoFinalizado}">
+									<p:ajax event="change" listener="#{entradaSalidaMB.buscarXCadena}" process=":form1:panel1" update="panel1,:form2,:form2a"/>
+								</p:inputText>						
+								<p:selectBooleanButton   id="conservarBusqueda" value="#{entradaSalidaMB.conservarBusqueda}" onLabel="CONSERVAR RESULT." offLabel="LIMPIAR RESULT." 
+														 onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="#{entradaSalidaMB.pedidoFinalizado}">
+									<p:ajax process=":form1" update=":form1" listener="#{entradaSalidaMB.conservarBusquedaChanged}" />
+								</p:selectBooleanButton>
+							</h:panelGroup>
+						
+						</h:panelGrid>
 					</h:panelGrid>
 				</h:form>
 
 				<h:form id="form2" rendered="true">
 					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  /> 
-					<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
-						<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
-							<h:outputText value="CODIGO :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoCodigoBarras}" class="bold_text"/>
-
-							<h:outputText value="LINEA :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
-
-							<h:outputText value="MARCA :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
-
-							<h:outputText value="CANTIDAD ACTUAL :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
-
-							<h:outputText value="CONTENIDO :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoContenido} (#{entradaSalidaMB.resultadoBusquedaSI.productoUnidadMedida})" class="bold_text" />
-
-							<h:outputText value="PRECIO :" />
-							<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
-								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-							</h:outputText>
-						</h:panelGrid>
-					</p:overlayPanel>
+					
 					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
-
+						
 						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
 
-						<h:panelGroup>
-							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{entradaSalidaMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
+						<h:panelGrid columns="6" cellpadding="0">	
+							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{entradaSalidaMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" rendered="true" 
+									   disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
+
 							<p:outputLabel value=" x " />
-							<p:selectOneMenu id="resultadoBusqueda" value="#{entradaSalidaMB.resultadoBusquedaSelected}" disabled="#{entradaSalidaMB.pedidoFinalizado}" rendered="true">
+							<p:selectOneMenu id="resultadoBusqueda" value="#{entradaSalidaMB.resultadoBusquedaSelected}" disabled="#{entradaSalidaMB.pedidoFinalizado}">							
 								<f:selectItems  value="#{entradaSalidaMB.resultadoBusqueda}"/>
 								<p:ajax process=":form2:panel2" listener="#{entradaSalidaMB.onResultadoBusquedaChange}" update=":form2:panel2" />							
 							</p:selectOneMenu>
 
-							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" 
-											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
-											 disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
+							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
+											 disabled="#{entradaSalidaMB.pedidoFinalizado}" title="VER MAS ACERCA DEL PRODUCTO SELECCIONADO"/>
 
-							<p:spacer width="10" rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"/>
 							<p:commandButton value="+"  actionListener="#{entradaSalidaMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{entradaSalidaMB.pedidoFinalizado}"
 											 process=":form2" update=":form1,:form2,growl,:form3,:form4:panel4_3"  
-											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}"
-											 oncomplete="updateComponentsOnWindowResize();"/>
-						</h:panelGroup>
+											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
 
+							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
+								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
+									<h:outputText value="CODIGO :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoCodigoBarras}" class="bold_text"/>
+
+									<h:outputText value="LINEA :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
+
+									<h:outputText value="MARCA :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
+
+									<h:outputText value="CANTIDAD ACTUAL :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
+
+									<h:outputText value="CONTENIDO :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoContenido} #{entradaSalidaMB.resultadoBusquedaSI.productoUnidadMedida} [x #{entradaSalidaMB.resultadoBusquedaSI.productoUnidadEmpaque}]" class="bold_text" />
+
+									<h:outputText value="PRECIO :" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
+										<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+									</h:outputText>
+								</h:panelGrid>
+							</p:overlayPanel>							
+						</h:panelGrid>
+						
 					</h:panelGrid>
 				</h:form>
 				<h:form id="form2a" rendered="true">
@@ -102,14 +100,20 @@
 						<p:outputLabel value="CANTIDAD x CODIGO :" />
 						
 						<h:panelGroup>
+							<p:inputText value="#{entradaSalidaMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false" disabled="#{entradaSalidaMB.pedidoFinalizado}">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+
 							<p:spinner id="cantidadAgregarCodigoSpinner" value="#{entradaSalidaMB.cantidadAgregarCodigo}" min="1" max="9999" size="1" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
+
 							<p:outputLabel value=" x " />
 							<p:inputText value="#{entradaSalidaMB.codigo}" size="15" maxlength="15" valueChangeListener="#{entradaSalidaMB.codigoChanged}"
-										 title="BUSCAR PRODUCTOS CONTENGAN EL TEXTO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
+										 title="BUSCA Y AGREGA EL PRODUCTO POR EL CODIGO DE BARRAS" disabled="#{entradaSalidaMB.pedidoFinalizado}">
 								<p:ajax  event="change" listener="#{entradaSalidaMB.buscarXCodigo}" 
 										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
 										 oncomplete="updateComponentsOnWindowResize();"/>
 							</p:inputText>						
+
 						</h:panelGroup>
 
 					</h:panelGrid>
@@ -120,31 +124,58 @@
 					<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 						<p:dataTable  var="pvd" value="#{entradaSalidaMB.entityList}"
 									  id="pvdTable" widgetVar="wv_pvdTable" emptyMessage="-- SIN ELEMENTOS --" 
-									  scrollable="true" draggableRows="true"
+									  scrollable="true" draggableRows="#{entradaSalidaMB.tableDraggableEnabled}"
 									  editable="true" editMode="cell" 
 									  scrollHeight="200" >
 							<p:ajax event="rowReorder" listener="#{entradaSalidaMB.onRowReorder}" update=":form3:panel3" />
-							<f:facet name="header">
-								OPCIONES :
-								<p:commandButton value="VER + COLUMNAS" actionListener="#{entradaSalidaMB.expandirTabla}" process=":form3" update=":form3:panel3" rendered="#{!entradaSalidaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();"/>
-								<p:commandButton value="VER - COLUMNAS" actionListener="#{entradaSalidaMB.contraerTabla}" process=":form3" update=":form3:panel3" rendered="#{entradaSalidaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();"/>
+							<f:facet name="header">								
+								<h:outputText value="OPCIONES DE VER TABLA:"/>
+								<p:commandButton	value="VER + COLUMNAS" actionListener="#{entradaSalidaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
+												 rendered="#{not entradaSalidaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
+								<p:commandButton	value="VER - COLUMNAS" actionListener="#{entradaSalidaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{entradaSalidaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA"/>
+								<p:spacer width="10"/>
+								
+								<p:commandButton	value="MOVER RENGLONES"       actionListener="#{entradaSalidaMB.activarMover}"   process=":form3" update=":form3:panel3" 
+													rendered="#{!entradaSalidaMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
+													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
+								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{entradaSalidaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
+													rendered="#{entradaSalidaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
+													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
 							</f:facet>
 
 							<p:column headerText="." width="5%">
 								<p:commandButton icon="ui-icon-trash" actionListener="#{entradaSalidaMB.deleteRow(pvd.rowId)}" 
-												 title="rowId=#{pvd.rowId}" process=":form3" update=":form3,:form4:panel4_3"
-												 oncomplete="updateComponentsOnWindowResize();" disabled="#{entradaSalidaMB.pedidoFinalizado}">
-									<p:confirm header="ELIMINAR" message="¿ SEGURO QUE QUIERE ELIMINAR ?" icon="ui-icon-alert" />
-								</p:commandButton>
+												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
+												 oncomplete="updateComponentsOnWindowResize();" disabled="#{entradaSalidaMB.pedidoFinalizado}"
+												 rendered="#{not entradaSalidaMB.tableDraggableEnabled}">
+									<p:confirm header="ELIMINAR" message="¿ SEGURO QUE QUIERE ELIMINAR ?" icon="ui-icon-alert" rendered="#{not entradaSalidaMB.tableDraggableEnabled}"/>
+								</p:commandButton>		
+								
+								<h:graphicImage value="/images/draggable.png" rendered="#{entradaSalidaMB.tableDraggableEnabled}" style="cursor:move"/>
 							</p:column>
 
-							<p:column headerText="#" width="5%">								
-								 <p:cellEditor>
-									<f:facet name="output"><h:outputText value="#{pvd.cantidad}" /></f:facet>
+							<p:column headerText="#" width="10%" >	
+								
+								<h:outputText value="#{pvd.cantidad}" rendered="#{entradaSalidaMB.pedidoFinalizado}"/>
+								
+								<p:cellEditor rendered="#{not entradaSalidaMB.pedidoFinalizado}">
+									<f:facet name="output" >
+										<h:panelGroup>
+											<h:outputText value="#{pvd.cantidad}"/>	
+											<p:spacer width="5"/>
+											<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
+																update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
+										</h:panelGroup>
+									</f:facet>
 									<f:facet name="input">
-										<p:spinner value="#{pvd.cantidad}" min="1" max="9999" size="1" valueChangeListener="#{entradaSalidaMB.cantidadDetalleChanged}"  >
-											<p:ajax process="@this" event="change" listener="#{entradaSalidaMB.cantidadDetalleCambio(pvd.rowId)}" update=":form4:panel4_3a"/>
-										</p:spinner>
+										<p:spinner value="#{pvd.cantidad}" min="1" max="9999" size="1" valueChangeListener="#{entradaSalidaMB.cantidadDetalleChanged}" 
+												   title="CAMBIAR CANTIDAD, Y DEPUES DEBE ACTUALIZAR" >
+											<!--
+											<p:ajax process="@this" event="change" listener="#{entradaSalidaMB.cantidadDetalleCambio(pvd.rowId)}" 
+													update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
+											-->
+										</p:spinner>										
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -155,27 +186,28 @@
 								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
 							</p:column>
 
-							<p:column headerText="CODIGO" width="15%">
-								<h:outputText value="#{pvd.productoCodigoBarras}" />
+							<p:column headerText="PRODUCTO" width="#{entradaSalidaMB.codigoTableWidth}">
+								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre}/#{pvd.productoPresentacion}" rendered="#{not entradaSalidaMB.tablaExpandida}"/>
+								<h:outputText value="#{pvd.productoCodigoBarras}" rendered="#{entradaSalidaMB.tablaExpandida}"/>
 							</p:column>
 
-							<p:column headerText="LINEA" rendered="#{entradaSalidaMB.tablaExpandida}">
+							<p:column headerText="LINEA" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
 								<h:outputText value="#{pvd.productoLinea}" />
 							</p:column>
 
-							<p:column headerText="MARCA" rendered="#{entradaSalidaMB.tablaExpandida}">
+							<p:column headerText="MARCA" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
 								<h:outputText value="#{pvd.productoMarca}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE" rendered="#{entradaSalidaMB.tablaExpandida}">
+							<p:column headerText="NOMBRE" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
 								<h:outputText value="#{pvd.productoNombre}" />
 							</p:column>
 
-							<p:column headerText="PRESN." rendered="#{entradaSalidaMB.tablaExpandida}">
+							<p:column headerText="PRESN." rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
 								<h:outputText value="#{pvd.productoPresentacion}" />
 							</p:column>
 
-							<p:column headerText="CONT." rendered="#{entradaSalidaMB.tablaExpandida}">
+							<p:column headerText="CONT." rendered="#{entradaSalidaMB.tablaExpandida}" width="10%">
 								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
 							</p:column>
 
@@ -192,7 +224,14 @@
 							</p:column>
 
 							<f:facet name="footer">
-								<h:outputText value="ELEMENTOS : #{entradaSalidaMB.sizeList}" rendered="true"/>
+								<h:panelGrid width="100%" columns="2" columnClasses="columnWidth85 centerAlign, columnWidth15 rightAlign" style="border-width: 0">
+									<h:panelGroup>
+										<h:outputText value="ELEMENTOS DETALLE: #{entradaSalidaMB.sizeList}, TOTAL UNIDADES INDIVIDUALES : #{entradaSalidaMB.pedidoVentaFooter.totalUnidades}" />
+									</h:panelGroup>
+									<h:outputText value="#{entradaSalidaMB.getImporteMoneda(entradaSalidaMB.pedidoVentaFooter.subTotalBruto)}" 
+												  title="= #{entradaSalidaMB.getImporteDesglosado(entradaSalidaMB.pedidoVentaFooter.subTotalBruto)}"/>
+								</h:panelGrid>
+								
 							</f:facet>
 						</p:dataTable>
 
@@ -265,7 +304,7 @@
 						</p:selectOneMenu>
 						
 						<p:outputLabel value="NÚMERO DE CUENTA :" />
-						<p:inputText value="#{entradaSalidaMB.pedidoVenta.numDeCuenta}" size="20"/>
+						<p:inputText value="#{entradaSalidaMB.pedidoVenta.numDeCuenta}" size="20" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
 
 						<p:outputLabel value="FORMA DE PAGO :" />
 
@@ -276,7 +315,7 @@
 
 						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
 						<h:panelGroup>
-							<p:inputSwitch id="autorizaDescuento" value="#{entradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" >
+							<p:inputSwitch id="autorizaDescuento" value="#{entradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{entradaSalidaMB.pedidoFinalizado}">
 								<p:ajax listener="#{entradaSalidaMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:inputSwitch>
 							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{entradaSalidaMB.politicaDescuento}" />
@@ -334,12 +373,12 @@
 						<p:spacer width="10" rendered="#{not entradaSalidaMB.pedidoFinalizado}"/>
 						<h:panelGrid columns="2" rendered="#{not entradaSalidaMB.pedidoFinalizado}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
 							<p:commandButton value="CANCELAR" actionListener="#{entradaSalidaMB.cancelar}" process="@all" rendered="#{not entradaSalidaMB.pedidoFinalizado}" icon="ui-icon-cancel"
-											 update=":form1,:form2,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+											 update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
 								<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR ?" icon="ui-icon-alert" />
 							</p:commandButton>						
 
 							<p:commandButton value="CREAR PEDIDO"  actionListener="#{entradaSalidaMB.guardar}" disabled="#{not entradaSalidaMB.crearPedido}" icon="ui-icon-play"
-											 process="@all" update=":form1,:form2,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+											 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
 								<p:confirm header="CREAR PEDIDO" message="¿ SEGURO TERMINÓ Y QUIERE CREAR EL PEDIDO ?" icon="ui-icon-alert" />
 							</p:commandButton>
 						</h:panelGrid>
@@ -351,9 +390,9 @@
 						<p:spacer width="10" height="10" />
 
 						<p:commandButton value="PEDIDO FINALIZADO, CERRAR"  actionListener="#{entradaSalidaMB.cerrar}" rendered="#{entradaSalidaMB.pedidoFinalizado}" 
-										 process="@all" update=":form1,:form2,:form3,:form4" oncomplete="updateComponentsOnWindowResize();"/>
+										 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();"/>
 
-						<p:confirmDialog global="true" showEffect="bounce" hideEffect="explode" styleClass="centerAlign">
+						<p:confirmDialog global="true" styleClass="centerAlign" closeOnEscape="true" >
 							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
 								<p:commandButton value="SI, OK"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 								<p:commandButton value="NO, NUNCA" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -384,7 +423,7 @@
 			function setDataTableHeight() {
 				var winHeight = $(window).height();
 
-				var scrollHeight = winHeight - 450;
+				var scrollHeight = winHeight - 460;
 
 				var scrollBody = $(".ui-datatable-scrollable-body");
 				scrollBody.height(scrollHeight);

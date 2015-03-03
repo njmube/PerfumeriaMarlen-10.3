@@ -20,10 +20,10 @@ import javax.faces.model.SelectItem;
 
 @ManagedBean(name="productosFunMB")
 @SessionScoped
-public class ProductosFunMB  implements Serializable{
+public class ProductosFunMB {
 	int tipoAlmacen;
 	private static List<SelectItem> tipoAlmacenList;
-	private static Logger logger = Logger.getLogger(ProductosFunMB.class.getName());
+	private transient static Logger logger = Logger.getLogger(ProductosFunMB.class.getName());
 	private ArrayList<Producto> todosLosProductos = null;
 	@PostConstruct
     public void init() {

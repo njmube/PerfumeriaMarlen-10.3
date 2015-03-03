@@ -17,11 +17,11 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name="productoCatSimple")
 @SessionScoped
-public class ProductoCatSimpleMB  implements Serializable{
+public class ProductoCatSimpleMB {
 	List<Producto> entityList;
 	Integer viewRows;
 	Producto selectedEntity;
-	private static Logger logger = Logger.getLogger(ProductoCatSimpleMB.class.getName());
+	private transient static Logger logger = Logger.getLogger(ProductoCatSimpleMB.class.getName());
 	
 	@PostConstruct
     public void init() {		

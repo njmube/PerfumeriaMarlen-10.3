@@ -14,6 +14,8 @@ import com.pmarlen.backend.model.quickviews.MovimientoHistoricoProductoQuickView
 import com.pmarlen.model.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -24,22 +26,42 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.CategoryAxis;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 @ManagedBean(name="inventarioMB")
 @SessionScoped
-public class InventarioMB  implements Serializable{
+public class InventarioMB  {
 	private List<AlmacenProductoQuickView> entityList;
 	private Integer viewRows;
 	private int     almacenId;
 	private int		sucursalId = 1;	
 	private ArrayList<SelectItem> almacenList;
 	private ArrayList<MovimientoHistoricoProductoQuickView> movsHisProducto;
-	private static Logger logger = Logger.getLogger(InventarioMB.class.getName());
+	private transient static Logger logger = Logger.getLogger(InventarioMB.class.getName());
+	private LineChartModel historicoMovsLCM;
+	private String[] selectedIndustrias;  
+    private List<String> industrias;
 	
 	@PostConstruct
     public void init() {				
 		getAlmacenList();
 		movsHisProducto = new ArrayList<MovimientoHistoricoProductoQuickView>();
+		historicoMovsLCM = new LineChartModel();
+		industrias = new ArrayList<String>();
+        industrias.add("San Francisco");
+        industrias.add("London");
+        industrias.add("Paris");
+        industrias.add("Istanbul");
+        industrias.add("Berlin");
+        industrias.add("Barcelona");
+        industrias.add("Rome");
+        industrias.add("Sao Paulo");
+        industrias.add("Amsterdam");
 		viewRows = 10;
     }
 	
@@ -111,11 +133,49 @@ public class InventarioMB  implements Serializable{
 //		movsHisProducto = new ArrayList<MovimientoHistoricoProductoQuickView>(); 
 		try {
 			movsHisProducto = MovimientoHistoricoProductoDAO.getInstance().findAllByAlmacenAndProducto(almacenId, codigoBarras);
+			/*
+			historicoMovsLCM = new LineChartModel();
+ 
+			ChartSeries movsCS = new ChartSeries();
+			
+			movsCS.setLabel("HISTORICO");
+			int min = 0;
+			int max = 0;
+			int cont= 1;
+			for(MovimientoHistoricoProductoQuickView mhp: movsHisProducto){
+				mhp.setRowId(cont++);
+				movsCS.set(mhp.getRowId(), mhp.getSaldo());
+				if(mhp.getSaldo()>max){
+					max = mhp.getSaldo()+10;
+				}
+				if(mhp.getSaldo()<min){
+					min = mhp.getSaldo()-10;
+				}
+			}
+			
+			historicoMovsLCM.addSeries(movsCS);
+			historicoMovsLCM.setTitle("MOVIMIENTOS DE ENTRADA SALIDA");
+			historicoMovsLCM.setLegendPosition("e");
+			historicoMovsLCM.setShowPointLabels(true);
+			historicoMovsLCM.getAxes().put(AxisType.X, new CategoryAxis("TIEMPO"));
+			Axis yAxis = historicoMovsLCM.getAxis(AxisType.Y);				 
+			yAxis.setLabel("CANTIDAD");
+			yAxis.setMin(min);
+			yAxis.setMax(max);
+			*/
 		}catch(DAOException de){
 			logger.severe(de.getMessage());			
 		}
 	}
 
+	public LineChartModel getHistoricoMovsLCM() {
+		return historicoMovsLCM;
+	}
+	
+	public void onIndustriasChanged(){
+		logger.info("selectedIndustrias={"+Arrays.asList(selectedIndustrias+"}"));
+	}
+	
 	public ArrayList<MovimientoHistoricoProductoQuickView> getMovsHisProducto() {
 		logger.info("->movsHisProducto.size"+movsHisProducto.size());
 		return movsHisProducto;
@@ -125,5 +185,17 @@ public class InventarioMB  implements Serializable{
 		logger.info("almacenId="+almacenId);
 		entityList = null;
 	}
+	
+	public String[] getSelectedIndustrias() {
+        return selectedIndustrias;
+    }
+ 
+    public void setSelectedIndustrias(String[] selectedIndustrias) {
+        this.selectedIndustrias = selectedIndustrias;
+    }
+ 
+    public List<String> getIndustrias() {
+        return industrias;
+    }
 
 }

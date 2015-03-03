@@ -11,6 +11,7 @@ package com.pmarlen.backend.dao;
 
 import com.pmarlen.backend.model.*;
 import com.pmarlen.backend.model.quickviews.MovimientoHistoricoProductoQuickView;
+import com.pmarlen.model.Constants;
 import com.tracktopell.jdbc.DataSourceFacade;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +26,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 
 /**
  * Class for MovimientoHistoricoProductoDAO of Table MOVIMIENTO_HISTORICO_PRODUCTO.
@@ -148,6 +150,99 @@ public class MovimientoHistoricoProductoDAO {
 		}
 		return r;		
 	};
+    
+	public ArrayList<String> findAllIndustrias() throws DAOException {
+		ArrayList<String> r = new ArrayList<String>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement("SELECT DISTINCT(INDUSTRIA) FROM PRODUCTO ORDER BY INDUSTRIA");
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				r.add((String)rs.getObject("INDUSTRIA"));				
+			}
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	};
+
+	public ArrayList<String> findAllLineas() throws DAOException {
+		ArrayList<String> r = new ArrayList<String>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement("SELECT DISTINCT(LINEA) FROM PRODUCTO ORDER BY LINEA");
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				r.add((String)rs.getObject("LINEA"));				
+			}
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	};
+	
+	public ArrayList<String> findAllMarcas() throws DAOException {
+		ArrayList<String> r = new ArrayList<String>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement("SELECT DISTINCT(MARCA) FROM PRODUCTO ORDER BY MARCA");
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				r.add((String)rs.getObject("MARCA"));				
+			}
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	};
 
 	public ArrayList<MovimientoHistoricoProductoQuickView> findAllByAlmacenAndProducto(int almacenId,String codigoBarras) throws DAOException {
 		ArrayList<MovimientoHistoricoProductoQuickView> r = new ArrayList<MovimientoHistoricoProductoQuickView>();
@@ -202,6 +297,7 @@ AND    PRODUCTO_CODIGO_BARRAS='7891024136089') R1;
 				x.setEntradaSalidaId((Integer)rs.getObject("ENTRADA_SALIDA_ID"));
 				
 				x.setAfectado(rs.getInt("AFECTADO"));
+				x.setTipoMovDesc(Constants.getDescripcionTipoMov(x.getTipoMovimiento()));
 				
 				saldo +=x.getAfectado();
 				x.setSaldo(saldo);

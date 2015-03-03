@@ -38,19 +38,20 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.print.attribute.standard.Severity;
+import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name="editarEntradaSalidaMB")
 @SessionScoped
-public class EditarEntradaSalidaMB  implements Serializable{
-	private static Logger logger = Logger.getLogger("EditarEntradaSalidaMB");
+public class EditarEntradaSalidaMB{	
+	private static transient Logger logger = Logger.getLogger("EditarEntradaSalidaMB");
 	private List<SelectItem> resultadoBusquedaList;
 	private static final int LONG_MIN_DESC_CTE = 60;
 	private static List<SelectItem> tipoAlmacenList;
 	private ArrayList<EntradaSalidaDetalleQuickView> entityList;
 	private EntradaSalidaDetalleQuickView selectedEntity;
-	private EntradaSalidaQuickView pedidoVenta;
+	private EntradaSalida pedidoVenta;
 	private EntradaSalidaFooter pedidoVentaFooter;
 	private ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
 	private EntradaSalidaDetalleQuickView resultadoBusquedaSI;
@@ -63,8 +64,9 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	
 	private int cantidadAgregarCodigo;
 	private String codigo;
-	
+	private boolean autorizaDescuento = true;
 	private boolean tablaExpandida = false;
+	private boolean tableDraggableEnabled = false;
 	private boolean crearPedido;
 	private boolean hayCambios = false;
 	@ManagedProperty(value = "#{sessionUserMB}")
@@ -76,8 +78,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		logger.info("init OK.");
-		pedidoVenta = null;
+		pedidoVenta = new EntradaSalida();
 		pedidoVentaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
@@ -89,10 +90,14 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
-		conservarBusqueda = false;
+		conservarBusqueda = true;
 		hayCambios = false;
+		autorizaDescuento = true;
+		tablaExpandida = false;
+		tableDraggableEnabled = false;
+		logger.info("OK init");
 	}
-	
+
 	public String editar(int pedidoVentaID){
 		logger.info("pedidoVentaID="+pedidoVentaID);		
 		try {
@@ -143,14 +148,15 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		editar(this.pedidoVenta.getId());
 		return "/pages/cliente";
 	}
-
-	public EntradaSalidaQuickView getPedidoVenta() {
+	
+	public EntradaSalida getPedidoVenta() {
 		return pedidoVenta;
 	}
 
 	public EntradaSalidaFooter getPedidoVentaFooter() {
 		return pedidoVentaFooter;
 	}
+	
 	
 	public List<EntradaSalidaDetalleQuickView> getEntityList() {
 		return entityList;
@@ -198,9 +204,15 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	
 	public void buscarXCadena() {
 		logger.info("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
-		if(cadenaBusqueda.trim().length()>3) {			
+		if(cadenaBusqueda.trim().length()>3) {	
 			try {
-				resultadoBusqueda = ProductoDAO.getInstance().findAllExclusiveByDesc(this.tipoAlmacen, cadenaBusqueda);			
+				boolean modoExclusivo = false;
+				if(cadenaBusqueda.matches("([ ]+)*\\((.)+\\)([ ]+)*")){
+					modoExclusivo = true;
+				}
+				String cadenaBusquedaQuery = cadenaBusqueda.replace("(", "").replace(")", "");
+				
+				resultadoBusqueda = ProductoDAO.getInstance().findAllByDesc(this.tipoAlmacen, cadenaBusquedaQuery,modoExclusivo);
 				resultadoBusquedaSI = null;
 				if(resultadoBusqueda != null && resultadoBusqueda.size()>0){
 					FacesContext context = FacesContext.getCurrentInstance();         
@@ -217,6 +229,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 				FacesContext context = FacesContext.getCurrentInstance();         
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"BUSACAR PRODUCTOS",  "OCURRIÓ UN ERROR AL BUSCAR") );		
 			}
+			
 			resultadoBusquedaList = null;
 			cantidadAgregarBusqueda = 1;	
 			cantidadAgregarCodigo   = 1;
@@ -226,7 +239,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	public void buscarXCodigo() {
 		logger.info("->buscarXCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		EntradaSalidaDetalleQuickView dvpAdd = null;
-		try{
+		try {
 			dvpAdd = ProductoDAO.getInstance().findByCodigo(tipoAlmacen,codigo);
 
 			logger.info("->buscarXCodigo:dvpAdd="+dvpAdd);
@@ -279,7 +292,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		logger.info("->updateCantidad:cantidadChanged="+cantidadChanged);
 		actualizarTotales();
 	}
-
+	
 	public void deleteRow(long deleteRowId){
 		logger.info("->deleteRow:deleteRowId="+deleteRowId);
 		int i=0;
@@ -321,7 +334,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		
 
 	public void setResultadoBusquedaSelected(String resultadoBusquedaSelected) {
-		logger.info("resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.info("->setResultadoBusquedaSelected("+resultadoBusquedaSelected+")");
 		this.resultadoBusquedaSelected = resultadoBusquedaSelected;
 		
 		for(EntradaSalidaDetalleQuickView x:resultadoBusqueda){
@@ -354,14 +367,14 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 	
 	public void conservarBusquedaChanged(){
-		logger.info("conservarBusqueda="+conservarBusqueda);
+		logger.info("->conservarBusquedaChanged:conservarBusqueda="+conservarBusqueda);
 	}
 	
 	public void onRowReorder(ReorderEvent event) {
-		logger.info("From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+		logger.info("->onRowReorder:From: " + event.getFromIndex() + ", To:" + event.getToIndex());
 		int i=0;
 		for(EntradaSalidaDetalleQuickView d:entityList){
-			logger.info("->\t"+(i++)+"]:  "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
+			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
 		}
 		hayCambios = true;
         //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
@@ -411,7 +424,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 
 	public void setCantidadAgregarCodigo(int cantidadAgregarCodigo) {
-		logger.info("this.cantidadAgregarCodigo="+this.cantidadAgregarCodigo+",cantidadAgregarCodigo="+cantidadAgregarCodigo);
+		logger.info("->setCantidadAgregarCodigo:cantidadAgregarCodigo("+this.cantidadAgregarCodigo+")="+cantidadAgregarCodigo);
 		this.cantidadAgregarCodigo = cantidadAgregarCodigo;
 	}
 	
@@ -424,7 +437,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 	
 	public void agregarCodigo() {
-		logger.info("cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
+		logger.info("->agregarCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		
 		EntradaSalidaDetalleQuickView dvpAdd = null;
 		try {
@@ -476,20 +489,13 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		}
 	}
 	
-	public void actualizarTotales(){		
-		try {
-			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
-			pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
-			logger.info("OK, calculaTotalesDesde");
-		}catch(DAOException de){
-			logger.severe(de.getMessage());
-			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"ACTUALIZAR TOTALES",  "OCURRIÓ UN ERROR AL CALCULAR TOTALES.") );
-		}
+	public void actualizarTotales(){
+		logger.info("->actualizarTotales:");
+		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.info("clienteId="+pedidoVenta.getClienteId());
+		logger.info("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(pedidoVenta.getClienteId())){
@@ -501,7 +507,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 	
 	public void seleccionaCliente(int clienteIdChoiced){
-		logger.info("clienteIdChoiced="+clienteIdChoiced);
+		logger.info("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
 				pedidoVenta.setClienteId(c.getId());
@@ -530,7 +536,8 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.info("pedidoVenta.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
+		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
+		hayCambios = true;
 	}
 	
 	public List<SelectItem> getMetodoDePagoList() {
@@ -549,8 +556,9 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		}
 		return metodoDePagoList;
 	}
+
 	public void onMetodoDePagoListChange() {
-		logger.info("pedidoVenta.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
+		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
 		hayCambios = true;
 	}
 	
@@ -568,13 +576,13 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.info("PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
+		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
 		hayCambios = true;
 		actualizarTotales();
 	}
 
-	public EntradaSalidaQuickView getEntradaSalida() {
-		return pedidoVenta;
+	public void setEntradaSalida(EntradaSalida entradaSalida) {
+		this.pedidoVenta = entradaSalida;
 	}
 
 	public void setTablaExpandida(boolean tablaExpandida) {
@@ -592,29 +600,50 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	public void contraerTabla() {
 		this.tablaExpandida = false;
 	}
+
+	public boolean isTableDraggableEnabled() {
+		return tableDraggableEnabled;
+	}
 	
+	public void activarMover() {
+		this.tableDraggableEnabled = true;
+		FacesContext context = FacesContext.getCurrentInstance();         
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"OPCIONES DE TABLA",  "AHORA PUEDE ARRASTRAR LOS RENGLONES PARA MOVER ENTRE ELEMENTOS DEL DETALLE") );			
+	}
+
+	public void desactivarMover() {
+		this.tableDraggableEnabled = false;
+		FacesContext context = FacesContext.getCurrentInstance();         
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"OPCIONES DE TABLA",  "AHORA PUEDE SELECCIONAR EL TEXTO DE LOS RENGLONES DEL DETALLE DEL LOS ELEMENTOS DEL DETALLE") );			
+	}
+
 	public void comentariosChanged() {
-		logger.info("comentarios="+pedidoVenta.getComentarios());	
+		logger.info("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
 		hayCambios = true;
 	}
 
 	public void onResultadoBusquedaChange() {
-		logger.info("resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.info("->onResultadoBusquedaChange:resultadoBusquedaSelected="+resultadoBusquedaSelected);
 	}
 	
 	public void agregarSeleccionadoDeBusqueda() {
-		logger.info("cantidadAgregarBusqueda="+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.info("->agregarSeleccionadoDeBusqueda:"+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
 		EntradaSalidaDetalleQuickView dvpAdd=null;
 		for(EntradaSalidaDetalleQuickView pv:resultadoBusqueda){
 			if(pv.getProductoCodigoBarras().equals(resultadoBusquedaSelected)){
-				dvpAdd = pv;
+				try {
+					dvpAdd = (EntradaSalidaDetalleQuickView) BeanUtils.cloneBean(pv);
+				} catch (Exception ex) {
+					logger.log(Level.SEVERE,"UPS, no se pudede clonar", ex);
+				}
+				dvpAdd.setRowId(System.currentTimeMillis());
 				dvpAdd.setAlmacenId(tipoAlmacen);
 				dvpAdd.setCantidad(cantidadAgregarBusqueda);
 				break;
 			}
 		}
 		if(dvpAdd != null) {
-			logger.info("cantidadAgregarBusqueda=+"+cantidadAgregarBusqueda+" x "+dvpAdd);
+			logger.info("->agregarSeleccionadoDeBusqueda:OK +"+cantidadAgregarBusqueda+" x "+dvpAdd);
 			entityList.add(dvpAdd);
 			
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -627,20 +656,19 @@ public class EditarEntradaSalidaMB  implements Serializable{
 			}
 			cantidadAgregarBusqueda = 1;
 			cantidadAgregarCodigo   = 1;
-			hayCambios = true;
 			actualizarTotales();
 			
 		}
 	}
 	
 	public void setTipoAlmacen(int tipoAlmacen) {
-		logger.info("tipoAlmacen="+tipoAlmacen);
+		logger.info("->setTipoAlmacen:tipoAlmacen="+tipoAlmacen);
 		this.tipoAlmacen = tipoAlmacen;
 	}
 
 	
 	public void onTipoAlmacenChange() {
-		logger.info("tipoAlmacen="+tipoAlmacen);
+		logger.info("->onTipoAlmacenChange:tipoAlmacen="+tipoAlmacen);
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		cadenaBusqueda ="";
@@ -681,7 +709,7 @@ public class EditarEntradaSalidaMB  implements Serializable{
 	}
 	
 	private void validacion(){
-		logger.info("Validacion");
+		logger.info("->validacion");
 		
 	}
 	
@@ -750,31 +778,82 @@ public class EditarEntradaSalidaMB  implements Serializable{
 		}		
 	}
 	
+	public void cancelarCambios() {
+		try{			
+			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR CAMBIOS",  "SE CANCELARON LOS CAMBIOS Y RECARGÓ EL PEDIDO #"+pedidoVenta.getId()+".") );
+			reset();
+		}catch(Exception e){
+			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"CANCELAR CAMBIOS",  "HUBO UN ERROR AL CANCELAR CAMBIOS.") );
+		}		
+	}
+
+	
 	public void cerrar() {
 		logger.info("->cerrar");
 		reset();
 	}
 
+	public boolean isHayCambios() {
+		return hayCambios;
+	}
+	
 	public void onComentariosChange() {
-		logger.info("comentarios="+pedidoVenta.getComentarios());
-		hayCambios = true;
+		logger.info("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.info("CondicionesDePago="+pedidoVenta.getCondicionesDePago());
-		hayCambios = true;
-	}
-
-	public EntradaSalidaFooter getEntradaSalidaFooter() {
-		return pedidoVentaFooter;
+		logger.info("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
 		return Constants.getImporteDesglosado(f);
 	}
 
-	public boolean isHayCambios() {
-		return hayCambios;
+	public String getImporteMoneda(double f){
+		return Constants.getImporteMoneda(f);
+	}
+	
+	public boolean isAutorizaDescuento(){
+		return this.autorizaDescuento;
+	}
+	
+	public void setAutorizaDescuento(boolean autorizaDescuento){
+		this.autorizaDescuento = autorizaDescuento;
+	}
+	
+	public void onAutorizaDescuentoChange(){
+		logger.info("autorizaDescuento="+this.autorizaDescuento);
+		if(this.autorizaDescuento){
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"DESCUENTO",  " SE AUTORIZÓ LA POLITICA DE DESCUENTO") );
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"DESCUENTO",  " SE BLOQUEÓ LA POLITICA DE DESCUENTO") );
+		}
+		pedidoVenta.setAutorizaDescuento(this.autorizaDescuento?1:0);
+		if(!this.autorizaDescuento){
+			this.pedidoVenta.setPorcentajeDescuentoExtra(0);
+		}
+		actualizarTotales();
+	}
+	
+	public String getPoliticaDescuento(){
+		if(this.autorizaDescuento){
+			return "POLITICA: De 5,000 a 10,000 = -5%, > 10,000 = -10%";
+		}else{
+			return "NO HAY DESCUENTO";
+		}
+	}
+	
+	public String getCodigoTableWidth(){
+		if(this.tablaExpandida)
+			return "20%";
+		else
+			return "60%";
 	}
 	
 	public boolean isVerificable(){		
