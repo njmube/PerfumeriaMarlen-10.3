@@ -30,7 +30,7 @@ import org.primefaces.event.ReorderEvent;
 @ManagedBean(name="pedidosVentaMB")
 @SessionScoped
 public class PedidosVentaMB  {
-	private transient static Logger logger = Logger.getLogger("pedidosVentaMB");
+	private transient static Logger logger = Logger.getLogger(PedidosVentaMB.class.getSimpleName());
 	
 	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
 	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
@@ -68,7 +68,7 @@ public class PedidosVentaMB  {
 	}
 
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
-		logger.config("->getPedidosVentas");
+		logger.fine("->getPedidosVentas");
 		return pedidosVentas;
 	}
 	

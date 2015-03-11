@@ -1,7 +1,7 @@
 /**
  * EntradaSalidaEstadoDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/03 00:40
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for EntradaSalidaEstadoDAO of Table ENTRADA_SALIDA_ESTADO.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class EntradaSalidaEstadoDAO {
@@ -65,9 +65,9 @@ public class EntradaSalidaEstadoDAO {
 	}
 
     public EntradaSalidaEstado findBy(EntradaSalidaEstado x) throws DAOException, EntityNotFoundException{
-		EntradaSalidaEstado r = null;
+		EntradaSalidaEstado eseX = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
+		ResultSet rsESE = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
@@ -76,15 +76,15 @@ public class EntradaSalidaEstadoDAO {
 			);
 			ps.setInt(1, x.getId());
 			
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				r = new EntradaSalidaEstado();
-				r.setId((Integer)rs.getObject("ID"));
-				r.setEntradaSalidaId((Integer)rs.getObject("ENTRADA_SALIDA_ID"));
-				r.setEstadoId((Integer)rs.getObject("ESTADO_ID"));
-				r.setFecha((Timestamp)rs.getObject("FECHA"));
-				r.setUsuarioEmail((String)rs.getObject("USUARIO_EMAIL"));
-				r.setComentarios((String)rs.getObject("COMENTARIOS"));
+			rsESE = ps.executeQuery();
+			if(rsESE.next()) {
+				eseX = new EntradaSalidaEstado();
+				eseX.setId((Integer)rsESE.getObject("ID"));
+				eseX.setEntradaSalidaId((Integer)rsESE.getObject("ENTRADA_SALIDA_ID"));
+				eseX.setEstadoId((Integer)rsESE.getObject("ESTADO_ID"));
+				eseX.setFecha((Timestamp)rsESE.getObject("FECHA"));
+				eseX.setUsuarioEmail((String)rsESE.getObject("USUARIO_EMAIL"));
+				eseX.setComentarios((String)rsESE.getObject("COMENTARIOS"));
 			} else {
 				throw new EntityNotFoundException("ENTRADA_SALIDA_ESTADO NOT FOUND FOR ID="+x.getId());
 			}
@@ -92,9 +92,9 @@ public class EntradaSalidaEstadoDAO {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
-			if(rs != null) {
+			if(rsESE != null) {
 				try{
-					rs.close();
+					rsESE.close();
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
@@ -103,7 +103,7 @@ public class EntradaSalidaEstadoDAO {
 				}
 			}
 		}
-		return r;		
+		return eseX;		
 	}
 
     public ArrayList<EntradaSalidaEstado> findAll() throws DAOException {

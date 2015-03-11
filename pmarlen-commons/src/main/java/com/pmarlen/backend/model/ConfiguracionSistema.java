@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Configuracion_Sistema.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class ConfiguracionSistema implements java.io.Serializable {
-    private static final long serialVersionUID = 966372305;
+    private static final long serialVersionUID = 1889532033;
     
     /**
     * llave

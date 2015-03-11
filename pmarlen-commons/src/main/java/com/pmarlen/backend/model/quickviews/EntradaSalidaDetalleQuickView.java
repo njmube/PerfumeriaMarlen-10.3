@@ -34,6 +34,10 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
     
     private String productoMarca;
 	
+	private String productoUnidadesPorCaja;
+	
+	private String apUbicacion;
+	
 	private int     apTipoAlmacen;
 		    
     private int     apCantidad;
@@ -150,6 +154,22 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 		this.productoMarca = productoMarca;
 	}
 
+	public void setProductoUnidadesPorCaja(String productoUnidadesPorCaja) {
+		this.productoUnidadesPorCaja = productoUnidadesPorCaja;
+	}
+
+	public String getProductoUnidadesPorCaja() {
+		return productoUnidadesPorCaja;
+	}
+
+	public String getApUbicacion() {
+		return apUbicacion;
+	}
+
+	public void setApUbicacion(String apUbicacion) {
+		this.apUbicacion = apUbicacion;
+	}
+	
 	/**
 	 * @return the apTipoAlmacen
 	 */

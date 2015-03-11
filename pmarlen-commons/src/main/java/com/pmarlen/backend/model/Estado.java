@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Estado.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class Estado implements java.io.Serializable {
-    private static final long serialVersionUID = 1344691783;
+    private static final long serialVersionUID = 2033084410;
     
     /**
     * id

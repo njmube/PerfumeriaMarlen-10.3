@@ -3,12 +3,37 @@ package com.pmarlen.digifactws.production;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 
 /**
@@ -26,6 +51,7 @@ public class CFD
     private final static Logger logger = Logger.getLogger(com.pmarlen.digifactws.production.CFD.class.getName());
 
     static {
+		trustAllHttps();
         URL url = null;
         try {
             URL baseUrl;
@@ -37,6 +63,26 @@ public class CFD
         }
         CFD_WSDL_LOCATION = url;
     }
+
+	private static void trustAllHttps() {
+		try {
+			logger.info("------------trustAllHttps----------BEGIN");
+			SSLContext ctx = SSLContext.getInstance("SSL");
+			ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
+			SSLContext.setDefault(ctx);
+			 // Create all-trusting host name verifier
+			HostnameVerifier allHostsValid = new HostnameVerifier() {
+				public boolean verify(String hostname, SSLSession session) {
+				  return true;
+				}
+			};
+			// Install the all-trusting host verifier
+			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+			logger.info("------------trustAllHttps----------END");
+		}catch(Exception ex){
+			logger.log(Level.SEVERE, null, ex);
+		}
+	}
 
     public CFD(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
@@ -66,6 +112,20 @@ public class CFD
     @WebEndpoint(name = "CFDSoap")
     public CFDSoap getCFDSoap(WebServiceFeature... features) {
         return super.getPort(new QName("https://cfd.sicofi.com.mx", "CFDSoap"), CFDSoap.class, features);
+    }
+	
+		private static class DefaultTrustManager implements X509TrustManager {
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
     }
 
 }

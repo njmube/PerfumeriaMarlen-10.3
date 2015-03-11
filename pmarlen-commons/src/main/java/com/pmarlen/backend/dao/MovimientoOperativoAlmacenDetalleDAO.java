@@ -1,7 +1,7 @@
 /**
  * MovimientoOperativoAlmacenDetalleDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/03 00:40
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for MovimientoOperativoAlmacenDetalleDAO of Table MOVIMIENTO_OPERATIVO_ALMACEN_DETALLE.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class MovimientoOperativoAlmacenDetalleDAO {

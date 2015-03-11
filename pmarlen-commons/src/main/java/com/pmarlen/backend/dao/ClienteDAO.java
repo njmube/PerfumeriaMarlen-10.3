@@ -1,7 +1,7 @@
 /**
  * ClienteDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/03 00:40
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for ClienteDAO of Table CLIENTE.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class ClienteDAO {
@@ -71,7 +71,7 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION FROM CLIENTE "+
+			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON FROM CLIENTE "+
 					"WHERE ID=?"
 			);
 			ps.setInt(1, x.getId());
@@ -83,11 +83,21 @@ public class ClienteDAO {
 				r.setRfc((String)rs.getObject("RFC"));
 				r.setRazonSocial((String)rs.getObject("RAZON_SOCIAL"));
 				r.setNombreEstablecimiento((String)rs.getObject("NOMBRE_ESTABLECIMIENTO"));
-				r.setContacto((String)rs.getObject("CONTACTO"));
-				r.setTelefonos((String)rs.getObject("TELEFONOS"));
+				r.setCalle((String)rs.getObject("CALLE"));
+				r.setNumExterior((String)rs.getObject("NUM_EXTERIOR"));
+				r.setNumInterior((String)rs.getObject("NUM_INTERIOR"));
+				r.setColonia((String)rs.getObject("COLONIA"));
+				r.setMunicipio((String)rs.getObject("MUNICIPIO"));
+				r.setReferencia((String)rs.getObject("REFERENCIA"));
+				r.setCiudad((String)rs.getObject("CIUDAD"));
+				r.setCp((String)rs.getObject("CP"));
+				r.setEstado((String)rs.getObject("ESTADO"));
 				r.setEmail((String)rs.getObject("EMAIL"));
+				r.setTelefonos((String)rs.getObject("TELEFONOS"));
+				r.setContacto((String)rs.getObject("CONTACTO"));
 				r.setObservaciones((String)rs.getObject("OBSERVACIONES"));
-				r.setDireccion((String)rs.getObject("DIRECCION"));
+				r.setUbicacionLat((Double)rs.getObject("UBICACION_LAT"));
+				r.setUbicacionLon((Double)rs.getObject("UBICACION_LON"));
 			} else {
 				throw new EntityNotFoundException("CLIENTE NOT FOUND FOR ID="+x.getId());
 			}
@@ -116,7 +126,7 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION FROM CLIENTE ORDER BY RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO");
+			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON FROM CLIENTE");
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -125,11 +135,21 @@ public class ClienteDAO {
 				x.setRfc((String)rs.getObject("RFC"));
 				x.setRazonSocial((String)rs.getObject("RAZON_SOCIAL"));
 				x.setNombreEstablecimiento((String)rs.getObject("NOMBRE_ESTABLECIMIENTO"));
-				x.setContacto((String)rs.getObject("CONTACTO"));
-				x.setTelefonos((String)rs.getObject("TELEFONOS"));
+				x.setCalle((String)rs.getObject("CALLE"));
+				x.setNumExterior((String)rs.getObject("NUM_EXTERIOR"));
+				x.setNumInterior((String)rs.getObject("NUM_INTERIOR"));
+				x.setColonia((String)rs.getObject("COLONIA"));
+				x.setMunicipio((String)rs.getObject("MUNICIPIO"));
+				x.setReferencia((String)rs.getObject("REFERENCIA"));
+				x.setCiudad((String)rs.getObject("CIUDAD"));
+				x.setCp((String)rs.getObject("CP"));
+				x.setEstado((String)rs.getObject("ESTADO"));
 				x.setEmail((String)rs.getObject("EMAIL"));
+				x.setTelefonos((String)rs.getObject("TELEFONOS"));
+				x.setContacto((String)rs.getObject("CONTACTO"));
 				x.setObservaciones((String)rs.getObject("OBSERVACIONES"));
-				x.setDireccion((String)rs.getObject("DIRECCION"));
+				x.setUbicacionLat((Double)rs.getObject("UBICACION_LAT"));
+				x.setUbicacionLon((Double)rs.getObject("UBICACION_LON"));
 				r.add(x);
 			}
 		}catch(SQLException ex) {
@@ -156,19 +176,29 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("INSERT INTO CLIENTE(RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION) "+
-					" VALUES(?,?,?,?,?,?,?,?)"
+			ps = conn.prepareStatement("INSERT INTO CLIENTE(RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON) "+
+					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					,Statement.RETURN_GENERATED_KEYS);			
 			int ci=1;
 			ps.setObject(ci++,x.getId());
 			ps.setObject(ci++,x.getRfc());
 			ps.setObject(ci++,x.getRazonSocial());
 			ps.setObject(ci++,x.getNombreEstablecimiento());
-			ps.setObject(ci++,x.getContacto());
-			ps.setObject(ci++,x.getTelefonos());
+			ps.setObject(ci++,x.getCalle());
+			ps.setObject(ci++,x.getNumExterior());
+			ps.setObject(ci++,x.getNumInterior());
+			ps.setObject(ci++,x.getColonia());
+			ps.setObject(ci++,x.getMunicipio());
+			ps.setObject(ci++,x.getReferencia());
+			ps.setObject(ci++,x.getCiudad());
+			ps.setObject(ci++,x.getCp());
+			ps.setObject(ci++,x.getEstado());
 			ps.setObject(ci++,x.getEmail());
+			ps.setObject(ci++,x.getTelefonos());
+			ps.setObject(ci++,x.getContacto());
 			ps.setObject(ci++,x.getObservaciones());
-			ps.setObject(ci++,x.getDireccion());
+			ps.setObject(ci++,x.getUbicacionLat());
+			ps.setObject(ci++,x.getUbicacionLon());
 
 			r = ps.executeUpdate();					
 			ResultSet rsk = ps.getGeneratedKeys();
@@ -200,7 +230,7 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE CLIENTE SET RFC=?,RAZON_SOCIAL=?,NOMBRE_ESTABLECIMIENTO=?,CONTACTO=?,TELEFONOS=?,EMAIL=?,OBSERVACIONES=?,DIRECCION=? "+
+			ps = conn.prepareStatement("UPDATE CLIENTE SET RFC=?,RAZON_SOCIAL=?,NOMBRE_ESTABLECIMIENTO=?,CALLE=?,NUM_EXTERIOR=?,NUM_INTERIOR=?,COLONIA=?,MUNICIPIO=?,REFERENCIA=?,CIUDAD=?,CP=?,ESTADO=?,EMAIL=?,TELEFONOS=?,CONTACTO=?,OBSERVACIONES=?,UBICACION_LAT=?,UBICACION_LON=? "+
 					" WHERE ID=?");
 			
 			int ci=1;
@@ -208,11 +238,21 @@ public class ClienteDAO {
 			ps.setObject(ci++,x.getRfc());
 			ps.setObject(ci++,x.getRazonSocial());
 			ps.setObject(ci++,x.getNombreEstablecimiento());
-			ps.setObject(ci++,x.getContacto());
-			ps.setObject(ci++,x.getTelefonos());
+			ps.setObject(ci++,x.getCalle());
+			ps.setObject(ci++,x.getNumExterior());
+			ps.setObject(ci++,x.getNumInterior());
+			ps.setObject(ci++,x.getColonia());
+			ps.setObject(ci++,x.getMunicipio());
+			ps.setObject(ci++,x.getReferencia());
+			ps.setObject(ci++,x.getCiudad());
+			ps.setObject(ci++,x.getCp());
+			ps.setObject(ci++,x.getEstado());
 			ps.setObject(ci++,x.getEmail());
+			ps.setObject(ci++,x.getTelefonos());
+			ps.setObject(ci++,x.getContacto());
 			ps.setObject(ci++,x.getObservaciones());
-			ps.setObject(ci++,x.getDireccion());
+			ps.setObject(ci++,x.getUbicacionLat());
+			ps.setObject(ci++,x.getUbicacionLon());
 			ps.setObject(ci++,x.getId());
 			
 			r = ps.executeUpdate();						

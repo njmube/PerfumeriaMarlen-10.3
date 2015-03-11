@@ -9,8 +9,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Constants
@@ -83,7 +83,7 @@ public class Constants {
 	
 	private static final String VERSION_FILE_RESOURCE = "/com/tracktopell/util/version/file/Version.properties";
 	
-	private static Logger logger = LoggerFactory.getLogger(Constants.class);
+	private static Logger logger = Logger.getLogger(Constants.class.getSimpleName());
 
 	private static String version   = null;
 	private static String buildTime = null;
@@ -103,7 +103,7 @@ public class Constants {
 				pro.load(resourceAsStream);
 				logger.info("->"+VERSION_FILE_RESOURCE+"=" + pro);				
 			} catch (IOException ex) {
-				logger.error("Can't load Version properties:", ex);
+				logger.log(Level.SEVERE,"Can't load Version properties:", ex);
 				throw new IllegalStateException("Can't load Version properties:"+VERSION_FILE_RESOURCE);
 			}
 		}
@@ -232,4 +232,31 @@ public class Constants {
 		return dfMoneda.format(f);
 	}
 	
+	public static String extractXMLValue(String label, String xml) {
+		String bl = "<"+label+">";
+		String el = "</"+label+">";
+		int    bli = xml.indexOf(bl);
+		int    bti = bli+bl.length();
+		int    eli = xml.indexOf(el);
+		
+		if(bli >=  0 && eli > bti) {
+			return xml.substring(bti, eli);
+		} else {
+			return null;
+		}		
+	}
+	
+	public static String extractXMLAtribute(String atribute, String xml) {
+		
+		int    bli = xml.indexOf(atribute);
+		int    bti = xml.indexOf("\"",bli);
+		int    eti = xml.indexOf("\"",bti+1);
+		
+		if(bli >=  0 && eti > bti) {
+			return xml.substring(bti+1, eti);
+		} else {
+			return null;
+		}
+	}
+
 }

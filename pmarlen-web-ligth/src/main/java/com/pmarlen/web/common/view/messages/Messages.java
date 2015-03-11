@@ -6,22 +6,20 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
+import java.util.logging.Logger;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Messages {
 
-    private static Logger logger = LoggerFactory.getLogger(Messages.class);
+    private static Logger logger = Logger.getLogger(Messages.class.getSimpleName());
 
     public static FacesMessage getMessage(String bundleName, String resourceId, Object[] params) {
     	
-        //logger.debug("->getMessage:bundleName=" + bundleName + ", resourceId=" + resourceId);
+        //logger.finer("->getMessage:bundleName=" + bundleName + ", resourceId=" + resourceId);
 
         FacesContext context = FacesContext.getCurrentInstance();               
         
@@ -29,7 +27,7 @@ public class Messages {
         String appBundle = app.getMessageBundle();
         Locale locale = getLocale(context);
         
-        //logger.debug("\t->appBundle=" + appBundle + ", locale=" + locale);
+        //logger.finer("\t->appBundle=" + appBundle + ", locale=" + locale);
 
         ClassLoader loader = getClassLoader();
         String summary = getString(appBundle, bundleName, resourceId,
@@ -46,14 +44,14 @@ public class Messages {
 
     public static FacesMessage getSimpleMessage(String resourceId) {
     	
-        //logger.debug("->getMessage: resourceId=" + resourceId);
+        //logger.finer("->getMessage: resourceId=" + resourceId);
 
         FacesContext context = FacesContext.getCurrentInstance();
         Application app = context.getApplication();
         String appBundle = app.getMessageBundle();
         Locale locale = getLocale(context);
         
-        //logger.debug("\t->appBundle=" + appBundle + ", locale=" + locale);
+        //logger.finer("\t->appBundle=" + appBundle + ", locale=" + locale);
 
         ClassLoader loader = getClassLoader();
         String resourceMessage = null;
@@ -65,7 +63,7 @@ public class Messages {
 			try {
 				resourceMessage = rb.getString(resourceId);
 			} catch( MissingResourceException mre){
-				//logger.debug("\t->:"+mre);
+				//logger.finer("\t->:"+mre);
 				resourceMessage = "<" + resourceId + ">";
 			}			
         } else {
@@ -77,14 +75,14 @@ public class Messages {
 
     public static String getLocalizedString(String resourceId) {
     	
-    	//logger.debug("->getMessage: resourceId=" + resourceId);
+    	//logger.finer("->getMessage: resourceId=" + resourceId);
 
         FacesContext context = FacesContext.getCurrentInstance();
         Application app = context.getApplication();
         String appBundle = app.getMessageBundle();
         Locale locale = getLocale(context);
         
-        //logger.debug("\t->appBundle=" + appBundle + ", locale=" + locale);
+        //logger.finer("\t->appBundle=" + appBundle + ", locale=" + locale);
 
         ClassLoader loader = getClassLoader();
         String resourceMessage = null;
@@ -95,7 +93,7 @@ public class Messages {
 			try {
 				resourceMessage = rb.getString(resourceId);				
 			} catch( MissingResourceException mre){
-				//logger.debug("\t->:"+mre);
+				//logger.finer("\t->:"+mre);
 				resourceMessage = "|" + resourceId + "|";
 			}
             
@@ -108,11 +106,11 @@ public class Messages {
 	
 	public String getLocalizedServletString(String resourceId) {
     	
-    	//logger.debug("->getMessage: resourceId=" + resourceId);
+    	//logger.finer("->getMessage: resourceId=" + resourceId);
 
         Locale locale = Locale.getDefault();
         
-        //logger.debug("\t->bundleBase=" + bundleBase + ", locale=" + locale);
+        //logger.finer("\t->bundleBase=" + bundleBase + ", locale=" + locale);
 
         ClassLoader loader = getClassLoader();
         String resourceMessage = null;
@@ -123,7 +121,7 @@ public class Messages {
 			try {
 				resourceMessage = rb.getString(resourceId);				
 			} catch( MissingResourceException mre){
-				//logger.debug("\t->:"+mre);
+				//logger.finer("\t->:"+mre);
 				resourceMessage = "|" + resourceId + "|";
 			}
             
@@ -154,12 +152,12 @@ public class Messages {
                     resource = bundle.getString(resourceId);
                 } catch (MissingResourceException ex) {
                 	
-                    //logger.debug( "Damm it 1 :searching:" + resourceId);
+                    //logger.finer( "Damm it 1 :searching:" + resourceId);
                 	
                     Enumeration<String> bke = bundle.getKeys();
                     for (int ik = 0; bke.hasMoreElements(); ik++) {
                     	
-                        //logger.debug( "\t->bundle[" + ik + "]=" + bke.nextElement());
+                        //logger.finer( "\t->bundle[" + ik + "]=" + bke.nextElement());
                         
                     }
                 }
@@ -173,12 +171,12 @@ public class Messages {
                     resource = bundle.getString(resourceId);
                 } catch (MissingResourceException ex) {
                 	
-                    //logger.debug( "Damm it 2 : searching:" + resourceId);
+                    //logger.finer( "Damm it 2 : searching:" + resourceId);
                 	
                     Enumeration<String> bke = bundle.getKeys();
                     for (int ik = 0; bke.hasMoreElements(); ik++) {
                     	
-                        //logger.debug( "\t->bundle[" + ik + "]=" + bke.nextElement());                    	
+                        //logger.finer( "\t->bundle[" + ik + "]=" + bke.nextElement());                    	
                     }
                 }
             }
@@ -396,16 +394,16 @@ public class Messages {
 	
 	String bundleBase;
 	public Messages(String bundleBase){
-		//logger.debug("Created: with bundleBase="+bundleBase);
+		//logger.finer("Created: with bundleBase="+bundleBase);
 		this.bundleBase = bundleBase;
 	}
 	
     public String getHTMLString(String resourceId) {
-		//logger.debug("-->> getHTMLString("+resourceId+")");
+		//logger.finer("-->> getHTMLString("+resourceId+")");
 		String localizedString = getLocalizedServletString(resourceId);
-		//logger.debug("\tlocalizedString="+localizedString);
+		//logger.finer("\tlocalizedString="+localizedString);
 		String localizedHTMLString = stringToHTMLString(localizedString);
-		//logger.debug("\tlocalizedHTMLString="+localizedHTMLString);
+		//logger.finer("\tlocalizedHTMLString="+localizedHTMLString);
 		return localizedHTMLString;
 	}
 }

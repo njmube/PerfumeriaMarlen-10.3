@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="body-title">
-        PEDIDOS DE VENTA EN PROCESO (PENDIENTES DE REVISAR, SURTIR y FACTURAR)
+        PEDIDOS DE VENTA EN PROCESO (PENDIENTES DE REVISAR, SURTIR)
     </ui:define>
 
     <ui:define name="body">		
@@ -32,15 +32,15 @@
 					</f:facet>
 					
 					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
-						<p:commandLink id="ajax" action="#{pedidosVentaMB.editarPedido(pv.id)}" rendered="false">
-							<h:outputText value="[#{pv.id}]" />
-						</p:commandLink>
-						<p:spacer width="10" rendered="false"/>
-						
-						<h:outputLink value="editarPedidoVenta.jsf" >
-							<h:outputText value="#{pv.id}" />
-							<p:ajax event="click" listener="#{pedidosVentaMB.editarPedido(pv.id)}"/>
-						</h:outputLink>
+						<p:panelGrid columns="1" columnClasses="centerAlign" >
+							<h:outputLink value="editarPedidoVenta.jsf" >
+								<h:outputText value="#{pv.id}" />
+								<p:ajax event="click" listener="#{pedidosVentaMB.editarPedido(pv.id)}"/>
+							</h:outputLink>							
+							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
+								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
+							</h:outputLink>
+						</p:panelGrid>
 					</p:column>
 					
 					<p:column headerText="ESTADO / FECHA" width="10%">

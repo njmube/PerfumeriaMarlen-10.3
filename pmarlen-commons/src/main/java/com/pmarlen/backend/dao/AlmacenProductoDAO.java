@@ -153,8 +153,12 @@ GROUP BY ALMACEN_ID,PRODUCTO_CODIGO_BARRAS
 			ps.setInt(1, almacenId);
 			
 			rs = ps.executeQuery();
+			int rowId=0;
 			while(rs.next()) {
 				AlmacenProductoQuickView x = new AlmacenProductoQuickView();
+				
+				x.setRowId(rowId++);
+				
 				x.setAlmacenId((Integer)rs.getObject("ALMACEN_ID"));
 				x.setProductoCodigoBarras((String)rs.getObject("PRODUCTO_CODIGO_BARRAS"));
 				x.setCantidad((Integer)rs.getObject("CANTIDAD"));
@@ -238,16 +242,15 @@ GROUP BY ALMACEN_ID,PRODUCTO_CODIGO_BARRAS
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE ALMACEN_PRODUCTO SET CANTIDAD=?,PRECIO=?,UBICACION=? "+
-					" WHERE PRODUCTO_CODIGO_BARRAS=?");
+			ps = conn.prepareStatement("UPDATE ALMACEN_PRODUCTO SET CANTIDAD=?,PRECIO=?,UBICACION=? WHERE PRODUCTO_CODIGO_BARRAS=? AND ALMACEN_ID=?");
 			
 			int ci=1;
-			ps.setObject(ci++,x.getAlmacenId());
-			ps.setObject(ci++,x.getProductoCodigoBarras());
+			
 			ps.setObject(ci++,x.getCantidad());
 			ps.setObject(ci++,x.getPrecio());
 			ps.setObject(ci++,x.getUbicacion());
 			ps.setObject(ci++,x.getProductoCodigoBarras());
+			ps.setObject(ci++,x.getAlmacenId());
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {

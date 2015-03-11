@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Almacen.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class Almacen implements java.io.Serializable {
-    private static final long serialVersionUID = 1762204735;
+    private static final long serialVersionUID = 208981104;
     
     /**
     * id

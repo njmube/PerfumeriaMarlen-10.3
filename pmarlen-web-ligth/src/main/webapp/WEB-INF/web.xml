@@ -43,6 +43,14 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.Logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerarPDFPedidoVenta</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.GenerarPDFPedidoVenta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerarPDFFactura</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.GenerarPDFFactura</servlet-class>
+    </servlet>
 	
 	<!-- Map these files with JSF -->
 	<servlet-mapping>
@@ -65,7 +73,14 @@
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>GenerarPDFPedidoVenta</servlet-name>
+        <url-pattern>/docs/notas/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerarPDFFactura</servlet-name>
+        <url-pattern>/docs/facturas/*</url-pattern>
+    </servlet-mapping>
 	<listener>
         <description>ServletContextListener, HttpSessionListener</description>
         <listener-class>com.pmarlen.web.servlet.ContextAndSessionListener</listener-class>

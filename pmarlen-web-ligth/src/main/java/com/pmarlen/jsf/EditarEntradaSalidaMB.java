@@ -2,23 +2,28 @@ package com.pmarlen.jsf;
 
 import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
-import com.pmarlen.backend.dao.FormaDePagoDAO;
-import com.pmarlen.backend.dao.MetodoDePagoDAO;
 import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.EntradaSalidaDetalleDAO;
+import com.pmarlen.backend.dao.FormaDePagoDAO;
+import com.pmarlen.backend.dao.MetodoDePagoDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
+import com.pmarlen.backend.dao.SucursalDAO;
 import com.pmarlen.backend.model.Cliente;
-import com.pmarlen.backend.model.FormaDePago;
-import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
+import com.pmarlen.backend.model.FormaDePago;
+import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Producto;
+import com.pmarlen.backend.model.Sucursal;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.businesslogic.reports.GeneradorImpresionPedidoVenta;
 import com.pmarlen.model.Constants;
 import com.pmarlen.web.common.view.messages.Messages;
 import com.pmarlen.web.security.managedbean.SessionUserMB;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +43,12 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.print.attribute.standard.Severity;
+import javax.servlet.ServletContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean(name="editarEntradaSalidaMB")
 @SessionScoped
@@ -51,10 +59,11 @@ public class EditarEntradaSalidaMB{
 	private static List<SelectItem> tipoAlmacenList;
 	private ArrayList<EntradaSalidaDetalleQuickView> entityList;
 	private EntradaSalidaDetalleQuickView selectedEntity;
-	private EntradaSalida pedidoVenta;
+	private EntradaSalidaQuickView pedidoVenta;
 	private EntradaSalidaFooter pedidoVentaFooter;
 	private ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
 	private EntradaSalidaDetalleQuickView resultadoBusquedaSI;
+	private StreamedContent file;
 	
 	private String cadenaBusqueda;
 	private int tipoAlmacen;
@@ -78,7 +87,7 @@ public class EditarEntradaSalidaMB{
 	
 	@PostConstruct
 	public void init() {
-		pedidoVenta = new EntradaSalida();
+		pedidoVenta = null;
 		pedidoVentaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
@@ -146,6 +155,7 @@ public class EditarEntradaSalidaMB{
 	public String reset() {
 		logger.info("->EntradaSalidaDetalleMB: rest.");
 		editar(this.pedidoVenta.getId());
+		prepareDownload();
 		return "/pages/cliente";
 	}
 	
@@ -581,10 +591,6 @@ public class EditarEntradaSalidaMB{
 		actualizarTotales();
 	}
 
-	public void setEntradaSalida(EntradaSalida entradaSalida) {
-		this.pedidoVenta = entradaSalida;
-	}
-
 	public void setTablaExpandida(boolean tablaExpandida) {
 		this.tablaExpandida = tablaExpandida;
 	}
@@ -865,7 +871,7 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public boolean isFacturable(){
-		return pedidoVenta!=null && pedidoVenta.getEstadoId() == Constants.ESTADO_SURTIDO ;
+		return pedidoVenta!=null && (pedidoVenta.getEstadoId() == Constants.ESTADO_SURTIDO || (pedidoVenta.getEstadoId() == Constants.ESTADO_FACTURADO && pedidoVenta.getCfdId()==null));
 	}
 	
 	public boolean isCancelable(){
@@ -895,4 +901,74 @@ public class EditarEntradaSalidaMB{
 		return "/pages/pedidosVenta";
 	}
 
+	public void prepareDownload() {       
+        
+    }
+ 
+    public StreamedContent getFile() {
+        return file;
+    }
+	
+	private boolean actualizarEstadoPorResultadoWS = false;
+	
+	private int tiempoTrasncurridoInvocarCFD=0;
+	private long tWS=0;
+
+	public boolean isActualizarEstadoPorResultadoWS() {
+		logger.info("->actualizarEstadoPorResultadoWS?"+actualizarEstadoPorResultadoWS);
+		return actualizarEstadoPorResultadoWS;
+	}
+	
+	public int getTiempoTrasncurridoInvocarCFD(){
+		return tiempoTrasncurridoInvocarCFD;
+	}
+	
+	private void generaCFDRealThread(){
+		try{		
+			
+			Cliente  c = ClienteDAO.getInstance().findBy(new Cliente(pedidoVenta.getClienteId()));
+			Sucursal s = SucursalDAO.getInstance().findBy(new Sucursal(1));
+			tWS = System.currentTimeMillis();
+			logger.info(" invocando DAO para WS");
+			
+			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(pedidoVenta,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
+			
+			logger.info("OK DAO y WS Digifact, invodocado");
+			
+		}catch(Exception e){
+			logger.log(Level.SEVERE, "->verificar: Exception", e);
+		} finally{
+			logger.info("--->> fin Thread, actualizarEstadoPorResultadoWS=false");
+			actualizarEstadoPorResultadoWS = false;
+		}
+	}
+	
+	public void updateEstadoCFD(){
+		tiempoTrasncurridoInvocarCFD = (int)(( System.currentTimeMillis()/1000)-tWS);		
+		logger.info("->tiempoTrasncurridoInvocarCFD="+tiempoTrasncurridoInvocarCFD+", actualizarEstadoPorResultadoWS:"+actualizarEstadoPorResultadoWS+", pedidoVenta.getCfdId()="+pedidoVenta.getCfdId());
+	}
+	
+	public void generaCFDReal(){
+		try{			
+			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
+			actualizarEstadoPorResultadoWS = true;
+			tiempoTrasncurridoInvocarCFD=0;
+			new Thread(){
+				@Override
+				public void run() {
+					generaCFDRealThread();
+				}
+			}.start();
+			
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GENERAR C.F.D.",  "SE INVOCO EL WS DIGIFACT, ESPERE UNOS 5 A 60 SEGUNDOSPOR SU RESULTADO.") );			
+			
+		}catch(Exception e){
+			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GENERAR C.F.D.",  "HUBO UN ERROR AL INVOCAR WS.") );
+		}
+	}	
+	
 }
+	

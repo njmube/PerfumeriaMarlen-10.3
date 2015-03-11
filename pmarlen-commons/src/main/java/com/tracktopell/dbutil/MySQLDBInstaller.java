@@ -27,7 +27,7 @@ public class MySQLDBInstaller extends DBInstaller {
         prop4ForCreateConnection.put("password", parameters4CreateAndExecute.getProperty("jdbc.password.root"));
 
 
-        logger.debug("preparePropertiesForCreateConnection: prop4Connection=" + prop4ForCreateConnection);
+        logger.finer("preparePropertiesForCreateConnection: prop4Connection=" + prop4ForCreateConnection);
 
         return prop4ForCreateConnection;
     }
@@ -35,7 +35,7 @@ public class MySQLDBInstaller extends DBInstaller {
     protected Connection createConnectionForCreate() throws IllegalStateException, SQLException {
         Connection conn = null;
         try {
-            logger.debug("createConnectionForCreate: ...try get Connection for Create DB.");
+            logger.finer("createConnectionForCreate: ...try get Connection for Create DB.");
             Class.forName(parameters4CreateAndExecute.getProperty(PARAM_CONNECTION_JDBC_CLASS_DRIVER)).newInstance();
         } catch (ClassNotFoundException ex) {
             throw new IllegalStateException(ex.getMessage());
@@ -45,12 +45,12 @@ public class MySQLDBInstaller extends DBInstaller {
             throw new IllegalStateException(ex.getMessage());
         }
 
-        logger.debug("createConnectionForCreate:Ok, Loaded JDBC Driver.");
+        logger.finer("createConnectionForCreate:Ok, Loaded JDBC Driver.");
         String urlConnection = parameters4CreateAndExecute.getProperty("jdbc.url.root");
-        logger.debug("createConnectionForCreate:urlConnection=" + urlConnection);
+        logger.finer("createConnectionForCreate:urlConnection=" + urlConnection);
         
         conn = DriverManager.getConnection(urlConnection, preparePropertiesForCreateConnection());
-        logger.debug("createConnectionForCreate:Connected to DB.");
+        logger.finer("createConnectionForCreate:Connected to DB.");
         return conn;
     }
 

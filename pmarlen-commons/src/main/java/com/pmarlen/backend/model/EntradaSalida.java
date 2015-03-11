@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Entrada_Salida.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class EntradaSalida implements java.io.Serializable {
-    private static final long serialVersionUID = 1718212315;
+    private static final long serialVersionUID = 1879153252;
     
     /**
     * id
@@ -117,8 +117,8 @@ public class EntradaSalida implements java.io.Serializable {
     * num de cuenta
     */
     private String numDeCuenta;
-	
-	/**
+    
+    /**
     * autoriza descuento
     */
     private Integer autorizaDescuento;
@@ -299,14 +299,15 @@ public class EntradaSalida implements java.io.Serializable {
     public void setNumDeCuenta(String v) {
         this.numDeCuenta = v;
     }
-	
-	public void setAutorizaDescuento(Integer autorizaDescuento){
-		this.autorizaDescuento=autorizaDescuento;
-	}
 
-	public Integer getAutorizaDescuento(){
-		return this.autorizaDescuento;
-	}
+    public Integer getAutorizaDescuento() {
+        return this.autorizaDescuento;
+    }
+
+    public void setAutorizaDescuento(Integer v) {
+        this.autorizaDescuento = v;
+    }
+
 
     @Override
     public int hashCode() {
@@ -408,7 +409,7 @@ public class EntradaSalida implements java.io.Serializable {
 		sb.append(s);
 		// Integer
 		sb.append(this.autorizaDescuento);
-		
+
 		return ser;
 	}
 
@@ -480,6 +481,7 @@ public class EntradaSalida implements java.io.Serializable {
 			// Integer
 			this.autorizaDescuento =  Integer.parseInt(srcSpplited[nf]);
 			nf++;
+
 		}catch(Exception e){
 			throw new MissingFormatArgumentException("Exception scanning for["+nf+"] from string ->"+srcSpplited[nf]+"<-");
 		}

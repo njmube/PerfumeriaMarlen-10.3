@@ -6,11 +6,11 @@
                 template="/WEB-INF/templates/mainWithMenu.xhtml">
 
     <ui:define name="title">
-        HISTORICO PEDIDOS
+        PEDIDOS DE VENTA
     </ui:define>
 
     <ui:define name="body-title">
-        PEDIDOS DE VENTA EN PROCESO (YA SE HAN FACTURADO Y HASTA CANCELADOS)
+        PEDIDOS DE VENTA HISTORICO (SURTIDOS, FACTURADOS Y CANCELADOS)
     </ui:define>
 
     <ui:define name="body">		
@@ -27,20 +27,27 @@
 							  rowsPerPageTemplate="25,100,250,500">
 					
 					<f:facet name="header">
-						OPCIONES :		
-						<p:commandButton value="RECARGAR" actionListener="#{historicoPedidosVentaMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
+						<h:panelGroup>
+							OPCIONES :		
+							<p:commandButton value="RECARGAR" actionListener="#{historicoPedidosVentaMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
+						</h:panelGroup>
+
 					</f:facet>
 					
 					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
-						<p:commandLink id="ajax" action="#{historicoPedidosVentaMB.editarPedido(pv.id)}" rendered="false">
-							<h:outputText value="[#{pv.id}]" />
-						</p:commandLink>
-						<p:spacer width="10" rendered="false"/>
-						
-						<h:outputLink value="editarPedidoVenta.jsf" >
-							<h:outputText value="#{pv.id}" />
-							<p:ajax event="click" listener="#{historicoPedidosVentaMB.editarPedido(pv.id)}"/>
-						</h:outputLink>
+						<p:panelGrid columns="1" columnClasses="centerAlign" >
+							<h:outputLink value="editarPedidoVenta.jsf" >
+								<h:outputText value="#{pv.id}" />
+								<p:ajax event="click" listener="#{historicoPedidosVentaMB.editarPedido(pv.id)}"/>
+							</h:outputLink>							
+							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
+								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
+							</h:outputLink>
+							<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
+										  rendered="#{not empty pv.cfdId}">
+								<h:graphicImage value="/images/pdf.gif" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+							</h:outputLink>
+						</p:panelGrid>
 					</p:column>
 					
 					<p:column headerText="ESTADO / FECHA" width="10%">
@@ -71,10 +78,7 @@
 							<h:outputText value="FORMA DE PAGO :" />
 							<h:outputText value="#{pv.formaDePagoDescripcion}" />
 							<h:outputText value="METODO DE PAGO:" />
-							<h:outputText value="#{pv.metodoDePagoDescripcion}" />
-							<h:outputText value="FOLIO FACTURA:"/>
-							<h:outputText value="#{pv.cdfNumCFD}" />
-							
+							<h:outputText value="#{pv.metodoDePagoDescripcion}" />							
 						</p:panelGrid>
 					</p:column>
 					
@@ -96,7 +100,7 @@
 							</h:outputText>									
 							
 							<h:outputText value="- DESCUENTOS :" />
-							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}% = #{historicoPedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
+							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{historicoPedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
 							
 							<h:outputText value="TOTAL :" />
 							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">

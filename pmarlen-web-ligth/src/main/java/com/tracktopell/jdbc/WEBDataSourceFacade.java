@@ -9,6 +9,7 @@ package com.tracktopell.jdbc;
 import com.tracktopell.jdbc.DataSourceFacade;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -57,6 +58,7 @@ public class WEBDataSourceFacade extends DataSourceFacade{
 				ctx = new InitialContext();
 				ds = (DataSource) ctx.lookup("java:comp/env/jdbc/PMARLEN_BACKEND_DS");			
 			}
+			logger.info("-->>DataSource class:"+ds.getClass()+" implements "+Arrays.asList(ds.getClass().getInterfaces()));
 			conn = ds.getConnection();
 			conn.setAutoCommit(false);
         } catch (Exception e) {

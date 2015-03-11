@@ -17,7 +17,8 @@
 		<h:form id="form1">
 
 			<h:panelGrid columns="1" cellpadding="5" id="panel1" width="100%" columnClasses="leftAlign">				
-				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+				<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  />
+
 				<h:panelGrid columns="4" cellpadding="0" width="100%" columnClasses="columnWidth20 rightAlign, columnWidth80 leftAlign,columnWidth20 rightAlign, columnWidth80 leftAlign">
 					<p:outputLabel for="almacen" value="TIPO DE ALMACÉN :" />
 
@@ -38,7 +39,7 @@
 					</p:column>
 
 					<p:column headerText="CANTIDAD" sortBy="#{ap.cantidad}">
-						<p:commandButton    actionListener="#{inventarioMB.updateMovsHisProducto(ap.almacenId, ap.productoCodigoBarras)}"
+						<p:commandButton    actionListener="#{inventarioMB.updateMovsHisProducto(ap)}"
 											update=":form1:panel1,:form2:dlg2table1,:form2:chart"
 											icon="ui-icon-clock" onsuccess="PF('dlg2').show();"
 											title="VER HISTORIAL DE MOVIMIENTOS"/>
@@ -47,7 +48,16 @@
 					</p:column>
 
 					<p:column headerText="PRECIO" sortBy="#{ap.precio}">
-						<h:outputText value="#{ap.precio}" />
+						<p:commandButton    actionListener="#{inventarioMB.prepararParaCambioDePrecio(ap)}"
+											update=":form1:panel1,:form2:dlg2table1,:form4:panel4_1"
+											icon="ui-icon-pencil" onsuccess="PF('dlg4').show();"
+											title="CAMBIO DE PRECIO"/>
+						<p:spacer width="10"/>
+						
+						<h:outputText value="#{ap.precio}">
+							<f:convertNumber integerOnly="false" pattern="$ ###,###,##0.00" locale="es-MX"/>
+						</h:outputText>
+						
 					</p:column>
 
 					<p:column headerText="CODIGO" sortBy="#{ap.productoCodigoBarras}">
@@ -74,8 +84,22 @@
 						<h:outputText value="#{ap.productoContenido} #{ap.productoUnidadMedida} (#{ap.productoUnidadEmpaque})" />
 					</p:column>
 					
-					<p:column headerText="UBICACIÓN" sortBy="#{ap.ubicacion}">
-						<h:outputText value="#{ap.ubicacion}" />
+					<p:column headerText="UBICACIÓN" sortBy="#{ap.ubicacion}">						
+						<p:commandButton   actionListener="#{inventarioMB.updateUbicacionProducto(ap)}"
+											update=":form1:panel1,:form3:ubicacion"
+											icon="ui-icon-contact" onsuccess="PF('dlg3').show();"
+											title="VER MAPA DE UBICACION"/>
+						<p:spacer width="10"/>
+						
+						<h:outputText value="#{ap.ubicacion}" class="#{ap.ubicacionRenderedColor}"/>
+						
+						<h:outputText value="-- N/E --" rendered="#{empty ap.ubicacion}"/>
+						
+						<p:inplace id="ubicacionEditor" editor="true" emptyLabel="-- N/E --" rendered ="false">
+							<p:inputText value="#{ap.ubicacion}" label="text" valueChangeListener="#{inventarioMB.edicionDirectaUbicacion}" size="10"
+										 />
+						</p:inplace>
+						
 					</p:column>
 				</p:dataTable>
 
@@ -120,6 +144,106 @@
 			
 		</h:form>
 
+		<h:form id="form3">
+			
+			<p:dialog header="UBICACION DE PRODUCTO" widgetVar="dlg3"  modal="true" width="1050" height="700" closeOnEscape="true">
+				<h:graphicImage value="/images/Acomodo_para_Claves_V1.png" class="imgUbicacion" usemap="#mapaUbicacion"/>
+				<map name="mapaUbicacion">
+					<area shape="rect" coords="15 ,126,233,174" title="Rack A1" href="#" class="areaRef1"/>
+					<area shape="rect" coords="15 ,175,61 ,648" title="Rack AA" href="#" class="areaRef1"/>
+					<area shape="rect" coords="62 ,617,106,648" title="Rack A2" href="#" class="areaRef1"/>
+					<area shape="rect" coords="107,224,144,648" title="Rack AB" href="#" class="areaRef1"/>
+					<area shape="rect" coords="145,224,181,648" title="Rack AC" href="#" class="areaRef1"/>
+					<area shape="rect" coords="182,625,245,648" title="Rack A3" href="#" class="areaRef1"/>
+					<area shape="rect" coords="246,208,294,648" title="Rack AD" href="#" class="areaRef1"/>
+					
+					<area shape="rect" coords="300,204,349,648" title="Tarimas BA" href="#" class="areaRef1"/>
+					
+					
+					<area shape="rect" coords="500, 10,1012, 54" title="Tarimas C1" href="#" class="areaRef1"/>
+					<area shape="rect" coords="626,124, 668,538" title="Tarimas CA" href="#" class="areaRef1"/>
+					
+				</map>
+				<h:panelGroup>
+					<h:outputLabel for="ubicacion" value="UBICACION :"/>
+					
+					<h:inputText id="ubicacion" value="#{inventarioMB.ubucacionEditar}" class="ubicacion" title="SELECCIONE DEL MAPA DONDE SE ENCUENTRA"/>
+					<p:spacer width="20"/>
+					<p:commandButton	update=":form1:panel1" 
+										oncomplete="PF('dlg3').hide();" icon="ui-icon-check" value="ACEPTAR" title="ACEPTAR"
+										actionListener="#{inventarioMB.aceptarEdicionUbicacion}">
+
+					</p:commandButton>
+					<p:spacer width="20"/>
+					<p:commandButton	update=":form1:panel1" 
+										oncomplete="PF('dlg3').hide();" icon="ui-icon-close" value="CANCELAR" title="CANCELAR"
+										actionListener="#{inventarioMB.cancelarEdicionUbicacion}">
+					</p:commandButton>
+					
+				</h:panelGroup>
+			</p:dialog>
+			<script type="text/javascript" src="#{request.contextPath}/js/jquery.maphilight.min.js"></script>
+			<script type="text/javascript">
+				$(function() {
+					$('.imgUbicacion').maphilight({fade: true});
+					$('.areaRef1').click(function() {					
+						$(".ubicacion").val($(this).prop("title"));			
+					});
+				});
+			</script>
+		</h:form>
+		
+		<h:form id="form4">
+			
+			<p:dialog header="CAMBIO DE PRECIO" widgetVar="dlg4"  modal="true" width="300" height="200" closable="false">
+				
+				<h:panelGrid id="panel4_1" columns="3"  cellpadding="5" columnClasses="columnWidth50 rightAlign,columnWidth50 leftAlign">
+					<p:outputLabel value="NUEVO PRECIO: $" for="nuevoPrecio"/>
+					<p:inputText id="nuevoPrecio" value="#{inventarioMB.nuevoPrecio}" required="true" size="5" maxlength="7">						
+						<f:convertNumber integerOnly="false" pattern="###,###,##0.00" locale="es-MX"/>
+						<f:validateDoubleRange minimum="0.0" maximum="100000"/>
+						<p:ajax update="msgNuevoPrecio" event="blur" />
+					</p:inputText>
+					<p:message for="nuevoPrecio" id="msgNuevoPrecio" display="icon"/>
+						
+					<p:outputLabel value="MOTIVO DE CAMBIO:" for="motivoCambio"/>
+					<p:inputText id="motivoCambio" value="#{inventarioMB.comentarioNuevoPrecio}" size="15" required="true" requiredMessage="DEBE LLENAR EL MOTIVO EXPLICITO DEL CAMBIO">
+						<f:validateLength minimum="5" maximum="64"/>
+						<p:ajax update="msgMotivoCambio" event="blur" />
+					</p:inputText>
+					<p:message for="motivoCambio" id="msgMotivoCambio" display="icon" />
+				</h:panelGrid>
+				<h:panelGroup id="updatedBeforeOnComplete">
+					<script language="JavaScript" type="text/javascript">
+						//
+						function executeAfterUpdate() {
+							//alert('facesContext.maximumSeverity=#{facesContext.maximumSeverity}, facesContext.messageList=#{facesContext.messageList}, facesContext.validationFailed=#{facesContext.validationFailed}');
+							if ( #{facesContext.maximumSeverity==null or facesContext.maximumSeverity.ordinal=='1' or not facesContext.validationFailed} ) {
+								//alert('ok, close dialog !');
+								PF('dlg4').hide();
+							}
+						}
+						//
+					</script>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:commandButton	update=":form1:inventarioTable,panel4_1, updatedBeforeOnComplete" 
+										oncomplete="executeAfterUpdate()" 
+										icon="ui-icon-check" value="ACEPTAR" title="ACEPTAR"
+										actionListener="#{inventarioMB.aceptarCambioDePrecio}">
+					</p:commandButton>
+					<p:spacer width="20"/>
+					<p:commandButton	ajax="true" process="@this" immediate="true"
+										oncomplete="PF('dlg4').hide();" icon="ui-icon-close" value="CANCELAR" title="CANCELAR"
+										actionListener="#{inventarioMB.cancelarCambioDePrecio}">
+						<p:resetInput target="panel4_1" />
+					</p:commandButton>
+					
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+		
 	</ui:define>
 
 </ui:composition>

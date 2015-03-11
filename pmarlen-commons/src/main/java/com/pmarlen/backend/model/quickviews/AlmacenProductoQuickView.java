@@ -31,8 +31,8 @@ public class AlmacenProductoQuickView extends AlmacenProducto{
 	private String productoUnidadMedida;
 	
 	private String productoUnidadEmpaque;
-    
-    
+	
+	private Integer rowId;        
 
 	public AlmacenProductoQuickView() {
 	}
@@ -162,6 +162,27 @@ public class AlmacenProductoQuickView extends AlmacenProducto{
 	 */
 	public void setProductoMarca(String productoMarca) {
 		this.productoMarca = productoMarca;
+	}
+
+	public void setRowId(Integer rowId) {
+		this.rowId = rowId;
+	}
+
+	public Integer getRowId() {
+		return rowId;
+	}
+	
+	public String getUbicacionRenderedColor(){
+		if(this.getUbicacion() != null){
+			if(this.getUbicacion().startsWith("Rack A")){
+				return "ubucacion-A";
+			} else if(this.getUbicacion().startsWith("Tarimas B")){
+				return "ubucacion-B";
+			} else if(this.getUbicacion().startsWith("Tarimas C")){
+				return "ubucacion-C";
+			}
+		}
+		return"";
 	}
 	
 }

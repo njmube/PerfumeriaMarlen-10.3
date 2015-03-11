@@ -130,15 +130,14 @@ public class ImportData {
 			executeMultipleUpdates("INSERT INTO SUCURSAL(ID,ID_PADRE,NOMBRE,DIRECCION,TELEFONOS,USUARIO_SICOFI,PASSWORD_SICOFI,SERIE_SICOFI,COMENTARIOS,DESCUENTO_MAYOREO_HABILITADO) VALUES(?,?,?,?,?,?,?,?,?,?)", resultSucursal);
 			resultSucursal = null;
 
-			List<Object[]> resultCliente = executeQuery(oldDBConnection, "SELECT C.ID,C.RFC,C.RAZON_SOCIAL,C.NOMBRE_ESTABLECIMIENTO,C.CONTACTO,C.TELEFONOS,C.EMAIL,C.OBSERVACIONES,CONCAT(C.CALLE,', #INT.',C.NUM_INTERIOR,', #EXT.',C.NUM_EXTERIOR,', ',P.NOMBRE,', ',P.MUNICIPIO_O_DELEGACION,', ',P.ENTIDAD_FEDERATIVA,', C.P. ',P.CODIGO_POSTAL) AS DIRECCION FROM CLIENTE C,POBLACION P WHERE C.POBLACION_ID=P.ID");
+			List<Object[]> resultCliente = executeQuery(oldDBConnection, "SELECT C.ID,C.RFC,C.RAZON_SOCIAL,C.NOMBRE_ESTABLECIMIENTO,C.CONTACTO,C.TELEFONOS,C.EMAIL,C.OBSERVACIONES,C.CALLE,C.NUM_INTERIOR,C.NUM_EXTERIOR,P.NOMBRE,P.MUNICIPIO_O_DELEGACION,P.ENTIDAD_FEDERATIVA,P.ENTIDAD_FEDERATIVA,P.CODIGO_POSTAL FROM CLIENTE C,POBLACION P WHERE C.POBLACION_ID=P.ID");
 			for(Object[] arrXC: resultCliente){
 				arrXC[2]=((String)arrXC[2]).toUpperCase();
 				arrXC[3]=arrXC[3]!=null?((String)arrXC[3]).toUpperCase():null;
 				arrXC[4]=arrXC[4]!=null?((String)arrXC[4]).toUpperCase():null;
-				arrXC[5]=arrXC[5]!=null?((String)arrXC[5]).toUpperCase():null;
-				arrXC[8]=((String)arrXC[8]).toUpperCase().replace(", #INT., ", ", ");
+				arrXC[5]=arrXC[5]!=null?((String)arrXC[5]).toUpperCase():null;				
 			}
-			executeMultipleUpdates("INSERT INTO CLIENTE(ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,DIRECCION) VALUES(?,?,?,?,?,?,?,?,?)", resultCliente);
+			executeMultipleUpdates("INSERT INTO CLIENTE(ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,CALLE,NUM_INTERIOR,NUM_EXTERIOR,COLONIA,MUNICIPIO,CIUDAD,ESTADO,CP) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", resultCliente);
 			resultCliente = null;
 
 			List<Object[]> resultUsuario = executeQuery(oldDBConnection, "SELECT USUARIO_ID,HABILITADO,NOMBRE_COMPLETO,PASSWORD FROM USUARIO");

@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Movimiento_Historico_Producto.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class MovimientoHistoricoProducto implements java.io.Serializable {
-    private static final long serialVersionUID = 751872434;
+    private static final long serialVersionUID = 1593720318;
     
     /**
     * id
@@ -62,12 +62,11 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
     * producto codigo barras
     */
     private String productoCodigoBarras;
-	
-	/**
-	 * entrada Salida Id
-	 */
-	
-	private Integer entradaSalidaId;
+    
+    /**
+    * entrada salida id
+    */
+    private Integer entradaSalidaId;
 
     /** 
      * Default Constructor
@@ -158,15 +157,15 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
         this.productoCodigoBarras = v;
     }
 
-	public Integer getEntradaSalidaId() {
-		return entradaSalidaId;
-	}
+    public Integer getEntradaSalidaId() {
+        return this.entradaSalidaId;
+    }
 
-	public void setEntradaSalidaId(Integer entradaSalidaId) {
-		this.entradaSalidaId = entradaSalidaId;
-	}
-	
-	
+    public void setEntradaSalidaId(Integer v) {
+        this.entradaSalidaId = v;
+    }
+
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -234,6 +233,7 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
 		sb.append(s);
 		// Integer
 		sb.append(this.entradaSalidaId);
+
 		return ser;
 	}
 
@@ -270,8 +270,9 @@ public class MovimientoHistoricoProducto implements java.io.Serializable {
 			this.productoCodigoBarras = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// Integer
-			this.entradaSalidaId = srcSpplited[nf].equals("null")?null:Integer.parseInt(srcSpplited[nf]);
-			
+			this.entradaSalidaId =  Integer.parseInt(srcSpplited[nf]);
+			nf++;
+
 		}catch(Exception e){
 			throw new MissingFormatArgumentException("Exception scanning for["+nf+"] from string ->"+srcSpplited[nf]+"<-");
 		}

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -24,6 +25,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
@@ -46,7 +48,7 @@ public class InventarioMB  {
 	private LineChartModel historicoMovsLCM;
 	private String[] selectedIndustrias;  
     private List<String> industrias;
-	
+	private AlmacenProductoQuickView selected;
 	@PostConstruct
     public void init() {				
 		getAlmacenList();
@@ -128,11 +130,11 @@ public class InventarioMB  {
 		logger.info("--XX--");
 	}
 	
-	public void updateMovsHisProducto(int almacenId,String codigoBarras){
-		logger.info("int almacenId="+almacenId+"codigoBarras="+codigoBarras);
+	public void updateMovsHisProducto(AlmacenProductoQuickView apSelected){
+		logger.info("int almacenId="+apSelected.getAlmacenId()+"codigoBarras="+apSelected.getProductoCodigoBarras());
 //		movsHisProducto = new ArrayList<MovimientoHistoricoProductoQuickView>(); 
 		try {
-			movsHisProducto = MovimientoHistoricoProductoDAO.getInstance().findAllByAlmacenAndProducto(almacenId, codigoBarras);
+			movsHisProducto = MovimientoHistoricoProductoDAO.getInstance().findAllByAlmacenAndProducto(apSelected.getAlmacenId(), apSelected.getProductoCodigoBarras());
 			/*
 			historicoMovsLCM = new LineChartModel();
  
@@ -193,9 +195,113 @@ public class InventarioMB  {
     public void setSelectedIndustrias(String[] selectedIndustrias) {
         this.selectedIndustrias = selectedIndustrias;
     }
- 
+
+	public AlmacenProductoQuickView getSelected() {
+		return selected;
+	}
+	
     public List<String> getIndustrias() {
         return industrias;
     }
+	
+	public void updateUbicacionProducto(AlmacenProductoQuickView selectedAP){
+		selected = selectedAP;
+		ubucacionEditar = selected.getUbicacion()!=null?selected.getUbicacion():"";
+		
+		logger.info("selected:"+selected.getProductoCodigoBarras()+" ["+selected.getAlmacenId()+"]: rowId="+selected.getRowId());
+	}
+	
+	private String ubucacionEditar;
 
+	public String getUbucacionEditar() {
+		return ubucacionEditar;
+	}
+
+	public void setUbucacionEditar(String ubucacionEditar) {
+		this.ubucacionEditar = ubucacionEditar;
+	}
+	
+	public void aceptarEdicionUbicacion(){	
+		selected.setUbicacion(ubucacionEditar);
+		try {
+			AlmacenProductoDAO.getInstance().update(selected);
+
+			logger.info("selected:"+selected.getProductoCodigoBarras()+" ["+selected.getAlmacenId()+"]: rowId="+selected.getRowId()+", selected.ubicacion="+selected.getUbicacion());
+			selected = null;
+			this.ubucacionEditar = null;
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ACTUALIZAR UBICACIÓN",  "SE HA ACTUALIZADO LA UBICACIÓN DE ESTE PRODUCTO PARA TIPO DE ALMACEN SELECCIONADO") );			
+		}catch(Exception e){
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ACTUALIZAR UBICACIÓN",  "OCURRIO UN ERROR AL ACTUALIZAR") );			
+		}
+	}
+	
+	public void cancelarEdicionUbicacion(){
+		logger.info("cancelar");
+		selected = null;
+		ubucacionEditar = null;
+	}
+	
+	public void edicionDirectaUbicacion(ValueChangeEvent e){
+		logger.info("->selectedAP.ubicacion:"+e.getNewValue()+", source class="+e.getSource().getClass()+", component class"+e.getComponent().getClass());
+	}
+
+	
+	private Double nuevoPrecio;
+	private String comentarioNuevoPrecio;
+
+	public void setNuevoPrecio(Double nuevoPrecio) {
+		this.nuevoPrecio = nuevoPrecio;
+	}
+
+	public Double getNuevoPrecio() {
+		return nuevoPrecio;
+	}
+
+	public void setComentarioNuevoPrecio(String comentarioNuevoPrecio) {
+		this.comentarioNuevoPrecio = comentarioNuevoPrecio;
+	}
+
+	public String getComentarioNuevoPrecio() {
+		return comentarioNuevoPrecio;
+	}
+	
+	
+	
+	public void prepararParaCambioDePrecio(AlmacenProductoQuickView selectedAP){
+		selected = selectedAP;
+		nuevoPrecio = selected.getPrecio();
+		comentarioNuevoPrecio = null;
+		
+		logger.info("selected:"+selected.getProductoCodigoBarras()+" ["+selected.getAlmacenId()+"]: nuevoPrecio="+nuevoPrecio);
+	}
+	
+	public void aceptarCambioDePrecio(){	
+		if(nuevoPrecio != selected.getPrecio()) {
+			selected.setPrecio(nuevoPrecio);
+			try {
+				AlmacenProductoDAO.getInstance().update(selected);
+
+				logger.info("selected:"+selected.getProductoCodigoBarras()+" ["+selected.getAlmacenId()+"]: rowId="+selected.getRowId()+", selected.precio="+selected.getPrecio());
+				selected = null;
+				this.ubucacionEditar = null;
+				FacesContext context = FacesContext.getCurrentInstance();         
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ACTUALIZAR PRECIO",  "SE HA ACTUALIZADO EL PRECIO DE ESTE PRODUCTO PARA TIPO DE ALMACEN SELECCIONADO") );			
+			}catch(Exception e){
+				logger.log(Level.SEVERE, "en el DAO", e);
+				FacesContext context = FacesContext.getCurrentInstance();         
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ACTUALIZAR PRECIO",  "OCURRIO UN ERROR AL ACTUALIZAR") );			
+			}
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"ACTUALIZAR PRECIO",  "NO SE REALIZO CAMBIO, PUES ES EL MISMO VALOR") );			
+		}
+	}
+	
+	public void cancelarCambioDePrecio(){
+		logger.info("cancelar");
+		selected = null;
+		ubucacionEditar = null;
+	}	
 }

@@ -1,7 +1,7 @@
 /**
  * CfdDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/03 00:40
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for CfdDAO of Table CFD.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class CfdDAO {
@@ -82,7 +82,7 @@ public class CfdDAO {
 				r.setId((Integer)rs.getObject("ID"));
 				r.setUltimaActualizacion((Timestamp)rs.getObject("ULTIMA_ACTUALIZACION"));
 				Blob bc=rs.getBlob("CONTENIDO_ORIGINAL_XML");
-				if(bc!=null)r.setContenidoOriginalXml(bc.getBytes(0, (int) bc.length()));
+				if(bc!=null)r.setContenidoOriginalXml(bc.getBytes(1, (int) bc.length()));
 				r.setCallingErrorResult((String)rs.getObject("CALLING_ERROR_RESULT"));
 				r.setNumCfd((String)rs.getObject("NUM_CFD"));
 				r.setTipo((String)rs.getObject("TIPO"));
@@ -122,7 +122,7 @@ public class CfdDAO {
 				x.setId((Integer)rs.getObject("ID"));
 				x.setUltimaActualizacion((Timestamp)rs.getObject("ULTIMA_ACTUALIZACION"));
 				Blob bc=rs.getBlob("CONTENIDO_ORIGINAL_XML");
-				if(bc!=null)x.setContenidoOriginalXml(bc.getBytes(0, (int) bc.length()));
+				if(bc!=null)x.setContenidoOriginalXml(bc.getBytes(1, (int) bc.length()));
 				x.setCallingErrorResult((String)rs.getObject("CALLING_ERROR_RESULT"));
 				x.setNumCfd((String)rs.getObject("NUM_CFD"));
 				x.setTipo((String)rs.getObject("TIPO"));

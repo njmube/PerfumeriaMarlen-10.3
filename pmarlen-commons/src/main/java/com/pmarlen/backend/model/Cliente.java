@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Cliente.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/03 00:40
  */
 
 public class Cliente implements java.io.Serializable {
-    private static final long serialVersionUID = 1162133812;
+    private static final long serialVersionUID = 966372305;
     
     /**
     * id
@@ -39,14 +39,49 @@ public class Cliente implements java.io.Serializable {
     private String nombreEstablecimiento;
     
     /**
-    * contacto
+    * calle
     */
-    private String contacto;
+    private String calle;
     
     /**
-    * telefonos
+    * num exterior
     */
-    private String telefonos;
+    private String numExterior;
+    
+    /**
+    * num interior
+    */
+    private String numInterior;
+    
+    /**
+    * colonia
+    */
+    private String colonia;
+    
+    /**
+    * municipio
+    */
+    private String municipio;
+    
+    /**
+    * referencia
+    */
+    private String referencia;
+    
+    /**
+    * ciudad
+    */
+    private String ciudad;
+    
+    /**
+    * cp
+    */
+    private String cp;
+    
+    /**
+    * estado
+    */
+    private String estado;
     
     /**
     * email
@@ -54,14 +89,29 @@ public class Cliente implements java.io.Serializable {
     private String email;
     
     /**
+    * telefonos
+    */
+    private String telefonos;
+    
+    /**
+    * contacto
+    */
+    private String contacto;
+    
+    /**
     * observaciones
     */
     private String observaciones;
     
     /**
-    * direccion
+    * ubicacion lat
     */
-    private String direccion;
+    private Double ubicacionLat;
+    
+    /**
+    * ubicacion lon
+    */
+    private Double ubicacionLon;
 
     /** 
      * Default Constructor
@@ -112,20 +162,76 @@ public class Cliente implements java.io.Serializable {
         this.nombreEstablecimiento = v;
     }
 
-    public String getContacto() {
-        return this.contacto;
+    public String getCalle() {
+        return this.calle;
     }
 
-    public void setContacto(String v) {
-        this.contacto = v;
+    public void setCalle(String v) {
+        this.calle = v;
     }
 
-    public String getTelefonos() {
-        return this.telefonos;
+    public String getNumExterior() {
+        return this.numExterior;
     }
 
-    public void setTelefonos(String v) {
-        this.telefonos = v;
+    public void setNumExterior(String v) {
+        this.numExterior = v;
+    }
+
+    public String getNumInterior() {
+        return this.numInterior;
+    }
+
+    public void setNumInterior(String v) {
+        this.numInterior = v;
+    }
+
+    public String getColonia() {
+        return this.colonia;
+    }
+
+    public void setColonia(String v) {
+        this.colonia = v;
+    }
+
+    public String getMunicipio() {
+        return this.municipio;
+    }
+
+    public void setMunicipio(String v) {
+        this.municipio = v;
+    }
+
+    public String getReferencia() {
+        return this.referencia;
+    }
+
+    public void setReferencia(String v) {
+        this.referencia = v;
+    }
+
+    public String getCiudad() {
+        return this.ciudad;
+    }
+
+    public void setCiudad(String v) {
+        this.ciudad = v;
+    }
+
+    public String getCp() {
+        return this.cp;
+    }
+
+    public void setCp(String v) {
+        this.cp = v;
+    }
+
+    public String getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(String v) {
+        this.estado = v;
     }
 
     public String getEmail() {
@@ -136,6 +242,22 @@ public class Cliente implements java.io.Serializable {
         this.email = v;
     }
 
+    public String getTelefonos() {
+        return this.telefonos;
+    }
+
+    public void setTelefonos(String v) {
+        this.telefonos = v;
+    }
+
+    public String getContacto() {
+        return this.contacto;
+    }
+
+    public void setContacto(String v) {
+        this.contacto = v;
+    }
+
     public String getObservaciones() {
         return this.observaciones;
     }
@@ -144,12 +266,20 @@ public class Cliente implements java.io.Serializable {
         this.observaciones = v;
     }
 
-    public String getDireccion() {
-        return this.direccion;
+    public Double getUbicacionLat() {
+        return this.ubicacionLat;
     }
 
-    public void setDireccion(String v) {
-        this.direccion = v;
+    public void setUbicacionLat(Double v) {
+        this.ubicacionLat = v;
+    }
+
+    public Double getUbicacionLon() {
+        return this.ubicacionLon;
+    }
+
+    public void setUbicacionLon(Double v) {
+        this.ubicacionLon = v;
     }
 
 
@@ -204,19 +334,49 @@ public class Cliente implements java.io.Serializable {
 		sb.append(this.nombreEstablecimiento);
 		sb.append(s);
 		// String
-		sb.append(this.contacto);
+		sb.append(this.calle);
 		sb.append(s);
 		// String
-		sb.append(this.telefonos);
+		sb.append(this.numExterior);
+		sb.append(s);
+		// String
+		sb.append(this.numInterior);
+		sb.append(s);
+		// String
+		sb.append(this.colonia);
+		sb.append(s);
+		// String
+		sb.append(this.municipio);
+		sb.append(s);
+		// String
+		sb.append(this.referencia);
+		sb.append(s);
+		// String
+		sb.append(this.ciudad);
+		sb.append(s);
+		// String
+		sb.append(this.cp);
+		sb.append(s);
+		// String
+		sb.append(this.estado);
 		sb.append(s);
 		// String
 		sb.append(this.email);
 		sb.append(s);
 		// String
-		sb.append(this.observaciones);
+		sb.append(this.telefonos);
 		sb.append(s);
 		// String
-		sb.append(this.direccion);
+		sb.append(this.contacto);
+		sb.append(s);
+		// String
+		sb.append(this.observaciones);
+		sb.append(s);
+		// Double
+		sb.append( df.format(this.ubicacionLat));
+		sb.append(s);
+		// Double
+		sb.append( df.format(this.ubicacionLon));
 
 		return ser;
 	}
@@ -239,19 +399,49 @@ public class Cliente implements java.io.Serializable {
 			this.nombreEstablecimiento = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
-			this.contacto = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			this.calle = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
-			this.telefonos = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			this.numExterior = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.numInterior = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.colonia = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.municipio = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.referencia = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.ciudad = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.cp = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.estado = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
 			this.email = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
-			this.observaciones = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			this.telefonos = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
-			this.direccion = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			this.contacto = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.observaciones = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// Double
+			this.ubicacionLat =  df.parse(srcSpplited[nf]).doubleValue();
+			nf++;
+			// Double
+			this.ubicacionLon =  df.parse(srcSpplited[nf]).doubleValue();
 			nf++;
 
 		}catch(Exception e){

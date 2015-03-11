@@ -5,9 +5,9 @@ import java.io.*;
 import java.sql.*;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,19 +24,19 @@ public abstract class DBInstaller {
 	protected Logger logger;
 
 	public DBInstaller(String proConfigLocation,String masterHost) throws IOException {
-		logger = LoggerFactory.getLogger(DBInstaller.class);
+		logger = Logger.getLogger(DBInstaller.class.getSimpleName());
 
-		logger.debug("init(): proConfigLocation=" + proConfigLocation);
+		logger.finer("init(): proConfigLocation=" + proConfigLocation);
 
 		InputStream propertiesIS = null;
 
 		if (proConfigLocation.startsWith("file:")) {
 			String fileToLaod = proConfigLocation.substring("file:".length());
-			logger.debug("init(): fileToLaod=" + fileToLaod + ", can read ?" + new File(fileToLaod).canRead());
+			logger.finer("init(): fileToLaod=" + fileToLaod + ", can read ?" + new File(fileToLaod).canRead());
 			propertiesIS = new FileInputStream(new File(fileToLaod));
 		} else if (proConfigLocation.startsWith("classpath:")) {
 			String resource = proConfigLocation.substring("classpath:".length());
-			logger.debug("init(): resource=" + resource);
+			logger.finer("init(): resource=" + resource);
 			propertiesIS = DBInstaller.class.getResourceAsStream(resource);
 		} else {
 			throw new IOException("For read properties, Pattern {\"file:\" | \"classpath:\"} not found in " + proConfigLocation);
@@ -44,18 +44,18 @@ public abstract class DBInstaller {
 
 		parameters4CreateAndExecute = new Properties();
 
-		logger.debug("init(): try to load properties from proConfigLocation from InputStream:" + propertiesIS);
+		logger.finer("init(): try to load properties from proConfigLocation from InputStream:" + propertiesIS);
 		parameters4CreateAndExecute.load(propertiesIS);
-		logger.debug("init(): Ok, loaded parameters4CreateAndExecute");
+		logger.finer("init(): Ok, loaded parameters4CreateAndExecute");
 		
 		if(masterHost != null){
-			logger.debug("\tinit(): ===> replaceing for masterHost="+masterHost);
+			logger.finer("\tinit(): ===> replaceing for masterHost="+masterHost);
 			parameters4CreateAndExecute.put("jdbc.url",parameters4CreateAndExecute.getProperty("jdbc.url").replace("${master.host}", masterHost));
 			parameters4CreateAndExecute.put("jdbc.url_prefix",parameters4CreateAndExecute.getProperty("jdbc.url_prefix").replace("${master.host}", masterHost));
 			parameters4CreateAndExecute.put("jdbc.url_replace",parameters4CreateAndExecute.getProperty("jdbc.url_replace").replace("${master.host}", masterHost));			
 		}
 		
-		logger.debug("init(): parameters4CreateAndExecute=" + parameters4CreateAndExecute);
+		logger.finer("init(): parameters4CreateAndExecute=" + parameters4CreateAndExecute);
 	}
 
 	protected Properties preparePropertiesForConnection() {
@@ -69,7 +69,7 @@ public abstract class DBInstaller {
 			}
 		}
 
-		logger.debug("preparePropertiesForConnection: prop4Connection=" + prop4Connection);
+		logger.finer("preparePropertiesForConnection: prop4Connection=" + prop4Connection);
 
 		return prop4Connection;
 	}
@@ -81,7 +81,7 @@ public abstract class DBInstaller {
 	protected Connection createConnectionForInit() throws IllegalStateException, SQLException {
 		Connection conn = null;
 		try {
-			logger.debug("createConnectionForInit: ...try get Connection for Create DB.");
+			logger.finer("createConnectionForInit: ...try get Connection for Create DB.");
 			Class.forName(parameters4CreateAndExecute.getProperty(PARAM_CONNECTION_JDBC_CLASS_DRIVER)).newInstance();
 		} catch (ClassNotFoundException ex) {
 			throw new IllegalStateException(ex.getMessage());
@@ -91,19 +91,19 @@ public abstract class DBInstaller {
 			throw new IllegalStateException(ex.getMessage());
 		}
 
-		logger.debug("createConnectionForInit:Ok, Loaded JDBC Driver.");
+		logger.finer("createConnectionForInit:Ok, Loaded JDBC Driver.");
 		String urlConnection = parameters4CreateAndExecute.getProperty("jdbc.url");
 
 		if (urlConnection.contains("${db.name}")) {
 			urlConnection = urlConnection.replace("${db.name}", parameters4CreateAndExecute.getProperty("db.name"));
-			logger.debug("createConnectionForInit:replacement for variable db.name, now urlConnection=" + urlConnection);
+			logger.finer("createConnectionForInit:replacement for variable db.name, now urlConnection=" + urlConnection);
 		}
 
 		Properties preparePropertiesForConnection = preparePropertiesForConnection();
 
-		logger.debug("createConnectionForInit:urlConnection=" + urlConnection + ", preparePropertiesForConnection()=" + preparePropertiesForConnection);
+		logger.finer("createConnectionForInit:urlConnection=" + urlConnection + ", preparePropertiesForConnection()=" + preparePropertiesForConnection);
 		conn = DriverManager.getConnection(urlConnection, preparePropertiesForConnection);
-		logger.debug("createConnectionForInit:Connected to DB.");
+		logger.finer("createConnectionForInit:Connected to DB.");
 
 		printDBInfo(conn);
 		return conn;
@@ -430,7 +430,7 @@ public abstract class DBInstaller {
 			executeScriptFrom(isCreationScript, connectionForCreate, false);
 
 			String envScripts = parameters4CreateAndExecute.getProperty(INIT_ENVIRONMENT_SCRIPTS);
-			logger.debug("installDBfromScratch:envScripts=" + envScripts);
+			logger.finer("installDBfromScratch:envScripts=" + envScripts);
 			if (envScripts != null) {
 				String[] scrips = envScripts.split(",");
 				for (String sc : scrips) {
@@ -442,7 +442,7 @@ public abstract class DBInstaller {
 						extractResource(resourceToExtract, resourcePathToExtract);
 						logger.info("\t\tinstallDBfromScratch:extractResource OK !");
 					}
-					logger.debug("\tinstallDBfromScratch:->executeScriptFrom: " + sc);
+					logger.finer("\tinstallDBfromScratch:->executeScriptFrom: " + sc);
 					InputStream isInitEnvScript = null;
 					if (sc.startsWith("classpath:")) {
 						isInitEnvScript = DBInstaller.class.getResourceAsStream(sc.substring("classpath:".length()));
@@ -458,7 +458,7 @@ public abstract class DBInstaller {
 			ex2.printStackTrace(System.err);
 			System.exit(4);
 		} catch (SQLException ex1) {
-			logger.error(ex1.getLocalizedMessage(), ex1);
+			logger.log(Level.SEVERE,ex1.getLocalizedMessage(), ex1);
 			System.exit(3);
 		} finally {
 			if (connectionForCreate != null) {
@@ -491,7 +491,7 @@ public abstract class DBInstaller {
 			executeScriptFrom(isCreationScript, connectionForCreate, false);
 
 			String envScripts = parameters4CreateAndExecute.getProperty(INIT_ENVIRONMENT_SCRIPTS);
-			logger.debug("installDBfromScratch:envScripts=" + envScripts);
+			logger.finer("installDBfromScratch:envScripts=" + envScripts);
 			if (envScripts != null) {
 				String[] scrips = envScripts.split(",");
 				for (String sc : scrips) {
@@ -503,7 +503,7 @@ public abstract class DBInstaller {
 						extractResource(resourceToExtract, resourcePathToExtract);
 						logger.info("\t\tinstallDBfromScratch:extractResource OK !");
 					}
-					logger.debug("\tinstallDBfromScratch:->executeScriptFrom: " + sc);
+					logger.finer("\tinstallDBfromScratch:->executeScriptFrom: " + sc);
 					InputStream isInitEnvScript = null;
 					if (sc.startsWith("classpath:")) {
 						isInitEnvScript = DBInstaller.class.getResourceAsStream(sc.substring("classpath:".length()));
@@ -519,7 +519,7 @@ public abstract class DBInstaller {
 			ex2.printStackTrace(System.err);
 			System.exit(4);
 		} catch (SQLException ex1) {
-			logger.error(ex1.getLocalizedMessage(), ex1);
+			logger.log(Level.SEVERE,ex1.getLocalizedMessage(), ex1);
 			System.exit(3);
 		} finally {
 			return connectionForCreate;
@@ -529,37 +529,37 @@ public abstract class DBInstaller {
 
 	public void shellDB() {
 
-		logger.debug("shellDB: --------------");
+		logger.finer("shellDB: --------------");
 
 		//String urlConnection = parameters4CreateAndExecute.getProperty("jdbc.url_prefix") + parameters4CreateAndExecute.getProperty("db.name");
-		//logger.debug("shellDB: urlConnection="+urlConnection);
+		//logger.finer("shellDB: urlConnection="+urlConnection);
 		Connection connectionForInit = getExistDB();
 		
 		if (connectionForInit == null) {
-			logger.debug("shellDB:The DB does'nt exist -> installDBfromScratch !");
+			logger.finer("shellDB:The DB does'nt exist -> installDBfromScratch !");
 			connectionForInit = getInstallDBfromScratch();
 		}
 
 		try {
-			logger.debug("shellDB:OK, the DB exist !!");
+			logger.finer("shellDB:OK, the DB exist !!");
 			//connectionForInit = createConnectionForInit();
-			logger.debug("shellDB:OK, connected.");
-			logger.debug("shellDB:Ready, Now read from stdin.");
+			logger.finer("shellDB:OK, connected.");
+			logger.finer("shellDB:Ready, Now read from stdin.");
 			executeScriptFrom(System.in, connectionForInit, true);
-			logger.debug("-> EOF stdin, end");
+			logger.finer("-> EOF stdin, end");
 		} catch (IOException ex) {
-			logger.error("Something with the reading script:" + ex.getLocalizedMessage(), ex);
+			logger.log(Level.SEVERE,"Something with the reading script:" + ex.getLocalizedMessage(), ex);
 		} catch (IllegalStateException ex) {
-			logger.error("Something with the Classpath and JDBC Driver:" + ex.getLocalizedMessage(), ex);
+			logger.log(Level.SEVERE,"Something with the Classpath and JDBC Driver:" + ex.getLocalizedMessage(), ex);
 		} catch (SQLException ex) {
-			logger.error("Something with the JDBC Connection:" + ex.getLocalizedMessage(), ex);
+			logger.log(Level.SEVERE,"Something with the JDBC Connection:" + ex.getLocalizedMessage(), ex);
 		} finally {
 			try {
 				if (connectionForInit != null) {
 					connectionForInit.close();
 				}
 			} catch (SQLException ex1) {
-				logger.error(ex1.getLocalizedMessage(), ex1);
+				logger.log(Level.SEVERE,ex1.getLocalizedMessage(), ex1);
 			}
 		}
 	}

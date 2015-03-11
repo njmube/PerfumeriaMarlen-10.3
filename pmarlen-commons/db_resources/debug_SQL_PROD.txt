@@ -233,11 +233,21 @@
 		[2] RFC varchar(16,0) NOT NULL	
 		[3] razon_social varchar(128,0) NOT NULL	
 		[4] nombre_establecimiento varchar(128,0)	
-		[5] contacto varchar(128,0)	
-		[6] telefonos varchar(128,0)	
-		[7] email varchar(64,0)	
-		[8] observaciones varchar(255,0)	
-		[9] direccion varchar(255,0)	
+		[5] Calle varchar(128,0) NOT NULL	
+		[6] num_Exterior varchar(16,0) NOT NULL	
+		[7] num_Interior varchar(16,0) NOT NULL	
+		[8] Colonia varchar(128,0) NOT NULL	
+		[9] Municipio varchar(128,0) NOT NULL	
+		[10] Referencia varchar(128,0)	
+		[11] Ciudad varchar(128,0)	
+		[12] CP varchar(6,0) NOT NULL	
+		[13] Estado varchar(128,0) NOT NULL	
+		[14] email varchar(64,0)	
+		[15] telefonos varchar(128,0)	
+		[16] contacto varchar(128,0)	
+		[17] observaciones varchar(255,0)	
+		[18] ubicacion_Lat double(10,0)	
+		[19] ubicacion_Lon double(10,0)	
 		,Indexes {
 		}
 	}

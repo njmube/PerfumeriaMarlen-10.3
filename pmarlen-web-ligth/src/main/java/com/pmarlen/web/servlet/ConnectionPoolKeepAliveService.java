@@ -47,7 +47,7 @@ public class ConnectionPoolKeepAliveService extends Thread implements Runnable{
 		while(running){			
 			try {
 				ArrayList<Usuario> usuariosList = UsuarioDAO.getInstance().findAll();
-				logger.info("\t-> while ("+running+"): getting usuariosList:"+(usuariosList!=null?usuariosList.size()+" elements.":null));				
+				logger.fine("\t-> while ("+running+"): getting usuariosList:"+(usuariosList!=null?usuariosList.size()+" elements.":null));				
 				Thread.sleep(60000);
 			} catch(Exception e){
 				logger.log(Level.SEVERE, "while running:", e);

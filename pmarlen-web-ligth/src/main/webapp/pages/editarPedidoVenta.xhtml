@@ -19,7 +19,7 @@
 
 				<h:form id="form1" rendered="#{editarEntradaSalidaMB.verificable or editarEntradaSalidaMB.surtible}">
 					<h:panelGrid columns="1" cellpadding="0" id="panel1" width="100%" columnClasses="leftAlign">
-						<p:outputLabel for="almacen" value="ALMACÉN :(#{editarEntradaSalidaMB.verificable}, #{editarEntradaSalidaMB.surtible})" title="CAMBIAR EL ALMACÉN PARA HACER LA SELECCION DE UN NUEVO PRODUCTO HASTA AGREGARLO"/>
+						<p:outputLabel for="almacen" value="ALMACÉN :" title="CAMBIAR EL ALMACÉN PARA HACER LA SELECCION DE UN NUEVO PRODUCTO HASTA AGREGARLO"/>
 
 						<p:selectOneMenu id="almacen" value="#{editarEntradaSalidaMB.tipoAlmacen}" style="width:125px">
 							<f:selectItems  value="#{editarEntradaSalidaMB.tipoAlmacenList}"/>
@@ -47,7 +47,7 @@
 					
 					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
 						
-						<p:outputLabel value="CANTIDAD x PRODUCTO :(#{editarEntradaSalidaMB.verificable}, #{editarEntradaSalidaMB.surtible})" rendered="true"/>
+						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
 
 						<h:panelGrid columns="6" cellpadding="0">	
 							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{editarEntradaSalidaMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" rendered="true"/>
@@ -95,7 +95,7 @@
 				<h:form id="form2a" rendered="#{editarEntradaSalidaMB.verificable or editarEntradaSalidaMB.surtible}">
 
 					<h:panelGrid columns="1" cellpadding="0" id="panel2a" columnClasses="leftAlign" width="100%">
-						<p:outputLabel value="CANTIDAD x CODIGO :(#{editarEntradaSalidaMB.verificable}, #{editarEntradaSalidaMB.surtible})" />
+						<p:outputLabel value="CANTIDAD x CODIGO :" />
 						
 						<h:panelGroup>
 							<p:inputText value="#{editarEntradaSalidaMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false">
@@ -128,7 +128,7 @@
 									  scrollHeight="200" >
 							<p:ajax event="rowReorder" listener="#{editarEntradaSalidaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" />
 							<f:facet name="header">
-								<h:outputText value="OPCIONES DE VER TABLA:(#{editarEntradaSalidaMB.verificable}, #{editarEntradaSalidaMB.surtible})"/>
+								<h:outputText value="OPCIONES DE VER TABLA:"/>
 								<p:commandButton	value="VER + COLUMNAS" actionListener="#{editarEntradaSalidaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
 												 rendered="#{not editarEntradaSalidaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
 								<p:commandButton	value="VER - COLUMNAS" actionListener="#{editarEntradaSalidaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
@@ -141,6 +141,19 @@
 								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{editarEntradaSalidaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
 													rendered="#{editarEntradaSalidaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
 													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible}"/>
+								<p:spacer width="10" rendered="false"/>
+								
+								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarEntradaSalidaMB.pedidoVenta.id}.pdf" target="_blank" rendered="false">
+									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<h:outputLink id="pdfLink2" value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarEntradaSalidaMB.pedidoVenta.id}.pdf" target="_blank" rendered="false">
+									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA INTERNA (PARA ALMACÉN) DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<p:button href="/docs/notas/Nota_PerfumeriaMarlen_No_#{editarEntradaSalidaMB.pedidoVenta.id}.pdf" 
+										  target="_blank" icon="ui-icon-document"  title="PDF NOTA DE VENTA ##{pv.id}" />
+								
 							</f:facet>
 
 							<p:column headerText="." width="5%">
@@ -274,7 +287,7 @@
 
 					<h:panelGrid columns="1" id="panel4_1" cellpadding="0" columnClasses="leftAlign" width="100%">
 
-						<p:outputLabel value="CLIENTE ( RAZ.SOC. / NOM.EST.):(#{editarEntradaSalidaMB.verificable}, #{editarEntradaSalidaMB.surtible})" />
+						<p:outputLabel value="CLIENTE ( RAZ.SOC. / NOM.EST.):" />
 
 						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
 
@@ -398,27 +411,31 @@
 										 actionListener="#{editarEntradaSalidaMB.surtir}" process="@all" update="@all">
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
-						
-						<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.facturable}"  
-										 process="@all" update="@all">
-							<p:confirm header="GENERAR C.F.D.I." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
-						</p:commandButton>
+						<h:panelGroup>
+							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.facturable}"  
+											 disabled="#{editarEntradaSalidaMB.actualizarEstadoPorResultadoWS}"
+											 actionListener="#{editarEntradaSalidaMB.generaCFDReal}" process="@all" update="@all">
+								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
+							</p:commandButton>
+
+						</h:panelGroup>
 						
 						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.cancelable}" 
 										 process="@all" update="@all">
 							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE C A N C E L A R  EL PEDIDO ?" icon="ui-icon-alert" />
-						</p:commandButton>
+						</p:commandButton>						
 												
 						<h:panelGrid columns="2" rendered="#{editarEntradaSalidaMB.hayCambios}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
+							<p:commandButton value="GUARDAR CAMBIOS" actionListener="#{editarEntradaSalidaMB.guardar}" oncomplete="updateComponentsOnWindowResize();"
+											 process="@all" update="@all" icon="ui-icon-disk">
+								<p:confirm header="CANCELAR CAMBIOS" message="¿ SEGURO QUE QUIERE GUARDAR CAMBIOS?" icon="ui-icon-alert" />
+							</p:commandButton>						
+							
 							<p:commandButton value="CANCELAR CAMBIOS" actionListener="#{editarEntradaSalidaMB.cancelarCambios}" oncomplete="updateComponentsOnWindowResize();"
 											 process="@all" update="@all" icon="ui-icon-cancel">
 								<p:confirm header="CANCELAR CAMBIOS" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS?" icon="ui-icon-alert" />
 							</p:commandButton>						
-
-							<p:commandButton value="GUARDAR CAMBIOS"  actionListener="#{editarEntradaSalidaMB.guardar}" disabled="#{not editarEntradaSalidaMB.crearPedido}"  icon="ui-icon-disk"
-											 process="@all" update="@all" oncomplete="updateComponentsOnWindowResize();">
-								<p:confirm header="GUARDAR CAMBIOS" message="¿ SEGURO QUIERE GUARDAR CAMBIOS DEL PEDIDO ?" icon="ui-icon-alert" />
-							</p:commandButton>
+							
 						</h:panelGrid>
 						
 						<p:confirmDialog global="true" styleClass="centerAlign">
@@ -437,6 +454,7 @@
 					</h:panelGrid>
 
 				</h:form>
+
 			</h:panelGrid>
 
 

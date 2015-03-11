@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 import java.text.*;
 import java.util.*;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
@@ -18,14 +19,12 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ManagedBean(name="systemInfoMB")
 @RequestScoped
 public class SystemInfoMB  implements Serializable{
 
-	private final Logger logger = LoggerFactory.getLogger(SystemInfoMB.class);
+	private final Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 
 	public String getSystemVersion() {

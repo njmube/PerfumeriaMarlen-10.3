@@ -33,7 +33,7 @@ import org.primefaces.event.ReorderEvent;
 @SessionScoped
 public class HistoricoPedidosVentaMB {
 	private transient static Logger logger = Logger.getLogger("historicoPedidosVentaMB");
-	
+	private int noPedidoBuscar;
 	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
 	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
 	
@@ -47,6 +47,7 @@ public class HistoricoPedidosVentaMB {
 			pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistorico();
 			if(pedidosVentas != null){
 				logger.config("pedidosVentas.size()="+pedidosVentas.size());
+				noPedidoBuscar = pedidosVentas.get(0).getId();
 			}
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
@@ -104,4 +105,17 @@ public class HistoricoPedidosVentaMB {
 		return Constants.getImporteMoneda(f);
 	}
 
+	public void setNoPedidoBuscar(int noPedidoBuscar) {
+		this.noPedidoBuscar = noPedidoBuscar;
+	}
+
+	public int getNoPedidoBuscar() {
+		return noPedidoBuscar;
+	}
+	
+	public String buscar(){
+		logger.info("->noPedidoBuscar="+noPedidoBuscar);
+		editarEntradaSalidaMB.editar(noPedidoBuscar);		
+		return "/pages/editarEntradaSalida";
+	}
 }

@@ -45,13 +45,13 @@
 			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
 			<version>${slf4j.version}</version>
 		</dependency>   
-		-->
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
 		</dependency>
-            	
+        -->    	
 		<!--
 		  No Commons Logging -
 		  Based on http://day-to-day-stuff.blogspot.com/2007/07/no-more-commons-logging.html
@@ -60,14 +60,14 @@
 		  <artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		  <version>99.0-does-not-exist</version>
 		  <scope>provided</scope>
-		</dependency>
-		-->
+		</dependency>		
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.2</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
