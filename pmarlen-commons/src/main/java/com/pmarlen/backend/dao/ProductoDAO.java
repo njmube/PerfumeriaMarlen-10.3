@@ -1,7 +1,7 @@
 /**
  * ProductoDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -63,7 +63,7 @@ public class ProductoDAO {
 	private Connection getConnectionCommiteable(){
 		return DataSourceFacade.getStrategy().getConnectionCommiteable();
 	}
-	
+
 	public Producto findBy(Producto x) throws DAOException, EntityNotFoundException {
 		Producto r = null;
 		PreparedStatement ps = null;
@@ -75,7 +75,7 @@ public class ProductoDAO {
 					+ "WHERE CODIGO_BARRAS=?"
 			);
 			ps.setString(1, x.getCodigoBarras());
-
+			
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				r = new Producto();
@@ -110,9 +110,9 @@ public class ProductoDAO {
 				}
 			}
 		}
-		return r;
+		return r;		
 	}
-	
+
 	public EntradaSalidaDetalleQuickView findByCodigo(int almacenId, String codigo) throws DAOException {
 		logger.info("->findAllExclusiveByCodigo");
 		EntradaSalidaDetalleQuickView x = null;

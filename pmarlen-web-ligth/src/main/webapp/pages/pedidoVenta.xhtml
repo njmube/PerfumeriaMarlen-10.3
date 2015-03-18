@@ -43,8 +43,7 @@
 					</h:panelGrid>
 				</h:form>
 
-				<h:form id="form2" rendered="true">
-					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  /> 
+				<h:form id="form2" rendered="true">					
 					
 					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
 						
@@ -120,7 +119,8 @@
 				</h:form>
 
 				<h:form id="form3" rendered="true">
-
+					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  />
+					
 					<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 						<p:dataTable  var="pvd" value="#{entradaSalidaMB.entityList}"
 									  id="pvdTable" widgetVar="wv_pvdTable" emptyMessage="-- SIN ELEMENTOS --" 
@@ -372,14 +372,14 @@
 						</h:panelGrid>
 						<p:spacer width="10" rendered="#{not entradaSalidaMB.pedidoFinalizado}"/>
 						<h:panelGrid columns="2" rendered="#{not entradaSalidaMB.pedidoFinalizado}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
-							<p:commandButton value="CANCELAR" actionListener="#{entradaSalidaMB.cancelar}" process="@all" rendered="#{not entradaSalidaMB.pedidoFinalizado}" icon="ui-icon-cancel"
+							<p:commandButton value="CANCELAR Y REINICIAR" actionListener="#{entradaSalidaMB.cancelar}" process="@all" rendered="#{not entradaSalidaMB.pedidoFinalizado}" icon="ui-icon-cancel"
 											 update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
-								<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR ?" icon="ui-icon-alert" />
+								<p:confirm header="CANCELAR CREACIÓN" message="¿ SEGURO QUE QUIERE CANCELAR CREACIÓN DE PEDIDO ?" icon="ui-icon-alert" />
 							</p:commandButton>						
 
 							<p:commandButton value="CREAR PEDIDO"  actionListener="#{entradaSalidaMB.guardar}" disabled="#{not entradaSalidaMB.crearPedido}" icon="ui-icon-play"
 											 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
-								<p:confirm header="CREAR PEDIDO" message="¿ SEGURO TERMINÓ Y QUIERE CREAR EL PEDIDO ?" icon="ui-icon-alert" />
+								<p:confirm header="CREAR PEDIDO" message="¿ SEGURO YÁ TERMINÓ Y QUIERE CREAR EL PEDIDO ?" icon="ui-icon-alert" />
 							</p:commandButton>
 						</h:panelGrid>
 
@@ -393,9 +393,10 @@
 										 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();"/>
 
 						<p:confirmDialog global="true" styleClass="centerAlign" closeOnEscape="true" >
+
 							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
-								<p:commandButton value="SI, OK"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="NO, NUNCA" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton value="SI, ESTOY SEGURO"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="¡ NO, MEJOR NO !"  type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 							</h:panelGrid>
 								
 						</p:confirmDialog>

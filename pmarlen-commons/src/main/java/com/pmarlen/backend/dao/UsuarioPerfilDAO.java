@@ -1,7 +1,7 @@
 /**
  * UsuarioPerfilDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for UsuarioPerfilDAO of Table USUARIO_PERFIL.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/15 12:43
  */
 
 public class UsuarioPerfilDAO {
@@ -101,7 +101,7 @@ public class UsuarioPerfilDAO {
 		}
 		return r;		
 	}
-	
+
 	public ArrayList<UsuarioPerfil> findBy(Usuario u) throws DAOException {
 		ArrayList<UsuarioPerfil> r = new ArrayList<UsuarioPerfil>();
 		PreparedStatement ps = null;

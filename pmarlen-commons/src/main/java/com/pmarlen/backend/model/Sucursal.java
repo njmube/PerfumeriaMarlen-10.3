@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Sucursal.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class Sucursal implements java.io.Serializable {
-    private static final long serialVersionUID = 479339323;
+    private static final long serialVersionUID = 1273030789;
     
     /**
     * id
