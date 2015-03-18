@@ -1,7 +1,7 @@
 /**
  * ClienteDAO
  *
- * Created 2015/03/03 00:40
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -25,13 +25,14 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.pmarlen.backend.model.*;
+import com.pmarlen.backend.model.quickviews.ClienteQuickView;
 import com.tracktopell.jdbc.DataSourceFacade;
 
 /**
  * Class for ClienteDAO of Table CLIENTE.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class ClienteDAO {
@@ -71,14 +72,14 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON FROM CLIENTE "+
+			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON,NUM_CUENTA,BANCO,DIRECCION_FACTURACION FROM CLIENTE "+
 					"WHERE ID=?"
 			);
 			ps.setInt(1, x.getId());
 			
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				r = new Cliente();
+				r = new Cliente();				
 				r.setId((Integer)rs.getObject("ID"));
 				r.setRfc((String)rs.getObject("RFC"));
 				r.setRazonSocial((String)rs.getObject("RAZON_SOCIAL"));
@@ -98,6 +99,10 @@ public class ClienteDAO {
 				r.setObservaciones((String)rs.getObject("OBSERVACIONES"));
 				r.setUbicacionLat((Double)rs.getObject("UBICACION_LAT"));
 				r.setUbicacionLon((Double)rs.getObject("UBICACION_LON"));
+				r.setNumCuenta((String)rs.getObject("NUM_CUENTA"));
+				r.setBanco((String)rs.getObject("BANCO"));
+				r.setDireccionFacturacion((String)rs.getObject("DIRECCION_FACTURACION"));
+				r.setId((Integer)rs.getObject("ID"));
 			} else {
 				throw new EntityNotFoundException("CLIENTE NOT FOUND FOR ID="+x.getId());
 			}
@@ -119,18 +124,18 @@ public class ClienteDAO {
 		return r;		
 	}
 
-    public ArrayList<Cliente> findAll() throws DAOException {
-		ArrayList<Cliente> r = new ArrayList<Cliente>();
+    public ArrayList<ClienteQuickView> findAll() throws DAOException {
+		ArrayList<ClienteQuickView> r = new ArrayList<ClienteQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON FROM CLIENTE");
+			ps = conn.prepareStatement("SELECT ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON,NUM_CUENTA,BANCO,DIRECCION_FACTURACION FROM CLIENTE");
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				Cliente x = new Cliente();
+				ClienteQuickView x = new ClienteQuickView();
 				x.setId((Integer)rs.getObject("ID"));
 				x.setRfc((String)rs.getObject("RFC"));
 				x.setRazonSocial((String)rs.getObject("RAZON_SOCIAL"));
@@ -150,6 +155,9 @@ public class ClienteDAO {
 				x.setObservaciones((String)rs.getObject("OBSERVACIONES"));
 				x.setUbicacionLat((Double)rs.getObject("UBICACION_LAT"));
 				x.setUbicacionLon((Double)rs.getObject("UBICACION_LON"));
+				x.setNumCuenta((String)rs.getObject("NUM_CUENTA"));
+				x.setBanco((String)rs.getObject("BANCO"));
+				x.setDireccionFacturacion((String)rs.getObject("DIRECCION_FACTURACION"));
 				r.add(x);
 			}
 		}catch(SQLException ex) {
@@ -176,8 +184,8 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("INSERT INTO CLIENTE(RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON) "+
-					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+			ps = conn.prepareStatement("INSERT INTO CLIENTE(RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON,NUM_CUENTA,BANCO,DIRECCION_FACTURACION) "+
+					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					,Statement.RETURN_GENERATED_KEYS);			
 			int ci=1;
 			ps.setObject(ci++,x.getId());
@@ -199,6 +207,9 @@ public class ClienteDAO {
 			ps.setObject(ci++,x.getObservaciones());
 			ps.setObject(ci++,x.getUbicacionLat());
 			ps.setObject(ci++,x.getUbicacionLon());
+			ps.setObject(ci++,x.getNumCuenta());
+			ps.setObject(ci++,x.getBanco());
+			ps.setObject(ci++,x.getDireccionFacturacion());
 
 			r = ps.executeUpdate();					
 			ResultSet rsk = ps.getGeneratedKeys();
@@ -230,7 +241,7 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE CLIENTE SET RFC=?,RAZON_SOCIAL=?,NOMBRE_ESTABLECIMIENTO=?,CALLE=?,NUM_EXTERIOR=?,NUM_INTERIOR=?,COLONIA=?,MUNICIPIO=?,REFERENCIA=?,CIUDAD=?,CP=?,ESTADO=?,EMAIL=?,TELEFONOS=?,CONTACTO=?,OBSERVACIONES=?,UBICACION_LAT=?,UBICACION_LON=? "+
+			ps = conn.prepareStatement("UPDATE CLIENTE SET RFC=?,RAZON_SOCIAL=?,NOMBRE_ESTABLECIMIENTO=?,CALLE=?,NUM_EXTERIOR=?,NUM_INTERIOR=?,COLONIA=?,MUNICIPIO=?,REFERENCIA=?,CIUDAD=?,CP=?,ESTADO=?,EMAIL=?,TELEFONOS=?,CONTACTO=?,OBSERVACIONES=?,UBICACION_LAT=?,UBICACION_LON=?,NUM_CUENTA=?,BANCO=?,DIRECCION_FACTURACION=? "+
 					" WHERE ID=?");
 			
 			int ci=1;
@@ -253,6 +264,9 @@ public class ClienteDAO {
 			ps.setObject(ci++,x.getObservaciones());
 			ps.setObject(ci++,x.getUbicacionLat());
 			ps.setObject(ci++,x.getUbicacionLon());
+			ps.setObject(ci++,x.getNumCuenta());
+			ps.setObject(ci++,x.getBanco());
+			ps.setObject(ci++,x.getDireccionFacturacion());
 			ps.setObject(ci++,x.getId());
 			
 			r = ps.executeUpdate();						

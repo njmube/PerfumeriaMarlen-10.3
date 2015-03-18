@@ -1,7 +1,7 @@
 /**
  * AlmacenProductoDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * Class for AlmacenProductoDAO of Table ALMACEN_PRODUCTO.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/15 12:43
  */
 
 public class AlmacenProductoDAO {
@@ -195,7 +195,7 @@ GROUP BY ALMACEN_ID,PRODUCTO_CODIGO_BARRAS
 		}
 		return r;		
 	};
-	
+    
     public int insert(AlmacenProducto x) throws DAOException {
 		PreparedStatement ps = null;
 		int r = -1;

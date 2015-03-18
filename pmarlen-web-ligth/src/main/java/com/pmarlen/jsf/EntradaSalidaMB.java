@@ -13,6 +13,7 @@ import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.Producto;
+import com.pmarlen.backend.model.quickviews.ClienteQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
@@ -346,17 +347,17 @@ public class EntradaSalidaMB{
 		return resultadoBusquedaList;
 	}
 	
-	ArrayList<Cliente> clientes;
+	ArrayList<ClienteQuickView> clientes;
 	ArrayList<SelectItem> clientesList;
 	Cliente clienteSeleccionado;
 
-	public ArrayList<Cliente> getClientes() {
+	public ArrayList<ClienteQuickView> getClientes() {
 		if(clientes == null){
 			try {
 				clientes = ClienteDAO.getInstance().findAll();
 			}catch(DAOException de){
 				logger.severe(de.getMessage());
-				clientes = new ArrayList<Cliente>();
+				clientes = new ArrayList<ClienteQuickView>();
 			}
 		}
 		return clientes;

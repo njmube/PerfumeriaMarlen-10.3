@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Corte_Caja.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class CorteCaja implements java.io.Serializable {
-    private static final long serialVersionUID = 1152967367;
+    private static final long serialVersionUID = 2090437641;
     
     /**
     * id

@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Oferta_Producto.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class OfertaProducto implements java.io.Serializable {

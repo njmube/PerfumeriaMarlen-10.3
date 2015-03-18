@@ -1,7 +1,7 @@
 /**
  * MovimientoHistoricoProductoDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -22,7 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.Timestamp;	
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +32,7 @@ import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
  * Class for MovimientoHistoricoProductoDAO of Table MOVIMIENTO_HISTORICO_PRODUCTO.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/15 12:43
  */
 
 public class MovimientoHistoricoProductoDAO {
@@ -89,6 +89,7 @@ public class MovimientoHistoricoProductoDAO {
 				r.setPrecio((Double)rs.getObject("PRECIO"));
 				r.setUsuarioEmail((String)rs.getObject("USUARIO_EMAIL"));
 				r.setProductoCodigoBarras((String)rs.getObject("PRODUCTO_CODIGO_BARRAS"));
+				r.setEntradaSalidaId((Integer)rs.getObject("ENTRADA_SALIDA_ID"));
 			} else {
 				throw new EntityNotFoundException("MOVIMIENTO_HISTORICO_PRODUCTO NOT FOUND FOR ID="+x.getId());
 			}
@@ -328,8 +329,8 @@ AND    PRODUCTO_CODIGO_BARRAS='7891024136089') R1;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("INSERT INTO MOVIMIENTO_HISTORICO_PRODUCTO(ALMACEN_ID,FECHA,TIPO_MOVIMIENTO,CANTIDAD,COSTO,PRECIO,USUARIO_EMAIL,PRODUCTO_CODIGO_BARRAS) "+
-					" VALUES(?,?,?,?,?,?,?,?)"
+			ps = conn.prepareStatement("INSERT INTO MOVIMIENTO_HISTORICO_PRODUCTO(ALMACEN_ID,FECHA,TIPO_MOVIMIENTO,CANTIDAD,COSTO,PRECIO,USUARIO_EMAIL,PRODUCTO_CODIGO_BARRAS,ENTRADA_SALIDA_ID) "+
+					" VALUES(?,?,?,?,?,?,?,?,?)"
 					,Statement.RETURN_GENERATED_KEYS);			
 			int ci=1;
 			ps.setObject(ci++,x.getId());
@@ -341,6 +342,7 @@ AND    PRODUCTO_CODIGO_BARRAS='7891024136089') R1;
 			ps.setObject(ci++,x.getPrecio());
 			ps.setObject(ci++,x.getUsuarioEmail());
 			ps.setObject(ci++,x.getProductoCodigoBarras());
+			ps.setObject(ci++,x.getEntradaSalidaId());
 
 			r = ps.executeUpdate();					
 			ResultSet rsk = ps.getGeneratedKeys();
@@ -372,7 +374,7 @@ AND    PRODUCTO_CODIGO_BARRAS='7891024136089') R1;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE MOVIMIENTO_HISTORICO_PRODUCTO SET ALMACEN_ID=?,FECHA=?,TIPO_MOVIMIENTO=?,CANTIDAD=?,COSTO=?,PRECIO=?,USUARIO_EMAIL=?,PRODUCTO_CODIGO_BARRAS=? "+
+			ps = conn.prepareStatement("UPDATE MOVIMIENTO_HISTORICO_PRODUCTO SET ALMACEN_ID=?,FECHA=?,TIPO_MOVIMIENTO=?,CANTIDAD=?,COSTO=?,PRECIO=?,USUARIO_EMAIL=?,PRODUCTO_CODIGO_BARRAS=?,ENTRADA_SALIDA_ID=? "+
 					" WHERE ID=?");
 			
 			int ci=1;
@@ -385,6 +387,7 @@ AND    PRODUCTO_CODIGO_BARRAS='7891024136089') R1;
 			ps.setObject(ci++,x.getPrecio());
 			ps.setObject(ci++,x.getUsuarioEmail());
 			ps.setObject(ci++,x.getProductoCodigoBarras());
+			ps.setObject(ci++,x.getEntradaSalidaId());
 			ps.setObject(ci++,x.getId());
 			
 			r = ps.executeUpdate();						

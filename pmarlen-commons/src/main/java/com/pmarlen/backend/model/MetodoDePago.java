@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Metodo_De_Pago.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class MetodoDePago implements java.io.Serializable {
-    private static final long serialVersionUID = 1431398495;
+    private static final long serialVersionUID = 1912977276;
     
     /**
     * id

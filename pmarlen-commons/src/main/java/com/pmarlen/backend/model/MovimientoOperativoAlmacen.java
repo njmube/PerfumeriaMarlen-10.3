@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Movimiento_operativo_almacen.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class MovimientoOperativoAlmacen implements java.io.Serializable {
-    private static final long serialVersionUID = 1842558276;
+    private static final long serialVersionUID = 1433980130;
     
     /**
     * id

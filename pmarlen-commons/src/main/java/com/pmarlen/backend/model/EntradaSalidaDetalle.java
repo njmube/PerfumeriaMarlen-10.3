@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Entrada_Salida_Detalle.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class EntradaSalidaDetalle implements java.io.Serializable {
-    private static final long serialVersionUID = 1217143834;
+    private static final long serialVersionUID = 8505448;
     
     /**
     * id

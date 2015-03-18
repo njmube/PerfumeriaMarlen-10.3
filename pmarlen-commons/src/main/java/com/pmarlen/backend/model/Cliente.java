@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Cliente.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class Cliente implements java.io.Serializable {
-    private static final long serialVersionUID = 966372305;
+    private static final long serialVersionUID = 336867571;
     
     /**
     * id
@@ -112,6 +112,21 @@ public class Cliente implements java.io.Serializable {
     * ubicacion lon
     */
     private Double ubicacionLon;
+    
+    /**
+    * num cuenta
+    */
+    private String numCuenta;
+    
+    /**
+    * banco
+    */
+    private String banco;
+    
+    /**
+    * direccion facturacion
+    */
+    private String direccionFacturacion;
 
     /** 
      * Default Constructor
@@ -282,6 +297,30 @@ public class Cliente implements java.io.Serializable {
         this.ubicacionLon = v;
     }
 
+    public String getNumCuenta() {
+        return this.numCuenta;
+    }
+
+    public void setNumCuenta(String v) {
+        this.numCuenta = v;
+    }
+
+    public String getBanco() {
+        return this.banco;
+    }
+
+    public void setBanco(String v) {
+        this.banco = v;
+    }
+
+    public String getDireccionFacturacion() {
+        return this.direccionFacturacion;
+    }
+
+    public void setDireccionFacturacion(String v) {
+        this.direccionFacturacion = v;
+    }
+
 
     @Override
     public int hashCode() {
@@ -377,6 +416,15 @@ public class Cliente implements java.io.Serializable {
 		sb.append(s);
 		// Double
 		sb.append( df.format(this.ubicacionLon));
+		sb.append(s);
+		// String
+		sb.append(this.numCuenta);
+		sb.append(s);
+		// String
+		sb.append(this.banco);
+		sb.append(s);
+		// String
+		sb.append(this.direccionFacturacion);
 
 		return ser;
 	}
@@ -442,6 +490,15 @@ public class Cliente implements java.io.Serializable {
 			nf++;
 			// Double
 			this.ubicacionLon =  df.parse(srcSpplited[nf]).doubleValue();
+			nf++;
+			// String
+			this.numCuenta = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.banco = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.direccionFacturacion = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 
 		}catch(Exception e){

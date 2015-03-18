@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
  * Class for mapping DTO Entity of Table Multimedio.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class Multimedio implements java.io.Serializable {
-    private static final long serialVersionUID = 797061776;
+    private static final long serialVersionUID = 1177988267;
     
     /**
     * id

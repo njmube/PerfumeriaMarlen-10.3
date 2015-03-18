@@ -422,26 +422,26 @@
 						
 						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.cancelable}" 
 										 process="@all" update="@all">
-							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE C A N C E L A R  EL PEDIDO ?" icon="ui-icon-alert" />
-						</p:commandButton>						
+							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR EL PEDIDO ?" icon="ui-icon-alert" />
+						</p:commandButton>
 												
 						<h:panelGrid columns="2" rendered="#{editarEntradaSalidaMB.hayCambios}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
 							<p:commandButton value="GUARDAR CAMBIOS" actionListener="#{editarEntradaSalidaMB.guardar}" oncomplete="updateComponentsOnWindowResize();"
 											 process="@all" update="@all" icon="ui-icon-disk">
-								<p:confirm header="CANCELAR CAMBIOS" message="¿ SEGURO QUE QUIERE GUARDAR CAMBIOS?" icon="ui-icon-alert" />
-							</p:commandButton>						
+								<p:confirm header="GUARDAR CAMBIOS" message="¿ SEGURO QUE QUIERE GUARDAR CAMBIOS ? PUEDE GUARDAR VARIAS VECES" icon="ui-icon-alert" />
+							</p:commandButton>
 							
-							<p:commandButton value="CANCELAR CAMBIOS" actionListener="#{editarEntradaSalidaMB.cancelarCambios}" oncomplete="updateComponentsOnWindowResize();"
+							<p:commandButton value="CANCELAR CAMBIOS Y RECARGAR" actionListener="#{editarEntradaSalidaMB.cancelarCambios}" oncomplete="updateComponentsOnWindowResize();"
 											 process="@all" update="@all" icon="ui-icon-cancel">
-								<p:confirm header="CANCELAR CAMBIOS" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS?" icon="ui-icon-alert" />
-							</p:commandButton>						
+								<p:confirm header="CANCELAR CAMBIOS Y RECARGAR" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS ? SE RECARGARIA EL PEDIDO" icon="ui-icon-alert" />
+							</p:commandButton>
 							
 						</h:panelGrid>
 						
 						<p:confirmDialog global="true" styleClass="centerAlign">
 							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
-								<p:commandButton value="SI, OK"    type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="NO, NUNCA" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton value="SI, ESTOY SEGURO"		type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="¡ NO, MEJOR NO !"		type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 							</h:panelGrid>
 								
 						</p:confirmDialog>
@@ -472,7 +472,7 @@
 
 			function setDataTableHeight() {
 				var winHeight = $(window).height();				
-				var scrollHeight = winHeight - (500-alturaExtraTabla);
+				var scrollHeight = winHeight - (470-alturaExtraTabla);
 
 				var scrollBody = $(".ui-datatable-scrollable-body");
 				scrollBody.height(scrollHeight);

@@ -2,7 +2,9 @@ package com.pmarlen.jsf;
 
 import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.UsuarioDAO;
 import com.pmarlen.backend.model.Cliente;
+import com.pmarlen.backend.model.quickviews.ClienteQuickView;
 import com.pmarlen.web.security.managedbean.SessionUserMB;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +22,10 @@ import org.primefaces.event.SelectEvent;
 @SessionScoped
 public class ClienteMB  {
 	private transient final Logger logger = Logger.getLogger(ClienteMB.class.getSimpleName());
-	List<Cliente> entityList;
+	List<ClienteQuickView> entityList;
 	Integer viewRows;
-	Cliente selectedEntity;
+	ClienteQuickView selectedEntity;
+	String dialogTitle;
 	
 	@PostConstruct
     public void init() {
@@ -31,10 +34,11 @@ public class ClienteMB  {
 			entityList = ClienteDAO.getInstance().findAll();
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
-			entityList = new ArrayList<Cliente>();
+			entityList = new ArrayList<ClienteQuickView>();
 		}
 		System.out.println("->ClienteMB: init:entityList="+entityList);
 		viewRows = 10;
+		dialogTitle ="CLIETE";
     }
 	
 	public String reset() {
@@ -42,6 +46,12 @@ public class ClienteMB  {
         init();
 		return "/pages/cliente";
     }
+
+	public String getDialogTitle() {
+		return dialogTitle;
+	}
+	
+	
 	
 	public void selectEntity(ActionEvent event){
 		System.out.println("->ClienteMB: selectCliente.");
@@ -53,27 +63,34 @@ public class ClienteMB  {
 	
 	public void prepareForNew() {
 		System.out.println("->ClienteMB prepareForNew");
-		this.selectedEntity = new Cliente();
+		dialogTitle ="AGREGAR NUEVO CLIETE";
+		this.selectedEntity = new ClienteQuickView();
 	}
 	
-	public void setSelectedEntity(Cliente selectedCliente) {
-		System.out.println("->ClienteMB setSelectedCliente:"+selectedCliente);
+	public void setSelectedEntity(ClienteQuickView selectedCliente) {
+		System.out.println("->ClienteMB setSelectedCliente.id="+selectedCliente.getId());
+		dialogTitle ="EDITAR CLIENTE ID #"+selectedCliente.getId();
 		this.selectedEntity = selectedCliente;
 	}
 	
 	public void save(){
 		System.out.println("->ClienteMB: saveSelectedCliente:id:"+selectedEntity.getId());
+		
 		try{
-			if(selectedEntity.getTelefonos().contains("0000")){
-				throw new Exception("Telephone 0000 not allowed.");
+//			if(selectedEntity.getTelefonos().contains("0000")){
+//				throw new Exception("Telephone 0000 not allowed.");
+//			}
+			int u=-1;			
+			if(selectedEntity.getId()==null){
+				u=ClienteDAO.getInstance().insert(selectedEntity);			
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, dialogTitle, "SE CREÓ CORRECTAMENTE NUEVO CLIENTE"));			
+			} else{
+				u=ClienteDAO.getInstance().update(selectedEntity);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, dialogTitle, "SE ACTUALIZARÓN CORRECTAMENTE LOS DATOS DEL CLIENTE"));			
 			}
-			
-			int u=ClienteDAO.getInstance().update(selectedEntity);
-			System.out.println("->ClienteMB: saveSelectedCliente: u="+u);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Guardar", "Ok se guardó correctamente"));
 			reset();
 		} catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Guardar", "Eror al guardar:"+e.getLocalizedMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dialogTitle, "OCURRIO UN ERROR AL GUARDAR"));
 			FacesContext.getCurrentInstance().validationFailed();
 		}
 		
@@ -89,7 +106,7 @@ public class ClienteMB  {
          
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-	public List<Cliente> getEntityList() {
+	public List<ClienteQuickView> getEntityList() {
 		return entityList;
 	}
 	

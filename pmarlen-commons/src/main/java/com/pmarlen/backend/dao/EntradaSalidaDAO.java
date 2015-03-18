@@ -1,7 +1,7 @@
 /**
  * EntradaSalidaDAO
  *
- * Created 2015/02/07 21:02
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -26,7 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.Timestamp;	
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -38,7 +38,7 @@ import org.apache.commons.beanutils.BeanUtils;
  * Class for EntradaSalidaDAO of Table ENTRADA_SALIDA.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/02/07 21:02
+ * @date 2015/03/15 12:43
  */
 
 public class EntradaSalidaDAO {
@@ -70,7 +70,7 @@ public class EntradaSalidaDAO {
 	private Connection getConnectionCommiteable(){
 		return DataSourceFacade.getStrategy().getConnectionCommiteable();
 	}
-	
+
 	public void actualizaCantidadPendienteParaOtrosES(ArrayList<EntradaSalidaDetalleQuickView> pvdList) throws DAOException {
 
 		PreparedStatement ps = null;
@@ -78,7 +78,7 @@ public class EntradaSalidaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-
+			
 			HashSet<String> codigos = new HashSet<String>();
 			int pedidoVentaId = 0;
 			for (EntradaSalidaDetalleQuickView pvd : pvdList) {
@@ -94,11 +94,11 @@ public class EntradaSalidaDAO {
 					sbCB.append("'");
 					sbCB.append(cb);
 					sbCB.append("'");
-				} else {
+			} else {
 					sbCB.append(",'");
 					sbCB.append(cb);
 					sbCB.append("'");
-				}
+			}
 				ncb++;
 			}
 			codigosBuscar = sbCB.toString();
@@ -310,7 +310,7 @@ public class EntradaSalidaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-
+			
 			ps = conn.prepareStatement(
 					"SELECT   P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDADES_X_CAJA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.UBICACION,ESD.ID AS ESD_ID,A.ID AS ALMACEN_ID,A.TIPO_ALMACEN,ESD.CANTIDAD AS CANTIDAD_ESD,ESD.PRECIO_VENTA\n"
 					+ "FROM   ENTRADA_SALIDA ES,\n"
@@ -368,9 +368,9 @@ public class EntradaSalidaDAO {
 				}
 			}
 		}
-		return r;
+		return r;		
 	}
-
+    
 	public ArrayList<EntradaSalidaQuickView> findAllActive() throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
@@ -605,7 +605,7 @@ public class EntradaSalidaDAO {
 			ps.setObject(ci++, x.getNumDeCuenta());
 			ps.setObject(ci++, x.getAutorizaDescuento());
 
-			r = ps.executeUpdate();
+			r = ps.executeUpdate();					
 
 			ResultSet rsk = ps.getGeneratedKeys();
 			if (rsk != null) {
@@ -691,7 +691,7 @@ public class EntradaSalidaDAO {
 			
 			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET TIPO_MOV=?,SUCURSAL_ID=?,ESTADO_ID=?,FECHA_CREO=?,USUARIO_EMAIL_CREO=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=?,AUTORIZA_DESCUENTO=? "
 					+ " WHERE ID=?");
-
+			
 			int ci = 1;
 			ps.setObject(ci++, x.getTipoMov());
 			ps.setObject(ci++, x.getSucursalId());
@@ -715,7 +715,7 @@ public class EntradaSalidaDAO {
 			ps.setObject(ci++, x.getId());
 			ps.setObject(ci++, x.getAutorizaDescuento());
 
-			r = ps.executeUpdate();
+			r = ps.executeUpdate();						
 
 			int rESD = conn.createStatement().executeUpdate("DELETE FROM ENTRADA_SALIDA_DETALLE WHERE ENTRADA_SALIDA_ID=" + x.getId());
 

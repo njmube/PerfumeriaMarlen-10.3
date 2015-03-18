@@ -1,7 +1,7 @@
 /**
  * CorteCajaDAO
  *
- * Created 2015/03/03 00:40
+ * Created 2015/03/15 12:43
  *
  * @author tracktopell :: DAO Builder
  * http://www.tracktopell.com.mx
@@ -31,7 +31,7 @@ import com.tracktopell.jdbc.DataSourceFacade;
  * Class for CorteCajaDAO of Table CORTE_CAJA.
  * 
  * @author Tracktopell::jpa-builder @see  https://github.com/tracktopell/UtilProjects/tree/master/jpa-builder
- * @date 2015/03/03 00:40
+ * @date 2015/03/15 12:43
  */
 
 public class CorteCajaDAO {

@@ -248,6 +248,9 @@
 		[17] observaciones varchar(255,0)	
 		[18] ubicacion_Lat double(10,0)	
 		[19] ubicacion_Lon double(10,0)	
+		[20] Num_Cuenta varchar(64,0)	
+		[21] Banco varchar(64,0)	
+		[22] Direccion_Facturacion varchar(255,0)	
 		,Indexes {
 		}
 	}

@@ -130,14 +130,28 @@ public class ImportData {
 			executeMultipleUpdates("INSERT INTO SUCURSAL(ID,ID_PADRE,NOMBRE,DIRECCION,TELEFONOS,USUARIO_SICOFI,PASSWORD_SICOFI,SERIE_SICOFI,COMENTARIOS,DESCUENTO_MAYOREO_HABILITADO) VALUES(?,?,?,?,?,?,?,?,?,?)", resultSucursal);
 			resultSucursal = null;
 
-			List<Object[]> resultCliente = executeQuery(oldDBConnection, "SELECT C.ID,C.RFC,C.RAZON_SOCIAL,C.NOMBRE_ESTABLECIMIENTO,C.CONTACTO,C.TELEFONOS,C.EMAIL,C.OBSERVACIONES,C.CALLE,C.NUM_INTERIOR,C.NUM_EXTERIOR,P.NOMBRE,P.MUNICIPIO_O_DELEGACION,P.ENTIDAD_FEDERATIVA,P.ENTIDAD_FEDERATIVA,P.CODIGO_POSTAL FROM CLIENTE C,POBLACION P WHERE C.POBLACION_ID=P.ID");
+			List<Object[]> resultCliente = executeQuery(oldDBConnection, "SELECT C.ID,C.RFC,C.RAZON_SOCIAL,C.NOMBRE_ESTABLECIMIENTO,C.CONTACTO,C.TELEFONOS,C.EMAIL,C.OBSERVACIONES,C.CALLE,"
+					+ "C.NUM_INTERIOR,C.NUM_EXTERIOR,P.NOMBRE,P.MUNICIPIO_O_DELEGACION,P.MUNICIPIO_O_DELEGACION,P.ENTIDAD_FEDERATIVA,P.CODIGO_POSTAL,C.DIRECCION_FACTURACION FROM CLIENTE C,POBLACION P WHERE C.POBLACION_ID=P.ID");
 			for(Object[] arrXC: resultCliente){
 				arrXC[2]=((String)arrXC[2]).toUpperCase();
 				arrXC[3]=arrXC[3]!=null?((String)arrXC[3]).toUpperCase():null;
 				arrXC[4]=arrXC[4]!=null?((String)arrXC[4]).toUpperCase():null;
 				arrXC[5]=arrXC[5]!=null?((String)arrXC[5]).toUpperCase():null;				
+				arrXC[6]=arrXC[6]!=null?((String)arrXC[6]).toUpperCase():null;
+				arrXC[7]=arrXC[7]!=null?((String)arrXC[7]).toLowerCase():null;
+				arrXC[8]=arrXC[8]!=null?((String)arrXC[8]).toUpperCase():null;				
+				
+				arrXC[9] =arrXC[9] !=null?((String)arrXC[9]).toUpperCase():"S/N";								
+				arrXC[10]=arrXC[10]!=null?((String)arrXC[10]).toUpperCase():"S/N";
+				
+				arrXC[12]=arrXC[12]!=null?((String)arrXC[12]).toUpperCase():null;
+				arrXC[13]=arrXC[13]!=null?((String)arrXC[13]).toUpperCase():null;
+				arrXC[14]=arrXC[14]!=null?((String)arrXC[14]).toUpperCase():null;
+				arrXC[15]=arrXC[15]!=null?((String)arrXC[15]).toUpperCase():null;
+				arrXC[16]=arrXC[16]!=null?((String)arrXC[16]).toUpperCase():null;
+				
 			}
-			executeMultipleUpdates("INSERT INTO CLIENTE(ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,CALLE,NUM_INTERIOR,NUM_EXTERIOR,COLONIA,MUNICIPIO,CIUDAD,ESTADO,CP) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", resultCliente);
+			executeMultipleUpdates("INSERT INTO CLIENTE(ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,CALLE,NUM_INTERIOR,NUM_EXTERIOR,COLONIA,MUNICIPIO,CIUDAD,ESTADO,CP,DIRECCION_FACTURACION) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", resultCliente);
 			resultCliente = null;
 
 			List<Object[]> resultUsuario = executeQuery(oldDBConnection, "SELECT USUARIO_ID,HABILITADO,NOMBRE_COMPLETO,PASSWORD FROM USUARIO");
