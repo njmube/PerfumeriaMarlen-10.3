@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="845"/>
-	<property name="ireport.y" value="224"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="264"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="fechaHoraImpr" class="java.lang.String"/>
 	<parameter name="usuarioImpr" class="java.lang.String"/>
@@ -25,6 +25,9 @@
 	<parameter name="tipoAlmacen" class="java.lang.String"/>
 	<parameter name="pedidoVentaEstado" class="java.lang.String"/>
 	<parameter name="comentarios" class="java.lang.String"/>
+	<parameter name="header_direccion" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MART\u00CDN AZCATEPEC, T\u00C9CAMAC. EDO. DE M\u00C9X. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select * from orders where orderid < 10255]]>
 	</queryString>
@@ -127,28 +130,28 @@
 				<text><![CDATA[S.A. DE C.V.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="365" y="137" width="91" height="14" uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02"/>
+				<reportElement x="365" y="137" width="76" height="14" uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA IMPRESIÓN :]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="456" y="137" width="100" height="14" uuid="622c8ccb-d1be-4a9f-815d-c1a2c9234bd2"/>
+				<reportElement x="441" y="137" width="115" height="14" uuid="622c8ccb-d1be-4a9f-815d-c1a2c9234bd2"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaHoraImpr}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="365" y="151" width="91" height="14" uuid="70031f4c-1ae5-4f4c-bc0a-b903f64bd738"/>
+				<reportElement x="365" y="151" width="76" height="14" uuid="70031f4c-1ae5-4f4c-bc0a-b903f64bd738"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[USUARIO GENERÓ:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="456" y="151" width="100" height="14" uuid="6b3b4a28-2b65-4393-a953-5470e41b8649"/>
+				<reportElement x="441" y="151" width="115" height="14" uuid="6b3b4a28-2b65-4393-a953-5470e41b8649"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -169,27 +172,20 @@
 				<text><![CDATA[No Pedido :]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="456" y="165" width="100" height="14" uuid="1b231743-4e61-4224-91f9-f33d7f1d1349"/>
+				<reportElement x="441" y="165" width="115" height="14" uuid="1b231743-4e61-4224-91f9-f33d7f1d1349"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuarioImpr}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="365" y="165" width="91" height="14" uuid="e9d8b640-a5f0-44e7-ba6b-df8ee31c0fca">
+				<reportElement x="365" y="165" width="76" height="14" uuid="e9d8b640-a5f0-44e7-ba6b-df8ee31c0fca">
 					<printWhenExpression><![CDATA[$P{usuarioImpr}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[USUARIO IMPRIMIÓ:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="135" y="75" width="213" height="29" uuid="996cda3e-9c01-423d-ac2f-9be01e810bc5"/>
-				<textElement textAlignment="Center">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MARTÍN AZCATEPEC, TÉCAMAC. EDO. DE MÉX. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="135" y="104" width="213" height="11" uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701"/>
@@ -244,6 +240,13 @@
 				</textElement>
 				<text><![CDATA[Estatus :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="135" y="73" width="213" height="29" uuid="2efe21e6-281e-4580-882e-a51feb39101a"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header_direccion}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

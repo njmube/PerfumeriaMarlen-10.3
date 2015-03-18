@@ -19,7 +19,14 @@ import javax.imageio.ImageIO;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.util.JRProperties;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.export.ExporterInput;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 /**
  * Hello world!
@@ -34,11 +41,12 @@ public class GeneradorImpresionPedidoVenta {
 		try {
 			String reportPath;
             
+			logger.info("Default Locale:"+Locale.getDefault());
             
 			if(interna){
 				reportPath = "/reports/pedidoVentaDesign1.jrxml";
 			} else{
-				reportPath = "/reports/pedidoVentaDesign1.jrxml";
+				reportPath = "/reports/pedidoVentaDesign2.jrxml";
 			}
             InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
             
@@ -158,7 +166,18 @@ public class GeneradorImpresionPedidoVenta {
             //JasperExportManager.exportReportToPdfFile(jasperPrint, "jasper_out_"+sdf.format(new Date())+".pdf");
             //logger.info("Ok, JasperExportManager executed");
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
+			JRPdfExporter exporter = new JRPdfExporter(DefaultJasperReportsContext.getInstance());
+    
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+			
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			configuration.setMetadataAuthor("Perfumeria Marlen");						
+			exporter.setConfiguration(configuration);
+			
+			exporter.exportReport();
+
+			//JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
 			logger.info("Ok, JasperExportManager executed");
 			pdfBytes = baos.toByteArray();
             //JasperPrintManager.printReport(jasperPrint, false);
@@ -339,5 +358,34 @@ public class GeneradorImpresionPedidoVenta {
         }
 		return pdfBytes;
     }
+	
+	public static byte[] generarPDFUtfExample(){
+			byte[] pdfBytes = null;
+		try {
+			String reportPath;
+            
+            reportPath = "/reports/utfExample.jrxml";
+            InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
+			
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            logger.info("Ok, JasperReport compiled: pageHeight="+jasperReport.getPageHeight());            
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, new JREmptyDataSource());
+            logger.info("Ok, JasperPrint created");
+            
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            
+            JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
+			logger.info("Ok, JasperExportManager executed");
+			pdfBytes = baos.toByteArray();
+            
+            logger.info("Ok, finished");
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);            
+        }
+		return pdfBytes;	
+	}
 	
 }

@@ -6,8 +6,10 @@ package com.pmarlen.web.servlet;
 
 import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.EntradaSalidaDAO;
+import com.pmarlen.backend.dao.UsuarioDAO;
 import com.pmarlen.backend.model.Cliente;
 import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.businesslogic.reports.GeneradorImpresionPedidoVenta;
@@ -79,7 +81,9 @@ public class GenerarPDFPedidoVenta extends HttpServlet {
 			EntradaSalidaQuickView pv = EntradaSalidaDAO.getInstance().findBy(new EntradaSalida(pedidoVentaID));
 			ArrayList<EntradaSalidaDetalleQuickView> entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
 			Cliente clienteVenta = ClienteDAO.getInstance().findBy(new Cliente(pv.getClienteId()));
-			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPedidoVenta(pv,entityList,clienteVenta,fullPrint,interna,request.getUserPrincipal().getName());
+			String uemail=request.getUserPrincipal().getName();
+			Usuario ui= UsuarioDAO.getInstance().findBy(new Usuario(uemail));			
+			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPedidoVenta(pv,entityList,clienteVenta,fullPrint,interna,ui.getNombreCompleto().toUpperCase());
 			
 			System.err.println("-->>OK writing PDF bytes");
 			

@@ -80,7 +80,7 @@ public class GenerarPDFFactura extends HttpServlet {
 			Cfd cfdFactura = CfdDAO.getInstance().findBy(new Cfd(pv.getCfdId()));
 			String uemail=request.getUserPrincipal().getName();
 			Usuario ui= UsuarioDAO.getInstance().findBy(new Usuario(uemail));
-			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPfacturaPedidoVenta(pv,cfdFactura,entityList,clienteVenta,fullPrint,ui.getNombreCompleto());
+			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPfacturaPedidoVenta(pv,cfdFactura,entityList,clienteVenta,fullPrint,ui.getNombreCompleto().toUpperCase());
 			
 			System.err.println("-->>OK writing PDF bytes");
 			
