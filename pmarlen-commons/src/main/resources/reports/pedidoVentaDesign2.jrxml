@@ -62,20 +62,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="137" width="78" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[DIRECCIÓN :]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["DIRECCI\u00D3N :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="124" width="78" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CLIENTE :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["CLIENTE :"]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="78" y="124" width="270" height="14" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
@@ -90,21 +90,21 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{formaDePago}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="161" width="78" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[FORMA DE PAGO :]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["FORMA DE PAGO :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="387" y="63" width="169" height="17" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[NOTA DE PEDIDO]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["NOTA DE PEDIDO"]]></textFieldExpression>
+			</textField>
 			<image>
 				<reportElement x="116" y="15" width="271" height="45" uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
@@ -117,22 +117,22 @@
 				</reportElement>
 				<imageExpression><![CDATA["reports/PMarlen_Logo_3.jpg"]]></imageExpression>
 			</image>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="387" y="20" width="99" height="32" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font size="16" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[S.A. DE C.V.]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["S.A. DE C.V."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="365" y="136" width="91" height="14" uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[FECHA IMPRESIÓN :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["FECHA IMPRESI\u00D3N :"]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="456" y="136" width="100" height="14" uuid="622c8ccb-d1be-4a9f-815d-c1a2c9234bd2"/>
 				<textElement>
@@ -147,27 +147,27 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pedidoVentaId}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="387" y="100" width="69" height="14" uuid="2e312a8e-20ff-401b-b1ed-219713c12164"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[No Pedido :]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["No Pedido :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="135" y="75" width="213" height="29" uuid="996cda3e-9c01-423d-ac2f-9be01e810bc5"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MARTÍN AZCATEPEC, TÉCAMAC. EDO. DE MÉX. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MART\u00CDN AZCATEPEC, T\u00C9CAMAC. EDO. DE M\u00C9X. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="135" y="104" width="213" height="11" uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[http://perfumeriamarlen.com.mx]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["http://perfumeriamarlen.com.mx"]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="459" y="114" width="97" height="14" forecolor="#FF3300" uuid="dc4ecdc6-85a9-404c-9097-b2e386c283cf"/>
 				<textElement>
@@ -175,15 +175,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pedidoVentaEstado}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="174" width="78" height="14" uuid="f9e2880d-651f-42f0-956f-2ca1182c5c48">
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[COMENTARIOS :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["COMENTARIOS :"]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="78" y="174" width="252" height="14" uuid="a7439d65-983a-44b8-944e-a67dd349e511">
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
@@ -193,13 +193,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{comentarios}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="189" y="161" width="78" height="14" uuid="21b67f0b-61cc-450e-adad-1521975fa14f"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[MÉTODO DE PAGO :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["M\u00C9TODO DE PAGO :"]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="267" y="161" width="98" height="14" uuid="ab988d6c-e533-4c6c-9c50-17ec851eb52c"/>
 				<textElement>
@@ -207,18 +207,18 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{metodoDePago}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="387" y="114" width="69" height="14" uuid="749c7a0b-80f1-4018-87f3-d4796f54ea21"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Estatus :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["Estatus :"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="12" splitType="Stretch">
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="0" width="22" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -229,9 +229,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[#]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["#"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="52" y="0" width="64" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -242,9 +242,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CODIGO]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["CODIGO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="116" y="0" width="305" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -255,9 +255,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[NOMBRE / DESCRIPCIÓN]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="470" y="0" width="36" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -268,9 +268,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[PRECIO U.]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["PRECIO U."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="506" y="0" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -281,9 +281,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[IMPORTE]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["IMPORTE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="421" y="0" width="24" height="12" uuid="7b75a458-f93f-43e0-9a30-253793828109"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -294,9 +294,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CONT.]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["CONT."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="22" y="0" width="30" height="12" uuid="6ca61176-d608-4c32-b6be-a963759caf46"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -307,9 +307,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[U/E]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["U/E"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="445" y="0" width="25" height="12" uuid="d9263a4d-0741-4e88-9529-8ba8eaf2019f"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -320,8 +320,8 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[P/C]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["P/C"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -415,15 +415,15 @@
 				<textElement textAlignment="Right">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["P\u00C1GINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="174" y="0" width="213" height="11" uuid="51cbe128-639a-44a7-817e-03a4d9902a8e"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true" isItalic="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
@@ -452,27 +452,27 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="421" y="0" width="65" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[SUBTOTAL :]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["SUBTOTAL :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="421" y="14" width="65" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[DESCUENTO :]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA["DESCUENTO :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="421" y="29" width="65" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[TOTAL :]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["TOTAL :"]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement x="0" y="58" width="556" height="1" uuid="228a99fd-2379-4af8-a1b6-5f2dc8a3a4dc"/>
 				<graphicElement>
@@ -491,15 +491,15 @@
 				<textElement textAlignment="Right">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["P\u00C1GINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="174" y="47" width="213" height="11" uuid="b5b582a1-0be7-4a12-b75b-a544d96a7afe"/>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true" isItalic="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["ESTA NOTA DE VENTA NO TIENE VALIDEZ FISCAL"]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 	<summary>
