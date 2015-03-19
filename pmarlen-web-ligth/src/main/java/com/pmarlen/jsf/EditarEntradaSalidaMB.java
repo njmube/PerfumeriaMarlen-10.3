@@ -88,7 +88,7 @@ public class EditarEntradaSalidaMB{
 	
 	@PostConstruct
 	public void init() {
-		pedidoVenta = null;
+		pedidoVenta = new EntradaSalidaQuickView();
 		pedidoVentaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
