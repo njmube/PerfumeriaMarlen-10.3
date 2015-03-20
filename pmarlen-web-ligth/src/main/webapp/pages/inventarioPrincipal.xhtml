@@ -146,10 +146,10 @@
 
 		<h:form id="form3">
 			
-			<p:dialog header="UBICACION DE PRODUCTO" widgetVar="dlg3"  modal="true" width="1050" height="700" closeOnEscape="true">
+			<p:dialog header="UBICACION DE PRODUCTO" widgetVar="dlg3"  modal="true" width="950" height="610" closeOnEscape="true">
 				
 				<h:panelGrid columns="2" columnClasses="columnWidth90 centerAlign, columnWidth15 leftAlign">
-					<h:panelGroup>
+					<p:scrollPanel style="width:800px;height:600px">
 						<h:graphicImage value="/images/Acomodo_para_Claves_V1.png" class="imgUbicacion" usemap="#mapaUbicacion"/>
 						<map name="mapaUbicacion">
 							<area shape="rect" coords="15 ,126,233,174" title="Rack A1" href="#" class="areaRef1"/>
@@ -166,24 +166,24 @@
 							<area shape="rect" coords="500, 10,1012, 54" title="Tarimas C1" href="#" class="areaRef1"/>
 							<area shape="rect" coords="626,124, 668,538" title="Tarimas CA" href="#" class="areaRef1"/>
 						</map>
-					</h:panelGroup>
-					<h:panelGroup>
+					</p:scrollPanel>
+					
+					<h:panelGrid columns="1">
 						<h:outputLabel for="ubicacion" value="UBICACION :"/>
 
-						<h:inputText id="ubicacion" value="#{inventarioMB.ubucacionEditar}" class="ubicacion" title="SELECCIONE DEL MAPA DONDE SE ENCUENTRA"/>
-						<p:spacer width="20"/>
+						<h:inputText id="ubicacion" value="#{inventarioMB.ubucacionEditar}" class="ubicacion" title="SELECCIONE DEL MAPA DONDE SE ENCUENTRA" size="15"/>
+						
 						<p:commandButton	update=":form1:panel1" 
 											oncomplete="PF('dlg3').hide();" icon="ui-icon-check" value="ACEPTAR" title="ACEPTAR"
 											actionListener="#{inventarioMB.aceptarEdicionUbicacion}">
 
 						</p:commandButton>
-						<p:spacer width="20"/>
 						<p:commandButton	update=":form1:panel1" 
 											oncomplete="PF('dlg3').hide();" icon="ui-icon-close" value="CANCELAR" title="CANCELAR"
 											actionListener="#{inventarioMB.cancelarEdicionUbicacion}">
 						</p:commandButton>
 
-					</h:panelGroup>
+					</h:panelGrid>
 				</h:panelGrid>
 				
 			</p:dialog>

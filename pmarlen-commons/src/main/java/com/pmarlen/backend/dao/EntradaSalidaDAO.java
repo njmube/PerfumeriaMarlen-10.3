@@ -411,8 +411,7 @@ public class EntradaSalidaDAO {
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
-				logger.info("->ES_ID:"+rs.getObject("ES_ID"));
+				EntradaSalidaQuickView x = new EntradaSalidaQuickView();				
 				x.setId((Integer) rs.getObject("ES_ID"));
 				x.setTipoMov((Integer) rs.getObject("TIPO_MOV"));
 				x.setSucursalId((Integer) rs.getObject("SUCURSAL_ID"));
@@ -605,16 +604,16 @@ public class EntradaSalidaDAO {
 			ps.setObject(ci++, x.getCondicionesDePago());
 			ps.setObject(ci++, x.getNumDeCuenta());
 			ps.setObject(ci++, x.getAutorizaDescuento());
-
+			logger.info("->EntradaSalida before Insert:"+x.getId());
 			r = ps.executeUpdate();					
-
+			
 			ResultSet rsk = ps.getGeneratedKeys();
 			if (rsk != null) {
 				while (rsk.next()) {
 					x.setId(rsk.getInt(1));
 				}
 			}
-
+			logger.info("->EntradaSalida after Insert:"+x.getId());
 			psESD = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA_DETALLE(ENTRADA_SALIDA_ID,PRODUCTO_CODIGO_BARRAS,ALMACEN_ID,CANTIDAD,PRECIO_VENTA) "
 					+ " VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			int rESD = 0;
@@ -656,7 +655,7 @@ public class EntradaSalidaDAO {
 				rESE += psESE.executeUpdate();
 			}
 			conn.commit();
-
+			logger.info("->EntradaSalida after Commit");
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			try {
