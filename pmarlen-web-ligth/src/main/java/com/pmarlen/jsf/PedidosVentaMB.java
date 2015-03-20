@@ -45,7 +45,7 @@ public class PedidosVentaMB  {
 			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActive();
 			logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
 			for(EntradaSalidaQuickView x:pedidosVentas){
-				logger.info("->x="+x.getId());
+				logger.finer("->x="+x.getId());
 			}
 		}catch(DAOException de){
 			pedidosVentas = new ArrayList<EntradaSalidaQuickView>();
@@ -61,7 +61,7 @@ public class PedidosVentaMB  {
 			if(pedidosVentas != null){
 				logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
 				for(EntradaSalidaQuickView x:pedidosVentas){
-					logger.info("->x="+x.getId());
+					logger.finer("->x="+x.getId());
 				}
 			}
 		} catch (DAOException ex) {

@@ -97,11 +97,11 @@ public class EntradaSalidaMB{
 		autorizaDescuento = true;
 		tablaExpandida = false;
 		tableDraggableEnabled = false;
-		logger.info("OK");
+		logger.finer("OK");
 	}
 
 	public String reset() {
-		logger.info("->EntradaSalidaDetalleMB: rest.");
+		logger.finer("->EntradaSalidaDetalleMB: rest.");
 		init();
 		return "/pages/cliente";
 	}
@@ -153,14 +153,14 @@ public class EntradaSalidaMB{
 	}
 
 	public void cadenaBusquedaChanged(ValueChangeEvent e) {
-		logger.info("->cadenaBusquedaChanged: e:"+e.getNewValue());
+		logger.finer("->cadenaBusquedaChanged: e:"+e.getNewValue());
 	}
 	public void codigoChanged(ValueChangeEvent e) {
-		logger.info("->codigoChanged: e:"+e.getNewValue()+", cantidadAgregarCodigo="+cantidadAgregarCodigo);
+		logger.finer("->codigoChanged: e:"+e.getNewValue()+", cantidadAgregarCodigo="+cantidadAgregarCodigo);
 	}
 	
 	public void buscarXCadena() {
-		logger.info("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
+		logger.finer("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
 		if(cadenaBusqueda.trim().length()>3) {	
 			try {
 				boolean modoExclusivo = false;
@@ -175,7 +175,7 @@ public class EntradaSalidaMB{
 					FacesContext context = FacesContext.getCurrentInstance();         
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"BUSCAR PRODUCTOS",  "SE ENCONTRARÓN "+resultadoBusqueda.size()+" PRODUCTO"+(resultadoBusqueda.size()>1?"S":"") ));
 
-					logger.info("->buscar:findAllExclusiveByDesc:OK, resultadoBusqueda.size()="+resultadoBusqueda.size());
+					logger.finer("->buscar:findAllExclusiveByDesc:OK, resultadoBusqueda.size()="+resultadoBusqueda.size());
 					resultadoBusquedaSI = resultadoBusqueda.get(0);
 				} else {
 					FacesContext context = FacesContext.getCurrentInstance();         
@@ -194,17 +194,17 @@ public class EntradaSalidaMB{
 	}
 	
 	public void buscarXCodigo() {
-		logger.info("->buscarXCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
+		logger.finer("->buscarXCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		EntradaSalidaDetalleQuickView dvpAdd = null;
 		try {
 			dvpAdd = ProductoDAO.getInstance().findByCodigo(tipoAlmacen,codigo);
 
-			logger.info("->buscarXCodigo:dvpAdd="+dvpAdd);
+			logger.finer("->buscarXCodigo:dvpAdd="+dvpAdd);
 
 
 			if(dvpAdd != null) {
 				dvpAdd.setCantidad(cantidadAgregarCodigo);
-				logger.info("->buscarXCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
+				logger.finer("->buscarXCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
 				entityList.add(dvpAdd);
 
 				FacesContext context = FacesContext.getCurrentInstance();         
@@ -239,24 +239,24 @@ public class EntradaSalidaMB{
 	}
 	
 	public void cantidadDetalleCambio(long cambioRowId){
-		logger.info("->cantidadDetalleCambio:cambioRowId="+cambioRowId);
+		logger.finer("->cantidadDetalleCambio:cambioRowId="+cambioRowId);
 		actualizarTotales();
 	}
 	
 	public void cantidadDetalleChanged(ValueChangeEvent event) {
 		int cantidadChanged = (Integer) event.getNewValue();
-		logger.info("->updateCantidad:cantidadChanged="+cantidadChanged);
+		logger.finer("->updateCantidad:cantidadChanged="+cantidadChanged);
 		actualizarTotales();
 	}
 	
 	public void deleteRow(long deleteRowId){
-		logger.info("->deleteRow:deleteRowId="+deleteRowId);
+		logger.finer("->deleteRow:deleteRowId="+deleteRowId);
 		int i=0;
 		int indexDelete=-1;
 		int cantidadEliminada=0;
 		String codigoEliminado="";
 		for(EntradaSalidaDetalleQuickView pv:entityList){
-			logger.info("->deleteRow:\tdelete? "+pv.getRowId()+"=="+deleteRowId);
+			logger.finer("->deleteRow:\tdelete? "+pv.getRowId()+"=="+deleteRowId);
 			if(pv.getRowId()==deleteRowId){
 				cantidadEliminada= pv.getCantidad();
 				codigoEliminado = pv.getProductoCodigoBarras();
@@ -267,7 +267,7 @@ public class EntradaSalidaMB{
 		}
 		if(indexDelete >=0) {
 			entityList.remove(indexDelete);
-			logger.info("->deleteRow:delete index:"+indexDelete);
+			logger.finer("->deleteRow:delete index:"+indexDelete);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ELIMINAR PRODUCTO",  "SE ELIMINÓ CORRECTAMENTE "+cantidadEliminada+" x ["+codigoEliminado+"].") );
 		
@@ -289,7 +289,7 @@ public class EntradaSalidaMB{
 		
 
 	public void setResultadoBusquedaSelected(String resultadoBusquedaSelected) {
-		logger.info("->setResultadoBusquedaSelected("+resultadoBusquedaSelected+")");
+		logger.finer("->setResultadoBusquedaSelected("+resultadoBusquedaSelected+")");
 		this.resultadoBusquedaSelected = resultadoBusquedaSelected;
 		
 		for(EntradaSalidaDetalleQuickView x:resultadoBusqueda){
@@ -322,14 +322,14 @@ public class EntradaSalidaMB{
 	}
 	
 	public void conservarBusquedaChanged(){
-		logger.info("->conservarBusquedaChanged:conservarBusqueda="+conservarBusqueda);
+		logger.finer("->conservarBusquedaChanged:conservarBusqueda="+conservarBusqueda);
 	}
 	
 	public void onRowReorder(ReorderEvent event) {
-		logger.info("->onRowReorder:From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+		logger.finer("->onRowReorder:From: " + event.getFromIndex() + ", To:" + event.getToIndex());
 		int i=0;
 		for(EntradaSalidaDetalleQuickView d:entityList){
-			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
+			logger.finer("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
 		}
         //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
         //FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -378,7 +378,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void setCantidadAgregarCodigo(int cantidadAgregarCodigo) {
-		logger.info("->setCantidadAgregarCodigo:cantidadAgregarCodigo("+this.cantidadAgregarCodigo+")="+cantidadAgregarCodigo);
+		logger.finer("->setCantidadAgregarCodigo:cantidadAgregarCodigo("+this.cantidadAgregarCodigo+")="+cantidadAgregarCodigo);
 		this.cantidadAgregarCodigo = cantidadAgregarCodigo;
 	}
 	
@@ -391,15 +391,15 @@ public class EntradaSalidaMB{
 	}
 	
 	public void agregarCodigo() {
-		logger.info("->agregarCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
+		logger.finer("->agregarCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		
 		EntradaSalidaDetalleQuickView dvpAdd = null;
 		try {
 			dvpAdd = ProductoDAO.getInstance().findByCodigo(tipoAlmacen,codigo);
 			if(dvpAdd != null){
-				logger.info("->agregarCodigo:dvpAdd="+dvpAdd);
+				logger.finer("->agregarCodigo:dvpAdd="+dvpAdd);
 
-				logger.info("->agregarCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
+				logger.finer("->agregarCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
 
 				dvpAdd.setCantidad(cantidadAgregarCodigo);
 
@@ -443,12 +443,12 @@ public class EntradaSalidaMB{
 	}
 	
 	public void actualizarTotales(){
-		logger.info("->actualizarTotales:");
+		logger.finer("->actualizarTotales:");
 		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.info("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
+		logger.finer("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(pedidoVenta.getClienteId())){
@@ -459,7 +459,7 @@ public class EntradaSalidaMB{
 	}
 	
 	public void seleccionaCliente(int clienteIdChoiced){
-		logger.info("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
+		logger.finer("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
 				pedidoVenta.setClienteId(c.getId());
@@ -487,7 +487,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
+		logger.finer("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
 	}
 	
 	public List<SelectItem> getMetodoDePagoList() {
@@ -508,7 +508,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void onMetodoDePagoListChange() {
-		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
+		logger.finer("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
 	}
 	
 	private ArrayList<SelectItem> descuentoEspecialList;
@@ -525,7 +525,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
+		logger.finer("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
 		actualizarTotales();
 	}
 
@@ -566,15 +566,15 @@ public class EntradaSalidaMB{
 	}
 
 	public void comentariosChanged() {
-		logger.info("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
+		logger.finer("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
 	}
 
 	public void onResultadoBusquedaChange() {
-		logger.info("->onResultadoBusquedaChange:resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.finer("->onResultadoBusquedaChange:resultadoBusquedaSelected="+resultadoBusquedaSelected);
 	}
 	
 	public void agregarSeleccionadoDeBusqueda() {
-		logger.info("->agregarSeleccionadoDeBusqueda:"+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.finer("->agregarSeleccionadoDeBusqueda:"+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
 		EntradaSalidaDetalleQuickView dvpAdd=null;
 		for(EntradaSalidaDetalleQuickView pv:resultadoBusqueda){
 			if(pv.getProductoCodigoBarras().equals(resultadoBusquedaSelected)){
@@ -590,7 +590,7 @@ public class EntradaSalidaMB{
 			}
 		}
 		if(dvpAdd != null) {
-			logger.info("->agregarSeleccionadoDeBusqueda:OK +"+cantidadAgregarBusqueda+" x "+dvpAdd);
+			logger.finer("->agregarSeleccionadoDeBusqueda:OK +"+cantidadAgregarBusqueda+" x "+dvpAdd);
 			entityList.add(dvpAdd);
 			
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -609,13 +609,13 @@ public class EntradaSalidaMB{
 	}
 	
 	public void setTipoAlmacen(int tipoAlmacen) {
-		logger.info("->setTipoAlmacen:tipoAlmacen="+tipoAlmacen);
+		logger.finer("->setTipoAlmacen:tipoAlmacen="+tipoAlmacen);
 		this.tipoAlmacen = tipoAlmacen;
 	}
 
 	
 	public void onTipoAlmacenChange() {
-		logger.info("->onTipoAlmacenChange:tipoAlmacen="+tipoAlmacen);
+		logger.finer("->onTipoAlmacenChange:tipoAlmacen="+tipoAlmacen);
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		cadenaBusqueda ="";
@@ -656,7 +656,7 @@ public class EntradaSalidaMB{
 	}
 	
 	private void validacion(){
-		logger.info("->validacion");
+		logger.finer("->validacion");
 		
 	}
 	
@@ -690,12 +690,12 @@ public class EntradaSalidaMB{
 	}
 	
 	public void cancelar() {
-		logger.info("->cancelar");
+		logger.finer("->cancelar");
 		reset();
 	}
 	
 	public void cerrar() {
-		logger.info("->cerrar");
+		logger.finer("->cerrar");
 		reset();
 	}
 
@@ -704,11 +704,11 @@ public class EntradaSalidaMB{
 	}
 	
 	public void onComentariosChange() {
-		logger.info("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
+		logger.finer("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.info("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
+		logger.finer("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
@@ -728,7 +728,7 @@ public class EntradaSalidaMB{
 	}
 	
 	public void onAutorizaDescuentoChange(){
-		logger.info("autorizaDescuento="+this.autorizaDescuento);
+		logger.finer("autorizaDescuento="+this.autorizaDescuento);
 		if(this.autorizaDescuento){
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"DESCUENTO",  " SE AUTORIZÓ LA POLITICA DE DESCUENTO") );
