@@ -63,7 +63,7 @@
 											 disabled="#{entradaSalidaMB.pedidoFinalizado}" title="VER MAS ACERCA DEL PRODUCTO SELECCIONADO"/>
 
 							<p:commandButton value="+"  actionListener="#{entradaSalidaMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{entradaSalidaMB.pedidoFinalizado}"
-											 process=":form2" update=":form1,:form2,growl,:form3,:form4:panel4_3"  
+											 process=":form2" update=":form1,:form2,:form2,:form3,:form4:panel4_3"  
 											 rendered="#{not empty entradaSalidaMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
 
 							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">

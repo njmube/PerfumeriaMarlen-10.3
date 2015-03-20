@@ -101,8 +101,8 @@
 						<p:message for="cliente_id" showDetail="true" rendered="#{not empty clienteMB.selectedEntity.id}"/>
 
 						<h:outputLabel for="cliente_rfc" value="RFC:" style="font-weight:bold"/>                    
-						<p:inputText id="cliente_rfc" value="#{clienteMB.selectedEntity.rfc}" required="true" label="RFC" size="13">
-							<f:validateLength minimum="12" maximum="13" />
+						<p:inputText id="cliente_rfc" value="#{clienteMB.selectedEntity.rfc}" required="true" label="RFC" size="12">
+							<f:validateLength minimum="12" maximum="13" />							
 						</p:inputText>
 						<p:message for="cliente_rfc" />
 
@@ -119,12 +119,6 @@
 						</p:inputText>
 						<p:message for="cliente_nombreEstablecimiento" />
 
-						<h:outputLabel for="cliente_contacto" value="CONTACTO:" style="font-weight:bold"/>
-						<p:inputText id="cliente_contacto" value="#{clienteMB.selectedEntity.contacto}" required="false" label="CONTACTO:" size="35" maxlength="128">
-							<f:validateLength minimum="2" maximum="128" />
-						</p:inputText>
-						<p:message for="cliente_contacto"  showDetail="true"/>
-
 						<h:outputLabel for="cliente_calle" value="CALLE:" style="font-weight:bold"/>
 						<p:inputText id="cliente_calle" value="#{clienteMB.selectedEntity.calle}" required="true" label="CALLE :" size="35" maxlength="128">
 							<f:validateLength minimum="2" maximum="128" />
@@ -137,17 +131,17 @@
 						</p:inputText>
 						<p:message for="cliente_numExterior"  showDetail="true"/>
 
-						<h:outputLabel for="cliente_numInterior" value="NUM INTERIOR:" style="font-weight:bold"/>
-						<p:inputText id="cliente_numInterior" value="#{clienteMB.selectedEntity.numInterior}" required="true" label="NUM INTERIOR:" size="10" maxlength="16">
-							<f:validateLength minimum="2" maximum="16" />
+						<h:outputLabel for="cliente_numInterior" value="NUM. INTERIOR:" style="font-weight:bold"/>
+						<p:inputText id="cliente_numInterior" value="#{clienteMB.selectedEntity.numInterior}" required="true" label="NUM. INTERIOR:" size="10" maxlength="16">
+							<f:validateLength minimum="1" maximum="16" />
 						</p:inputText>
 						<p:message for="cliente_numInterior"  showDetail="true"/>
 						
-						<h:outputLabel for="cliente_referencias" value="REFERENCIAS:" style="font-weight:bold"/>
-						<p:inputText id="cliente_referencias" value="#{clienteMB.selectedEntity.referencias}" required="false" label="REFERENCIAS:" size="25">
-							<f:validateLength minimum="5" maximum="128" />							
+						<h:outputLabel for="cliente_referencia" value="REFERENCIA:" style="font-weight:bold"/>
+						<p:inputText id="cliente_referencia" value="#{clienteMB.selectedEntity.referencia}" required="false" label="REFERENCIA:" size="25">
+							<f:validateLength minimum="2" maximum="128" />							
 						</p:inputText>
-						<p:message for="cliente_referencias" />
+						<p:message for="cliente_referencia" />
 
 						<h:outputLabel for="cliente_colonia" value="COLONIA:" style="font-weight:bold"/>
 						<p:inputText id="cliente_colonia" value="#{clienteMB.selectedEntity.colonia}" required="true" label="COLONIA:" size="25" maxlength="128">
@@ -160,12 +154,6 @@
 							<f:validateLength minimum="3" maximum="128" />
 						</p:inputText>
 						<p:message for="cliente_municipio" />
-
-						<h:outputLabel for="cliente_referencia" value="REFERENCIA:" style="font-weight:bold"/>
-						<p:inputText id="cliente_referencia" value="#{clienteMB.selectedEntity.referencia}" required="false" label="REFERENCIA:" size="25" maxlength="128">
-							<f:validateLength minimum="3" maximum="128" />
-						</p:inputText>
-						<p:message for="cliente_referencia" />
 
 						<h:outputLabel for="cliente_ciudad" value="CIUDAD:" style="font-weight:bold"/>
 						<p:inputText id="cliente_ciudad" value="#{clienteMB.selectedEntity.ciudad}" required="false" label="CIUDAD:" size="25" maxlength="128">
@@ -198,12 +186,35 @@
 						</p:inputText>
 						<p:message for="cliente_telefonos" />
 						
+						<h:outputLabel for="cliente_contacto" value="CONTACTO:" style="font-weight:bold"/>
+						<p:inputText id="cliente_contacto" value="#{clienteMB.selectedEntity.contacto}" required="false" label="CONTACTO:" size="35" maxlength="128">
+							<f:validateLength minimum="2" maximum="128" />
+						</p:inputText>
+						<p:message for="cliente_contacto"  showDetail="true"/>
+
 						<h:outputLabel for="cliente_observaciones" value="OBSERVACIONES:" style="font-weight:bold"/>
 						<p:inputText id="cliente_observaciones" value="#{clienteMB.selectedEntity.observaciones}" required="false" label="OBSERVACIONES:" size="25">
 							<f:validateLength minimum="5" maximum="128" />							
 						</p:inputText>
 						<p:message for="cliente_observaciones" />
 
+						<h:outputLabel for="cliente_numCuenta" value="NUM. CUENTA:" style="font-weight:bold"/>
+						<p:inputText id="cliente_numCuenta" value="#{clienteMB.selectedEntity.numCuenta}" required="false" label="NUM. CUENTA:" size="10">
+							<f:validateLength minimum="5" maximum="64" />							
+						</p:inputText>
+						<p:message for="cliente_numCuenta" />
+
+						<h:outputLabel for="cliente_banco" value="BANCO:" style="font-weight:bold"/>
+						<p:inputText id="cliente_banco" value="#{clienteMB.selectedEntity.banco}" required="false" label="BANCO:" size="10">
+							<f:validateLength minimum="5" maximum="64" />							
+						</p:inputText>
+						<p:message for="cliente_banco" />
+
+						<h:outputLabel for="cliente_direccionFacturacion" value="DIRECCIÓN DE FACTURACIÓN:" style="font-weight:bold"/>
+						<p:inputText id="cliente_direccionFacturacion" value="#{clienteMB.selectedEntity.direccionFacturacion}" required="false" label="DIRECCIÓN DE FACTURACIÓN:" size="35">
+							<f:validateLength minimum="5" maximum="64" />							
+						</p:inputText>
+						<p:message for="cliente_direccionFacturacion" />
 
 					</h:panelGrid>
 

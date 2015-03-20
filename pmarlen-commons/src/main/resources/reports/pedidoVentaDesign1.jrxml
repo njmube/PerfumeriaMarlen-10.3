@@ -138,7 +138,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["USUARIO GENER\u00D3:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["USUARIO GENER\u00D3 :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="441" y="151" width="115" height="14" uuid="6b3b4a28-2b65-4393-a953-5470e41b8649"/>
@@ -175,7 +175,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["USUARIO IMPRIMI\u00D3:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["USUARIO IMPRIMI\u00D3 :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="135" y="104" width="213" height="11" uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701"/>

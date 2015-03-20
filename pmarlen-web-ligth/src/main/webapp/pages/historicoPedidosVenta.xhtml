@@ -43,10 +43,18 @@
 							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
 								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
 							</h:outputLink>
-							<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
-										  rendered="#{not empty pv.cfdId}">
-								<h:graphicImage value="/images/pdf.gif" title="PDF FACTURA DE VENTA ##{pv.id}"/>
-							</h:outputLink>
+							<h:panelGroup>
+								<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
+											  rendered="#{not empty pv.cfdId}">
+									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="5"/>
+								<h:outputLink id="pdfLinkFactura_x" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank"
+											  rendered="#{not empty pv.cfdId}">
+									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR"/>
+								</h:outputLink>
+							
+							</h:panelGroup>
 						</p:panelGrid>
 					</p:column>
 					

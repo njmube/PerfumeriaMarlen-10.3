@@ -81,7 +81,7 @@ public class EditarEntradaSalidaMB{
 	private boolean hayCambios = false;
 	@ManagedProperty(value = "#{sessionUserMB}")
 	private SessionUserMB sessionUserMB;
-
+	
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
 	}
@@ -933,7 +933,6 @@ public class EditarEntradaSalidaMB{
 			logger.info(" invocando DAO para WS");
 			
 			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(pedidoVenta,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
-			
 			logger.info("OK DAO y WS Digifact, invodocado");
 			
 		}catch(Exception e){

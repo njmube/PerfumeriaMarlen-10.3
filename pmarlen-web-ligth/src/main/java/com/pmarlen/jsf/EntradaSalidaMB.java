@@ -73,10 +73,10 @@ public class EntradaSalidaMB{
 	
 	@ManagedProperty(value = "#{sessionUserMB}")
 	private SessionUserMB sessionUserMB;
-
+		
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
-	}
+	}	
 	
 	@PostConstruct
 	public void init() {
