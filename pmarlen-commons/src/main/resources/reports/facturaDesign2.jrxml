@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="928"/>
-	<property name="ireport.y" value="706"/>
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="1528"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -235,11 +235,11 @@
 				<imageExpression><![CDATA["reports/PMarlen_Logo_3.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="398" y="29" width="119" height="17" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
+				<reportElement x="394" y="15" width="119" height="31" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="16" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[S.A. DE C.V.]]></text>
 			</staticText>
