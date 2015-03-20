@@ -173,9 +173,32 @@
 			<br/>
 			
 			<h:panelGroup class="footer-bar">
-
-				<h:outputText value="Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp} / GitRevId [#{systemInfoMB.gitSHA1}]" />
-
+				<h:form>
+					<h:panelGrid columns="2" columnClasses="columnWidth95 centerAlign, columnWidth5 rightAlign" width="100%">
+						<h:outputText value="Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" title="Git RevID: #{systemInfoMB.gitSHA1}" />
+						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
+					</h:panelGrid>
+					
+					<p:poll interval="10" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" />
+					<script>
+						var informeDescinetado = false;
+						function errorGetTime(){							
+							$(".txtFoter").css({ "color": 'red'});
+							if(!informeDescinetado) {
+								informeDescinetado = true;
+								alert("ES UNA PENA, PERO SE PERDIÓ LA CONECCIÓN, ESPERE A QUE SE RESTABLESCA");
+							}
+						}
+						
+						function successGetTime(){							
+							informeDescinetado = false;
+							$(".txtFoter").css({ "color": 'greenyellow'});
+						}
+					</script>					
+					
+					
+				</h:form>
+				
 			</h:panelGroup>
 
         </h:body>

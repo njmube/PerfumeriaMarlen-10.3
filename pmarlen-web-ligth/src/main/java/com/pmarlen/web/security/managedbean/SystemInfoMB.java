@@ -21,11 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @ManagedBean(name="systemInfoMB")
-@RequestScoped
+@SessionScoped
 public class SystemInfoMB  implements Serializable{
 
 	private final Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	public String getSystemVersion() {
 		return Constants.getServerVersion();
@@ -38,5 +38,17 @@ public class SystemInfoMB  implements Serializable{
 	public String getGitSHA1() {
 		return Constants.getGitSHA1();
 	}
+	
+	private String sessionDate=sdf.format(new Date());
+
+	public String getSessionDate() {
+		return sessionDate;
+	}
+	
+	public void updateTime(){
+		sessionDate= sdf.format(new Date());
+	}
+
+
 
 }
