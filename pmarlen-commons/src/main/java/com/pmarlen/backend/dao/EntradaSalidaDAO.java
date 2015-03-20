@@ -712,9 +712,10 @@ public class EntradaSalidaDAO {
 			ps.setObject(ci++, x.getPorcentajeDescuentoExtra());
 			ps.setObject(ci++, x.getCondicionesDePago());
 			ps.setObject(ci++, x.getNumDeCuenta());
-			ps.setObject(ci++, x.getId());
 			ps.setObject(ci++, x.getAutorizaDescuento());
-
+			
+			ps.setObject(ci++, x.getId());
+			
 			r = ps.executeUpdate();						
 
 			int rESD = conn.createStatement().executeUpdate("DELETE FROM ENTRADA_SALIDA_DETALLE WHERE ENTRADA_SALIDA_ID=" + x.getId());
