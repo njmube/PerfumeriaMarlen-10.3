@@ -120,7 +120,7 @@
 							</p:submenu>
 							
 							<p:submenu label="SISTEMA" icon="ui-icon-newwin">
-								<p:menuitem value="USUARIOS" url="/pages/pendiente.jsf" icon="ui-icon-person"/>
+								<p:menuitem value="USUARIOS" url="/pages/usuario.jsf" icon="ui-icon-person"/>
 								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star"/>
 							</p:submenu>
 							
@@ -128,7 +128,7 @@
 						</p:submenu>
 
 						<p:submenu label="CONTROL" icon="ui-icon-locked">
-							<p:menuitem value="SESIONES ACTIVAS" url="/pages/pendiente.jsf" icon="ui-icon-clock"></p:menuitem>
+							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock"></p:menuitem>
 							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"></p:menuitem>
 							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power"></p:menuitem>
 							<p:menuitem value="SQL" url="/pages/pendiente.jsf" icon="ui-icon-disk"></p:menuitem>
@@ -179,14 +179,15 @@
 						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
 					</h:panelGrid>
 					
-					<p:poll interval="10" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" />
+					<p:poll interval="120" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" />
 					<script>
 						var informeDescinetado = false;
 						function errorGetTime(){							
 							$(".txtFoter").css({ "color": 'red'});
 							if(!informeDescinetado) {
 								informeDescinetado = true;
-								alert("ES UNA PENA, PERO SE PERDIÓ LA CONECCIÓN, ESPERE A QUE SE RESTABLESCA");
+								alert("SE PERDIÓ LA CONECCIÓN, SE REDIRECCIONARA A LA DIRECCIÓN DE INCIO");
+								window.location.href = "#{request.contextPath}/";
 							}
 						}
 						

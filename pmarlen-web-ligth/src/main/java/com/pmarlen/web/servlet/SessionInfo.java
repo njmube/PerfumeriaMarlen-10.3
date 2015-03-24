@@ -98,21 +98,21 @@ public class SessionInfo {
 				sb.append(", ");
 			}
 			sb.append(diff[1]);
-			sb.append(" H");
+			sb.append(" h");
 		}
 		if (diff[2] > 0) {
 			if (sb.length() > 0) {
 				sb.append(", ");
 			}
 			sb.append(diff[2]);
-			sb.append(" M");
+			sb.append(" m");
 		}
 		if (diff[3] > 0) {
 			if (sb.length() > 0) {
 				sb.append(", ");
 			}
 			sb.append(diff[3]);
-			sb.append(" S");
+			sb.append(" s");
 		}
 		sb.append(".");
 

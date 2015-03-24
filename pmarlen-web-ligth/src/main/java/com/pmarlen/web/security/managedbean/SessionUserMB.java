@@ -27,10 +27,8 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 public class SessionUserMB implements Serializable{
 
-	private final Logger logger = Logger.getLogger(SessionUserMB.class.getSimpleName());
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-	private UsuarioDAO usuarioDAO;
-	private UsuarioPerfilDAO usarioPerfilDAO;
+	private static final transient Logger logger = Logger.getLogger(SessionUserMB.class.getSimpleName());
+	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 	private long timeOutSession;
 	private Usuario usuarioAuthenticated;
 	private ArrayList<UsuarioPerfil> usuarioPerfiles;
@@ -42,13 +40,6 @@ public class SessionUserMB implements Serializable{
 
 	public Usuario getUsuarioAuthenticated() {
 		if (usuarioAuthenticated == null) {
-			if(this.usuarioDAO == null) {
-				this.usuarioDAO = UsuarioDAO.getInstance();
-			}
-			
-			if(this.usarioPerfilDAO == null){
-				this.usarioPerfilDAO = UsuarioPerfilDAO.getInstance();
-			}
 			FacesContext fCtx = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = fCtx.getExternalContext();
 			HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -68,15 +59,17 @@ public class SessionUserMB implements Serializable{
 				
 				timeOutSession = session.getMaxInactiveInterval()*1000 - 5000;
 				try {
-					usuarioAuthenticated = this.usuarioDAO.findBy(new Usuario(remoteUser));
+					usuarioAuthenticated = UsuarioDAO.getInstance().findBy(new Usuario(remoteUser));
 					if (!session.isNew()) {
 						logger.info("\t==>> usuarioAuthenticated : Session[" + sessionId + "] True enter :" + usuarioAuthenticated);
-						usuarioPerfiles = this.usarioPerfilDAO.findBy(usuarioAuthenticated);
+						usuarioPerfiles = UsuarioPerfilDAO.getInstance().findBy(usuarioAuthenticated);
 						SessionInfo si = ContextAndSessionListener.sessionInfoHT.get(sessionId);
 						if (si != null) {
+							logger.info("\t==>> found, setUserName");
 							si.setUserName(remoteUser);
 						} else {
 							si = new SessionInfo(session, usuarioAuthenticated.getNombreCompleto());
+							logger.info("\t==>> NOT Fucking found("+sessionId+"), add new ? really ? {"+ContextAndSessionListener.sessionInfoHT.keySet()+"}");
 							ContextAndSessionListener.sessionInfoHT.put(sessionId, si);
 						}
 					}
@@ -116,7 +109,7 @@ public class SessionUserMB implements Serializable{
 	}
 
 	public void updateLastVisitedPage(String page) {
-		FacesContext fCtx = FacesContext.getCurrentInstance();
+		FacesContext fCtx = FacesContext.getCurrentInstance();		
 		ExternalContext externalContext = fCtx.getExternalContext();
 		HttpSession session = (HttpSession) externalContext.getSession(false);
 		HttpServletRequest request = (HttpServletRequest) (externalContext.getRequest());
@@ -197,5 +190,10 @@ public class SessionUserMB implements Serializable{
 
 	public int getSucursalId() {
 		return 1;
+	}
+	
+	public String getBienvenido(){
+		updateLastVisitedPage("home.jsf");
+		return usuarioAuthenticated.getNombreCompleto().toUpperCase();
 	}
 }

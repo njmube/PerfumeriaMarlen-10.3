@@ -1,0 +1,244 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        USUARIOS
+    </ui:define>
+
+    <ui:define name="body-title">
+        CATÁLOGO DE USUARIOS
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="form1">
+
+			<h:panelGrid columns="1" cellpadding="5" id="panel1">
+
+				<p:growl globalOnly="true" showDetail="true" autoUpdate="true"/>
+
+				<p:dataTable var="usuario" value="#{usuarioMB.entityList}"
+							 paginator="true" sortMode="single"
+							 rows="#{usuarioMB.viewRows}"
+							 id="entityTable"
+							 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{usuarioMB.sizeList}]"
+							 rowsPerPageTemplate="10,25,100" >
+					<f:facet name="header">
+						OPCIONES :
+						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1, :form2:dlg1Panel1" 
+											actionListener="#{usuarioMB.prepareForNew}" 
+											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
+						<p:spacer width="20"/>
+						<p:commandButton	value="ACTUALIZAR" update=":form1:panel1" 
+											actionListener="#{usuarioMB.refresh}" 
+											icon="ui-icon-arrowrefresh-1-s" />
+
+						<p:commandButton id="toggler" type="button" value=" VER COLUMNAS" style="float:right" icon="ui-icon-calculator" rendered="false"/>
+						<p:columnToggler datasource="entityTable" trigger="toggler" />
+					</f:facet>
+					
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column rowspan="2" headerText="" width="5%" />
+							<p:column rowspan="2" headerText="EMAIL"  width="25%"/>
+							<p:column rowspan="2" headerText="NOMBRE COMPLETO" width="25%" />
+							<p:column rowspan="2" headerText="HABILITADO"  width="10%"/>							
+							<p:column rowspan="1" colspan="6" headerText="PERFILES"  />
+						</p:row>
+						<p:row>							
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="SA" title="SUPER ADMINISTRADOR: ADMINISTRA CONFIGURACIONES Y COMPONENTES DEL SISTEMA"/>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="PM" title="USUARIO DE SISTEMA: PUEDE OPERAR EN EL SISTEMA"/>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="AD" title="ADMINISTRADOR: ADMINISTRA FUNCIONES Y PROCESOS"/>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="FI" title="FINANZAS: PUEDE HACER OPERACIONES DE VENTA Y FACTURACIÓN"/>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="AL" title="ALMACÉN: PUEDE HACER OPERACIONES DE INVENTARIO, CAMBIAR PRECIO, TRASPASOS"/>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1">						
+								<f:facet name="header">
+									<h:outputText value="VE" title="VENTAS: PUEDE CREAR PEDIDOS DE VENTA"/>
+								</f:facet>
+							</p:column>
+						</p:row>
+					</p:columnGroup>
+					
+					<p:column >
+						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
+										 actionListener="#{usuarioMB.setSelectedEntity(usuario)}" 
+										 icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
+										 title="EDITAR DATOS DEL CLIENTE"/>
+
+					</p:column>
+					
+					<p:column sortBy="#{usuario.email}" >						
+						<h:outputText value="#{usuario.email}" />
+						<h:panelGroup rendered="#{sessionUserMB.rootUser}">
+							<br/>
+							<h:outputText value="#{usuario.password}" />
+						</h:panelGroup>
+					</p:column>
+
+					<p:column sortBy="#{usuario.nombreCompleto}">
+						<h:outputText value="#{usuario.nombreCompleto}" />
+					</p:column>
+					
+					<p:column sortBy="#{usuario.abilitado}">
+						
+						<h:outputText value="SI" rendered="#{usuario.abilitado eq 1}" />
+						<h:outputText value="NO" rendered="#{usuario.abilitado ne 1}" />
+						<!--
+						<p:commandButton icon="ui-icon-check"   rendered="#{usuario.abilitado eq 1}" title="SI" />
+						<p:commandButton icon="ui-icon-cancel"  rendered="#{usuario.abilitado ne 1}" title="NO" />
+						-->
+					</p:column>
+					
+					<p:column>						
+						<h:outputText value="X" rendered="#{usuario.inRoleRoot}"/>
+						<h:outputText value="" rendered="#{not usuario.inRoleRoot}"/>
+					</p:column>
+					
+					<p:column >
+						<h:outputText value="X" rendered="#{usuario.inRolePMarlenUser}"/>
+						<h:outputText value="" rendered="#{not usuario.inRolePMarlenUser}"/>
+					</p:column>
+
+					<p:column >
+						<h:outputText value="X" rendered="#{usuario.inRoleAdmin}"/>
+						<h:outputText value="" rendered="#{not usuario.inRoleAdmin}"/>
+					</p:column>
+
+					<p:column >
+						<h:outputText value="X" rendered="#{usuario.inRoleFinances}"/>
+						<h:outputText value="" rendered="#{not usuario.inRoleFinances}"/>
+					</p:column>
+
+					<p:column >
+						<h:outputText value="X" rendered="#{usuario.inRoleStock}"/>
+						<h:outputText value="" rendered="#{not usuario.inRoleStock}"/>
+					</p:column>
+
+					<p:column >
+						<h:outputText value="X" rendered="#{usuario.inRoleSales}"/>
+						<h:outputText value="" rendered="#{not usuario.inRoleSales}"/>
+					</p:column>
+					
+				</p:dataTable>
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="form2">
+			<p:dialog header="#{usuarioMB.dialogTitle}" widgetVar="dlg1" modal="true" width="430" height="250" closable="false" resizable="true">
+				<h:panelGrid columns="1" cellpadding="5" id="dlg1Panel1" width="100%">
+
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+					<h:panelGrid id="grid" columns="3" columnClasses="columnWidth30 rightAlign, columnWidth50 leftAlign,columnWidth20 leftAlign" cellpadding="5" width="100%">
+
+						<h:outputLabel value="EMAIL:" style="font-weight:bold" />
+						<h:outputText id="usuario_email_o" value="#{usuarioMB.selectedEntity.email}" rendered="#{not empty usuarioMB.selectedEntity.email}"/>
+						<h:inputText  id="usuario_email"   value="#{usuarioMB.selectedEntity.email}"  required="true" rendered="#{empty usuarioMB.selectedEntity.email}"/>
+						<p:message   for="usuario_email"  showDetail="true"/>
+						
+						
+						<h:outputLabel for="usuario_nombreCompleto" value="NOMBRE:" style="font-weight:bold"/>
+						<p:inputText id="usuario_nombreCompleto" value="#{usuarioMB.selectedEntity.nombreCompleto}" required="true" label="NOMBRE" size="25">
+							<f:validateLength minimum="4" maximum="64" />	
+						</p:inputText>
+						<p:message for="usuario_nombreCompleto" />
+
+						<h:outputLabel value="HABILITADO:" style="font-weight:bold" />
+						<p:inputSwitch id="usuario_habilitado" value="#{usuarioMB.selectedEntity.habilitado}" onLabel="SI" offLabel="NO"/>
+						<p:message   for="usuario_habilitado"  showDetail="true"/>
+						
+						<h:outputLabel value="PERFILES:" style="font-weight:bold" />
+						<h:panelGrid columns="6" id="usuario_perfiles">
+							<h:outputText value="SA"/>
+							<h:outputText value="PM"/>
+							<h:outputText value="AD"/>
+							<h:outputText value="FI"/>
+							<h:outputText value="AL"/>
+							<h:outputText value="VE"/>
+							
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleRoot}" />
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRolePMarlenUser}" />
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleAdmin}" />
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleFinances}" />
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleStock}" />
+							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleSales}" />
+							
+							
+							<!--
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRoleRoot}" onLabel="SI" offLabel="NO"/>
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRolePMarlenUser}" onLabel="SI" offLabel="NO"/>
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRoleAdmin}" onLabel="SI" offLabel="NO"/>
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRoleFinances}" onLabel="SI" offLabel="NO"/>
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRoleStock}" onLabel="SI" offLabel="NO"/>
+							<p:inputSwitch value="#{usuarioMB.selectedEntity.inRoleSales}" onLabel="SI" offLabel="NO"/>
+							-->
+						</h:panelGrid>
+						<p:message   for="usuario_perfiles"  showDetail="true"/>
+						
+						
+						
+					</h:panelGrid>
+
+					<h:panelGrid columns="1" cellpadding="5" width="100%">
+						<h:panelGroup>
+							<p:commandButton	value="GUARDAR" icon="ui-icon-check" 
+											 validateClient="true" style="margin-right:10px"
+											 ajax="true"
+											 actionListener="#{usuarioMB.save()}"
+											 oncomplete="executeAfterUpdate()"
+											 update=":form1,dlg1Panel1,updatedBeforeOnComplete"/>
+
+							<p:commandButton	value="CANCELAR" update="grid" icon="ui-icon-check" 
+											 ajax="true" process="@this"
+											 oncomplete="PF('dlg1').hide();">
+								<p:resetInput target="grid" />
+							</p:commandButton>
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGroup id="updatedBeforeOnComplete">
+						<script language="JavaScript" type="text/javascript">
+							//
+							function executeAfterUpdate() {
+								//alert('facesContext.maximumSeverity=#{facesContext.maximumSeverity}, facesContext.messageList=#{facesContext.messageList}, facesContext.validationFailed=#{facesContext.validationFailed}');
+								if (#{facesContext.maximumSeverity==null or facesContext.maximumSeverity.ordinal=='1' or not facesContext.validationFailed}) {
+									//alert('ok, close dialog !');
+									PF('dlg1').hide();
+								}
+							}
+							//
+						</script>
+					</h:panelGroup>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

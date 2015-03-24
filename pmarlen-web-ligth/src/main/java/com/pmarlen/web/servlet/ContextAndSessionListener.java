@@ -56,6 +56,8 @@ public class ContextAndSessionListener implements ServletContextListener, HttpSe
     @Override
     public void sessionCreated(HttpSessionEvent hse) {
 		final HttpSession session = hse.getSession();
+		//SessionInfo asi=new SessionInfo(session,"-");
+		//sessionInfoHT.put(session.getId(),asi);
 		logger.info("-->>sessionCreated["+session.getId()+"] ==============================================>>");
 		logger.info("-->>sessionCreated["+session.getId()+"] CreationTime          :"+sdfDefault.format(session.getCreationTime()));
 		logger.info("-->>sessionCreated["+session.getId()+"] LastAccessedTime      :"+sdfDefault.format(session.getLastAccessedTime()));

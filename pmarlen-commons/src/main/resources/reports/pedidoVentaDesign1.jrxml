@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="1032"/>
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="1815"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="fechaHoraImpr" class="java.lang.String"/>
@@ -42,10 +42,10 @@
 	<background>
 		<band height="736" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="86" y="187" width="384" height="375" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
+				<reportElement x="117" y="210" width="324" height="302" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA["reports/PMarlen_Logo_MarcaDeAgua.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["reports/PMarlen_Logo_original_MarcaAgua_1.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -99,19 +99,19 @@
 				<textFieldExpression><![CDATA["NOTA DE PEDIDO (P/ALMAC\u00C9N)"]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="116" y="15" width="271" height="45" uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a">
+				<reportElement x="152" y="15" width="297" height="50" uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA["reports/PMarlen_nombre.jpg"]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="0" y="0" width="116" height="102" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
+				<reportElement x="0" y="0" width="135" height="114" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA["reports/PMarlen_Logo_3.jpg"]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="387" y="15" width="119" height="31" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
+				<reportElement x="443" y="18" width="117" height="31" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">

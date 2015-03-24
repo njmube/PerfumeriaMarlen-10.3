@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.pmarlen.backend.model.*;
+import com.pmarlen.backend.model.quickviews.UsuarioQuickView;
 import com.tracktopell.jdbc.DataSourceFacade;
 
 /**
@@ -104,24 +105,56 @@ public class UsuarioDAO {
 		return r;		
 	}
 
-    public ArrayList<Usuario> findAll() throws DAOException {
-		ArrayList<Usuario> r = new ArrayList<Usuario>();
+    public ArrayList<UsuarioQuickView> findAll() throws DAOException {
+		ArrayList<UsuarioQuickView> r = new ArrayList<UsuarioQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT EMAIL,ABILITADO,NOMBRE_COMPLETO,PASSWORD FROM USUARIO");
+			ps = conn.prepareStatement(
+					"SELECT   U.EMAIL,U.ABILITADO,U.NOMBRE_COMPLETO,U.PASSWORD,UP.PERFIL\n" +
+					"FROM     USUARIO_PERFIL UP,USUARIO U\n" +
+					"WHERE    U.EMAIL = UP.EMAIL\n" +
+					"ORDER BY U.NOMBRE_COMPLETO");
 			
 			rs = ps.executeQuery();
+			UsuarioQuickView x = null;
+			String email = null;
+			String perfil=null;
+			String nombreCompleto=null;
+			String password=null;
+			Integer abilitado = null;
+			logger.info("============================================>");
 			while(rs.next()) {
-				Usuario x = new Usuario();
-				x.setEmail((String)rs.getObject("EMAIL"));
-				x.setAbilitado((Integer)rs.getObject("ABILITADO"));
-				x.setNombreCompleto((String)rs.getObject("NOMBRE_COMPLETO"));
-				x.setPassword((String)rs.getObject("PASSWORD"));
+				email			= (String)rs.getObject("EMAIL");
+				perfil			= (String)rs.getObject("PERFIL");
+				nombreCompleto	= (String)rs.getObject("NOMBRE_COMPLETO");
+				password		= (String)rs.getObject("PASSWORD");
+				abilitado		= (Integer)rs.getObject("ABILITADO");
+				logger.info("->"+email+","+perfil+","+nombreCompleto+","+password+","+abilitado);
+				if(x == null){
+					// NUEVO
+					x = new UsuarioQuickView();					
+				} else if(x.getEmail().equalsIgnoreCase(email)){
+					// EL MISMO EMAIL
+				} else {
+					// CAMBIO EMAIL
+					r.add(x);
+					x = new UsuarioQuickView();					
+				}
+				
+				x.setEmail(email);
+				x.setAbilitado(abilitado);
+				x.setNombreCompleto(nombreCompleto);
+				x.setPassword(password);
+				
+				x.addPerfil(perfil);
+			}
+			if(x != null){
 				r.add(x);
 			}
+			logger.info("<============================================");
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
@@ -187,15 +220,15 @@ public class UsuarioDAO {
 			conn = getConnection();
 			ps = conn.prepareStatement("UPDATE USUARIO SET ABILITADO=?,NOMBRE_COMPLETO=?,PASSWORD=? "+
 					" WHERE EMAIL=?");
-			
+			logger.info("->x.email="+x.getEmail());
 			int ci=1;
-			ps.setObject(ci++,x.getEmail());
 			ps.setObject(ci++,x.getAbilitado());
 			ps.setObject(ci++,x.getNombreCompleto());
 			ps.setObject(ci++,x.getPassword());
 			ps.setObject(ci++,x.getEmail());
 			
-			r = ps.executeUpdate();						
+			r = ps.executeUpdate();
+			logger.info("->r="+r);
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());

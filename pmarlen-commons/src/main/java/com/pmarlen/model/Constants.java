@@ -24,6 +24,13 @@ public class Constants {
 	public static final String PERFIL_STOCK = "stock";
 	public static final String PERFIL_SALES = "sales";
 
+	public static final String es_PERFIL_ROOT = "SUPER-ADMINISTRADOR";
+	public static final String es_PERFIL_PMARLENUSER = "USUARIO DE SISTEMA";
+	public static final String es_PERFIL_ADMIN = "ADMINISTRADOR";
+	public static final String es_PERFIL_FINANCES = "FINANZAS";
+	public static final String es_PERFIL_STOCK = "ALMACÉN";
+	public static final String es_PERFIL_SALES = "VENTAS";
+
 	public static final int CREATE_ACTION = 1;
 	public static final int UPDATE_ACTION = 2;
 	
@@ -154,6 +161,24 @@ public class Constants {
 		} else {
 			return null;
 		}
+	}
+	
+	public static String getDescPerfil(String perfil){
+		if(perfil.equals(PERFIL_ROOT)){
+			return es_PERFIL_ROOT;
+		} else if(perfil.equals(PERFIL_ADMIN)){
+			return es_PERFIL_ADMIN;
+		} else if(perfil.equals(PERFIL_FINANCES)){
+			return es_PERFIL_FINANCES;
+		} else if(perfil.equals(PERFIL_PMARLENUSER)){
+			return es_PERFIL_PMARLENUSER;
+		} else if(perfil.equals(PERFIL_SALES)){
+			return es_PERFIL_SALES;
+		} else if(perfil.equals(PERFIL_STOCK)){
+			return es_PERFIL_STOCK;
+		} else {
+			return "-";
+		}	
 	}
 	
 	public static String getDescripcionTipoMov(int tipoMov) {

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+    
+    <ui:define name="title">
+        SESIONES ACTIVAS
+    </ui:define>
+
+    <ui:define name="body-title">
+        SESIONES ACTIVAS
+    </ui:define>
+    
+    <ui:define name="body">
+		<h:form id="form1">
+			<h:panelGrid columns="1" cellpadding="5" id="panel1">
+
+				<p:growl globalOnly="true" showDetail="true" autoUpdate="true"/>
+				
+				<p:dataTable var="sessionInfo" value="#{sesionesActivasMB.sesionesActivas}"
+							 sortMode="single"
+							 id="entityTable" >
+					<f:facet name="header">
+										
+					</f:facet>
+					
+					<p:column width="5%">
+						-
+					</p:column>
+					
+					<p:column headerText="SESSION ID" sortBy="#{sessionInfo.session.id}" width="15%">
+						<h:outputText value="-#{sessionInfo.session.id}-" />
+					</p:column>
+
+					<p:column headerText="USER NAME" sortBy="#{sessionInfo.userName}" width="15%">
+						<h:outputText value="#{sessionInfo.userName}" />
+					</p:column>
+					
+					<p:column headerText="CREATION DIFF" width="15%">
+						<h:outputText value="#{sessionInfo.creationTimeDiff}" />
+					</p:column>
+					
+					<p:column headerText="USER AGENT" width="40%">
+						<h:outputText value="#{sessionInfo.userAgent}" />
+					</p:column>
+
+
+				</p:dataTable>
+				
+				<p:poll interval="5" listener="#{systemInfoMB.updateTime}" update="entityTable" onerror="errorGetTime();" onsuccess="successGetTime()" />				
+
+			</h:panelGrid>
+						
+		</h:form>		
+    </ui:define>
+
+</ui:composition>

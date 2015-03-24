@@ -24,8 +24,8 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 public class SystemInfoMB  implements Serializable{
 
-	private final Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	private static final transient Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
+	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	public String getSystemVersion() {
 		return Constants.getServerVersion();
