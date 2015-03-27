@@ -39,22 +39,12 @@ public class CrearImagenesDePruebaEnMultimedio {
 	int targetIconImageWidth = 15;
 	int targetIconImageHeight = 15;
 
-	public void crearImagesnes(String url, String user, String password, String baseDirImages, String dirImages, String maskFileName, String finalOutputDir) {
-		//System.err.println(" \t====> debug: url="+url+", user="+user+", password="+password+", dirImages="+dirImages+", maskFileName="+maskFileName);
+	public void crearImagesnes(String url, String user, String password, String inputDirImages, String maskFileName, String baseOutputDirImages, String finalOutputDir) {		
 
 		Connection conn = null;
-		PreparedStatement psProducto = null;
+		PreparedStatement psMultimedio = null;
+		PreparedStatement psProductoMultimedio = null;
 		
-		ResultSet rsProducto = null;
-		ArrayList<Integer> productoIds = new ArrayList<Integer>();
-		DecimalFormat df = new DecimalFormat("0000");
-		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
-
-		byte[] imagenProximamenteBytes = null;
-
-		//----------------
-
-		// Get a ImageWriter for jpeg format.
 		Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
 		if (!writers.hasNext()) {
 			throw new IllegalStateException("No JPEG writers found");
@@ -64,142 +54,138 @@ public class CrearImagenesDePruebaEnMultimedio {
 		ImageWriteParam param = jpegImageWriter.getDefaultWriteParam();
 		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		param.setCompressionQuality(jpegImageQuality);
-		BufferedImage proximamenteImg = null;
 		try {
-			conn = DriverManager.getConnection(url, user, password);
-
-			psProducto = conn.prepareStatement("SELECT ID FROM PRODUCTO");
-			rsProducto = psProducto.executeQuery();
-
-			while (rsProducto.next()) {
-				Integer productoId = rsProducto.getInt("Id");
-				productoIds.add(productoId);
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+			} catch (Exception ex) {
+				ex.printStackTrace(System.err);
+				System.exit(1);
 			}
-			rsProducto.close();
-			psProducto.close();
+
+			conn = DriverManager.getConnection(url, user, password);
+			
+			psMultimedio = conn.prepareStatement("DELETE FROM PRODUCTO_MULTIMEDIO");
+			int rmM = psMultimedio.executeUpdate();
+			psMultimedio.close();
+			System.err.println(" ====> DElete all PRODUCTO_MULTIMEDIO:"+rmM);
+			
+			psMultimedio = conn.prepareStatement("DELETE FROM MULTIMEDIO");
+			rmM = psMultimedio.executeUpdate();
+			psMultimedio.close();
+			System.err.println(" ====> Delete all MULTIMEDIO:"+rmM);
+			
+			psMultimedio = conn.prepareStatement("INSERT INTO MULTIMEDIO(MIME_TYPE,RUTA_CONTENIDO,SIZE_BYTES,NOMBRE_ARCHIVO) VALUES(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+			psProductoMultimedio = conn.prepareStatement("INSERT INTO PRODUCTO_MULTIMEDIO(MULTIMEDIO_ID,PRODUCTO_CODIGO_BARRAS) VALUES(?,?)");
+			
 			System.err.println(" ====> debug: maskFileName=\"" + maskFileName + "\"");
 
-			System.err.println("====> debug: Ok, found " + productoIds.size() + " productos.");
+			System.err.println("====> imageFileDir="+inputDirImages);
 
-			File imageFileDir = new File(dirImages);
+			File imageFileDir = new File(inputDirImages);
 			File[] filesInDir = imageFileDir.listFiles();
-
-			Hashtable<String, File> posibleImageFiles = new Hashtable<String, File>();
+			String productoCB = null;
 			System.err.println("====> Listing dor for search all Images files in dir:" + imageFileDir.getAbsolutePath());
-			for (File f : filesInDir) {
-				System.err.println("\t====> is this: " + f.getPath() + " ?");
+			int multimedioId=-1;
+			for (File f : filesInDir) {				
 				if (f.isDirectory()) {
 					continue;
 				}
 				String fnlc = f.getName().toLowerCase();
 				if (fnlc.endsWith("jpeg") || fnlc.endsWith("jpg") || fnlc.endsWith("png")) {
-					System.err.println("\t\t====> it seems like Image:KEY=" + f.getName().toLowerCase());
-					posibleImageFiles.put(fnlc, f);
+					productoCB =fnlc.replace("producto_multimedio_", "").replace("_1.jpg", "");					
+				} else {
+					continue;
 				}
-			}
+				System.err.println("====>IMAGEN PARA PRODUCTO CODIGO_BARRAS="+productoCB);
+				
+				String nombreArchivoFinal = "PRODUCTO_MULTIMEDIO_" + productoCB + "_1.jpg";
+				
+				psMultimedio.clearParameters();
+				psMultimedio.setString(1, "image/jpeg");
+				psMultimedio.setString(2, "/usr/local/pmarlen_multimedio");
+				psMultimedio.setInt   (3, (int)f.length());
+				psMultimedio.setString(4, nombreArchivoFinal);
+				
+				int um=psMultimedio.executeUpdate();
+				
+				ResultSet gkrs = psMultimedio.getGeneratedKeys();
+				while(gkrs.next()){
+					multimedioId=gkrs.getInt(1);
+				}
+				gkrs.close();
+				if(multimedioId == -1){
+					throw new Exception("No se obtuvo la llave multimedioId");
+				}
+				System.err.println("\t====>INSERTED MULTIMEDIO.ID="+multimedioId);
+				
+				psProductoMultimedio.clearParameters();
+				psProductoMultimedio.setInt(1,multimedioId);
+				psProductoMultimedio.setString(2,productoCB);
+				
+				psProductoMultimedio.executeUpdate();
+				System.err.println("\t====>INSERTED PRODUCTO_MULTIMEDIO !");
+				
+				BufferedImage biTransformed = null;
+				BufferedImage originalImage = null;
+				Image imageScalled = null;
 
-			for (Integer productoId : productoIds) {
-				String nombreArchivoFinal = "PRODUCTO_" + productoId + ".jpg";
-				boolean loadFromfile;
-				InputStream is = null;
-				int sizeBytes = 0;
+				originalImage = ImageIO.read(f);
 
-				loadFromfile = (dirImages != null && maskFileName != null);
-				if (loadFromfile) {
-					String fileNameToSearch = maskFileName.replace("@PRODUCTO_ID@", String.valueOf(productoId));
-					File imageFile = new File(dirImages + File.separator + fileNameToSearch);
+				int w = originalImage.getWidth();
+				int h = originalImage.getHeight();
 
-					System.err.println("------------------------------> ProductoId=" + productoId + ", try to read from file :" + imageFile);
+				int newImageW = 0;
+				int newImageH = 0;
 
-					if (imageFile.exists() || imageFile.canRead()) {
-						System.err.println(" ====> debug: OK reading from :" + imageFile);
-					} else {
+				System.err.println("\t====>TRANSFORMING Image: size:" + w + "x" + h + " => " + targetImageWidth + "x" + targetImageHeight);
 
-						Enumeration<String> posibleFileNamesEnumeration = posibleImageFiles.keys();
-						System.err.println(" \t====> debug: exist || readable ? = ( " + imageFile.exists() + "||" + imageFile.canRead() + "), then try to search with another like name ");
-						imageFile = null;
-						while (posibleFileNamesEnumeration.hasMoreElements()) {
-							String posibleFileName = posibleFileNamesEnumeration.nextElement();
-							if (fileNameToSearch.substring(0, fileNameToSearch.lastIndexOf(".")).
-									equalsIgnoreCase(posibleFileName.substring(0, posibleFileName.lastIndexOf(".")))) {
-								imageFile = posibleImageFiles.get(posibleFileName);
-								System.err.println(" \t\t====> debug: OK We found some like the original looking for, reading from :" + imageFile);
-
-								break;
-							}
-						}
-					}
-
-					BufferedImage biTransformed = null;
-					BufferedImage originalImage = null;
-					Image imageScalled = null;
-						
-					if (imageFile != null) {
-						
-						originalImage = ImageIO.read(imageFile);
-					}else{
-						if(proximamenteImg == null){
-							proximamenteImg = ImageIO.read(getClass().getResourceAsStream("/imgs/PROXIMAMENTE_IMG.jpg"));
-						}
-						originalImage = proximamenteImg;
-					}
-					
-					int w = originalImage.getWidth();
-					int h = originalImage.getHeight();
-
-					int newImageW = 0;
-					int newImageH = 0;
-
-					System.err.println("\t====> Image: size:" + w + "x" + h + " => " + targetImageWidth + "x" + targetImageHeight);
-
-					if (h != targetImageHeight && h > w) {
-						newImageH = targetImageHeight;
-						newImageW = ((targetImageHeight * w) / h);
-						System.err.println("\t\t resize =>> " + newImageW + "x" + newImageH);
-					} else {
-						newImageH = ((targetImageHeight * h) / w);
-						newImageW = targetImageWidth;
-						System.err.println("\t\t resize =>> " + newImageW + "x" + newImageH);						
-					}
-
-					imageScalled = originalImage.getScaledInstance(newImageW, newImageH, Image.SCALE_SMOOTH);
-
-					int coordImgX = 0;
-
-					biTransformed = new BufferedImage(targetImageWidth, targetImageHeight, BufferedImage.TYPE_INT_RGB);
-
-					Graphics2D g2d = (Graphics2D) biTransformed.getGraphics();
-					Color bgColor = Color.WHITE;
-					g2d.setColor(bgColor);
-					g2d.fillRect(0, 0, targetImageWidth, targetImageHeight);
-					int coordImgY = 0;
-					if (newImageW >= targetImageWidth) {
-						coordImgX = (targetImageWidth - newImageW) / 2;
-						coordImgY = (targetImageHeight - newImageH) / 2;
-						System.err.println("\t\t CENTER + CROP =>> (" + (coordImgX) + ",0) to (" + targetImageWidth + "," + targetImageHeight + ")");
-						g2d.drawImage(imageScalled, coordImgX, coordImgY, null);
-					} else if (newImageW < targetImageWidth) {
-						coordImgX = (targetImageWidth - newImageW) / 2;
-						System.err.println("\t\t FILL BACKGROUNG WITH GRADIENT =>> Paint image in (" + coordImgX + ",0)");
-						g2d.drawImage(drawVerticalsBarsgradient(imageScalled, 0.02f, bgColor), coordImgX, 0, null);
-					}
-					saveScaledJpegImage(biTransformed, targetImageWidth, targetImageHeight, baseDirImages + finalOutputDir + File.separator + nombreArchivoFinal, jpegImageWriter, param);
-					saveScaledJpegImage(biTransformed, targetMediumImageWidth, targetMediumImageHeight, baseDirImages + finalOutputDir + File.separator + "MED_" + nombreArchivoFinal, jpegImageWriter, param);
-					saveScaledJpegImage(biTransformed, targetMinimunImageWidth, targetMinimunImageHeight, baseDirImages + finalOutputDir + File.separator + "MIN_" + nombreArchivoFinal, jpegImageWriter, param);
-					saveScaledJpegImage(biTransformed, targetIconImageWidth, targetIconImageHeight, baseDirImages + finalOutputDir + File.separator + "ICO_" + nombreArchivoFinal, jpegImageWriter, param);
-
+				if (h != targetImageHeight && h > w) {
+					newImageH = targetImageHeight;
+					newImageW = ((targetImageHeight * w) / h);
+					System.err.println("\t\t resize =>> " + newImageW + "x" + newImageH);
+				} else {
+					newImageH = ((targetImageHeight * h) / w);
+					newImageW = targetImageWidth;
+					System.err.println("\t\t resize =>> " + newImageW + "x" + newImageH);						
 				}
 
-			}
+				imageScalled = originalImage.getScaledInstance(newImageW, newImageH, Image.SCALE_SMOOTH);
 
+				int coordImgX = 0;
+
+				biTransformed = new BufferedImage(targetImageWidth, targetImageHeight, BufferedImage.TYPE_INT_RGB);
+
+				Graphics2D g2d = (Graphics2D) biTransformed.getGraphics();
+				Color bgColor = Color.WHITE;
+				g2d.setColor(bgColor);
+				g2d.fillRect(0, 0, targetImageWidth, targetImageHeight);
+				int coordImgY = 0;
+				if (newImageW >= targetImageWidth) {
+					coordImgX = (targetImageWidth - newImageW) / 2;
+					coordImgY = (targetImageHeight - newImageH) / 2;
+					System.err.println("\t\t CENTER + CROP =>> (" + (coordImgX) + ",0) to (" + targetImageWidth + "," + targetImageHeight + ")");
+					g2d.drawImage(imageScalled, coordImgX, coordImgY, null);
+				} else if (newImageW < targetImageWidth) {
+					coordImgX = (targetImageWidth - newImageW) / 2;
+					System.err.println("\t\t FILL BACKGROUNG WITH GRADIENT =>> Paint image in (" + coordImgX + ",0)");
+					g2d.drawImage(drawVerticalsBarsgradient(imageScalled, 0.02f, bgColor), coordImgX, 0, null);
+				}
+				System.err.println("\t====>SAVING SCALED");
+				saveScaledJpegImage(biTransformed, targetImageWidth, targetImageHeight, baseOutputDirImages + finalOutputDir + File.separator + nombreArchivoFinal, jpegImageWriter, param);
+				saveScaledJpegImage(biTransformed, targetMediumImageWidth, targetMediumImageHeight, baseOutputDirImages + finalOutputDir + File.separator + "MED_" + nombreArchivoFinal, jpegImageWriter, param);
+				saveScaledJpegImage(biTransformed, targetMinimunImageWidth, targetMinimunImageHeight, baseOutputDirImages + finalOutputDir + File.separator + "MIN_" + nombreArchivoFinal, jpegImageWriter, param);
+				saveScaledJpegImage(biTransformed, targetIconImageWidth, targetIconImageHeight, baseOutputDirImages + finalOutputDir + File.separator + "ICO_" + nombreArchivoFinal, jpegImageWriter, param);
+				System.err.println("\t====>DOME WITH IMAGE.");
+			}
+			
+			psMultimedio.close();
+			psProductoMultimedio.close();
+			
 			conn.close();
-
-		} catch (IOException ex) {
+			System.exit(0);
+		} catch (Exception ex) {
 			ex.printStackTrace(System.err);
-			return;
-		} catch (SQLException ex) {
-			ex.printStackTrace(System.err);
-			return;
+			System.exit(1);
 		}
 	}
 
@@ -326,8 +312,8 @@ public class CrearImagenesDePruebaEnMultimedio {
 	public static void main(String[] args) {
 		CrearImagenesDePruebaEnMultimedio cidpm = new CrearImagenesDePruebaEnMultimedio();
 		if (args.length == 0) {
-			System.err.println(" -u  url  user  password  baseDir dirImages  @PRODUCTO_ID@.JPG finalOutputDir");
-			System.err.println(" -x  url  user  password  baseDir dirImages");
+			System.err.println(" -u  url  user  password  dirImages  @PRODUCTO_ID@.JPG baseOutputDir finalOutputDir");
+			System.err.println(" -x  url  user  password  dirImages  baseDir");
 
 			System.exit(1);
 		}

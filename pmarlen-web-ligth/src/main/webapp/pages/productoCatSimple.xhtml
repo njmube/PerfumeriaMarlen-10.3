@@ -42,7 +42,11 @@
 							
 							<p:commandButton update="@form" icon="ui-icon-cart"/>
 							
-							<p:graphicImage value="/images/turboload/Logo_T2.gif" alt="(LOGO)" title="IMG"/>
+							<p:graphicImage value="/images/pmarlen_multimedio/ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg" rendered="#{not empty producto.firstMultimedio}"
+											alt="IMG_ICONO" 
+											title="ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"/>
+							
+							<h:outputText value="#{producto.firstMultimedio.nombreArchivo}" rendered="#{not empty producto.firstMultimedio}" />
 
 						</h:panelGrid></p:panel>
 

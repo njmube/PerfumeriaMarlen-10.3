@@ -330,13 +330,13 @@
 
 						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
 						<h:panelGroup>
-							<p:inputSwitch id="autorizaDescuento" value="#{editarEntradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible}">
+							<p:inputSwitch id="autorizaDescuento" value="#{editarEntradaSalidaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not sessionUserMB.adminUser or (not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible)}">
 								<p:ajax listener="#{editarEntradaSalidaMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:inputSwitch>
 							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{editarEntradaSalidaMB.politicaDescuento}" />
 
 							<p:spacer width="10"/>
-							<p:selectOneMenu id="descuentoEspecial" value="#{editarEntradaSalidaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible}" rendered="#{editarEntradaSalidaMB.autorizaDescuento}">
+							<p:selectOneMenu id="descuentoEspecial" value="#{editarEntradaSalidaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{not sessionUserMB.adminUser or (not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible)}" rendered="#{editarEntradaSalidaMB.autorizaDescuento}">
 								<f:selectItems  value="#{editarEntradaSalidaMB.descuentoEspacialList}"/>
 								<p:ajax listener="#{editarEntradaSalidaMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:selectOneMenu>
@@ -405,17 +405,17 @@
 						</p:panelGrid>
 						<p:spacer width="10"/>
 						
-						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.verificable}"
+						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.adminUser and (not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.verificable)}"
 										 actionListener="#{editarEntradaSalidaMB.verificar}" process="@all" update="@all">
 							<p:confirm header="VERIFICAR" message="¿ SEGURO QUE YA HA VERIFICADO TODOS LOS ELEMENTOS ?" icon="ui-icon-alert" />
 						</p:commandButton>
 
-						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.surtible}"  
+						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.surtible)}"  
 										 actionListener="#{editarEntradaSalidaMB.surtir}" process="@all" update="@all">
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>
-							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.facturable}"  
+							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.adminUser and (not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.facturable)}"  
 											 disabled="#{editarEntradaSalidaMB.actualizarEstadoPorResultadoWS}"
 											 actionListener="#{editarEntradaSalidaMB.generaCFDReal}" process="@all" update="@all">
 								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
@@ -423,7 +423,7 @@
 
 						</h:panelGroup>
 						
-						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.cancelable}" 
+						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.cancelable)}" 
 										 process="@all" update="@all">
 							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR EL PEDIDO ?" icon="ui-icon-alert" />
 						</p:commandButton>

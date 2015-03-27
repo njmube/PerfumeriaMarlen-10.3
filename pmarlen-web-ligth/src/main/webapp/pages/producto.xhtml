@@ -1,0 +1,247 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        Producto
+    </ui:define>
+
+    <ui:define name="body-title">
+        CATÁLOGO DE PRODUCTOS
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="form1">
+
+			<h:panelGrid columns="1" cellpadding="5" id="panel1">
+
+				<p:growl globalOnly="true" showDetail="true" autoUpdate="true"/>
+
+				<p:dataTable var="producto" value="#{productoMB.entityList}"
+							 paginator="true" sortMode="single"
+							 rows="#{productoMB.viewRows}"
+							 id="entityTable"
+							 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{productoMB.sizeList}]"
+							 rowsPerPageTemplate="10,25,100" >
+					<f:facet name="header">
+						OPCIONES :
+						<p:commandButton	value="AGREGAR NUEVO PRODUCTO" update=":form1:panel1, :form2:dlg1Panel1" 
+											actionListener="#{productoMB.prepareForNew}" 
+											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
+						<p:spacer width="20"/>
+						<p:commandButton	value="ACTUALIZAR" update=":form1:panel1" 
+											icon="ui-icon-arrowrefresh-1-s" />
+
+						<p:commandButton id="toggler" type="button" value=" VER COLUMNAS" style="float:right" icon="ui-icon-calculator" rendered="false"/>
+						<p:columnToggler datasource="entityTable" trigger="toggler" />
+					</f:facet>
+					
+					<p:column width="2%">
+						<p:graphicImage		id="icoProd" value="/images/pmarlen_multimedio/ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg" 
+											rendered="#{not empty producto.firstMultimedio}" alt="IMG_ICONO" />
+						
+						<p:overlayPanel id="imagePanel" for="icoProd" hideEffect="fade"  rendered="#{not empty producto.firstMultimedio}" showEvent="mouseover" showCloseIcon="true" dynamic="true">
+							<p:graphicImage		value="/images/pmarlen_multimedio/MED_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"
+											alt="IMG_ICONO" 
+											title="ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"/>
+						</p:overlayPanel>
+						
+						<p:commandButton id="img_btn" icon="ui-icon-image" rendered="#{empty producto.firstMultimedio}" title="NO HAY IMAGEN PARA ESTE PRODUCTO"/>	
+					</p:column>
+
+					
+					<p:column headerText="CODIGO" filterBy="#{producto.codigoBarras}" width="10%" filterMatchMode="contains">
+						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
+											actionListener="#{productoMB.setSelectedEntity(producto)}" 
+											icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
+											value="#{producto.codigoBarras}"
+											title="EDITAR DATOS DEL PRODUCTO #{producto.codigoBarras}"/>
+
+					</p:column>
+
+					<p:column headerText="INDUSTRIA" sortBy="#{producto.industria}" width="10%">
+						<h:outputText value="#{producto.industria}" />
+					</p:column>
+					
+					<p:column headerText="LINEA" sortBy="#{producto.linea}" width="10%">
+						<h:outputText value="#{producto.linea}" />
+					</p:column>
+					
+					<p:column headerText="MARCA" sortBy="#{producto.marca}" width="10%">
+						<h:outputText value="#{producto.marca}" />
+					</p:column>
+
+					<p:column headerText="NOMBRE" sortBy="#{producto.nombre}" width="15%">
+						<h:outputText value="#{producto.nombre}" />
+					</p:column>
+					
+					<p:column headerText="ABREB." width="5%">
+						<h:outputText value="#{producto.abrebiatura}" />
+					</p:column>
+
+
+					<p:column headerText="PRESENTACIÓN" sortBy="#{producto.presentacion}" width="5%">
+						<h:outputText value="#{producto.presentacion}" />
+					</p:column>
+
+					<p:column headerText="DATOS" width="20%">
+						<p:panelGrid columns="2">
+							<p:outputLabel value="CONTENIDO:"/>
+							<h:outputText value="#{producto.contenido}" />
+														
+							<p:outputLabel value="UNIDAD DE MEDIDA:"/>
+							<h:outputText value="#{producto.unidadMedida}" />
+							
+							<p:outputLabel value="UNIDADES X CAJA:"/>
+							<h:outputText value="#{producto.unidadesXCaja}" />
+							
+							<p:outputLabel value="UNIDAD EMPAQUE:"/>
+							<h:outputText value="#{producto.unidadEmpaque}" />
+							
+							<p:outputLabel value="COSTO:"/>
+							<h:outputText value="#{producto.costo}" title="PERO PARA EFECTOS DE REDONDEO : #{productoMB.getImporteMoneda(producto.costo)}">
+								<f:convertNumber maxFractionDigits="6" pattern="$ ###,###,##0.000000" locale="es_MX"/>
+							</h:outputText>
+							
+							<p:outputLabel value="COSTO VENTA:"/>
+							<h:outputText value="#{producto.costoVenta}" title="PERO PARA EFECTOS DE REDONDEO : #{productoMB.getImporteMoneda(producto.costoVenta)}">
+								<f:convertNumber maxFractionDigits="6" pattern="$ ###,###,##0.000000" locale="es_MX"/>
+							</h:outputText>
+							
+						</p:panelGrid>
+					</p:column>
+					
+				</p:dataTable>
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="form2">
+			<p:dialog header="#{productoMB.dialogTitle}" widgetVar="dlg1" modal="true" width="500" height="500" closable="false" resizable="true">
+				<h:panelGrid columns="1" cellpadding="5" id="dlg1Panel1" width="100%">
+
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+					<h:panelGrid id="grid" columns="3" columnClasses="columnWidth30 rightAlign, columnWidth50 leftAlign,columnWidth20 leftAlign" cellpadding="5" width="100%">
+
+						<h:outputLabel for="producto_codigoBarras" value="CODIGO:" style="font-weight:bold"/>                    
+						<p:inputText id="producto_codigoBarras" value="#{productoMB.selectedEntity.codigoBarras}" required="true" label="CODIGO" size="12" disabled="#{not empty productoMB.selectedEntity.codigoBarras}">
+							<f:validateLength minimum="12" maximum="13" />							
+						</p:inputText>
+						<p:message for="producto_codigoBarras" />
+
+						<h:outputLabel for="producto_industria" value="INDUSTRIA:" style="font-weight:bold"/>
+						<p:inputText id="producto_industria" value="#{productoMB.selectedEntity.industria}" required="true" label="INDUSTRIA:" size="40" maxlength="128">
+							<f:validateLength minimum="5" maximum="128" />
+						</p:inputText>
+						<p:message for="producto_industria" />
+
+						<h:outputLabel for="producto_linea" value="LINEA:" style="font-weight:bold"/>
+						<p:inputText id="producto_linea" value="#{productoMB.selectedEntity.linea}" required="true" label="LINEA:" size="40">
+							<f:validateLength minimum="5" maximum="128" />							
+						</p:inputText>
+						<p:message for="producto_linea" />
+						
+						<h:outputLabel for="producto_marca" value="MARCA:" style="font-weight:bold"/>
+						<p:inputText id="producto_marca" value="#{productoMB.selectedEntity.marca}" required="true" label="MARCA:" size="40" maxlength="128">
+							<f:validateLength minimum="2" maximum="255" />
+						</p:inputText>
+						<p:message for="producto_marca"  showDetail="true"/>
+						
+						<h:outputLabel for="producto_nombre" value="NOMBRE:" style="font-weight:bold"/>
+						<p:inputText id="producto_nombre" value="#{productoMB.selectedEntity.nombre}" required="true" label="NOMBRE:" size="40">
+							<f:validateLength minimum="5" maximum="128" />
+						</p:inputText>
+						<p:message for="producto_nombre" />
+
+						<h:outputLabel for="producto_presentacion" value="PRESENTACIÓN:" style="font-weight:bold"/>                    
+
+						<p:inputText id="producto_presentacion" value="#{productoMB.selectedEntity.presentacion}" required="true" label="PRESENTACIÓN:" size="40">
+							<f:validateLength minimum="5" maximum="255" />
+						</p:inputText>
+						<p:message for="producto_presentacion" />
+
+						<h:outputLabel for="producto_contenido" value="CONTENIDO:" style="font-weight:bold"/>
+						<p:inputText id="producto_contenido" value="#{productoMB.selectedEntity.contenido}" required="true" label="CONTENIDO:" size="6">
+							<f:convertNumber for="producto_contenido"/>
+							<f:convertNumber maxFractionDigits="6" pattern="########0.000000" locale="es_MX"/>
+						</p:inputText>
+						<p:message for="producto_contenido" />
+						
+						<h:outputLabel for="producto_unidadMedida" value="UNIDAD DE MEDIDA:" style="font-weight:bold"/>
+						<p:inputText id="producto_unidadMedida" value="#{productoMB.selectedEntity.unidadMedida}" required="true" label="UNIDAD DE MEDIDA:" size="3">
+							<f:validateLength minimum="1" maximum="8" />
+						</p:inputText>
+						<p:message for="producto_unidadMedida" />
+
+						<h:outputLabel for="producto_unidadEmpaque" value="UNIDAD EMPAQUE:" style="font-weight:bold"/>
+						<p:inputText id="producto_unidadEmpaque" value="#{productoMB.selectedEntity.unidadEmpaque}" required="true" label="UNIDAD EMPAQUE:" size="3">
+							<f:validateLength minimum="1" maximum="10" />
+						</p:inputText>
+						<p:message for="producto_unidadEmpaque" />
+
+						<h:outputLabel for="producto_unidadesXCaja" value="UNIDADES X CAJA:" style="font-weight:bold"/>
+						<p:inputText id="producto_unidadesXCaja" value="#{productoMB.selectedEntity.unidadesXCaja}" required="true" label="UNIDADES X CAJA:" size="3">
+							<f:validateLength minimum="1" maximum="10" />
+							<f:convertNumber integerOnly="true"/>
+						</p:inputText>
+						<p:message for="producto_unidadesXCaja" />
+						
+						<h:outputLabel for="producto_costo" value="COSTO:" style="font-weight:bold"/>
+						<p:inputText id="producto_costo" value="#{productoMB.selectedEntity.costo}" required="true" label="COSTO:" size="5">
+							<f:convertNumber maxFractionDigits="6" pattern="###,###,##0.000000" locale="es_MX"/>
+							<f:convertNumber integerOnly="false"/>
+						</p:inputText>
+						<p:message for="producto_costo" />
+						
+						<h:outputLabel for="producto_costoVenta" value="COSTO VENTA:" style="font-weight:bold"/>
+						<p:inputText id="producto_costoVenta" value="#{productoMB.selectedEntity.costoVenta}" required="true" label="COSTO VENTA:" size="5">
+							<f:convertNumber maxFractionDigits="6" pattern="###,###,##0.000000" locale="es_MX"/>
+							<f:convertNumber integerOnly="false"/>
+						</p:inputText>
+						<p:message for="producto_costoVenta" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="1" cellpadding="5" width="100%">
+						<h:panelGroup>
+							<p:commandButton	value="GUARDAR" icon="ui-icon-check" 
+											 validateClient="true" style="margin-right:10px"
+											 ajax="true"
+											 actionListener="#{productoMB.save}"
+											 oncomplete="executeAfterUpdate()"
+											 update=":form1,dlg1Panel1, updatedBeforeOnComplete"/>
+
+							<p:commandButton	value="CANCELAR" update="grid" icon="ui-icon-check" 
+											 ajax="true" process="@this"
+											 oncomplete="PF('dlg1').hide();">
+								<p:resetInput target="grid" />
+							</p:commandButton>
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGroup id="updatedBeforeOnComplete">
+						<script language="JavaScript" type="text/javascript">
+							//
+							function executeAfterUpdate() {
+								//alert('facesContext.maximumSeverity=#{facesContext.maximumSeverity}, facesContext.messageList=#{facesContext.messageList}, facesContext.validationFailed=#{facesContext.validationFailed}');
+								if (#{facesContext.maximumSeverity==null or facesContext.maximumSeverity.ordinal=='1' or not facesContext.validationFailed}) {
+									//alert('ok, close dialog !');
+									PF('dlg1').hide();
+								}
+							}
+							//
+						</script>
+					</h:panelGroup>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

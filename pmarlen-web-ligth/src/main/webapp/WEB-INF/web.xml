@@ -29,7 +29,6 @@
         <servlet-name>GetTime</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.GetTime</servlet-class>
     </servlet>
-
     <!-- JSF mapping -->
     <servlet>
         <servlet-name>facesServlet</servlet-name>
@@ -53,6 +52,10 @@
         <servlet-name>UtfReportExample</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.UtfReportExample</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.ImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UtfReportExample</servlet-name>
         <url-pattern>/docs/utfExample.pdf</url-pattern>
@@ -60,7 +63,7 @@
     <servlet-mapping>
         <servlet-name>GetTime</servlet-name>
         <url-pattern>/gt</url-pattern>
-    </servlet-mapping>	
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>facesServlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -89,7 +92,12 @@
         <servlet-name>GenerarPDFFactura</servlet-name>
         <url-pattern>/docs/facturas/*</url-pattern>
     </servlet-mapping>
-	<!--
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/images/pmarlen_multimedio/*</url-pattern>
+    </servlet-mapping>
+
+    <!--
     <filter>
         <filter-name>JSFTraceFilter</filter-name>
         <filter-class>com.pmarlen.web.servlet.JSFTraceFilter</filter-class>

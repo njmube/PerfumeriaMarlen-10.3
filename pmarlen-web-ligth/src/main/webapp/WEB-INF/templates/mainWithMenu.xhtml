@@ -88,40 +88,39 @@
 							</p:submenu>
 							
 							<p:submenu label="MOVS. ALMACENES" icon="ui-icon-transfer-e-w">
-								<p:menuitem value="A SUCURSAL" url="/pages/pendiente.jsf" icon="ui-icon-shuffle"/>
-								<p:menuitem value="SUB-ALMACEN" url="/pages/pendiente.jsf" icon="ui-icon-arrow-1-se"/>								
+								<p:menuitem value="A SUCURSAL" url="/pages/pendiente.jsf" icon="ui-icon-shuffle"  rendered="#{sessionUserMB.adminUser}"/>
+								<p:menuitem value="SUB-ALMACEN" url="/pages/pendiente.jsf" icon="ui-icon-arrow-1-se" rendered="#{sessionUserMB.adminUser}"/>								
 							</p:submenu>
 
 							<p:submenu label="INVENTARIOS" icon="ui-icon-clipboard">					
-								<p:menuitem value="PRINCIPAL" url="/pages/inventarioPrincipal.jsf" icon="ui-icon-home"/>
+								<p:menuitem value="PRINCIPAL" url="/pages/inventarioPrincipal.jsf" icon="ui-icon-home" rendered="#{sessionUserMB.adminUser or sessionUserMB.salesUser}"/>
 								<p:menuitem value="CONTEO." url="/pages/pendiente.jsf" icon="ui-icon-shuffle"/>
 								<p:menuitem value="SUCURSALES " url="/pages/pendiente.jsf" icon="ui-icon-newwin"/>								
 							</p:submenu>
 
 						</p:submenu>
 
-						<p:submenu label="ADMINISTRACIÓN" icon="ui-icon-suitcase">
+						<p:submenu label="ADMINISTRACIÓN" icon="ui-icon-suitcase" >
 							
 							<p:submenu label="CATÁLOGOS" icon="ui-icon-newwin">
-								<p:menuitem value="PRODUCTOS" icon="ui-icon-star"/>									
+								<p:menuitem value="PRODUCTOS" url="/pages/producto.jsf" icon="ui-icon-cart"/>						
 								<p:menuitem value="OFERTAS"   url="/pages/pendiente.jsf" icon="ui-icon-tag"/>
 								<p:menuitem value="CLIENTES"  url="/pages/cliente.jsf" icon="ui-icon-person"/>
 								<p:menuitem value="PROVEEDORES" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>																
 							</p:submenu>
 							
 							<p:submenu label="REPORTES" icon="ui-icon-script">
-								<p:submenu label="VENTAS" icon="ui-icon-check">
+								<p:submenu label="VENTAS" icon="ui-icon-check" rendered="#{sessionUserMB.adminUser or sessionUserMB.salesUser}">
 									<p:menuitem value="X #PEDIDO" url="/pages/pendiente.jsf" icon="ui-icon-star"/>
 									<p:menuitem value="X PRODUCTO" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>
 									<p:menuitem value="X LINEA-MARCA" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>
 									<p:menuitem value="X PROVEEDOR" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>
-								</p:submenu>
-								
+								</p:submenu>								
 							</p:submenu>
 							
-							<p:submenu label="SISTEMA" icon="ui-icon-newwin">
-								<p:menuitem value="USUARIOS" url="/pages/usuario.jsf" icon="ui-icon-person"/>
-								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star"/>
+							<p:submenu label="SISTEMA" icon="ui-icon-newwin" rendered="#{sessionUserMB.adminUser}">
+								<p:menuitem value="USUARIOS" url="/pages/usuario.jsf" icon="ui-icon-person" rendered="#{sessionUserMB.adminUser}"/>
+								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star" rendered="#{sessionUserMB.adminUser}"/>
 							</p:submenu>
 							
 							

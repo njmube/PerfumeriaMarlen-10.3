@@ -29,3 +29,4 @@ PERFUMERIA AMRLEN DEVELOPMENT TASKS
 6) MIGRATE TO VERSIN 10.3
 	
 	mvn exec:java -Dexec.mainClass=com.pmarlen.migration.ImportData -Dexec.args="root root jdbc:mysql://localhost/PMARLEN_DB_PROD?characterEncoding=UTF-8 root root jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8"
+mvn compile exec:java -Dexec.mainClass=com.pmarlen.dev.task.CrearImagenesDePruebaEnMultimedio -Dexec.args=-u jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8 PMDB103_DEVE_USR PMDB103_DEVE_PWD /Users/alfredo/pmarlen_imgs/renamed PRODUCTO_MULTIMEDIO_@CODIGO_BARRAS@_1.jpg /Users/alfredo/pmarlen_imgs/ transformed

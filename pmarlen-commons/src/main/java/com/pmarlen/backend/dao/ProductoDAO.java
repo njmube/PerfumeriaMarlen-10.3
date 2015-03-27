@@ -11,6 +11,7 @@ package com.pmarlen.backend.dao;
 
 import com.pmarlen.backend.model.*;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
+import com.pmarlen.backend.model.quickviews.ProductoQuickView;
 import com.tracktopell.jdbc.DataSourceFacade;
 
 import java.io.ByteArrayInputStream;
@@ -317,6 +318,120 @@ public class ProductoDAO {
 		}
 		return r;		
 	};
+    public ArrayList<ProductoQuickView> findAllForMultiediaShow(int almacenId) throws DAOException {
+		ArrayList<ProductoQuickView> r = new ArrayList<ProductoQuickView>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement("SELECT     CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,\n" +
+										"          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO,\n" +
+										"          ALMACEN_ID,PRECIO\n" +
+										"FROM      PRODUCTO P\n" +
+										"LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS\n" +
+										"LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID\n" +
+										"LEFT JOIN ALMACEN_PRODUCTO    AP ON P.CODIGO_BARRAS  = AP.PRODUCTO_CODIGO_BARRAS\n" +
+										"WHERE     1=1\n" +
+										"AND       AP.ALMACEN_ID=? \n" +
+										"ORDER BY  INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION");
+			ps.setInt(1, almacenId);
+			/*
+SELECT    CODIGO_BARRAS,
+          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO,
+          ALMACEN_ID,PRECIO
+FROM      PRODUCTO P
+LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS
+LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID
+LEFT JOIN ALMACEN_PRODUCTO    AP ON P.CODIGO_BARRAS  = AP.PRODUCTO_CODIGO_BARRAS
+WHERE     1=1
+AND       AP.ALMACEN_ID=1;
+			
+SELECT    CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,
+          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO
+FROM      PRODUCTO P
+LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS
+LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID;
+			
+SELECT    CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,
+          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO,
+          ALMACEN_ID,PRECIO
+FROM      PRODUCTO P
+LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS
+LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID
+LEFT JOIN ALMACEN_PRODUCTO    AP ON P.CODIGO_BARRAS  = AP.PRODUCTO_CODIGO_BARRAS
+WHERE     1=1
+AND       AP.ALMACEN_ID=1;
+						
+			*/
+			rs = ps.executeQuery();
+			ProductoQuickView x = null;
+			while(rs.next()) {
+				String cb=(String)rs.getObject("CODIGO_BARRAS");
+				if(x!=null){
+					if(x.getCodigoBarras().equalsIgnoreCase(cb)){
+						// EL MISMO
+					} else {
+						// CAMBIO PRODUCTO
+						r.add(x);
+						x = new ProductoQuickView();
+					}
+				}else {
+					x = new ProductoQuickView();
+				}
+				
+				x.setCodigoBarras(cb);
+				x.setIndustria((String)rs.getObject("INDUSTRIA"));
+				x.setLinea((String)rs.getObject("LINEA"));
+				x.setMarca((String)rs.getObject("MARCA"));
+				x.setNombre((String)rs.getObject("NOMBRE"));
+				x.setPresentacion((String)rs.getObject("PRESENTACION"));
+				x.setAbrebiatura((String)rs.getObject("ABREBIATURA"));
+				x.setUnidadesXCaja((Integer)rs.getObject("UNIDADES_X_CAJA"));
+				x.setContenido((String)rs.getObject("CONTENIDO"));
+				x.setUnidadMedida((String)rs.getObject("UNIDAD_MEDIDA"));
+				x.setUnidadEmpaque((String)rs.getObject("UNIDAD_EMPAQUE"));
+				x.setCosto((Double)rs.getObject("COSTO"));
+				x.setCostoVenta((Double)rs.getObject("COSTO_VENTA"));
+				
+				Integer multimedioID=(Integer)rs.getObject("MULTIMEDIO_ID");
+				if(multimedioID != null){
+					Multimedio m = new Multimedio();
+
+					m.setId((Integer)rs.getObject("MULTIMEDIO_ID"));
+					m.setMimeType((String)rs.getObject("MIME_TYPE"));
+					m.setRutaContenido((String)rs.getObject("RUTA_CONTENIDO"));
+					m.setSizeBytes((Integer)rs.getObject("SIZE_BYTES"));
+					m.setNombreArchivo((String)rs.getObject("NOMBRE_ARCHIVO"));
+					
+					x.addMultimedio(m);
+				}
+				
+				x.setAlmacenId(rs.getInt("ALMACEN_ID"));
+				x.setPrecio(rs.getDouble("PRECIO"));
+				
+				//r.add(x);
+			}
+			if(x!=null){
+				r.add(x);
+			}
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	};
     
     public int insert(Producto x) throws DAOException {
 		PreparedStatement ps = null;
@@ -376,7 +491,6 @@ public class ProductoDAO {
 					" WHERE CODIGO_BARRAS=?");
 			
 			int ci=1;
-			ps.setObject(ci++,x.getCodigoBarras());
 			ps.setObject(ci++,x.getIndustria());
 			ps.setObject(ci++,x.getLinea());
 			ps.setObject(ci++,x.getMarca());
