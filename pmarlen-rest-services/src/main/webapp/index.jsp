@@ -9,5 +9,6 @@
     </head>
     <body>
 		<h1>REST SERVICES Ver. 10.1 is running</h1>
+		<a href="rest/syncservice/productos/1">rest/syncservice/productos/1</a>
     </body>
 </html>
