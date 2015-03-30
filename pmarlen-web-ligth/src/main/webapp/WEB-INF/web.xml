@@ -19,7 +19,7 @@
 			
 			afternoon,cupertino,cruze,redmond,start
 		-->
-        <param-value>redmond</param-value>
+        <param-value>afternoon</param-value>
     </context-param>
     <!-- Welcome page -->
     <welcome-file-list>

@@ -28,22 +28,24 @@ public class ProductoMB  {
 	ProductoQuickView selectedEntity;
 	String dialogTitle;
 	int almacenId=1;
+	boolean nuevoProducto=false;
 	@PostConstruct
     public void init() {
-		System.out.println("->ProductoMB: init.");
+		logger.info("->ProductoMB: init.");
+		nuevoProducto=false;
         try{
-			entityList = ProductoDAO.getInstance().findAllForMultiediaShow(almacenId);
+			entityList = ProductoDAO.getInstance().findAll();
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			entityList = new ArrayList<ProductoQuickView>();
 		}
-		System.out.println("->ProductoMB: init:entityList="+entityList);
+		//logger.info("->ProductoMB: init:entityList="+entityList);
 		viewRows = 10;
-		dialogTitle ="CLIETE";
+		dialogTitle ="PRODUCTO";
     }
 	
 	public String reset() {
-		System.out.println("->ProductoMB: rest.");
+		logger.info("->ProductoMB: rest.");
         init();
 		return "/pages/producto";
     }
@@ -52,43 +54,43 @@ public class ProductoMB  {
 		return dialogTitle;
 	}
 	
-	
-	
 	public void selectEntity(ActionEvent event){
-		System.out.println("->ProductoMB: selectProducto.");
+		logger.info("->ProductoMB: selectProducto.");
 	}
 	
 	public void actionX(ActionEvent event){
-		System.out.println("->ProductoMB: actionX.");
+		logger.info("->ProductoMB: actionX.");
 	}
 	
 	public void prepareForNew() {
-		System.out.println("->ProductoMB prepareForNew");
+		nuevoProducto=true;
+		logger.info("->ProductoMB prepareForNew");
 		dialogTitle ="AGREGAR NUEVO CLIETE";
 		this.selectedEntity = new ProductoQuickView();
 	}
 	
 	public void setSelectedEntity(ProductoQuickView selectedProducto) {
-		System.out.println("->ProductoMB setSelectedProducto.id="+selectedProducto.getCodigoBarras());
+		nuevoProducto=false;
+		logger.info("->ProductoMB setSelectedProducto.id="+selectedProducto.getCodigoBarras());
 		dialogTitle ="EDITAR PRODUCTO ID #"+selectedProducto.getCodigoBarras();
 		this.selectedEntity = selectedProducto;
 	}
 	
 	public void save(){
-		System.out.println("->ProductoMB: saveSelectedProducto:codigoBarras:"+selectedEntity.getCodigoBarras());
+		logger.info("->ProductoMB: saveSelectedProducto:codigoBarras:"+selectedEntity.getCodigoBarras());
 		
 		try{
 			int u=-1;			
-			if(selectedEntity.getCodigoBarras()==null){
+			if(nuevoProducto){
 				u=ProductoDAO.getInstance().insert(selectedEntity);			
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, dialogTitle, "SE CREÓ CORRECTAMENTE NUEVO PRODUCTO"));			
 			} else{
 				u=ProductoDAO.getInstance().update(selectedEntity);
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, dialogTitle, "SE ACTUALIZARÓN CORRECTAMENTE LOS DATOS DEL PRODUCTO"));			
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, dialogTitle, "SE ACTUALIZARÓN CORRECTAMENTE LOS DATOS DEL PRODUCTO ["+selectedEntity.getCodigoBarras()+"]"));			
 			}
 			reset();
 		} catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dialogTitle, "OCURRIO UN ERROR AL GUARDAR"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dialogTitle, "OCURRIO UN ERROR AL GUARDAR:"+e.getLocalizedMessage()));
 			FacesContext.getCurrentInstance().validationFailed();
 		}
 		

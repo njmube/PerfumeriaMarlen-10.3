@@ -114,10 +114,11 @@ public class EditarEntradaSalidaMB{
 			pedidoVenta = EntradaSalidaDAO.getInstance().findBy(new EntradaSalida(pedidoVentaID));
 			logger.info("pedidoVenta="+pedidoVenta);
 			entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
+			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
 
 			logger.info("entityList:");
 			for(EntradaSalidaDetalleQuickView pv:entityList){
-				logger.info("\teditar:"+pv);
+				logger.info("\teditar: rowId="+pv.getRowId()+": ["+pv.getCantidad()+"]"+pv.getProductoCodigoBarras());
 			}
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
@@ -151,6 +152,15 @@ public class EditarEntradaSalidaMB{
 		hayCambios = false;
 		logger.fine("fin Editar");
 		return "/pages/editarEntradaSalida";
+	}
+	
+	public void actualizarCantidadesStockTiempoReal(){
+		try {
+			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
+		}catch(Exception e){
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ACTUALIZAR INFORMACIÓN",  "ERROR AL ACTUALZIAR LAS CANTIDADES DE ALMACEN EN TIEMPO REAL") );		
+		}
 	}
 
 	public String reset() {
@@ -272,7 +282,6 @@ public class EditarEntradaSalidaMB{
 				codigo = "";
 				cantidadAgregarBusqueda = 1;
 				cantidadAgregarCodigo   = 1;
-				hayCambios = true;
 				actualizarTotales();
 			} else {
 				FacesContext context = FacesContext.getCurrentInstance();         
@@ -334,7 +343,6 @@ public class EditarEntradaSalidaMB{
 			codigo = "";
 			cantidadAgregarBusqueda = 1;
 			cantidadAgregarCodigo   = 1;
-			hayCambios = true;
 			actualizarTotales();
 		}
 	}
@@ -388,8 +396,8 @@ public class EditarEntradaSalidaMB{
 			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
 		}
 		hayCambios = true;
-        //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
 	public List<SelectItem> getResultadoBusqueda() {
@@ -501,7 +509,15 @@ public class EditarEntradaSalidaMB{
 	}
 	
 	public void actualizarTotales(){
-		logger.info("->actualizarTotales:");
+		logger.info("actualizarTotales, forzar hay cambio");
+		hayCambios=true;
+		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
+	}
+	
+	public void actualizarTabla(){
+		logger.info("actualizarTabla");
+		actualizarCantidadesStockTiempoReal();
+		hayCambios=true;
 		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
 	}
 
@@ -588,7 +604,6 @@ public class EditarEntradaSalidaMB{
 
 	public void onDescuentoEspecialListChange() {
 		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
-		hayCambios = true;
 		actualizarTotales();
 	}
 
@@ -868,7 +883,7 @@ public class EditarEntradaSalidaMB{
 	}
 	
 	public boolean isSurtible(){
-		return pedidoVenta!=null && pedidoVenta.getEstadoId() == Constants.ESTADO_VERIFICADO ;
+		return pedidoVenta!=null && pedidoVenta.getEstadoId() == Constants.ESTADO_VERIFICADO;
 	}
 
 	public boolean isFacturable(){
@@ -968,7 +983,24 @@ public class EditarEntradaSalidaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GENERAR C.F.D.",  "HUBO UN ERROR AL INVOCAR WS.") );
 		}
-	}	
+	}
+	
+	public String getEstiloInsuficiente(){
+		if(pedidoVenta.getEstadoId()<Constants.ESTADO_VERIFICADO){
+			return "background: yellow;";
+		} else {
+			return "background: red;";
+		}
+	}
+	
+	public boolean isPosibleSurtir(){
+		for(EntradaSalidaDetalleQuickView pv:entityList){
+			if(pv.getCantidad()>pv.getApCantidad()){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 }
 	

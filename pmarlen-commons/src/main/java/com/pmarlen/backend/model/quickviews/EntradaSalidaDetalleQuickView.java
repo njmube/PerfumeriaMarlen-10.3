@@ -60,14 +60,16 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	}
 		
 	public String toStringShorten() {
-//		return  "["+
-//				this.getProductoCodigoBarras() +"] "+
-//				this.productoNombre  +"/"+
-//				this.productoPresentacion  +
-//				Constants.dfCurrency.format(this.getPrecioVenta());
-		return  this.productoNombre  +"/"+
-				this.productoPresentacion  +" "+
-				Constants.dfCurrency.format(this.getPrecioVenta());
+		StringBuilder sb= new StringBuilder(productoNombre);
+		
+		sb.append(" / ").
+				append(productoPresentacion).
+				append(" ").
+				append(productoContenido).
+				append(" ").
+				append(productoUnidadMedida);
+		
+		return  sb.toString();
 	}
 
 	/**

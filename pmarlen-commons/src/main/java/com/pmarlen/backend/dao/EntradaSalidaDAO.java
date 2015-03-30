@@ -103,7 +103,7 @@ public class EntradaSalidaDAO {
 			}
 			codigosBuscar = sbCB.toString();
 
-			logger.info("pedidoVentaId=" + pedidoVentaId + ", codigosBuscar= ->" + codigosBuscar + "<-");
+			logger.fine("pedidoVentaId=" + pedidoVentaId + ", codigosBuscar= ->" + codigosBuscar + "<-");
 
 			ps = conn.prepareStatement(
 					"SELECT AP.CANTIDAD,ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID,SUM(ESD.CANTIDAD) TOT_CANTIDAD \n"
@@ -130,7 +130,7 @@ public class EntradaSalidaDAO {
 				int tcxi = rs.getInt("TOT_CANTIDAD");
 				int apcxi = rs.getInt("CANTIDAD");
 
-				logger.info("Iteration:\t" + axi + "," + cbxi + ", " + tcxi + ", " + apcxi);
+				logger.finer("Iteration:\t" + axi + "," + cbxi + ", " + tcxi + ", " + apcxi);
 
 				for (EntradaSalidaDetalleQuickView pvd : pvdList) {
 					if (pvd.getProductoCodigoBarras().equals(cbxi) && pvd.getAlmacenId() == axi) {
@@ -329,6 +329,7 @@ public class EntradaSalidaDAO {
 			ps.setInt(1, pedidoVentaId);
 
 			rs = ps.executeQuery();
+			long ct=System.currentTimeMillis();
 			while (rs.next()) {
 				EntradaSalidaDetalleQuickView x = new EntradaSalidaDetalleQuickView();
 				x.setEntradaSalidaId(pedidoVentaId);
@@ -350,6 +351,7 @@ public class EntradaSalidaDAO {
 				x.setApCantidad(rs.getInt("CANTIDAD"));
 				x.setApUbicacion(rs.getString("UBICACION"));
 
+				x.setRowId(ct++);
 				r.add(x);
 			}
 

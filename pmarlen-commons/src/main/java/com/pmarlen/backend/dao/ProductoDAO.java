@@ -115,7 +115,7 @@ public class ProductoDAO {
 	}
 
 	public EntradaSalidaDetalleQuickView findByCodigo(int almacenId, String codigo) throws DAOException {
-		logger.info("->findAllExclusiveByCodigo");
+		logger.fine("->findAllExclusiveByCodigo");
 		EntradaSalidaDetalleQuickView x = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -144,7 +144,7 @@ public class ProductoDAO {
 			 */
 			ps.setInt(1, almacenId);
 			ps.setString(2, codigo);
-			logger.info("->findAllExclusiveByCodigo: set parameters, ok");
+			logger.fine("->findAllExclusiveByCodigo: set parameters, ok");
 
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -170,7 +170,7 @@ public class ProductoDAO {
 				x.setPrecioVenta(x.getApPrecio());
 
 			}
-			logger.info("->findAllExclusiveByCodigo: read all resultset");
+			logger.fine("->findAllExclusiveByCodigo: read all resultset");
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
@@ -190,7 +190,7 @@ public class ProductoDAO {
 	}
 
 	public ArrayList<EntradaSalidaDetalleQuickView> findAllByDesc(int almacenId, String desc,boolean exclusive) throws DAOException {
-		logger.info("almacenId="+almacenId+", desc="+desc+", exclusive="+exclusive);
+		logger.fine("almacenId="+almacenId+", desc="+desc+", exclusive="+exclusive);
 		ArrayList<EntradaSalidaDetalleQuickView> r = new ArrayList<EntradaSalidaDetalleQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -228,7 +228,7 @@ public class ProductoDAO {
 
 			ps = conn.prepareStatement(extendedQuery);
 			
-			logger.info("Query->"+extendedQuery+"<-");
+			logger.fine("Query->"+extendedQuery+"<-");
 			ps.setInt(1, almacenId);
 
 			rs = ps.executeQuery();
@@ -274,8 +274,8 @@ public class ProductoDAO {
 		return r;
 	}
 
-    public ArrayList<Producto> findAll() throws DAOException {
-		ArrayList<Producto> r = new ArrayList<Producto>();
+    public ArrayList<ProductoQuickView> findAll() throws DAOException {
+		ArrayList<ProductoQuickView> r = new ArrayList<ProductoQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -285,7 +285,7 @@ public class ProductoDAO {
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				Producto x = new Producto();
+				ProductoQuickView x = new ProductoQuickView();
 				x.setCodigoBarras((String)rs.getObject("CODIGO_BARRAS"));
 				x.setIndustria((String)rs.getObject("INDUSTRIA"));
 				x.setLinea((String)rs.getObject("LINEA"));
@@ -353,12 +353,9 @@ FROM      PRODUCTO P
 LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS
 LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID;
 			
-SELECT    CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,
-          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO,
+SELECT    CODIGO_BARRAS
           ALMACEN_ID,PRECIO
 FROM      PRODUCTO P
-LEFT JOIN PRODUCTO_MULTIMEDIO PM ON P.CODIGO_BARRAS  = PM.PRODUCTO_CODIGO_BARRAS
-LEFT JOIN MULTIMEDIO          M  ON PM.MULTIMEDIO_ID = M.ID
 LEFT JOIN ALMACEN_PRODUCTO    AP ON P.CODIGO_BARRAS  = AP.PRODUCTO_CODIGO_BARRAS
 WHERE     1=1
 AND       AP.ALMACEN_ID=1;
@@ -457,13 +454,7 @@ AND       AP.ALMACEN_ID=1;
 			ps.setObject(ci++,x.getCosto());
 			ps.setObject(ci++,x.getCostoVenta());
 
-			r = ps.executeUpdate();					
-			ResultSet rsk = ps.getGeneratedKeys();
-			if(rsk != null){
-				while(rsk.next()){
-					x.setCodigoBarras((String)rsk.getObject(1));
-				}
-			}
+			r = ps.executeUpdate();
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());

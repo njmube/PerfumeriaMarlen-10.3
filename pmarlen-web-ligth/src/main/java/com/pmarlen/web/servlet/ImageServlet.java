@@ -38,12 +38,12 @@ public class ImageServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Logger logger=Logger.getLogger(ImageServlet.class.getName());
 		String fn = request.getRequestURI();
-		logger.info("->request URI="+fn);
+		logger.finer("->request URI="+fn);
 		fn = fn.substring(fn.lastIndexOf("/"));
 		OutputStream os = null;
 		InputStream is = null;
 		File f =  new File("/usr/local/pmarlen_multimedio/"+fn);
-		logger.info("->try to read:="+f);
+		logger.finer("->try to read:="+f);
 		if(f.exists() && f.canRead()){
 			if(fn.equalsIgnoreCase("jpeg")||fn.equalsIgnoreCase("jpg")){
 				response.setContentType("image/jpeg");

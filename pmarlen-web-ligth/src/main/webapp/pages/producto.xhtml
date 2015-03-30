@@ -39,7 +39,7 @@
 						<p:columnToggler datasource="entityTable" trigger="toggler" />
 					</f:facet>
 					
-					<p:column width="2%">
+					<p:column width="2%" rendered="false">
 						<p:graphicImage		id="icoProd" value="/images/pmarlen_multimedio/ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg" 
 											rendered="#{not empty producto.firstMultimedio}" alt="IMG_ICONO" />
 						
@@ -62,19 +62,19 @@
 
 					</p:column>
 
-					<p:column headerText="INDUSTRIA" sortBy="#{producto.industria}" width="10%">
+					<p:column headerText="INDUSTRIA" filterBy="#{producto.industria}" width="10%" filterMatchMode="contains">
 						<h:outputText value="#{producto.industria}" />
 					</p:column>
 					
-					<p:column headerText="LINEA" sortBy="#{producto.linea}" width="10%">
+					<p:column headerText="LINEA" filterBy="#{producto.linea}" width="10%" filterMatchMode="contains">
 						<h:outputText value="#{producto.linea}" />
 					</p:column>
 					
-					<p:column headerText="MARCA" sortBy="#{producto.marca}" width="10%">
+					<p:column headerText="MARCA" filterBy="#{producto.marca}" width="10%" filterMatchMode="contains">
 						<h:outputText value="#{producto.marca}" />
 					</p:column>
 
-					<p:column headerText="NOMBRE" sortBy="#{producto.nombre}" width="15%">
+					<p:column headerText="NOMBRE" filterBy="#{producto.nombre}" width="15%" filterMatchMode="contains">
 						<h:outputText value="#{producto.nombre}" />
 					</p:column>
 					
@@ -130,7 +130,7 @@
 
 						<h:outputLabel for="producto_codigoBarras" value="CODIGO:" style="font-weight:bold"/>                    
 						<p:inputText id="producto_codigoBarras" value="#{productoMB.selectedEntity.codigoBarras}" required="true" label="CODIGO" size="12" disabled="#{not empty productoMB.selectedEntity.codigoBarras}">
-							<f:validateLength minimum="12" maximum="13" />							
+							<f:validateLength minimum="4" maximum="14" />							
 						</p:inputText>
 						<p:message for="producto_codigoBarras" />
 

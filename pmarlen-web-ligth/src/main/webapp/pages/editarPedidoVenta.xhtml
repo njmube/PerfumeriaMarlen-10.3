@@ -23,7 +23,7 @@
 
 						<p:selectOneMenu id="almacen" value="#{editarEntradaSalidaMB.tipoAlmacen}" style="width:125px">
 							<f:selectItems  value="#{editarEntradaSalidaMB.tipoAlmacenList}"/>
-							<p:ajax listener="#{editarEntradaSalidaMB.onTipoAlmacenChange}" process="@all" update=":form1,:form2,:form2a,:form3,:form4"/>
+							<p:ajax listener="#{editarEntradaSalidaMB.onTipoAlmacenChange}" process="@all" oncomplete="updateComponentsOnWindowResize();"  update=":form1,:form2,:form2a,:form3,:form4"/>
 						</p:selectOneMenu>
 
 						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
@@ -126,9 +126,15 @@
 									  scrollable="true" draggableRows="#{editarEntradaSalidaMB.tableDraggableEnabled}"
 									  editable="true" editMode="cell" 
 									  scrollHeight="200" >
-							<p:ajax event="rowReorder" listener="#{editarEntradaSalidaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" />
+							<p:ajax event="rowReorder" listener="#{editarEntradaSalidaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
 							<f:facet name="header">
 								<h:outputText value="OPCIONES DE VER TABLA:"/>
+								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
+													rendered="#{!editarEntradaSalidaMB.tableDraggableEnabled}"
+													actionListener="#{editarEntradaSalidaMB.actualizarTabla()}"
+													oncomplete="updateComponentsOnWindowResize();"
+													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>								
+								<p:spacer width="10"/>
 								<p:commandButton	value="VER + COLUMNAS" actionListener="#{editarEntradaSalidaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
 												 rendered="#{not editarEntradaSalidaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
 								<p:commandButton	value="VER - COLUMNAS" actionListener="#{editarEntradaSalidaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
@@ -159,7 +165,7 @@
 								
 							</f:facet>
 
-							<p:column headerText="." width="5%">
+							<p:column headerText="." width="3%">
 								<p:commandButton icon="ui-icon-trash" actionListener="#{editarEntradaSalidaMB.deleteRow(pvd.rowId)}" 
 												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
 												 oncomplete="updateComponentsOnWindowResize();" disabled="#{not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible}"
@@ -170,63 +176,61 @@
 								<h:graphicImage value="/images/draggable.png" rendered="#{editarEntradaSalidaMB.tableDraggableEnabled}" style="cursor:move"/>
 							</p:column>
 
-							<p:column headerText="#" width="10%" >		
+							<p:column headerText="#" width="8%" >	
 								
-								<h:outputText value="#{pvd.cantidad}" rendered="#{not editarEntradaSalidaMB.verificable and not editarEntradaSalidaMB.surtible}"/>
+								<h:outputText value="#{pvd.cantidad}" rendered="#{editarEntradaSalidaMB.tableDraggableEnabled}"/>
 								
-								<p:cellEditor rendered="#{editarEntradaSalidaMB.verificable or editarEntradaSalidaMB.surtible}">
-									<f:facet name="output" >
-										<h:panelGroup>
-											<h:outputText value="#{pvd.cantidad}"/>	
-											<p:spacer width="5"/>
-											<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
-																update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
-										</h:panelGroup>
-									</f:facet>
-									<f:facet name="input">
-										<p:spinner value="#{pvd.cantidad}" min="1" max="9999" size="1" valueChangeListener="#{editarEntradaSalidaMB.cantidadDetalleChanged}" 
-												   title="CAMBIAR CANTIDAD, Y DEPUES DEBE ACTUALIZAR" >
-											<!--
-											<p:ajax process="@this" event="change" listener="#{editarEntradaSalidaMB.cantidadDetalleCambio(pvd.rowId)}" 
-													update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
-											-->
-										</p:spinner>										
-									</f:facet>
-								</p:cellEditor>
+								<h:panelGroup rendered="#{not editarEntradaSalidaMB.tableDraggableEnabled}">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
+												 rendered="#{pvd.cantidad le pvd.apCantidad}">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>
+									
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
+												 rendered="#{pvd.cantidad gt pvd.apCantidad}" style="#{editarEntradaSalidaMB.estiloInsuficiente}" title="NO SE PODRA SURTIR PEDIDO HASTA QUE HAYA SUFICIENTE">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>
+									
+									<p:spacer width="5"/>
+									<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
+														update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"
+														actionListener="#{editarEntradaSalidaMB.actualizarTotales()}"/>
+								</h:panelGroup>
+								
 							</p:column>
 
-							<p:column headerText="ALM." width="5%" >
+							<p:column headerText="ALM." width="3%" >
 								<h:outputText value="1RA" rendered="#{pvd.apTipoAlmacen eq 1}" class="centerAlignColumn"/>
 								<h:outputText value="OPO" rendered="#{pvd.apTipoAlmacen eq 2}" class="centerAlignColumn"/>
 								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
 							</p:column>
+							
+							<p:column headerText="C.A." width="5%" >
+								<h:outputText value="#{pvd.apCantidad}" class="rightAlignColumn" title="HAY EN DISPUTA #{pvd.canPendteEnOtrosPV} UNIDADES EN OTROS PEDIDOS SIN SURTIR"/>
+							</p:column>
 
 							<p:column headerText="PRODUCTO" width="#{editarEntradaSalidaMB.codigoTableWidth}">
-								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre}/#{pvd.productoPresentacion}" rendered="#{not editarEntradaSalidaMB.tablaExpandida}"/>
+								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not editarEntradaSalidaMB.tablaExpandida}"/>
 								<h:outputText value="#{pvd.productoCodigoBarras}" rendered="#{editarEntradaSalidaMB.tablaExpandida}"/>
 							</p:column>
 
-							<p:column headerText="LINEA" rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoLinea}" />
+							<p:column headerText="IND. / LINEA / MARCA" rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="35%">
+								<h:outputText value="#{pvd.productoIndustria} /" /> <br/>
+								<h:outputText value="#{pvd.productoLinea} /" /> <br/>
+								<h:outputText value="#{pvd.productoMarca}" /> <br/>
 							</p:column>
 
-							<p:column headerText="MARCA" rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoMarca}" />
+							<p:column headerText="NOM. / PRESENT." rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="25%">
+								<h:outputText value="#{pvd.productoNombre} / #{pvd.productoPresentacion}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE" rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoNombre}" />
-							</p:column>
-
-							<p:column headerText="PRESN." rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoPresentacion}" />
-							</p:column>
-
-							<p:column headerText="CONT." rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="10%">
+							<p:column headerText="CONT." rendered="#{editarEntradaSalidaMB.tablaExpandida}" width="5%">
 								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
 							</p:column>
-
-							<p:column headerText="PRECIO" width="10%">
+							
+							<p:column headerText="PRECIO" width="8%">
 								<h:outputText value="#{pvd.precioVenta}" title="#{editarEntradaSalidaMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
 									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 								</h:outputText>
@@ -258,7 +262,7 @@
 			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
 				<h:form id="form4">
 					
-					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="500" id="dlgClientes">
+					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="600" id="dlgClientes">
 
 						<p:dataTable var="cliente" value="#{editarEntradaSalidaMB.clientes}" scrollHeight="200" >
 
@@ -270,15 +274,15 @@
 								</p:commandButton>
 							</p:column>
 
-							<p:column headerText="RAZÓN SOCIAL :">
+							<p:column headerText="RAZÓN SOCIAL :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
 								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE ESTAB. :">
-								<h:outputText value="#{cliente.nombreEstablecimiento}" />
+							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
 
-							<p:column headerText="R.F.C. :">
+							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">
 								<h:outputText value="#{cliente.rfc}" />
 							</p:column>
 
@@ -294,12 +298,13 @@
 
 						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
 
-							<h:panelGrid width="100%" columns="1" rendered="#{not empty editarEntradaSalidaMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0">
+							<h:panelGrid width="100%" columns="1" rendered="#{not empty editarEntradaSalidaMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0" 
+										 style="border-style: solid; border-width: 1px; border-color: darkgray; background: white;">
 
 								<h:outputText value="#{editarEntradaSalidaMB.clienteSeleccionado.razonSocial}/" 
-											  style="font-size: 60%; color: #2e6e9e;" />
+											  style="font-size: 60%; color: black;" />
 								<h:outputText value="#{editarEntradaSalidaMB.clienteSeleccionado.nombreEstablecimiento}" 
-											  style="font-size: 60%; color: #2e6e9e;" />
+											  style="font-size: 60%; color: black;" />
 
 							</h:panelGrid>
 
@@ -411,7 +416,8 @@
 						</p:commandButton>
 
 						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarEntradaSalidaMB.hayCambios and editarEntradaSalidaMB.surtible)}"  
-										 actionListener="#{editarEntradaSalidaMB.surtir}" process="@all" update="@all">
+										 actionListener="#{editarEntradaSalidaMB.surtir}" process="@all" update="@all"
+										 disabled="#{not editarEntradaSalidaMB.posibleSurtir}">
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>

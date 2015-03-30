@@ -23,7 +23,7 @@
 
 						<p:selectOneMenu id="almacen" value="#{entradaSalidaMB.tipoAlmacen}" style="width:125px" disabled="#{entradaSalidaMB.pedidoFinalizado}">							
 							<f:selectItems  value="#{entradaSalidaMB.tipoAlmacenList}"/>
-							<p:ajax listener="#{entradaSalidaMB.onTipoAlmacenChange}" process="@all" update=":form1,:form2,:form2a,:form3,:form4"/>
+							<p:ajax listener="#{entradaSalidaMB.onTipoAlmacenChange}" process="@all" oncomplete="updateComponentsOnWindowResize();"  update=":form1,:form2,:form2a,:form3,:form4"/>
 						</p:selectOneMenu>
 
 						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
@@ -127,9 +127,15 @@
 									  scrollable="true" draggableRows="#{entradaSalidaMB.tableDraggableEnabled}"
 									  editable="true" editMode="cell" 
 									  scrollHeight="200" >
-							<p:ajax event="rowReorder" listener="#{entradaSalidaMB.onRowReorder}" update=":form3:panel3" />
+							<p:ajax event="rowReorder" listener="#{entradaSalidaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
 							<f:facet name="header">								
 								<h:outputText value="OPCIONES DE VER TABLA:"/>
+								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
+													rendered="#{not entradaSalidaMB.pedidoFinalizado and !entradaSalidaMB.tableDraggableEnabled}"
+													actionListener="#{entradaSalidaMB.actualizarTotales()}"
+													oncomplete="updateComponentsOnWindowResize();"
+													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>
+								<p:spacer width="10"/>
 								<p:commandButton	value="VER + COLUMNAS" actionListener="#{entradaSalidaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
 												 rendered="#{not entradaSalidaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
 								<p:commandButton	value="VER - COLUMNAS" actionListener="#{entradaSalidaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
@@ -144,7 +150,7 @@
 													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{entradaSalidaMB.pedidoFinalizado}"/>
 							</f:facet>
 
-							<p:column headerText="." width="5%">
+							<p:column headerText="." width="3%">
 								<p:commandButton icon="ui-icon-trash" actionListener="#{entradaSalidaMB.deleteRow(pvd.rowId)}" 
 												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
 												 oncomplete="updateComponentsOnWindowResize();" disabled="#{entradaSalidaMB.pedidoFinalizado}"
@@ -157,27 +163,19 @@
 
 							<p:column headerText="#" width="10%" >	
 								
-								<h:outputText value="#{pvd.cantidad}" rendered="#{entradaSalidaMB.pedidoFinalizado}"/>
+								<h:outputText value="#{pvd.cantidad}" rendered="#{entradaSalidaMB.pedidoFinalizado or entradaSalidaMB.tableDraggableEnabled}"/>
 								
-								<p:cellEditor rendered="#{not entradaSalidaMB.pedidoFinalizado}">
-									<f:facet name="output" >
-										<h:panelGroup>
-											<h:outputText value="#{pvd.cantidad}"/>	
-											<p:spacer width="5"/>
-											<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
-																update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
-										</h:panelGroup>
-									</f:facet>
-									<f:facet name="input">
-										<p:spinner value="#{pvd.cantidad}" min="1" max="9999" size="1" valueChangeListener="#{entradaSalidaMB.cantidadDetalleChanged}" 
-												   title="CAMBIAR CANTIDAD, Y DEPUES DEBE ACTUALIZAR" >
-											<!--
-											<p:ajax process="@this" event="change" listener="#{entradaSalidaMB.cantidadDetalleCambio(pvd.rowId)}" 
-													update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
-											-->
-										</p:spinner>										
-									</f:facet>
-								</p:cellEditor>
+								<h:panelGroup rendered="#{not entradaSalidaMB.pedidoFinalizado and not entradaSalidaMB.tableDraggableEnabled}">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>	
+									<p:spacer width="5"/>
+									<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
+														update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"
+														actionListener="#{entradaSalidaMB.actualizarTotales()}"/>
+								</h:panelGroup>
+								
 							</p:column>
 
 							<p:column headerText="ALM." width="5%" >
@@ -187,30 +185,30 @@
 							</p:column>
 
 							<p:column headerText="PRODUCTO" width="#{entradaSalidaMB.codigoTableWidth}">
-								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre}/#{pvd.productoPresentacion}" rendered="#{not entradaSalidaMB.tablaExpandida}"/>
+								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not entradaSalidaMB.tablaExpandida}"/>
 								<h:outputText value="#{pvd.productoCodigoBarras}" rendered="#{entradaSalidaMB.tablaExpandida}"/>
 							</p:column>
 
-							<p:column headerText="LINEA" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoLinea}" />
+							<p:column headerText="IND. / LINEA / MARCA" rendered="#{entradaSalidaMB.tablaExpandida}" width="35%">
+								<h:outputText value="#{pvd.productoIndustria} /" /> <br/>
+								<h:outputText value="#{pvd.productoLinea} /" /> <br/>
+								<h:outputText value="#{pvd.productoMarca}" /> <br/>
 							</p:column>
 
-							<p:column headerText="MARCA" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoMarca}" />
+							<p:column headerText="NOM. / PRESENT." rendered="#{entradaSalidaMB.tablaExpandida}" width="25%">
+								<h:outputText value="#{pvd.productoNombre} / #{pvd.productoPresentacion}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE" rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoNombre}" />
-							</p:column>
-
-							<p:column headerText="PRESN." rendered="#{entradaSalidaMB.tablaExpandida}" width="20%">
-								<h:outputText value="#{pvd.productoPresentacion}" />
-							</p:column>
-
-							<p:column headerText="CONT." rendered="#{entradaSalidaMB.tablaExpandida}" width="10%">
+							<p:column headerText="CONT." rendered="#{entradaSalidaMB.tablaExpandida}" width="5%">
 								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
 							</p:column>
-
+							
+							<p:column headerText="PRECIO" width="8%">
+								<h:outputText value="#{pvd.precioVenta}" title="#{entradaSalidaMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+							
 							<p:column headerText="PRECIO" width="10%">
 								<h:outputText value="#{pvd.precioVenta}" title="#{entradaSalidaMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
 									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
@@ -243,7 +241,7 @@
 			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
 				<h:form id="form4">
 					
-					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="500" id="dlgClientes">
+					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="600" id="dlgClientes">
 
 						<p:dataTable var="cliente" value="#{entradaSalidaMB.clientes}" scrollHeight="200" >
 
@@ -255,15 +253,15 @@
 								</p:commandButton>
 							</p:column>
 
-							<p:column headerText="RAZÓN SOCIAL :">
+							<p:column headerText="RAZÓN SOCIAL :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
 								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE ESTAB. :">
-								<h:outputText value="#{cliente.nombreEstablecimiento}" />
+							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
 
-							<p:column headerText="R.F.C. :">
+							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">
 								<h:outputText value="#{cliente.rfc}" />
 							</p:column>
 
@@ -411,6 +409,7 @@
 
 		</h:panelGrid>
 		<script>
+			
 			var counterResized = 0;
 			function updateComponentsOnWindowResize() {
 

@@ -2,16 +2,16 @@ package com.pmarlen.jsf;
 
 import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
-import com.pmarlen.backend.dao.FormaDePagoDAO;
-import com.pmarlen.backend.dao.MetodoDePagoDAO;
 import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.EntradaSalidaDetalleDAO;
+import com.pmarlen.backend.dao.FormaDePagoDAO;
+import com.pmarlen.backend.dao.MetodoDePagoDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
 import com.pmarlen.backend.model.Cliente;
-import com.pmarlen.backend.model.FormaDePago;
-import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
+import com.pmarlen.backend.model.FormaDePago;
+import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.ClienteQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
@@ -42,6 +42,7 @@ import javax.print.attribute.standard.Severity;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 @ManagedBean(name="entradaSalidaMB")
 @SessionScoped
@@ -326,13 +327,13 @@ public class EntradaSalidaMB{
 	}
 	
 	public void onRowReorder(ReorderEvent event) {
-		logger.finer("->onRowReorder:From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+		logger.info("->From: " + event.getFromIndex() + ", To:" + event.getToIndex());
 		int i=0;
 		for(EntradaSalidaDetalleQuickView d:entityList){
-			logger.finer("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
+			logger.info("\t->["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
 		}
-        //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
 	public List<SelectItem> getResultadoBusqueda() {
