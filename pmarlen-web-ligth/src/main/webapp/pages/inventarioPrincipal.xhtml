@@ -29,16 +29,26 @@
 					
 				</h:panelGrid>
 
-				<p:dataTable	id="inventarioTable" var="ap" value="#{inventarioMB.entityList}"
-								rows="20" paginator="true"
-								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-								rowsPerPageTemplate="5,10,15">
+				<p:dataTable		id="inventarioTable" var="ap" value="#{inventarioMB.entityList}"
+								rows="#{inventarioMB.viewRows}" paginator="true"
+								emptyMessage="-- SIN ELEMENTOS --"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{inventarioMB.sizeList}]"
+								rowsPerPageTemplate="10,50,200">
+					<f:facet name="header">							
+						
+						<h:outputText value="OPCIONES DE VER TABLA:" rendered="true"/>
+						<p:spacer width="10"/>
+						<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR" update=":form1"  rendered="true"
+											actionListener="#{inventarioMB.refresh}"
+											title="ACTUALZIAR"/>
+						
+					</f:facet>
 					
-					<p:column headerText="ALMACEN DESC">
+					<p:column headerText="ALMACEN" width="5%">
 						<h:outputText value="#{ap.almacenTipoDescripcion}" title="ALMACEN_ID=#{ap.almacenId}" />
 					</p:column>
 
-					<p:column headerText="CANTIDAD" sortBy="#{ap.cantidad}">
+					<p:column headerText="CANTIDAD" sortBy="#{ap.cantidad}"  width="5%">
 						<p:commandButton    actionListener="#{inventarioMB.updateMovsHisProducto(ap)}"
 											update=":form1:panel1,:form2:dlg2table1,:form2:chart"
 											icon="ui-icon-clock" onsuccess="PF('dlg2').show();"
@@ -47,7 +57,7 @@
 						<h:outputText value="#{ap.cantidad}" />
 					</p:column>
 
-					<p:column headerText="PRECIO" sortBy="#{ap.precio}">
+					<p:column headerText="PRECIO" sortBy="#{ap.precio}" width="7%">
 						<p:commandButton    actionListener="#{inventarioMB.prepararParaCambioDePrecio(ap)}"
 											update=":form1:panel1,:form2:dlg2table1,:form4:panel4_1"
 											icon="ui-icon-pencil" onsuccess="PF('dlg4').show();"
@@ -60,31 +70,35 @@
 						
 					</p:column>
 
-					<p:column headerText="CODIGO" sortBy="#{ap.productoCodigoBarras}">
+					<p:column headerText="CODIGO" filterBy="#{ap.productoCodigoBarras}" filterMatchMode="contains">
 						<h:outputText value="#{ap.productoCodigoBarras}" />
 					</p:column>
 					
-					<p:column headerText="NOMBRE" sortBy="#{ap.productoNombre}">
+					<p:column headerText="NOMBRE" filterBy="#{ap.productoNombre}" filterMatchMode="contains">
 						<h:outputText value="#{ap.productoNombre}" />
 					</p:column>
 					
-					<p:column headerText="INDUSTRIA" sortBy="#{ap.productoIndustria}">
+					<p:column headerText="PRES." filterBy="#{ap.productoPresentacion}" filterMatchMode="contains">
+						<h:outputText value="#{ap.productoPresentacion}" />
+					</p:column>
+					
+					<p:column headerText="INDUSTRIA" filterBy="#{ap.productoIndustria}" filterMatchMode="contains">
 						<h:outputText value="#{ap.productoIndustria}" />
 					</p:column>
 					
-					<p:column headerText="LINEA" sortBy="#{ap.productoLinea}">
+					<p:column headerText="LINEA" filterBy="#{ap.productoLinea}" filterMatchMode="contains">
 						<h:outputText value="#{ap.productoLinea}" />
 					</p:column>
 					
-					<p:column headerText="MARCA" sortBy="#{ap.productoMarca}">
+					<p:column headerText="MARCA" filterBy="#{ap.productoMarca}" filterMatchMode="contains">
 						<h:outputText value="#{ap.productoMarca}" />
 					</p:column>
 					
-					<p:column headerText="CONTENIDO" sortBy="#{ap.productoContenido}">
-						<h:outputText value="#{ap.productoContenido} #{ap.productoUnidadMedida} (#{ap.productoUnidadEmpaque})" />
+					<p:column headerText="CONT. [U/E]" sortBy="#{ap.productoContenido}">
+						<h:outputText value="#{ap.productoContenido} #{ap.productoUnidadMedida} [#{ap.productoUnidadEmpaque}]" />
 					</p:column>
 					
-					<p:column headerText="UBICACIÓN" sortBy="#{ap.ubicacion}">						
+					<p:column headerText="UBIC." sortBy="#{ap.ubicacion}" width="5%">						
 						<p:commandButton   actionListener="#{inventarioMB.updateUbicacionProducto(ap)}"
 											update=":form1:panel1,:form3:ubicacion"
 											icon="ui-icon-contact" onsuccess="PF('dlg3').show();"
@@ -93,7 +107,7 @@
 						
 						<h:outputText value="#{ap.ubicacion}" class="#{ap.ubicacionRenderedColor}"/>
 						
-						<h:outputText value="-- N/E --" rendered="#{empty ap.ubicacion}"/>
+						<h:outputText value="N/E" rendered="#{empty ap.ubicacion}"/>
 						
 						<p:inplace id="ubicacionEditor" editor="true" emptyLabel="-- N/E --" rendered ="false">
 							<p:inputText value="#{ap.ubicacion}" label="text" valueChangeListener="#{inventarioMB.edicionDirectaUbicacion}" size="10"

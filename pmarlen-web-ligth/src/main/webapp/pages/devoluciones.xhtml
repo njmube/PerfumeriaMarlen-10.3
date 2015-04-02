@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        PEDIDOS DE VENTA
+    </ui:define>
+
+    <ui:define name="body-title">
+        PEDIDOS DE VENTA EN PROCESO (PENDIENTES DE REVISAR, SURTIR)
+    </ui:define>
+
+    <ui:define name="body">		
+
+		<h:form id="form1" rendered="true">
+
+			<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
+
+				<p:dataTable  var="pv" value="#{devolucionesVentaMB.devoluciones}"
+							  paginator="true"
+							  id="pvTable" emptyMessage="-- SIN ELEMENTOS --" 							  
+							  rows="#{devolucionesVentaMB.viewRows}"
+							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{devolucionesVentaMB.sizeList}]"
+							  rowsPerPageTemplate="25,100,250,500">
+					
+					<f:facet name="header">
+						OPCIONES :		
+						<p:commandButton value="RECARGAR" actionListener="#{devolucionesVentaMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
+					</f:facet>
+					
+					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
+						<p:panelGrid columns="1" columnClasses="centerAlign" >
+							<h:outputLink value="editarDevolucion.jsf" >
+								<h:outputText value="#{pv.id}" />
+								<p:ajax event="click" listener="#{devolucionesVentaMB.editarDevolucion(pv.id)}"/>
+							</h:outputLink>
+							
+						</p:panelGrid>
+					</p:column>
+					
+					<p:column headerText="ESTADO / FECHA" width="10%">
+						<p:panelGrid columns="1" columnClasses="centerAlign" style="border: none; border-collapse: none; ">
+							<h:outputText value="#{pv.estadoDescripcion}" />
+							<h:outputText value="#{pv.fechaCreo}" />
+						</p:panelGrid>
+						
+					</p:column>
+					
+					<p:column headerText="CLIENTE" width="25%">
+						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+							<h:outputText value="R.F.C. :" />
+							<h:outputText value="#{pv.clienteRFC}" />
+							<h:outputText value="RAZÓN SOCIAL :" />
+							<h:outputText value="#{pv.clienteRazonSocial}" />
+							<h:outputText value="NOMBRE ESTAB.:" />
+							<h:outputText value="#{pv.clienteNombreEstablecimiento}" />							
+						</p:panelGrid>
+					</p:column>
+					
+					<p:column headerText="DATOS" width="20%">
+						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+							<h:outputText value="USUARIO CREÓ :" />
+							<h:outputText value="#{pv.usuarioNombreCompleto}" />
+							<h:outputText value="ELEMENTOS :" />
+							<h:outputText value="#{pv.numElementos}" />							
+						</p:panelGrid>
+					</p:column>
+					
+					<p:column headerText="IMPORTE - DESC." width="20%">
+						<p:panelGrid columns="2" columnClasses="rightAlign,rightAlign">
+							<h:outputText value="IMPORTE BRUTO :" />
+							<h:outputText value="#{pv.importeBruto}" >
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+							
+							<h:outputText value="IMPORTE NO GRAVADO :" />
+							<h:outputText value="#{pv.importeNoGravado}" >
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+							
+							<h:outputText value="IMPORTE I.V.A. :" />
+							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${devolucionesVentaMB.getImporteMoneda(pv.factorIva)}" >
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>									
+							
+							<h:outputText value="- DESCUENTOS :" />
+							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{devolucionesVentaMB.getImporteMoneda(pv.importeDescuento)}" />
+							
+							<h:outputText value="TOTAL :" />
+							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+						</p:panelGrid>
+					</p:column>
+
+					<f:facet name="footer">
+
+						<h:outputText value="ELEMENTOS : #{devolucionesVentaMB.sizeList}" rendered="true"/>
+
+					</f:facet>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

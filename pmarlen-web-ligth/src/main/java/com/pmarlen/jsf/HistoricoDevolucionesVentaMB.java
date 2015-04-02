@@ -2,15 +2,13 @@ package com.pmarlen.jsf;
 
 import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.FormaDePagoDAO;
 import com.pmarlen.backend.dao.MetodoDePagoDAO;
-import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
 import com.pmarlen.backend.model.Cliente;
 import com.pmarlen.backend.model.FormaDePago;
 import com.pmarlen.backend.model.MetodoDePago;
-import com.pmarlen.backend.model.EntradaSalida;
-import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
@@ -29,27 +27,28 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.ReorderEvent;
 
-@ManagedBean(name="historicoPedidosVentaMB")
+@ManagedBean(name="historicoDevolucionesVentaMB")
 @SessionScoped
-public class HistoricoPedidosVentaMB {
-	private transient static Logger logger = Logger.getLogger("historicoPedidosVentaMB");
-	private int noPedidoBuscar;
-	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
-	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
+public class HistoricoDevolucionesVentaMB  {
+	private transient static Logger logger = Logger.getLogger(HistoricoDevolucionesVentaMB.class.getSimpleName());
 	
-	ArrayList<EntradaSalidaQuickView> pedidosVentas;
+	@ManagedProperty(value = "#{editarDevolucionMB}")
+	private EditarDevolucionMB editarDevolucionMB;
+	
+	ArrayList<EntradaSalidaQuickView> devoluciones;
 	private int viewRows;
 	
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
 		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
-			if(pedidosVentas != null){
-				logger.config("pedidosVentas.size()="+pedidosVentas.size());
-				noPedidoBuscar = pedidosVentas.get(0).getId();
+			devoluciones = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
+			logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
+			for(EntradaSalidaQuickView x:devoluciones){
+				logger.finer("->x="+x.getId());
 			}
 		}catch(DAOException de){
+			devoluciones = new ArrayList<EntradaSalidaQuickView>();
 			logger.severe(de.getMessage());
 		}
 		viewRows = 25;
@@ -58,38 +57,42 @@ public class HistoricoPedidosVentaMB {
 	public void refrescar(){
 		logger.info("->refrescar:");
 		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
-			if(pedidosVentas != null){
-				logger.config("pedidosVentas.size()="+pedidosVentas.size());
+			devoluciones = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
+			if(devoluciones != null){
+				logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
+				for(EntradaSalidaQuickView x:devoluciones){
+					logger.finer("->x="+x.getId());
+				}
 			}
-		}catch(DAOException de){
-			logger.severe(de.getMessage());
+		} catch (DAOException ex) {
+			logger.severe(ex.getMessage());
 		}
+		
 	}
 
-	public void setEditarEntradaSalidaMB(EditarEntradaSalidaMB editarEntradaSalidaMB) {
-		this.editarEntradaSalidaMB = editarEntradaSalidaMB;
-	}	
+	public void setEditarDevolucionMB(EditarDevolucionMB editarDevolucionMB) {
+		this.editarDevolucionMB = editarDevolucionMB;
+	}
 
-	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
-		logger.config("->getPedidosVentas");
-		return pedidosVentas;
+	public ArrayList<EntradaSalidaQuickView> getDevoluciones() {
+		logger.fine("->getDevoluciones");
+		return devoluciones;
 	}
 	
-	public String editarPedido(int pedidoVentaId){
+	public String editarDevolucion(int pedidoVentaId){
 		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
-		return "/pages/editarEntradaSalida";
+		editarDevolucionMB.editar(pedidoVentaId);
+		return "/pages/editarDevolucion";
 	}
 	
 	public void onEditarPedido(int pedidoVentaId){
 		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
+		editarDevolucionMB.editar(pedidoVentaId);
 	}
 	
 	public int getSizeList(){
 		logger.fine("->getSizeList()");
-		return getPedidosVentas().size();
+		return getDevoluciones().size();
 	}
 
 	public int getViewRows() {
@@ -105,17 +108,4 @@ public class HistoricoPedidosVentaMB {
 		return Constants.getImporteMoneda(f);
 	}
 
-	public void setNoPedidoBuscar(int noPedidoBuscar) {
-		this.noPedidoBuscar = noPedidoBuscar;
-	}
-
-	public int getNoPedidoBuscar() {
-		return noPedidoBuscar;
-	}
-	
-	public String buscar(){
-		logger.info("->noPedidoBuscar="+noPedidoBuscar);
-		editarEntradaSalidaMB.editar(noPedidoBuscar);		
-		return "/pages/editarEntradaSalida";
-	}
 }

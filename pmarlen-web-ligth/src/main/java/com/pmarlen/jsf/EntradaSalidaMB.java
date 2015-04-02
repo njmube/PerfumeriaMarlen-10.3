@@ -47,33 +47,33 @@ import org.primefaces.event.UnselectEvent;
 @ManagedBean(name="entradaSalidaMB")
 @SessionScoped
 public class EntradaSalidaMB{	
-	private static transient Logger logger = Logger.getLogger("EntradaSalidaMB");
-	private List<SelectItem> resultadoBusquedaList;
-	private static final int LONG_MIN_DESC_CTE = 60;
-	private static List<SelectItem> tipoAlmacenList;
-	private ArrayList<EntradaSalidaDetalleQuickView> entityList;
-	private EntradaSalidaDetalleQuickView selectedEntity;
-	private EntradaSalida pedidoVenta;
-	private EntradaSalidaFooter pedidoVentaFooter;
-	private ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
-	private EntradaSalidaDetalleQuickView resultadoBusquedaSI;
+	protected static transient Logger logger = Logger.getLogger("EntradaSalidaMB");
+	protected List<SelectItem> resultadoBusquedaList;
+	protected static final int LONG_MIN_DESC_CTE = 60;
+	protected static List<SelectItem> tipoAlmacenList;
+	protected ArrayList<EntradaSalidaDetalleQuickView> entityList;
+	protected EntradaSalidaDetalleQuickView selectedEntity;
+	protected EntradaSalida entradaSalida;
+	protected EntradaSalidaFooter entradaSalidaFooter;
+	protected ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
+	protected EntradaSalidaDetalleQuickView resultadoBusquedaSI;
 	
-	private String cadenaBusqueda;
-	private int tipoAlmacen;
-	private String resultadoBusquedaSelected;
-	private int cantidadAgregarBusqueda;
+	protected String cadenaBusqueda;
+	protected int tipoAlmacen;
+	protected String resultadoBusquedaSelected;
+	protected int cantidadAgregarBusqueda;
 	boolean conservarBusqueda;
 	
-	private int cantidadAgregarCodigo;
-	private String codigo;
-	private boolean autorizaDescuento = true;
-	private boolean tablaExpandida = false;
-	private boolean tableDraggableEnabled = false;
-	private boolean crearPedido;
-	private boolean pedidoFinalizado = false;
+	protected int cantidadAgregarCodigo;
+	protected String codigo;
+	protected boolean autorizaDescuento = true;
+	protected boolean tablaExpandida = false;
+	protected boolean tableDraggableEnabled = false;
+	protected boolean crearES;
+	protected boolean esFinalizado = false;
 	
 	@ManagedProperty(value = "#{sessionUserMB}")
-	private SessionUserMB sessionUserMB;
+	protected SessionUserMB sessionUserMB;
 		
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
@@ -81,20 +81,20 @@ public class EntradaSalidaMB{
 	
 	@PostConstruct
 	public void init() {
-		pedidoVenta = new EntradaSalida();
-		pedidoVentaFooter= new EntradaSalidaFooter();
+		entradaSalida = new EntradaSalida();
+		entradaSalidaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		
 		clienteSeleccionado = null;
-		crearPedido = false;	
+		crearES = false;	
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
 		conservarBusqueda = true;
-		pedidoFinalizado = false;
+		esFinalizado = false;
 		autorizaDescuento = true;
 		tablaExpandida = false;
 		tableDraggableEnabled = false;
@@ -108,11 +108,11 @@ public class EntradaSalidaMB{
 	}
 	
 	public EntradaSalida getPedidoVenta() {
-		return pedidoVenta;
+		return entradaSalida;
 	}
 
 	public EntradaSalidaFooter getPedidoVentaFooter() {
-		return pedidoVentaFooter;
+		return entradaSalidaFooter;
 	}
 	
 	
@@ -445,14 +445,14 @@ public class EntradaSalidaMB{
 	
 	public void actualizarTotales(){
 		logger.finer("->actualizarTotales:");
-		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
+		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.finer("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
+		logger.finer("->onClienteListChange:clienteId="+entradaSalida.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
-			if(c.getId().equals(pedidoVenta.getClienteId())){
+			if(c.getId().equals(entradaSalida.getClienteId())){
 				clienteSeleccionado = c;
 				break;
 			}
@@ -463,7 +463,7 @@ public class EntradaSalidaMB{
 		logger.finer("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
-				pedidoVenta.setClienteId(c.getId());
+				entradaSalida.setClienteId(c.getId());
 				clienteSeleccionado = c;
 				break;
 			}
@@ -488,7 +488,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.finer("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
+		logger.finer("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+entradaSalida.getFormaDePagoId());
 	}
 	
 	public List<SelectItem> getMetodoDePagoList() {
@@ -509,10 +509,10 @@ public class EntradaSalidaMB{
 	}
 
 	public void onMetodoDePagoListChange() {
-		logger.finer("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
+		logger.finer("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+entradaSalida.getMetodoDePagoId());
 	}
 	
-	private ArrayList<SelectItem> descuentoEspecialList;
+	protected ArrayList<SelectItem> descuentoEspecialList;
 	public List<SelectItem> getDescuentoEspacialList() {
 		if(descuentoEspecialList == null){
 			descuentoEspecialList = new ArrayList<SelectItem>();
@@ -526,12 +526,12 @@ public class EntradaSalidaMB{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.finer("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
+		logger.finer("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+entradaSalida.getPorcentajeDescuentoExtra());
 		actualizarTotales();
 	}
 
 	public void setEntradaSalida(EntradaSalida entradaSalida) {
-		this.pedidoVenta = entradaSalida;
+		this.entradaSalida = entradaSalida;
 	}
 
 	public void setTablaExpandida(boolean tablaExpandida) {
@@ -567,7 +567,7 @@ public class EntradaSalidaMB{
 	}
 
 	public void comentariosChanged() {
-		logger.finer("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
+		logger.finer("->comentariosChanged:comentarios="+entradaSalida.getComentarios());		
 	}
 
 	public void onResultadoBusquedaChange() {
@@ -644,19 +644,19 @@ public class EntradaSalidaMB{
 	}
 
 	public boolean isCrearPedido() {
-		crearPedido=false;
+		crearES=false;
 		
 		if(entityList!=null && entityList.size()>0 &&
-				pedidoVenta.getClienteId()!=null && pedidoVenta.getClienteId() > 0 && clienteSeleccionado!=null &&
-				pedidoVenta.getFormaDePagoId()!=null && pedidoVenta.getFormaDePagoId()> 0 &&
-				pedidoVenta.getMetodoDePagoId()!=null && pedidoVenta.getMetodoDePagoId()> 0 ){
-			crearPedido=true;
+				entradaSalida.getClienteId()!=null && entradaSalida.getClienteId() > 0 && clienteSeleccionado!=null &&
+				entradaSalida.getFormaDePagoId()!=null && entradaSalida.getFormaDePagoId()> 0 &&
+				entradaSalida.getMetodoDePagoId()!=null && entradaSalida.getMetodoDePagoId()> 0 ){
+			crearES=true;
 		}
 		
-		return crearPedido;
+		return crearES;
 	}
 	
-	private void validacion(){
+	protected void validacion(){
 		logger.finer("->validacion");
 		
 	}
@@ -664,24 +664,24 @@ public class EntradaSalidaMB{
 	public void guardar() {
 		logger.info("->guardar:");
 		try{
-			pedidoVenta.setCaja(1);
-			pedidoVenta.setFactorIva(Constants.IVA);
-			pedidoVenta.setNumDeCuenta(null);
-			pedidoVenta.setNumeroTicket("0");
-			pedidoVenta.setSucursalId(sessionUserMB.getSucursalId());
-			pedidoVenta.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());
-			pedidoVenta.setAutorizaDescuento(autorizaDescuento?1:0);
+			entradaSalida.setCaja(1);
+			entradaSalida.setFactorIva(Constants.IVA);
+			//pedidoVenta.setNumDeCuenta(null);
+			entradaSalida.setNumeroTicket("0");
+			entradaSalida.setSucursalId(sessionUserMB.getSucursalId());
+			entradaSalida.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());
+			entradaSalida.setAutorizaDescuento(autorizaDescuento?1:0);
 						
-			EntradaSalidaDAO.getInstance().insert(pedidoVenta,entityList);
-			logger.info("->guardar:entradaSalida.id:"+pedidoVenta.getId());
+			EntradaSalidaDAO.getInstance().insertPedidoVenta(entradaSalida,entityList);
+			logger.info("->guardar:entradaSalida.id:"+entradaSalida.getId());
 			
-			pedidoFinalizado = true;
+			esFinalizado = true;
 			cadenaBusqueda = null;
 			resultadoBusqueda = null;
 			resultadoBusquedaList = null;
 			conservarBusqueda = false;
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO EL PEDIDO #"+pedidoVenta.getId()) );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO EL PEDIDO #"+entradaSalida.getId()) );
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -701,15 +701,15 @@ public class EntradaSalidaMB{
 	}
 
 	public boolean isPedidoFinalizado() {
-		return pedidoFinalizado;
+		return esFinalizado;
 	}
 	
 	public void onComentariosChange() {
-		logger.finer("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
+		logger.finer("->onComentariosChange:comentarios="+entradaSalida.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.finer("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
+		logger.finer("->onCondicionesChange:CondicionesDePago="+entradaSalida.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
@@ -737,9 +737,9 @@ public class EntradaSalidaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"DESCUENTO",  " SE BLOQUEÓ LA POLITICA DE DESCUENTO") );
 		}
-		pedidoVenta.setAutorizaDescuento(this.autorizaDescuento?1:0);
+		entradaSalida.setAutorizaDescuento(this.autorizaDescuento?1:0);
 		if(!this.autorizaDescuento){
-			this.pedidoVenta.setPorcentajeDescuentoExtra(0);
+			this.entradaSalida.setPorcentajeDescuentoExtra(0);
 		}
 		actualizarTotales();
 	}
@@ -756,6 +756,6 @@ public class EntradaSalidaMB{
 		if(this.tablaExpandida)
 			return "20%";
 		else
-			return "60%";
+			return "40%";
 	}
 }

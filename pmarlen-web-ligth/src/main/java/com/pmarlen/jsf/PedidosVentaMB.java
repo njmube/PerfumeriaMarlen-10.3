@@ -42,7 +42,7 @@ public class PedidosVentaMB  {
 	public void init(){
 		logger.info("->init:");
 		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActive();
+			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
 			logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
 			for(EntradaSalidaQuickView x:pedidosVentas){
 				logger.finer("->x="+x.getId());
@@ -57,7 +57,7 @@ public class PedidosVentaMB  {
 	public void refrescar(){
 		logger.info("->refrescar:");
 		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActive();
+			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
 			if(pedidosVentas != null){
 				logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
 				for(EntradaSalidaQuickView x:pedidosVentas){

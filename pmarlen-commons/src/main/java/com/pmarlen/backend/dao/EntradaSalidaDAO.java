@@ -192,12 +192,13 @@ public class EntradaSalidaDAO {
 					+ "LEFT JOIN METODO_DE_PAGO MP  ON ES.METODO_DE_PAGO_ID = MP.ID\n"
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ID = ?\n"
-					+ "AND       ES.TIPO_MOV = 30\n"		
+					+ "AND       ES.TIPO_MOV = ?\n"		
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.FECHA_CREO DESC");
 
 			ps.setInt(1, p.getId());
+			ps.setInt(2, p.getTipoMov());
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -239,8 +240,13 @@ public class EntradaSalidaDAO {
 
 				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));
 				x.setImporteIVA(x.getImporteBruto() - x.getImporteNoGravado());
-				x.setImporteDescuento(0.0);
-				x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				if(x.getImporteBruto() !=null && x.getPorcentajeDescuentoCalculado()!=null && x.getPorcentajeDescuentoExtra()!=null){
+					x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
+					x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				} else {
+					x.setImporteDescuento(0.0);
+					x.setImporteTotal(x.getImporteBruto() );
+				}
 			}
 
 			ArrayList<EntradaSalidaEstadoQuickView> pveList = new ArrayList<EntradaSalidaEstadoQuickView>();
@@ -373,7 +379,15 @@ public class EntradaSalidaDAO {
 		return r;		
 	}
     
-	public ArrayList<EntradaSalidaQuickView> findAllActive() throws DAOException {
+	public ArrayList<EntradaSalidaQuickView> findAllActivePendidos() throws DAOException {
+		return findAllActive(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
+	}
+	
+	public ArrayList<EntradaSalidaQuickView> findAllActiveDevs() throws DAOException {
+		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+	}
+	
+	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov) throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -407,10 +421,10 @@ public class EntradaSalidaDAO {
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ESTADO_ID IN(1,2,4)\n"
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
-					+ "AND       ES.TIPO_MOV  = 30\n"		
+					+ "AND       ES.TIPO_MOV  = ?\n"		
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.FECHA_CREO DESC");
-
+					+ "ORDER BY  ES.ID DESC");
+			ps.setInt(1, tipoMov);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();				
@@ -451,8 +465,13 @@ public class EntradaSalidaDAO {
 
 				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));
 				x.setImporteIVA(x.getImporteBruto() - x.getImporteNoGravado());
-				x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
-				x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				if(x.getImporteBruto() !=null && x.getPorcentajeDescuentoCalculado()!=null && x.getPorcentajeDescuentoExtra()!=null){
+					x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
+					x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				} else {
+					x.setImporteDescuento(0.0);
+					x.setImporteTotal(x.getImporteBruto() );
+				}
 
 				r.add(x);
 			}
@@ -473,7 +492,15 @@ public class EntradaSalidaDAO {
 		return r;
 	}
 	
-    public ArrayList<EntradaSalidaQuickView> findAllHistorico() throws DAOException {
+	public ArrayList<EntradaSalidaQuickView> findAllHistoricoPedidos() throws DAOException {
+		return findAllHistorico(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
+	}
+	
+	public ArrayList<EntradaSalidaQuickView> findAllHistoricoDevs() throws DAOException {
+		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+	}
+	
+    private ArrayList<EntradaSalidaQuickView> findAllHistorico(int tipoMov) throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -507,10 +534,10 @@ public class EntradaSalidaDAO {
 					+ "WHERE     1=1\n"
 					+ "AND       ES.ESTADO_ID > 4\n"
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
-					+ "AND       ES.TIPO_MOV  = 30\n"		
+					+ "AND       ES.TIPO_MOV  = ?\n"		
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.FECHA_CREO DESC");
-
+					+ "ORDER BY  ES.ID DESC");
+			ps.setInt(1, tipoMov);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
@@ -551,8 +578,13 @@ public class EntradaSalidaDAO {
 
 				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));
 				x.setImporteIVA(x.getImporteBruto() - x.getImporteNoGravado());
-				x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
-				x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				if(x.getImporteBruto() !=null && x.getPorcentajeDescuentoCalculado()!=null && x.getPorcentajeDescuentoExtra()!=null){
+					x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
+					x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				} else {
+					x.setImporteDescuento(0.0);
+					x.setImporteTotal(x.getImporteBruto() );
+				}
 
 				r.add(x);
 			}
@@ -573,7 +605,15 @@ public class EntradaSalidaDAO {
 		return r;
 	}
 	
-	public int insert(EntradaSalida x, ArrayList<? extends EntradaSalidaDetalle> pvdList) throws DAOException {
+	public int insertPedidoVenta(EntradaSalida x, ArrayList<? extends EntradaSalidaDetalle> pvdList) throws DAOException {
+		return insert(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA,x,pvdList);
+	}
+	
+	public int insertDevolucionVenta(EntradaSalida x, ArrayList<? extends EntradaSalidaDetalle> pvdList) throws DAOException {
+		return insert(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,x,pvdList);
+	}
+	
+	private int insert(int tipoMov,EntradaSalida x, ArrayList<? extends EntradaSalidaDetalle> pvdList) throws DAOException {
 		PreparedStatement ps = null;
 		PreparedStatement psESE = null;
 		PreparedStatement psESD = null;
@@ -586,7 +626,7 @@ public class EntradaSalidaDAO {
 			ps = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA(TIPO_MOV,SUCURSAL_ID,ESTADO_ID,FECHA_CREO,USUARIO_EMAIL_CREO,CLIENTE_ID,FORMA_DE_PAGO_ID,METODO_DE_PAGO_ID,FACTOR_IVA,COMENTARIOS,CFD_ID,NUMERO_TICKET,CAJA,IMPORTE_RECIBIDO,APROBACION_VISA_MASTERCARD,PORCENTAJE_DESCUENTO_CALCULADO,PORCENTAJE_DESCUENTO_EXTRA,CONDICIONES_DE_PAGO,NUM_DE_CUENTA,AUTORIZA_DESCUENTO) "
 					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			int ci = 1;
-			ps.setObject(ci++, Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
+			ps.setObject(ci++, tipoMov);
 			ps.setObject(ci++, x.getSucursalId());
 			ps.setObject(ci++, Constants.ESTADO_SINCRONIZADO);
 			ps.setObject(ci++, now);
@@ -851,15 +891,18 @@ public class EntradaSalidaDAO {
 					+ " VALUES(?,?,?,?,?,?,?,?,?)");
 
 			Timestamp now = new Timestamp(System.currentTimeMillis());
-
+			int cant=0;
 			for (EntradaSalidaDetalle pvd : pvdList) {
 				psESD.clearParameters();
-				
-				if(x.getTipoMov() >= Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA && x.getTipoMov() < Constants.TIPO_MOV_OTRO){					
-					psESD.setInt(1, -1 * pvd.getCantidad());
+				cant=0;
+				if(x.getTipoMov() >= Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA && x.getTipoMov() < Constants.TIPO_MOV_OTRO){
+					cant = -1 * pvd.getCantidad();
+					psESD.setInt(1, cant);
 				} else if(x.getTipoMov() >= Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA &&  x.getTipoMov() < Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA){				
-					psESD.setInt(1, pvd.getCantidad());
+					cant = pvd.getCantidad();
+					psESD.setInt(1, cant);
 				}
+				logger.info("->tipomov="+x.getTipoMov()+", cant="+cant);
 				psESD.setString(2, pvd.getProductoCodigoBarras());
 				psESD.setInt(3, pvd.getAlmacenId());
 

@@ -1,0 +1,409 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+	<ui:define name="title">
+		DEVOLUCIÓN VTA.
+	</ui:define>
+
+	<ui:define name="body-title">
+		<h:outputText value="NUEVA DEVOLUCIÓN DE CLIENTE"/>
+	</ui:define>
+
+	<ui:define name="body">		
+		<h:panelGrid columns="2" cellpadding="0" id="panel0" columnClasses="columnWidth75 centerAlign, columnWidth25 leftAlign topAlign topTAlign" width="100%">
+			<h:panelGrid columns="1" cellpadding="0" id="panelL" width="100%" columnClasses="leftAlign">
+
+				<h:form id="form1" rendered="true">					
+					<h:panelGrid columns="1" cellpadding="0" id="panel1" width="100%" columnClasses="leftAlign">
+						<p:outputLabel for="almacen" value="ALMACÉN :" title="CAMBIAR EL ALMACÉN PARA HACER LA SELECCION DE UN NUEVO PRODUCTO HASTA AGREGARLO"/>
+
+						<p:selectOneMenu id="almacen" value="#{nuevaDevolucionMB.tipoAlmacen}" style="width:125px" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">							
+							<f:selectItems  value="#{nuevaDevolucionMB.tipoAlmacenList}"/>
+							<p:ajax listener="#{nuevaDevolucionMB.onTipoAlmacenChange}" process="@all" oncomplete="updateComponentsOnWindowResize();"  update=":form1,:form2,:form2a,:form3,:form4"/>
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
+						<h:panelGrid columns="2" cellpadding="0">
+							<h:panelGroup rendered="true">
+								<p:inputText id="cadenaBusqueda" value="#{nuevaDevolucionMB.cadenaBusqueda}" size="50" maxlength="128" valueChangeListener="#{nuevaDevolucionMB.cadenaBusquedaChanged}"
+											 title="BUSCAR PRODUCTOS CON PALABRAS COINCIDAD CON: NOMBRE,PRESENTACIÓN,LINEA,MARCA; Y PARA UNA BUSQUEDA MAS PRECISA ENCERRAR ENTRE ( .... )" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+									<p:ajax event="change" listener="#{nuevaDevolucionMB.buscarXCadena}" process=":form1:panel1" update="panel1,:form2,:form2a"/>
+								</p:inputText>						
+								<p:selectBooleanButton   id="conservarBusqueda" value="#{nuevaDevolucionMB.conservarBusqueda}" onLabel="CONSERVAR RESULT." offLabel="LIMPIAR RESULT." 
+														 onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+									<p:ajax process=":form1" update=":form1" listener="#{nuevaDevolucionMB.conservarBusquedaChanged}" />
+								</p:selectBooleanButton>
+							</h:panelGroup>
+						
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form2" rendered="true">					
+					
+					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
+						
+						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
+
+						<h:panelGrid columns="6" cellpadding="0">	
+							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{nuevaDevolucionMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" rendered="true" 
+									   disabled="#{nuevaDevolucionMB.devolucionFinalizada}"/>
+
+							<p:outputLabel value=" x " />
+							<p:selectOneMenu id="resultadoBusqueda" value="#{nuevaDevolucionMB.resultadoBusquedaSelected}" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">							
+								<f:selectItems  value="#{nuevaDevolucionMB.resultadoBusqueda}"/>
+								<p:ajax process=":form2:panel2" listener="#{nuevaDevolucionMB.onResultadoBusquedaChange}" update=":form2:panel2" />							
+							</p:selectOneMenu>
+
+							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" rendered="#{not empty nuevaDevolucionMB.resultadoBusqueda}"
+											 disabled="#{nuevaDevolucionMB.devolucionFinalizada}" title="VER MAS ACERCA DEL PRODUCTO SELECCIONADO"/>
+
+							<p:commandButton value="+"  actionListener="#{nuevaDevolucionMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"
+											 process=":form2" update=":form1,:form2,:form2,:form3,:form4:panel4_3"  
+											 rendered="#{not empty nuevaDevolucionMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
+
+							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
+								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
+									<h:outputText value="CODIGO :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.productoCodigoBarras}" class="bold_text"/>
+
+									<h:outputText value="LINEA :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
+
+									<h:outputText value="MARCA :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
+
+									<h:outputText value="CANTIDAD ACTUAL :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.apCantidad}" class="bold_text" />
+
+									<h:outputText value="CONTENIDO :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.productoContenido} #{nuevaDevolucionMB.resultadoBusquedaSI.productoUnidadMedida} [x #{nuevaDevolucionMB.resultadoBusquedaSI.productoUnidadEmpaque}]" class="bold_text" />
+
+									<h:outputText value="PRECIO :" />
+									<h:outputText value="#{nuevaDevolucionMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
+										<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+									</h:outputText>
+								</h:panelGrid>
+							</p:overlayPanel>							
+						</h:panelGrid>
+						
+					</h:panelGrid>
+				</h:form>
+				<h:form id="form2a" rendered="true">
+
+					<h:panelGrid columns="1" cellpadding="0" id="panel2a" columnClasses="leftAlign" width="100%">
+						<p:outputLabel value="CANTIDAD x CODIGO :" />
+						
+						<h:panelGroup>
+							<p:inputText value="#{nuevaDevolucionMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+
+							<p:spinner id="cantidadAgregarCodigoSpinner" value="#{nuevaDevolucionMB.cantidadAgregarCodigo}" min="1" max="9999" size="1" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"/>
+
+							<p:outputLabel value=" x " />
+							<p:inputText value="#{nuevaDevolucionMB.codigo}" size="15" maxlength="15" valueChangeListener="#{nuevaDevolucionMB.codigoChanged}"
+										 title="BUSCA Y AGREGA EL PRODUCTO POR EL CODIGO DE BARRAS" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+								<p:ajax  event="change" listener="#{nuevaDevolucionMB.buscarXCodigo}" 
+										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
+										 oncomplete="updateComponentsOnWindowResize();"/>
+							</p:inputText>						
+
+						</h:panelGroup>
+
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form3" rendered="true">
+					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  />
+					
+					<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
+						<p:dataTable  var="pvd" value="#{nuevaDevolucionMB.entityList}"
+									  id="pvdTable" widgetVar="wv_pvdTable" emptyMessage="-- SIN ELEMENTOS --" 
+									  scrollable="true" draggableRows="#{nuevaDevolucionMB.tableDraggableEnabled}"
+									  editable="true" editMode="cell" 
+									  scrollHeight="200" >
+							<p:ajax event="rowReorder" listener="#{nuevaDevolucionMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
+							<f:facet name="header">								
+								<h:outputText value="OPCIONES DE VER TABLA:"/>
+								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
+													rendered="#{not nuevaDevolucionMB.devolucionFinalizada and !nuevaDevolucionMB.tableDraggableEnabled}"
+													actionListener="#{nuevaDevolucionMB.actualizarTotales()}"
+													oncomplete="updateComponentsOnWindowResize();"
+													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>
+								<p:spacer width="10"/>
+								<p:commandButton	value="VER + COLUMNAS" actionListener="#{nuevaDevolucionMB.expandirTabla}" process=":form3" update=":form3:panel3" 
+												 rendered="#{not nuevaDevolucionMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
+								<p:commandButton	value="VER - COLUMNAS" actionListener="#{nuevaDevolucionMB.contraerTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{nuevaDevolucionMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA"/>
+								<p:spacer width="10"/>
+								
+								<p:commandButton	value="MOVER RENGLONES"       actionListener="#{nuevaDevolucionMB.activarMover}"   process=":form3" update=":form3:panel3" 
+													rendered="#{!nuevaDevolucionMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
+													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"/>
+								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{nuevaDevolucionMB.desactivarMover}" process=":form3" update=":form3:panel3" 
+													rendered="#{nuevaDevolucionMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
+													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"/>
+							</f:facet>
+
+							<p:column headerText="." width="3%">
+								<p:commandButton icon="ui-icon-trash" actionListener="#{nuevaDevolucionMB.deleteRow(pvd.rowId)}" 
+												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
+												 oncomplete="updateComponentsOnWindowResize();" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"
+												 rendered="#{not nuevaDevolucionMB.tableDraggableEnabled}">
+									<p:confirm header="ELIMINAR" message="¿ SEGURO QUE QUIERE ELIMINAR ?" icon="ui-icon-alert" rendered="#{not nuevaDevolucionMB.tableDraggableEnabled}"/>
+								</p:commandButton>		
+								
+								<h:graphicImage value="/images/draggable.png" rendered="#{nuevaDevolucionMB.tableDraggableEnabled}" style="cursor:move"/>
+							</p:column>
+
+							<p:column headerText="#" width="10%" >	
+								
+								<h:outputText value="#{pvd.cantidad}" rendered="#{nuevaDevolucionMB.devolucionFinalizada or nuevaDevolucionMB.tableDraggableEnabled}"/>
+								
+								<h:panelGroup rendered="#{not nuevaDevolucionMB.devolucionFinalizada and not nuevaDevolucionMB.tableDraggableEnabled}">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>	
+									<p:spacer width="5"/>
+									<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
+														update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"
+														actionListener="#{nuevaDevolucionMB.actualizarTotales()}"/>
+								</h:panelGroup>
+								
+							</p:column>
+
+							<p:column headerText="ALM." width="5%" >
+								<h:outputText value="1RA" rendered="#{pvd.apTipoAlmacen eq 1}" class="centerAlignColumn"/>
+								<h:outputText value="OPO" rendered="#{pvd.apTipoAlmacen eq 2}" class="centerAlignColumn"/>
+								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
+							</p:column>
+
+							<p:column headerText="PRODUCTO" width="#{nuevaDevolucionMB.codigoTableWidth}">
+								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not nuevaDevolucionMB.tablaExpandida}"/>
+								<h:outputText value="#{pvd.productoCodigoBarras}" rendered="#{nuevaDevolucionMB.tablaExpandida}"/>
+							</p:column>
+
+							<p:column headerText="IND. / LINEA / MARCA" rendered="#{nuevaDevolucionMB.tablaExpandida}" width="35%">
+								<h:outputText value="#{pvd.productoIndustria} /" /> <br/>
+								<h:outputText value="#{pvd.productoLinea} /" /> <br/>
+								<h:outputText value="#{pvd.productoMarca}" /> <br/>
+							</p:column>
+
+							<p:column headerText="NOM. / PRESENT." rendered="#{nuevaDevolucionMB.tablaExpandida}" width="25%">
+								<h:outputText value="#{pvd.productoNombre} / #{pvd.productoPresentacion}" />
+							</p:column>
+
+							<p:column headerText="CONT." rendered="#{nuevaDevolucionMB.tablaExpandida}" width="5%">
+								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
+							</p:column>
+							
+							<p:column headerText="PRECIO" width="8%">
+								<h:outputText value="#{pvd.precioVenta}" title="#{nuevaDevolucionMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="PRECIO" width="10%">
+								<h:outputText value="#{pvd.precioVenta}" title="#{nuevaDevolucionMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="IMPORTE" width="10%">
+								<h:outputText value="#{pvd.cantidad * pvd.precioVenta}" title="#{nuevaDevolucionMB.getImporteDesglosado(pvd.cantidad * pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<f:facet name="footer">
+								<h:panelGrid width="100%" columns="2" columnClasses="columnWidth85 centerAlign, columnWidth15 rightAlign" style="border-width: 0">
+									<h:panelGroup>
+										<h:outputText value="ELEMENTOS DETALLE: #{nuevaDevolucionMB.sizeList}, TOTAL UNIDADES INDIVIDUALES : #{nuevaDevolucionMB.pedidoVentaFooter.totalUnidades}" />
+									</h:panelGroup>
+									<h:outputText value="#{nuevaDevolucionMB.getImporteMoneda(nuevaDevolucionMB.pedidoVentaFooter.subTotalBruto)}" 
+												  title="= #{nuevaDevolucionMB.getImporteDesglosado(nuevaDevolucionMB.pedidoVentaFooter.subTotalBruto)}"/>
+								</h:panelGrid>
+								
+							</f:facet>
+						</p:dataTable>
+
+					</h:panelGrid>
+				</h:form>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
+				<h:form id="form4">
+					
+					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="600" id="dlgClientes">
+
+						<p:dataTable var="cliente" value="#{nuevaDevolucionMB.clientes}" scrollHeight="200" >
+
+							<p:column style="width:32px;text-align: center">
+								<p:commandButton	update=":form4:panel4_1,:form4:dlgClientes,:form4:panel4_3" 
+													oncomplete="PF('dlgSeleccionarCliente').hide();" icon="ui-icon-check" title="SELECCIONAR"
+													actionListener="#{nuevaDevolucionMB.seleccionaCliente(cliente.id)}">
+
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="RAZÓN SOCIAL :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
+
+							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
+
+							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.rfc}" />
+							</p:column>
+
+							<p:column headerText="TELEFONOS :">
+								<h:outputText value="#{cliente.telefonos}" />
+							</p:column>
+						</p:dataTable>
+					</p:dialog> 
+
+					<h:panelGrid columns="1" id="panel4_1" cellpadding="0" columnClasses="leftAlign" width="100%">
+
+						<p:outputLabel value="CLIENTE ( RAZ.SOC. / NOM.EST.):" />
+
+						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
+
+							<h:panelGrid width="100%" columns="1" rendered="#{not empty nuevaDevolucionMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0">
+
+								<h:outputText value="#{nuevaDevolucionMB.clienteSeleccionado.razonSocial}/" 
+											  style="font-size: 60%; color: #2e6e9e;" />
+								<h:outputText value="#{nuevaDevolucionMB.clienteSeleccionado.nombreEstablecimiento}" 
+											  style="font-size: 60%; color: #2e6e9e;" />
+
+							</h:panelGrid>
+
+							<h:outputText id="cteSeleccNull" value="--SELECCIONE--" 
+										  style="font-size: 80%; color: #2e6e9e;" rendered="#{empty nuevaDevolucionMB.clienteSeleccionado}"/>
+
+							<p:commandButton icon="ui-icon-triangle-1-s" type="button" onclick="PF('dlgSeleccionarCliente').show();" disabled="#{nuevaDevolucionMB.devolucionFinalizada}"/>
+
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid columns="1" id="panel4_2" cellpadding="0" columnClasses="leftAlign" width="100%">
+												
+						<p:outputLabel value="CONDICIONES :" />
+
+						<h:inputText id="condiciones" value="#{nuevaDevolucionMB.pedidoVenta.condicionesDePago}" size="30"
+										 title="CONDICIONES DEL PEDIDO" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+							<p:ajax		 event="blur" listener="#{nuevaDevolucionMB.onCondicionesChange}" 
+										 process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputText>
+						
+						<p:outputLabel value="COMENTARIOS :" />
+
+						<h:inputText id="comentarios" value="#{nuevaDevolucionMB.pedidoVenta.comentarios}" size="30"
+										 title="COMENTARIOS ACERCA DEL PEDIDO" disabled="#{nuevaDevolucionMB.devolucionFinalizada}">
+							<p:ajax		 event="blur" listener="#{nuevaDevolucionMB.onComentariosChange}" 
+									  process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputText>
+
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" id="panel4_3" cellpadding="0" columnClasses="centerAlign" width="100%">
+						<p:spacer width="10"/>
+						<h:panelGrid id="panel4_3a" columns="2" cellpadding="0" columnClasses="columnWidth60 rightAlign, columnWidth40 rightAlign" width="100%">
+							<h:outputText value="SUBTOTAL :" />
+							<h:outputText value="#{nuevaDevolucionMB.pedidoVentaFooter.subTotalNoGrabado}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="I.V.A. :" />
+							<h:outputText value="#{nuevaDevolucionMB.pedidoVentaFooter.importeIVA}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="T O T A L :" styleClass="bold_text"/>
+							<h:outputText value="#{nuevaDevolucionMB.pedidoVentaFooter.total}" styleClass="bold_text">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+						</h:panelGrid>
+						<p:spacer width="10" rendered="#{not nuevaDevolucionMB.devolucionFinalizada}"/>
+						<h:panelGrid columns="2" rendered="#{not nuevaDevolucionMB.devolucionFinalizada}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
+							<p:commandButton value="CANCELAR Y REINICIAR" actionListener="#{nuevaDevolucionMB.cancelar}" process="@all" rendered="#{not nuevaDevolucionMB.devolucionFinalizada}" icon="ui-icon-cancel"
+											 update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+								<p:confirm header="CANCELAR CREACIÓN" message="¿ SEGURO QUE QUIERE CANCELAR CREACIÓN DE LA DEVOLUCIÓN ?" icon="ui-icon-alert" />
+							</p:commandButton>						
+
+							<p:commandButton value="CREAR DEVOLUCIÓN"  actionListener="#{nuevaDevolucionMB.guardar}" disabled="#{not nuevaDevolucionMB.crearDevolucion}" icon="ui-icon-play"
+											 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
+								<p:confirm header="CREAR DEVOLUCIÓN" message="¿ SEGURO YÁ TERMINÓ Y QUIERE CREAR LA DEVOLUCIÓN ?" icon="ui-icon-alert" />
+							</p:commandButton>
+						</h:panelGrid>
+
+						<p:spacer width="10" height="10" />
+
+						<h:outputText	value="DEVOLUCIÓN ID : ##{nuevaDevolucionMB.pedidoVenta.id}" rendered="#{not empty nuevaDevolucionMB.pedidoVenta and nuevaDevolucionMB.devolucionFinalizada}"/>
+
+						<p:spacer width="10" height="10" />
+
+						<p:commandButton value="DEVOLUCIÓN FINALIZADA, CERRAR"  actionListener="#{nuevaDevolucionMB.cerrar}" rendered="#{nuevaDevolucionMB.devolucionFinalizada}" 
+										 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();"/>
+
+						<p:confirmDialog global="true" styleClass="centerAlign" closeOnEscape="true" >
+
+							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
+								<p:commandButton value="SI, ESTOY SEGURO"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="¡ NO, MEJOR NO !"  type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</h:panelGrid>
+								
+						</p:confirmDialog>
+
+						<div id="debugDivOutput">						
+						</div>
+					</h:panelGrid>
+
+				</h:form>
+			</h:panelGrid>
+
+
+		</h:panelGrid>
+		<script>
+			
+			var counterResized = 0;
+			function updateComponentsOnWindowResize() {
+
+				//var txt="";
+				//txt+="["+counterResized+"]Resized:(" + $(window).width() + " x  " + $(window).height() +"), table height:"+$(".ui-datatable-scrollable-body").height();
+				//$("#debugDivOutput").html(txt);
+				setDataTableHeight();
+				counterResized++;
+			}
+
+			function setDataTableHeight() {
+				var winHeight = $(window).height();
+
+				var scrollHeight = winHeight - 460;
+
+				var scrollBody = $(".ui-datatable-scrollable-body");
+				scrollBody.height(scrollHeight);
+
+			}
+
+			$(document).ready(function() {
+
+				$(window).resize(function() {
+					updateComponentsOnWindowResize();
+				});
+
+				updateComponentsOnWindowResize();
+
+			});
+		</script>		
+
+	</ui:define>
+
+</ui:composition>

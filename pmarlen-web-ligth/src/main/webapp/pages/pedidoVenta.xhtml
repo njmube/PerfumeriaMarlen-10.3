@@ -78,7 +78,7 @@
 									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
 
 									<h:outputText value="CANTIDAD ACTUAL :" />
-									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.cantidad}" class="bold_text" />
+									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.apCantidad}" class="bold_text" />
 
 									<h:outputText value="CONTENIDO :" />
 									<h:outputText value="#{entradaSalidaMB.resultadoBusquedaSI.productoContenido} #{entradaSalidaMB.resultadoBusquedaSI.productoUnidadMedida} [x #{entradaSalidaMB.resultadoBusquedaSI.productoUnidadEmpaque}]" class="bold_text" />
@@ -277,12 +277,13 @@
 
 						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
 
-							<h:panelGrid width="100%" columns="1" rendered="#{not empty entradaSalidaMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0">
+							<h:panelGrid width="100%" columns="1" rendered="#{not empty entradaSalidaMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0" 
+										 style="border-style: solid; border-width: 1px; border-color: darkgray; background: white;">
 
 								<h:outputText value="#{entradaSalidaMB.clienteSeleccionado.razonSocial}/" 
-											  style="font-size: 60%; color: #2e6e9e;" />
+											  style="font-size: 60%; color: black;" />
 								<h:outputText value="#{entradaSalidaMB.clienteSeleccionado.nombreEstablecimiento}" 
-											  style="font-size: 60%; color: #2e6e9e;" />
+											  style="font-size: 60%; color: black;" />
 
 							</h:panelGrid>
 

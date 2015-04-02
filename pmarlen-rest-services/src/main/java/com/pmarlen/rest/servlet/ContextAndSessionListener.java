@@ -1,4 +1,4 @@
-package com.pmarlen.restapi.servlet;
+package com.pmarlen.rest.servlet;
 
 import com.tracktopell.jdbc.WEBDataSourceFacade;
 import java.text.SimpleDateFormat;

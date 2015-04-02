@@ -1,0 +1,504 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+	<ui:define name="title">
+		PMarlen:EditarPedidoVenta
+	</ui:define>
+
+	<ui:define name="body-title">
+		<h:outputText value="EDITANDO DEVOLUCION ##{editarDevolucionMB.devolucion.id}"/>
+	</ui:define>
+
+	<ui:define name="body">		
+		<h:panelGrid columns="2" cellpadding="0" id="panel0" columnClasses="columnWidth75 centerAlign, columnWidth25 leftAlign topAlign topTAlign" width="100%">
+			<h:panelGrid columns="1" cellpadding="0" id="panelL" width="100%" columnClasses="leftAlign">
+
+				<h:form id="form1" rendered="#{editarDevolucionMB.verificable or editarDevolucionMB.surtible}">
+					<h:panelGrid columns="1" cellpadding="0" id="panel1" width="100%" columnClasses="leftAlign">
+						<p:outputLabel for="almacen" value="ALMACÉN :" title="CAMBIAR EL ALMACÉN PARA HACER LA SELECCION DE UN NUEVO PRODUCTO HASTA AGREGARLO"/>
+
+						<p:selectOneMenu id="almacen" value="#{editarDevolucionMB.tipoAlmacen}" style="width:125px">
+							<f:selectItems  value="#{editarDevolucionMB.tipoAlmacenList}"/>
+							<p:ajax listener="#{editarDevolucionMB.onTipoAlmacenChange}" process="@all" oncomplete="updateComponentsOnWindowResize();"  update=":form1,:form2,:form2a,:form3,:form4"/>
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cadenaBusqueda" value="BUSCAR POR: NOMBRE,PRESENTACIÓN,LINEA O MARCA :" rendered="true"/>
+						<h:panelGrid columns="2" cellpadding="0">
+							<h:panelGroup rendered="true">
+								<p:inputText id="cadenaBusqueda" value="#{editarDevolucionMB.cadenaBusqueda}" size="50" maxlength="128" valueChangeListener="#{editarDevolucionMB.cadenaBusquedaChanged}"
+											 title="BUSCAR PRODUCTOS CON PALABRAS COINCIDAD CON: NOMBRE,PRESENTACIÓN,LINEA,MARCA; Y PARA UNA BUSQUEDA MAS PRECISA ENCERRAR ENTRE ( .... )">
+									<p:ajax event="change" listener="#{editarDevolucionMB.buscarXCadena}" process=":form1:panel1" update="panel1,:form2,:form2a"/>
+								</p:inputText>						
+								<p:selectBooleanButton   id="conservarBusqueda" value="#{editarDevolucionMB.conservarBusqueda}" onLabel="CONSERVAR RESULT." offLabel="LIMPIAR RESULT." 
+														 onIcon="ui-icon-check" offIcon="ui-icon-close">
+									<p:ajax process=":form1" update=":form1" listener="#{editarDevolucionMB.conservarBusquedaChanged}" />
+								</p:selectBooleanButton>
+							</h:panelGroup>
+						
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form2" rendered="#{editarDevolucionMB.verificable or editarDevolucionMB.surtible}">
+					
+					<h:panelGrid columns="1" cellpadding="0" id="panel2" columnClasses="leftAlign" width="100%">
+						
+						<p:outputLabel value="CANTIDAD x PRODUCTO :" rendered="true"/>
+
+						<h:panelGrid columns="6" cellpadding="0">	
+							<p:spinner id="cantidadAgregarBusquedaSpinner" value="#{editarDevolucionMB.cantidadAgregarBusqueda}" min="1" max="9999" size="1" rendered="true"/>
+
+							<p:outputLabel value=" x " />
+							<p:selectOneMenu id="resultadoBusqueda" value="#{editarDevolucionMB.resultadoBusquedaSelected}">
+								<f:selectItems  value="#{editarDevolucionMB.resultadoBusqueda}"/>
+								<p:ajax process=":form2:panel2" listener="#{editarDevolucionMB.onResultadoBusquedaChange}" update=":form2:panel2" />							
+							</p:selectOneMenu>
+
+							<p:commandButton id="masInfo" icon="ui-icon-comment" type="button" process=":form2" rendered="#{not empty editarDevolucionMB.resultadoBusqueda}"
+											 title="VER MAS ACERCA DEL PRODUCTO SELECCIONADO"/>
+
+							<p:commandButton value="+"  actionListener="#{editarDevolucionMB.agregarSeleccionadoDeBusqueda}" id="xx1" 
+											 process=":form2" update=":form1,:form2,:form2,:form3,:form4:panel4_3"  
+											 rendered="#{not empty editarDevolucionMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
+
+							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
+								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
+									<h:outputText value="CODIGO :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.productoCodigoBarras}" class="bold_text"/>
+
+									<h:outputText value="LINEA :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.productoLinea}" class="bold_text"/>
+
+									<h:outputText value="MARCA :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.productoMarca}" class="bold_text" />
+
+									<h:outputText value="CANTIDAD ACTUAL :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.apCantidad}" class="bold_text" />
+
+									<h:outputText value="CONTENIDO :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.productoContenido} #{editarDevolucionMB.resultadoBusquedaSI.productoUnidadMedida} [x #{editarDevolucionMB.resultadoBusquedaSI.productoUnidadEmpaque}]" class="bold_text" />
+
+									<h:outputText value="PRECIO :" />
+									<h:outputText value="#{editarDevolucionMB.resultadoBusquedaSI.precioVenta}" class="bold_text" >
+										<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+									</h:outputText>
+								</h:panelGrid>
+							</p:overlayPanel>							
+						</h:panelGrid>
+						
+					</h:panelGrid>
+				</h:form>
+				<h:form id="form2a" rendered="#{editarDevolucionMB.verificable or editarDevolucionMB.surtible}">
+
+					<h:panelGrid columns="1" cellpadding="0" id="panel2a" columnClasses="leftAlign" width="100%">
+						<p:outputLabel value="CANTIDAD x CODIGO :" />
+						
+						<h:panelGroup>
+							<p:inputText value="#{editarDevolucionMB.cantidadAgregarCodigo}" size="3" maxlength="5" rendered="false">
+								<f:convertNumber integerOnly="true"/>
+							</p:inputText>
+
+							<p:spinner id="cantidadAgregarCodigoSpinner" value="#{editarDevolucionMB.cantidadAgregarCodigo}" min="1" max="9999" size="1" />
+
+							<p:outputLabel value=" x " />
+							<p:inputText value="#{editarDevolucionMB.codigo}" size="15" maxlength="15" valueChangeListener="#{editarDevolucionMB.codigoChanged}"
+										 title="BUSCA Y AGREGA EL PRODUCTO POR EL CODIGO DE BARRAS">
+								<p:ajax  event="change" listener="#{editarDevolucionMB.buscarXCodigo}" 
+										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
+										 oncomplete="updateComponentsOnWindowResize();"/>
+							</p:inputText>						
+
+						</h:panelGroup>
+
+					</h:panelGrid>
+				</h:form>
+
+				<h:form id="form3" rendered="true">
+					<p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"  />
+					
+					<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
+						<p:dataTable  var="pvd" value="#{editarDevolucionMB.entityList}"
+									  id="pvdTable" widgetVar="wv_pvdTable" emptyMessage="-- SIN ELEMENTOS --" 
+									  scrollable="true" draggableRows="#{editarDevolucionMB.tableDraggableEnabled}"
+									  editable="true" editMode="cell" 
+									  scrollHeight="200" >
+							<p:ajax event="rowReorder" listener="#{editarDevolucionMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
+							<f:facet name="header">
+								<h:outputText value="OPCIONES DE VER TABLA:"/>
+								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
+													rendered="#{!editarDevolucionMB.tableDraggableEnabled}"
+													actionListener="#{editarDevolucionMB.actualizarTabla()}"
+													oncomplete="updateComponentsOnWindowResize();"
+													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>								
+								<p:spacer width="10"/>
+								<p:commandButton	value="VER + COLUMNAS" actionListener="#{editarDevolucionMB.expandirTabla}" process=":form3" update=":form3:panel3" 
+												 rendered="#{not editarDevolucionMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
+								<p:commandButton	value="VER - COLUMNAS" actionListener="#{editarDevolucionMB.contraerTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{editarDevolucionMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA"/>
+								<p:spacer width="10"/>
+								
+								<p:commandButton	value="MOVER RENGLONES"       actionListener="#{editarDevolucionMB.activarMover}"   process=":form3" update=":form3:panel3" 
+													rendered="#{!editarDevolucionMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
+													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{editarDevolucionMB.desactivarMover}" process=":form3" update=":form3:panel3" 
+													rendered="#{editarDevolucionMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
+													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+								<p:spacer width="10" rendered="false"/>
+								
+								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" target="_blank" rendered="false">
+									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<h:outputLink id="pdfLink2" value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" target="_blank" rendered="false">
+									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA INTERNA (PARA ALMACÉN) DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<p:button href="/docs/notas/Nota_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" 
+										  target="_blank" icon="ui-icon-document"  title="PDF NOTA DE VENTA ##{pv.id}" />
+								<p:spacer width="10"/>
+								<p:button href="/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" 
+										  target="_blank" icon="ui-icon-document"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
+								
+							</f:facet>
+
+							<p:column headerText="." width="3%">
+								<p:commandButton icon="ui-icon-trash" actionListener="#{editarDevolucionMB.deleteRow(pvd.rowId)}" 
+												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
+												 oncomplete="updateComponentsOnWindowResize();" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"
+												 rendered="#{not editarDevolucionMB.tableDraggableEnabled}">
+									<p:confirm header="ELIMINAR" message="¿ SEGURO QUE QUIERE ELIMINAR ?" icon="ui-icon-alert" rendered="#{not editarDevolucionMB.tableDraggableEnabled}"/>
+								</p:commandButton>		
+								
+								<h:graphicImage value="/images/draggable.png" rendered="#{editarDevolucionMB.tableDraggableEnabled}" style="cursor:move"/>
+							</p:column>
+
+							<p:column headerText="#" width="8%" >	
+								
+								<h:outputText value="#{pvd.cantidad}" rendered="#{editarDevolucionMB.tableDraggableEnabled or not (editarDevolucionMB.verificable or editarDevolucionMB.surtible)}"/>
+								
+								<h:panelGroup rendered="#{not editarDevolucionMB.tableDraggableEnabled and (editarDevolucionMB.verificable or editarDevolucionMB.surtible)}">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
+												 rendered="#{pvd.cantidad le pvd.apCantidad}">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>
+									
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
+												 rendered="#{pvd.cantidad gt pvd.apCantidad}" style="#{editarDevolucionMB.estiloInsuficiente}" title="NO SE PODRA SURTIR PEDIDO HASTA QUE HAYA SUFICIENTE">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="99999"/>
+									</h:inputText>
+									
+									<p:spacer width="5"/>
+									<p:commandButton	icon="ui-icon-arrowrefresh-1-s" process=":form3"  title="SI ACTUALIZA CANTIDAD, ACTUALIZAR IMPORTE Y TOTALES"
+														update=":form3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"
+														actionListener="#{editarDevolucionMB.actualizarTotales()}"/>
+								</h:panelGroup>
+								
+							</p:column>
+
+							<p:column headerText="ALM." width="3%" >
+								<h:outputText value="1RA" rendered="#{pvd.apTipoAlmacen eq 1}" class="centerAlignColumn"/>
+								<h:outputText value="OPO" rendered="#{pvd.apTipoAlmacen eq 2}" class="centerAlignColumn"/>
+								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
+							</p:column>
+							
+							<p:column headerText="C.A." width="5%" >
+								<h:outputText value="#{pvd.apCantidad}" class="rightAlignColumn" title="HAY EN DISPUTA #{pvd.canPendteEnOtrosPV} UNIDADES EN OTROS PEDIDOS SIN SURTIR"/>
+							</p:column>
+
+							<p:column headerText="PRODUCTO" width="#{editarDevolucionMB.codigoTableWidth}">
+								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not editarDevolucionMB.tablaExpandida}"/>
+								<h:outputText value="#{pvd.productoCodigoBarras}" rendered="#{editarDevolucionMB.tablaExpandida}"/>
+							</p:column>
+
+							<p:column headerText="IND. / LINEA / MARCA" rendered="#{editarDevolucionMB.tablaExpandida}" width="35%">
+								<h:outputText value="#{pvd.productoIndustria} /" /> <br/>
+								<h:outputText value="#{pvd.productoLinea} /" /> <br/>
+								<h:outputText value="#{pvd.productoMarca}" /> <br/>
+							</p:column>
+
+							<p:column headerText="NOM. / PRESENT." rendered="#{editarDevolucionMB.tablaExpandida}" width="25%">
+								<h:outputText value="#{pvd.productoNombre} / #{pvd.productoPresentacion}" />
+							</p:column>
+
+							<p:column headerText="CONT." rendered="#{editarDevolucionMB.tablaExpandida}" width="5%">
+								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
+							</p:column>
+							
+							<p:column headerText="PRECIO" width="8%">
+								<h:outputText value="#{pvd.precioVenta}" title="#{editarDevolucionMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="IMPORTE" width="10%">
+								<h:outputText value="#{pvd.cantidad * pvd.precioVenta}" title="#{editarDevolucionMB.getImporteDesglosado(pvd.cantidad * pvd.precioVenta)}" class="rightAlignColumn">
+									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+								</h:outputText>
+							</p:column>
+
+							<f:facet name="footer">
+								<h:panelGrid width="100%" columns="2" columnClasses="columnWidth85 centerAlign, columnWidth15 rightAlign" style="border-width: 0">
+									<h:panelGroup>
+										<h:outputText value="ELEMENTOS DETALLE: #{editarDevolucionMB.sizeList}, TOTAL UNIDADES INDIVIDUALES : #{editarDevolucionMB.devolucionFooter.totalUnidades}" />
+									</h:panelGroup>
+									<h:outputText value="#{editarDevolucionMB.getImporteMoneda(editarDevolucionMB.devolucionFooter.subTotalBruto)}" 
+												  title="= #{editarDevolucionMB.getImporteDesglosado(editarDevolucionMB.devolucionFooter.subTotalBruto)}"/>
+								</h:panelGrid>
+								
+							</f:facet>
+						</p:dataTable>
+
+					</h:panelGrid>
+				</h:form>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
+				<h:form id="form4">
+					
+					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="600" id="dlgClientes">
+
+						<p:dataTable var="cliente" value="#{editarDevolucionMB.clientes}" scrollHeight="200" >
+
+							<p:column style="width:32px;text-align: center">
+								<p:commandButton	update=":form4:panel4_1,:form4:dlgClientes,:form4:panel4_3" 
+													oncomplete="PF('dlgSeleccionarCliente').hide();" icon="ui-icon-check" title="SELECCIONAR"
+													actionListener="#{editarDevolucionMB.seleccionaCliente(cliente.id)}">
+
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="RAZÓN SOCIAL :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
+
+							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
+
+							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.rfc}" />
+							</p:column>
+
+							<p:column headerText="TELEFONOS :">
+								<h:outputText value="#{cliente.telefonos}" />
+							</p:column>
+						</p:dataTable>
+					</p:dialog> 
+
+					<h:panelGrid columns="1" id="panel4_1" cellpadding="0" columnClasses="leftAlign" width="100%">
+
+						<p:outputLabel value="CLIENTE ( RAZ.SOC. / NOM.EST.):" />
+
+						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
+
+							<h:panelGrid width="100%" columns="1" rendered="#{not empty editarDevolucionMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0" 
+										 style="border-style: solid; border-width: 1px; border-color: darkgray; background: white;">
+
+								<h:outputText value="#{editarDevolucionMB.clienteSeleccionado.razonSocial}/" 
+											  style="font-size: 60%; color: black;" />
+								<h:outputText value="#{editarDevolucionMB.clienteSeleccionado.nombreEstablecimiento}" 
+											  style="font-size: 60%; color: black;" />
+
+							</h:panelGrid>
+
+							<h:outputText id="cteSeleccNull" value="--SELECCIONE--" 
+										  style="font-size: 80%; color: #2e6e9e;" rendered="#{empty editarDevolucionMB.clienteSeleccionado}"/>
+
+							<p:commandButton icon="ui-icon-triangle-1-s" type="button" onclick="PF('dlgSeleccionarCliente').show();" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid columns="1" id="panel4_2" cellpadding="0" columnClasses="leftAlign" width="100%">
+						<p:outputLabel value="MÉTODO DE PAGO :" />
+
+						<p:selectOneMenu id="metodoDePago" value="#{editarDevolucionMB.devolucion.metodoDePagoId}" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}">
+							<f:selectItems  value="#{editarDevolucionMB.metodoDePagoList}"/>
+							<p:ajax listener="#{editarDevolucionMB.onMetodoDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="NÚMERO DE CUENTA :" />
+						<p:inputText value="#{editarDevolucionMB.devolucion.numDeCuenta}" size="20" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+
+						<p:outputLabel value="FORMA DE PAGO :" />
+
+						<p:selectOneMenu id="formaDePago" value="#{editarDevolucionMB.devolucion.formaDePagoId}" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}">							
+							<f:selectItems  value="#{editarDevolucionMB.formaDePagoList}"/>
+							<p:ajax listener="#{editarDevolucionMB.onFormaDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
+						<h:panelGroup>
+							<p:inputSwitch id="autorizaDescuento" value="#{editarDevolucionMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not sessionUserMB.adminUser or (not editarDevolucionMB.verificable and not editarDevolucionMB.surtible)}">
+								<p:ajax listener="#{editarDevolucionMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+							</p:inputSwitch>
+							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{editarDevolucionMB.politicaDescuento}" />
+
+							<p:spacer width="10"/>
+							<p:selectOneMenu id="descuentoEspecial" value="#{editarDevolucionMB.devolucion.porcentajeDescuentoExtra}" disabled="#{not sessionUserMB.adminUser or (not editarDevolucionMB.verificable and not editarDevolucionMB.surtible)}" rendered="#{editarDevolucionMB.autorizaDescuento}">
+								<f:selectItems  value="#{editarDevolucionMB.descuentoEspacialList}"/>
+								<p:ajax listener="#{editarDevolucionMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+							</p:selectOneMenu>
+
+						</h:panelGroup>
+												
+						<p:outputLabel value="CONDICIONES :" />
+						<h:outputText  value="#{editarDevolucionMB.devolucion.condicionesDePago}"  style="font-size: 60%; color: blue;"
+									  rendered="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+						
+						<h:inputText id="condiciones" value="#{editarDevolucionMB.devolucion.condicionesDePago}" size="30"
+										 title="CONDICIONES DEL PEDIDO" rendered="#{editarDevolucionMB.verificable or editarDevolucionMB.surtible}">
+							<p:ajax		 event="blur" listener="#{editarDevolucionMB.onCondicionesChange}" 
+										 process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputText>
+						
+						<p:outputLabel value="COMENTARIOS :" />
+						<h:outputText  value="#{editarDevolucionMB.devolucion.comentarios}"  style="font-size: 60%; color: blue;"
+									  rendered="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+						
+						<h:inputText id="comentarios" value="#{editarDevolucionMB.devolucion.comentarios}" size="30"
+										 title="COMENTARIOS ACERCA DEL PEDIDO" rendered="#{editarDevolucionMB.verificable or editarDevolucionMB.surtible}">
+							<p:ajax		 event="blur" listener="#{editarDevolucionMB.onComentariosChange}" 
+									  process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
+						</h:inputText>
+
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" id="panel4_3" cellpadding="0" columnClasses="centerAlign" width="100%">
+						<p:spacer width="10"/>
+						<h:panelGrid id="panel4_3a" columns="2" cellpadding="0" columnClasses="columnWidth60 rightAlign, columnWidth40 rightAlign" width="100%">
+							<h:outputText value="SUBTOTAL :" />
+							<h:outputText value="#{editarDevolucionMB.devolucionFooter.subTotalNoGrabado}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="I.V.A. :" />
+							<h:outputText value="#{editarDevolucionMB.devolucionFooter.importeIVA}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="- DESCUENTO :" />
+							<h:outputText value="#{editarDevolucionMB.devolucionFooter.importeDescuentoAplicado}" 
+										  title="- ( #{editarDevolucionMB.devolucionFooter.descuentoCalculado}% + #{editarDevolucionMB.devolucionFooter.descuentoExtra}% = #{editarDevolucionMB.devolucionFooter.descuentoAplicado}% )">
+								<f:convertNumber maxFractionDigits="2" pattern="$ -###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+
+							<h:outputText value="T O T A L :" styleClass="bold_text"/>
+							<h:outputText value="#{editarDevolucionMB.devolucionFooter.total}" styleClass="bold_text">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+						</h:panelGrid>
+						
+						<p:panelGrid columns="2" columnClasses="columnWidth35 rightAlign, columnWidth65 leftAlign">
+							<h:outputText value="CREO : "/>
+							<h:outputText value="#{editarDevolucionMB.devolucion.usuarioNombreCompleto}"/>
+
+							<h:outputText value="ESTADO :"/>
+							<h:outputText value="#{editarDevolucionMB.devolucion.estadoDescripcion}" title="#{editarDevolucionMB.devolucion.estadoId}"/>
+
+							<h:outputText value="#FACTURA :" rendered="#{not empty editarDevolucionMB.devolucion.cdfNumCFD}"/>
+							<h:outputText value="#{editarDevolucionMB.devolucion.cdfNumCFD}" rendered="#{not empty editarDevolucionMB.devolucion.cdfNumCFD}"/>
+							
+							<h:outputText value="SUCURSAL :"/>
+							<h:outputText value="#{editarDevolucionMB.devolucion.sucursalNombre}"/>
+						</p:panelGrid>
+						<p:spacer width="10"/>
+						
+						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.verificable)}"
+										 actionListener="#{editarDevolucionMB.verificar}" process="@all" update="@all">
+							<p:confirm header="VERIFICAR" message="¿ SEGURO QUE YA HA VERIFICADO TODOS LOS ELEMENTOS ?" icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.surtible)}"  
+										 actionListener="#{editarDevolucionMB.surtir}" process="@all" update="@all"
+										 disabled="#{not editarDevolucionMB.posibleSurtir}">
+							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<h:panelGroup>
+							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.facturable)}"  
+											 disabled="#{editarDevolucionMB.actualizarEstadoPorResultadoWS}"
+											 actionListener="#{editarDevolucionMB.generaCFDReal}" process="@all" update="@all">
+								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
+							</p:commandButton>
+
+						</h:panelGroup>
+						
+						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.cancelable)}" 
+										 process="@all" update="@all">
+							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR EL PEDIDO ?" icon="ui-icon-alert" />
+						</p:commandButton>
+												
+						<h:panelGrid columns="2" rendered="#{editarDevolucionMB.hayCambios}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
+							<p:commandButton value="GUARDAR CAMBIOS" actionListener="#{editarDevolucionMB.guardar}" oncomplete="updateComponentsOnWindowResize();"
+											 process="@all" update="@all" icon="ui-icon-disk">
+								<p:confirm header="GUARDAR CAMBIOS" message="¿ SEGURO QUE QUIERE GUARDAR CAMBIOS ? PUEDE GUARDAR VARIAS VECES" icon="ui-icon-alert" />
+							</p:commandButton>
+							
+							<p:commandButton value="CANCELAR CAMBIOS Y RECARGAR" actionListener="#{editarDevolucionMB.cancelarCambios}" oncomplete="updateComponentsOnWindowResize();"
+											 process="@all" update="@all" icon="ui-icon-cancel">
+								<p:confirm header="CANCELAR CAMBIOS Y RECARGAR" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS ? SE RECARGARIA EL PEDIDO" icon="ui-icon-alert" />
+							</p:commandButton>
+							
+						</h:panelGrid>
+						
+						<p:confirmDialog global="true" styleClass="centerAlign">
+							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
+								<p:commandButton value="SI, ESTOY SEGURO"		type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="¡ NO, MEJOR NO !"		type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</h:panelGrid>
+								
+						</p:confirmDialog>
+
+						<div id="debugDivOutput" style="font-size: 5">		
+						</div>
+					<script>
+						var alturaExtraTabla = #{editarDevolucionMB.alturaExtraTabla};
+					</script>
+					</h:panelGrid>
+
+				</h:form>
+
+			</h:panelGrid>
+
+
+		</h:panelGrid>
+		<script>
+			var counterResized = 0;
+			function updateComponentsOnWindowResize() {
+
+				//var txt="";
+				//txt+="["+counterResized+"]Resized:(" + $(window).width() + " x  " + $(window).height() +"), "+$(document).height()+", "+$(".ui-datatable-scrollable-body").height()+", "+alturaExtraTabla;
+				//$("#debugDivOutput").html(txt);
+				setDataTableHeight();
+				counterResized++;
+			}
+
+			function setDataTableHeight() {
+				var winHeight = $(window).height();				
+				var scrollHeight = winHeight - (470-alturaExtraTabla);
+
+				var scrollBody = $(".ui-datatable-scrollable-body");
+				scrollBody.height(scrollHeight);
+
+			}
+
+			$(document).ready(function() {
+
+				$(window).resize(function() {
+					updateComponentsOnWindowResize();
+				});
+
+				updateComponentsOnWindowResize();
+
+			});
+		</script>		
+
+	</ui:define>
+
+</ui:composition>

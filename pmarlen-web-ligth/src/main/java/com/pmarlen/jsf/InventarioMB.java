@@ -51,7 +51,9 @@ public class InventarioMB  {
 	private AlmacenProductoQuickView selected;
 	@PostConstruct
     public void init() {				
+		viewRows=10;
 		getAlmacenList();
+		getEntityList();
 		movsHisProducto = new ArrayList<MovimientoHistoricoProductoQuickView>();
 		historicoMovsLCM = new LineChartModel();
 		industrias = new ArrayList<String>();
@@ -94,14 +96,6 @@ public class InventarioMB  {
 	
 	public int getSizeList(){
 		return entityList.size();
-	}
-	
-	public void setViewRows(Integer viewRows) {
-		this.viewRows = viewRows;
-	}
-
-	public Integer getViewRows() {
-		return viewRows;
 	}
 	
 		
@@ -304,4 +298,23 @@ public class InventarioMB  {
 		selected = null;
 		ubucacionEditar = null;
 	}	
+	
+	public Integer getViewRows() {
+		return viewRows;
+	}	
+	
+	public void setViewRows(Integer viewRows) {
+		this.viewRows = viewRows;
+	}
+
+	public void setViewRows(int viewRows) {
+		logger.fine("->setViewRows("+viewRows+")");
+		this.viewRows = viewRows;
+	}
+	
+	public void refresh(){
+		this.entityList=null;
+		init();
+		//return "/pages/inventarios";
+	}
 }

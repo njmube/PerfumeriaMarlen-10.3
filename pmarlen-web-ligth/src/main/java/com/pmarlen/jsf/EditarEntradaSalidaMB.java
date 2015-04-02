@@ -54,33 +54,33 @@ import org.primefaces.model.StreamedContent;
 @ManagedBean(name="editarEntradaSalidaMB")
 @SessionScoped
 public class EditarEntradaSalidaMB{	
-	private static transient Logger logger = Logger.getLogger("EditarEntradaSalidaMB");
-	private List<SelectItem> resultadoBusquedaList;
-	private static final int LONG_MIN_DESC_CTE = 60;
-	private static List<SelectItem> tipoAlmacenList;
-	private ArrayList<EntradaSalidaDetalleQuickView> entityList;
-	private EntradaSalidaDetalleQuickView selectedEntity;
-	private EntradaSalidaQuickView pedidoVenta;
-	private EntradaSalidaFooter pedidoVentaFooter;
-	private ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
-	private EntradaSalidaDetalleQuickView resultadoBusquedaSI;
-	private StreamedContent file;
+	protected static transient Logger logger = Logger.getLogger("EditarEntradaSalidaMB");
+	protected List<SelectItem> resultadoBusquedaList;
+	protected static final int LONG_MIN_DESC_CTE = 60;
+	protected static List<SelectItem> tipoAlmacenList;
+	protected ArrayList<EntradaSalidaDetalleQuickView> entityList;
+	protected EntradaSalidaDetalleQuickView selectedEntity;
+	protected EntradaSalidaQuickView entradaSalida;
+	protected EntradaSalidaFooter entradaSalidaFooter;
+	protected ArrayList<EntradaSalidaDetalleQuickView> resultadoBusqueda;
+	protected EntradaSalidaDetalleQuickView resultadoBusquedaSI;
+	protected StreamedContent file;
 	
-	private String cadenaBusqueda;
-	private int tipoAlmacen;
-	private String resultadoBusquedaSelected;
-	private int cantidadAgregarBusqueda;
+	protected String cadenaBusqueda;
+	protected int tipoAlmacen;
+	protected String resultadoBusquedaSelected;
+	protected int cantidadAgregarBusqueda;
 	boolean conservarBusqueda;
 	
-	private int cantidadAgregarCodigo;
-	private String codigo;
-	private boolean autorizaDescuento = true;
-	private boolean tablaExpandida = false;
-	private boolean tableDraggableEnabled = false;
-	private boolean crearPedido;
-	private boolean hayCambios = false;
+	protected int cantidadAgregarCodigo;
+	protected String codigo;
+	protected boolean autorizaDescuento = true;
+	protected boolean tablaExpandida = false;
+	protected boolean tableDraggableEnabled = false;
+	protected boolean crearEntradaSalida;
+	protected boolean hayCambios = false;
 	@ManagedProperty(value = "#{sessionUserMB}")
-	private SessionUserMB sessionUserMB;
+	protected SessionUserMB sessionUserMB;
 	
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
@@ -88,15 +88,15 @@ public class EditarEntradaSalidaMB{
 	
 	@PostConstruct
 	public void init() {
-		pedidoVenta = new EntradaSalidaQuickView();
-		pedidoVentaFooter= new EntradaSalidaFooter();
+		entradaSalida = new EntradaSalidaQuickView();
+		entradaSalidaFooter= new EntradaSalidaFooter();
 		entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		
 		clienteSeleccionado = null;
-		crearPedido = false;	
+		crearEntradaSalida = false;	
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
@@ -111,8 +111,10 @@ public class EditarEntradaSalidaMB{
 	public String editar(int pedidoVentaID){
 		logger.info("pedidoVentaID="+pedidoVentaID);		
 		try {
-			pedidoVenta = EntradaSalidaDAO.getInstance().findBy(new EntradaSalida(pedidoVentaID));
-			logger.info("pedidoVenta="+pedidoVenta);
+			EntradaSalida es4Edit = new EntradaSalida(pedidoVentaID);
+			es4Edit.setTipoMov(30);
+			entradaSalida = EntradaSalidaDAO.getInstance().findBy(es4Edit);
+			logger.info("pedidoVenta="+entradaSalida);
 			entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
 			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
 
@@ -122,9 +124,9 @@ public class EditarEntradaSalidaMB{
 			}
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
-			pedidoVenta = new EntradaSalidaQuickView();
-			pedidoVenta.setId(0);
-			pedidoVentaFooter= new EntradaSalidaFooter();
+			entradaSalida = new EntradaSalidaQuickView();
+			entradaSalida.setId(0);
+			entradaSalidaFooter= new EntradaSalidaFooter();
 			entityList = new ArrayList<EntradaSalidaDetalleQuickView>();
 		}
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
@@ -142,7 +144,7 @@ public class EditarEntradaSalidaMB{
 		
 		getDescuentoEspacialList();
 		
-		crearPedido = false;	
+		crearEntradaSalida = false;	
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
@@ -165,17 +167,17 @@ public class EditarEntradaSalidaMB{
 
 	public String reset() {
 		logger.info("->EntradaSalidaDetalleMB: rest.");
-		editar(this.pedidoVenta.getId());
+		editar(this.entradaSalida.getId());
 		prepareDownload();
 		return "/pages/cliente";
 	}
 	
 	public EntradaSalida getPedidoVenta() {
-		return pedidoVenta;
+		return entradaSalida;
 	}
 
 	public EntradaSalidaFooter getPedidoVentaFooter() {
-		return pedidoVentaFooter;
+		return entradaSalidaFooter;
 	}
 	
 	
@@ -511,21 +513,21 @@ public class EditarEntradaSalidaMB{
 	public void actualizarTotales(){
 		logger.info("actualizarTotales, forzar hay cambio");
 		hayCambios=true;
-		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
+		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
 	}
 	
 	public void actualizarTabla(){
 		logger.info("actualizarTabla");
 		actualizarCantidadesStockTiempoReal();
 		hayCambios=true;
-		pedidoVentaFooter.calculaTotalesDesde(pedidoVenta, entityList);
+		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.info("->onClienteListChange:clienteId="+pedidoVenta.getClienteId());
+		logger.info("->onClienteListChange:clienteId="+entradaSalida.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
-			if(c.getId().equals(pedidoVenta.getClienteId())){
+			if(c.getId().equals(entradaSalida.getClienteId())){
 				clienteSeleccionado = c;
 				hayCambios = true;
 				break;
@@ -537,7 +539,7 @@ public class EditarEntradaSalidaMB{
 		logger.info("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
-				pedidoVenta.setClienteId(c.getId());
+				entradaSalida.setClienteId(c.getId());
 				clienteSeleccionado = c;
 				hayCambios = true;
 				break;
@@ -563,7 +565,7 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+pedidoVenta.getFormaDePagoId());
+		logger.info("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+entradaSalida.getFormaDePagoId());
 		hayCambios = true;
 	}
 	
@@ -585,11 +587,11 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public void onMetodoDePagoListChange() {
-		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+pedidoVenta.getMetodoDePagoId());
+		logger.info("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+entradaSalida.getMetodoDePagoId());
 		hayCambios = true;
 	}
 	
-	private ArrayList<SelectItem> descuentoEspecialList;
+	protected ArrayList<SelectItem> descuentoEspecialList;
 	public List<SelectItem> getDescuentoEspacialList() {
 		if(descuentoEspecialList == null){
 			descuentoEspecialList = new ArrayList<SelectItem>();
@@ -603,7 +605,7 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+pedidoVenta.getPorcentajeDescuentoExtra());
+		logger.info("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+entradaSalida.getPorcentajeDescuentoExtra());
 		actualizarTotales();
 	}
 
@@ -640,7 +642,7 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public void comentariosChanged() {
-		logger.info("->comentariosChanged:comentarios="+pedidoVenta.getComentarios());		
+		logger.info("->comentariosChanged:comentarios="+entradaSalida.getComentarios());		
 		hayCambios = true;
 	}
 
@@ -718,33 +720,33 @@ public class EditarEntradaSalidaMB{
 	}
 
 	public boolean isCrearPedido() {
-		crearPedido=false;
+		crearEntradaSalida=false;
 		
 		if(entityList!=null && entityList.size()>0 &&
-				pedidoVenta.getClienteId()!=null && pedidoVenta.getClienteId() > 0 && clienteSeleccionado!=null &&
-				pedidoVenta.getFormaDePagoId()!=null && pedidoVenta.getFormaDePagoId()> 0 &&
-				pedidoVenta.getMetodoDePagoId()!=null && pedidoVenta.getMetodoDePagoId()> 0 ){
-			crearPedido=true;
+				entradaSalida.getClienteId()!=null && entradaSalida.getClienteId() > 0 && clienteSeleccionado!=null &&
+				entradaSalida.getFormaDePagoId()!=null && entradaSalida.getFormaDePagoId()> 0 &&
+				entradaSalida.getMetodoDePagoId()!=null && entradaSalida.getMetodoDePagoId()> 0 ){
+			crearEntradaSalida=true;
 		}
 		
-		return crearPedido;
+		return crearEntradaSalida;
 	}
 	
-	private void validacion(){
+	protected void validacion(){
 		logger.info("->validacion");
 		
 	}
 	
 	public void guardar() {
 		try{						
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
-			logger.info("pedidoVenta.cfdVentaId:"+pedidoVenta.getCfdId());
-			EntradaSalidaDAO.getInstance().update(pedidoVenta,entityList,sessionUserMB.getUsuarioAuthenticated());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
+			logger.info("pedidoVenta.cfdVentaId:"+entradaSalida.getCfdId());
+			EntradaSalidaDAO.getInstance().update(entradaSalida,entityList,sessionUserMB.getUsuarioAuthenticated());
 			logger.info("OK Guardar.");
 			
 			reset();
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE ACTUALIZÓ CORRECTAMENTE EL PEDIDO #"+pedidoVenta.getId()+".") );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE ACTUALIZÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->guardar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -755,13 +757,13 @@ public class EditarEntradaSalidaMB{
 	
 	public void verificar() {
 		try{			
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
-			EntradaSalidaDAO.getInstance().verificar(pedidoVenta,sessionUserMB.getUsuarioAuthenticated());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
+			EntradaSalidaDAO.getInstance().verificar(entradaSalida,sessionUserMB.getUsuarioAuthenticated());
 			logger.info("OK Verificar.");
 			
 			reset();
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"VERIFICAR",  "SE VERIFICÓ CORRECTAMENTE EL PEDIDO #"+pedidoVenta.getId()+".") );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"VERIFICAR",  "SE VERIFICÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -771,12 +773,12 @@ public class EditarEntradaSalidaMB{
 	
 	public void surtir() {
 		try{			
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
-			EntradaSalidaDAO.getInstance().surtir(pedidoVenta,entityList,sessionUserMB.getUsuarioAuthenticated());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
+			EntradaSalidaDAO.getInstance().surtir(entradaSalida,entityList,sessionUserMB.getUsuarioAuthenticated());
 			logger.info("OK Surtir.");
 
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"SURTIR",  "SE SURTIÓ CORRECTAMENTE EL PEDIDO #"+pedidoVenta.getId()+".") );			
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"SURTIR",  "SE SURTIÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);
@@ -787,24 +789,24 @@ public class EditarEntradaSalidaMB{
 	
 	public void cancelar() {
 		try{			
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
 			//EntradaSalidaDAO.getInstance().surtir(pedidoVenta,entityList,sessionUserMB.getUsuarioAuthenticated());
 			logger.info("CANCELAR NO IMPLEMENTADO, solo resetea");
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR",  "CANCELAR PENDIENTE PEDIDO #"+pedidoVenta.getId()+".") );			
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR",  "CANCELAR PENDIENTE PEDIDO #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL SURTIR.") );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL CANCELAR.") );
 		}		
 	}
 	
 	public void cancelarCambios() {
 		try{			
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR CAMBIOS",  "SE CANCELARON LOS CAMBIOS Y RECARGÓ EL PEDIDO #"+pedidoVenta.getId()+".") );
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR CAMBIOS",  "SE CANCELARON LOS CAMBIOS Y RECARGÓ EL PEDIDO #"+entradaSalida.getId()+".") );
 			reset();
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);
@@ -824,11 +826,11 @@ public class EditarEntradaSalidaMB{
 	}
 	
 	public void onComentariosChange() {
-		logger.info("->onComentariosChange:comentarios="+pedidoVenta.getComentarios());
+		logger.info("->onComentariosChange:comentarios="+entradaSalida.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.info("->onCondicionesChange:CondicionesDePago="+pedidoVenta.getCondicionesDePago());
+		logger.info("->onCondicionesChange:CondicionesDePago="+entradaSalida.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
@@ -856,9 +858,9 @@ public class EditarEntradaSalidaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"DESCUENTO",  " SE BLOQUEÓ LA POLITICA DE DESCUENTO") );
 		}
-		pedidoVenta.setAutorizaDescuento(this.autorizaDescuento?1:0);
+		entradaSalida.setAutorizaDescuento(this.autorizaDescuento?1:0);
 		if(!this.autorizaDescuento){
-			this.pedidoVenta.setPorcentajeDescuentoExtra(0);
+			this.entradaSalida.setPorcentajeDescuentoExtra(0);
 		}
 		actualizarTotales();
 	}
@@ -875,23 +877,23 @@ public class EditarEntradaSalidaMB{
 		if(this.tablaExpandida)
 			return "20%";
 		else
-			return "60%";
+			return "40%";
 	}
 	
 	public boolean isVerificable(){		
-		return pedidoVenta!=null && pedidoVenta.getEstadoId() <= Constants.ESTADO_SINCRONIZADO ;
+		return entradaSalida!=null && entradaSalida.getEstadoId() <= Constants.ESTADO_SINCRONIZADO ;
 	}
 	
 	public boolean isSurtible(){
-		return pedidoVenta!=null && pedidoVenta.getEstadoId() == Constants.ESTADO_VERIFICADO;
+		return entradaSalida!=null && entradaSalida.getEstadoId() == Constants.ESTADO_VERIFICADO;
 	}
 
 	public boolean isFacturable(){
-		return pedidoVenta!=null && (pedidoVenta.getEstadoId() == Constants.ESTADO_SURTIDO || (pedidoVenta.getEstadoId() == Constants.ESTADO_FACTURADO && pedidoVenta.getCfdId()==null));
+		return entradaSalida!=null && (entradaSalida.getEstadoId() == Constants.ESTADO_SURTIDO || (entradaSalida.getEstadoId() == Constants.ESTADO_FACTURADO && entradaSalida.getCfdId()==null));
 	}
 	
 	public boolean isCancelable(){
-		return pedidoVenta!=null && pedidoVenta.getEstadoId() < Constants.ESTADO_CANCELADO ;
+		return entradaSalida!=null && entradaSalida.getEstadoId() < Constants.ESTADO_CANCELADO ;
 	}
 	
 	public int getAlturaExtraTabla() {
@@ -925,10 +927,10 @@ public class EditarEntradaSalidaMB{
         return file;
     }
 	
-	private boolean actualizarEstadoPorResultadoWS = false;
+	protected boolean actualizarEstadoPorResultadoWS = false;
 	
-	private int tiempoTrasncurridoInvocarCFD=0;
-	private long tWS=0;
+	protected int tiempoTrasncurridoInvocarCFD=0;
+	protected long tWS=0;
 
 	public boolean isActualizarEstadoPorResultadoWS() {
 		logger.info("->actualizarEstadoPorResultadoWS?"+actualizarEstadoPorResultadoWS);
@@ -939,15 +941,15 @@ public class EditarEntradaSalidaMB{
 		return tiempoTrasncurridoInvocarCFD;
 	}
 	
-	private void generaCFDRealThread(){
+	protected void generaCFDRealThread(){
 		try{		
 			
-			Cliente  c = ClienteDAO.getInstance().findBy(new Cliente(pedidoVenta.getClienteId()));
+			Cliente  c = ClienteDAO.getInstance().findBy(new Cliente(entradaSalida.getClienteId()));
 			Sucursal s = SucursalDAO.getInstance().findBy(new Sucursal(1));
 			tWS = System.currentTimeMillis();
 			logger.info(" invocando DAO para WS");
 			
-			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(pedidoVenta,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
+			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(entradaSalida,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
 			logger.info("OK DAO y WS Digifact, invodocado");
 			
 		}catch(Exception e){
@@ -960,12 +962,12 @@ public class EditarEntradaSalidaMB{
 	
 	public void updateEstadoCFD(){
 		tiempoTrasncurridoInvocarCFD = (int)(( System.currentTimeMillis()/1000)-tWS);		
-		logger.info("->tiempoTrasncurridoInvocarCFD="+tiempoTrasncurridoInvocarCFD+", actualizarEstadoPorResultadoWS:"+actualizarEstadoPorResultadoWS+", pedidoVenta.getCfdId()="+pedidoVenta.getCfdId());
+		logger.info("->tiempoTrasncurridoInvocarCFD="+tiempoTrasncurridoInvocarCFD+", actualizarEstadoPorResultadoWS:"+actualizarEstadoPorResultadoWS+", pedidoVenta.getCfdId()="+entradaSalida.getCfdId());
 	}
 	
 	public void generaCFDReal(){
 		try{			
-			logger.info("pedidoVenta.id:"+pedidoVenta.getId());
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
 			actualizarEstadoPorResultadoWS = true;
 			tiempoTrasncurridoInvocarCFD=0;
 			new Thread(){
@@ -986,7 +988,7 @@ public class EditarEntradaSalidaMB{
 	}
 	
 	public String getEstiloInsuficiente(){
-		if(pedidoVenta.getEstadoId()<Constants.ESTADO_VERIFICADO){
+		if(entradaSalida.getEstadoId()<Constants.ESTADO_VERIFICADO){
 			return "background: yellow;";
 		} else {
 			return "background: red;";
