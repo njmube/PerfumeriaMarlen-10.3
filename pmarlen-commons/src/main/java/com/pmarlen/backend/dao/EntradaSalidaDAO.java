@@ -387,6 +387,10 @@ public class EntradaSalidaDAO {
 		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
 	}
 	
+	public ArrayList<EntradaSalidaQuickView> findAllActiveCompras() throws DAOException {
+		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA);
+	}
+	
 	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov) throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
@@ -497,6 +501,10 @@ public class EntradaSalidaDAO {
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllHistoricoDevs() throws DAOException {
+		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+	}
+	
+	public ArrayList<EntradaSalidaQuickView> findAllHistoricoCompras() throws DAOException {
 		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
 	}
 	

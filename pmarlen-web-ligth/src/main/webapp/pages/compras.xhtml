@@ -6,11 +6,11 @@
                 template="/WEB-INF/templates/mainWithMenu.xhtml">
 
     <ui:define name="title">
-        DEVOLUCIONES HISTORICO
+        DEVOLUCIONES VENTA
     </ui:define>
 
     <ui:define name="body-title">
-        DEVOLUCIONES HISTORICO HISTORICO (SURTIDOS, FACTURADOS Y CANCELADOS)
+        DEVOLUCIONES EN PROCESO (PENDIENTES DE REVISAR, SURTIR)
     </ui:define>
 
     <ui:define name="body">		
@@ -19,42 +19,25 @@
 
 			<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 
-				<p:dataTable  var="pv" value="#{historicoDevolucionesVentaMB.devoluciones}"
+				<p:dataTable  var="pv" value="#{comprasMB.compras}"
 							  paginator="true"
 							  id="pvTable" emptyMessage="-- SIN ELEMENTOS --" 							  
-							  rows="#{historicoDevolucionesVentaMB.viewRows}"
-							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{historicoDevolucionesVentaMB.sizeList}]"
+							  rows="#{comprasMB.viewRows}"
+							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{comprasMB.sizeList}]"
 							  rowsPerPageTemplate="25,100,250,500">
 					
 					<f:facet name="header">
-						<h:panelGroup>
-							OPCIONES :		
-							<p:commandButton value="RECARGAR" actionListener="#{historicoDevolucionesVentaMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
-						</h:panelGroup>
-
+						OPCIONES :		
+						<p:commandButton value="RECARGAR" actionListener="#{comprasMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
 					</f:facet>
 					
 					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<h:outputLink value="editarPedidoVenta.jsf" >
+							<h:outputLink value="editarCompra.jsf" >
 								<h:outputText value="#{pv.id}" />
-								<p:ajax event="click" listener="#{historicoDevolucionesVentaMB.editarDevolucion(pv.id)}"/>
-							</h:outputLink>							
-							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
-								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								<p:ajax event="click" listener="#{comprasMB.editarCompra(pv.id)}"/>
 							</h:outputLink>
-							<h:panelGroup>
-								<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
-											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id}"/>
-								</h:outputLink>
-								<p:spacer width="5"/>
-								<h:outputLink id="pdfLinkFactura_x" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank"
-											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR"/>
-								</h:outputLink>
 							
-							</h:panelGroup>
 						</p:panelGrid>
 					</p:column>
 					
@@ -82,11 +65,7 @@
 							<h:outputText value="USUARIO CREÓ :" />
 							<h:outputText value="#{pv.usuarioNombreCompleto}" />
 							<h:outputText value="ELEMENTOS :" />
-							<h:outputText value="#{pv.numElementos}" />
-							<h:outputText value="FORMA DE PAGO :" />
-							<h:outputText value="#{pv.formaDePagoDescripcion}" />
-							<h:outputText value="METODO DE PAGO:" />
-							<h:outputText value="#{pv.metodoDePagoDescripcion}" />							
+							<h:outputText value="#{pv.numElementos}" />							
 						</p:panelGrid>
 					</p:column>
 					
@@ -103,12 +82,12 @@
 							</h:outputText>
 							
 							<h:outputText value="IMPORTE I.V.A. :" />
-							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${historicoDevolucionesVentaMB.getImporteMoneda(pv.factorIva)}" >
+							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${comprasMB.getImporteMoneda(pv.factorIva)}" >
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>									
 							
 							<h:outputText value="- DESCUENTOS :" />
-							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{historicoDevolucionesVentaMB.getImporteMoneda(pv.importeDescuento)}" />
+							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{comprasMB.getImporteMoneda(pv.importeDescuento)}" />
 							
 							<h:outputText value="TOTAL :" />
 							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">
@@ -119,7 +98,7 @@
 
 					<f:facet name="footer">
 
-						<h:outputText value="ELEMENTOS : #{historicoDevolucionesVentaMB.sizeList}" rendered="true"/>
+						<h:outputText value="ELEMENTOS : #{comprasMB.sizeList}" rendered="true"/>
 
 					</f:facet>
 				</p:dataTable>
