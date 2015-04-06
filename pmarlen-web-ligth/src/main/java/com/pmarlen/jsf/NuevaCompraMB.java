@@ -80,8 +80,7 @@ public class NuevaCompraMB extends EntradaSalidaMB{
 	public boolean isCrearCompra() {
 		crearES=false;
 		
-		if(entityList!=null && entityList.size()>0 &&
-				entradaSalida.getClienteId()!=null && entradaSalida.getClienteId() > 0 && clienteSeleccionado!=null ){
+		if(entityList!=null && entityList.size()>0 ){
 			crearES=true;
 		}
 		

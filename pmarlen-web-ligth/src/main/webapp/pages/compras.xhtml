@@ -6,11 +6,11 @@
                 template="/WEB-INF/templates/mainWithMenu.xhtml">
 
     <ui:define name="title">
-        DEVOLUCIONES VENTA
+        COMPRAS VENTA
     </ui:define>
 
     <ui:define name="body-title">
-        DEVOLUCIONES EN PROCESO (PENDIENTES DE REVISAR, SURTIR)
+        COMRAS EN PROCESO (PENDIENTES DE REVISAR, SURTIR)
     </ui:define>
 
     <ui:define name="body">		
@@ -31,7 +31,7 @@
 						<p:commandButton value="RECARGAR" actionListener="#{comprasMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
 					</f:facet>
 					
-					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
+					<p:column headerText="#" width="10%" sortBy="#{pv.id}">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
 							<h:outputLink value="editarCompra.jsf" >
 								<h:outputText value="#{pv.id}" />
@@ -41,25 +41,14 @@
 						</p:panelGrid>
 					</p:column>
 					
-					<p:column headerText="ESTADO / FECHA" width="10%">
+					<p:column headerText="ESTADO / FECHA" width="20%">
 						<p:panelGrid columns="1" columnClasses="centerAlign" style="border: none; border-collapse: none; ">
 							<h:outputText value="#{pv.estadoDescripcion}" />
 							<h:outputText value="#{pv.fechaCreo}" />
 						</p:panelGrid>
 						
 					</p:column>
-					
-					<p:column headerText="CLIENTE" width="25%">
-						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-							<h:outputText value="R.F.C. :" />
-							<h:outputText value="#{pv.clienteRFC}" />
-							<h:outputText value="RAZÓN SOCIAL :" />
-							<h:outputText value="#{pv.clienteRazonSocial}" />
-							<h:outputText value="NOMBRE ESTAB.:" />
-							<h:outputText value="#{pv.clienteNombreEstablecimiento}" />							
-						</p:panelGrid>
-					</p:column>
-					
+										
 					<p:column headerText="DATOS" width="20%">
 						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 							<h:outputText value="USUARIO CREÓ :" />
@@ -85,10 +74,7 @@
 							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${comprasMB.getImporteMoneda(pv.factorIva)}" >
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>									
-							
-							<h:outputText value="- DESCUENTOS :" />
-							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{comprasMB.getImporteMoneda(pv.importeDescuento)}" />
-							
+														
 							<h:outputText value="TOTAL :" />
 							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>

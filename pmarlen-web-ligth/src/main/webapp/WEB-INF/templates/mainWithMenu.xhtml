@@ -63,31 +63,25 @@
 								<p:menuitem value="HISTORICO" url="/pages/historicoPedidosVenta.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="COMPRAS" icon="ui-icon-contact">
+							<p:submenu label="COMPRAS" icon="ui-icon-arrowstop-1-s">
 								<p:menuitem value="NUEVA" url="/pages/nuevaCompra.jsf" icon="ui-icon-cart"/>
 								<p:menuitem value="EN PROCESO" url="/pages/compras.jsf" icon="ui-icon-calculator"/>
-								<p:menuitem value="HISTORICO" url="/pages/comprasHistorico.jsf" icon="ui-icon-clock"/>
+								<p:menuitem value="HISTORICO" url="/pages/historicoCompras.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="DEVOL.(VTA)" icon="ui-icon-contact">
+							<p:submenu label="DEVOL.(VTA)" icon="ui-icon-arrowreturn-1-w">
 								<p:menuitem value="NUEVA" url="/pages/nuevaDevolucion.jsf" icon="ui-icon-cart"/>
 								<p:menuitem value="EN PROCESO" url="/pages/devoluciones.jsf" icon="ui-icon-calculator"/>
-								<p:menuitem value="HISTORICO" url="/pages/pendiente.jsf" icon="ui-icon-clock"/>
+								<p:menuitem value="HISTORICO" url="/pages/historicoDevoluciones.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="DEVOL.(PRO)" icon="ui-icon-contact">
+							<p:submenu label="MERMAS" icon="ui-icon-trash">
 								<p:menuitem value="NUEVA" url="/pages/pendiente.jsf" icon="ui-icon-cart"/>
 								<p:menuitem value="EN PROCESO" url="/pages/pendiente.jsf" icon="ui-icon-calculator"/>
 								<p:menuitem value="HISTORICO" url="/pages/pendiente.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="MERMAS" icon="ui-icon-contact">
-								<p:menuitem value="NUEVA" url="/pages/pendiente.jsf" icon="ui-icon-cart"/>
-								<p:menuitem value="EN PROCESO" url="/pages/pendiente.jsf" icon="ui-icon-calculator"/>
-								<p:menuitem value="HISTORICO" url="/pages/pendiente.jsf" icon="ui-icon-clock"/>
-							</p:submenu>
-							
-							<p:submenu label="MOVS. ALMACENES" icon="ui-icon-transfer-e-w">
+							<p:submenu label="MOVS. ALMACENES" icon="ui-icon-transfer-e-w" rendered="#{sessionUserMB.adminUser}">
 								<p:menuitem value="A SUCURSAL" url="/pages/pendiente.jsf" icon="ui-icon-shuffle"  rendered="#{sessionUserMB.adminUser}"/>
 								<p:menuitem value="SUB-ALMACEN" url="/pages/pendiente.jsf" icon="ui-icon-arrow-1-se" rendered="#{sessionUserMB.adminUser}"/>								
 							</p:submenu>
@@ -104,9 +98,9 @@
 							
 							<p:submenu label="CATÁLOGOS" icon="ui-icon-newwin">
 								<p:menuitem value="PRODUCTOS" url="/pages/producto.jsf" icon="ui-icon-cart"/>						
-								<p:menuitem value="OFERTAS"   url="/pages/pendiente.jsf" icon="ui-icon-tag"/>
+								
 								<p:menuitem value="CLIENTES"  url="/pages/cliente.jsf" icon="ui-icon-person"/>
-								<p:menuitem value="PROVEEDORES" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>																
+								
 							</p:submenu>
 							
 							<p:submenu label="REPORTES" icon="ui-icon-script">

@@ -240,69 +240,9 @@
 
 			<h:panelGrid columns="1" cellpadding="0" columnClasses="centerAlign bottomAlign"  width="100%">
 				<h:form id="form4">
-					
-					<p:dialog header="SELECCIONAR CLIENTE" widgetVar="dlgSeleccionarCliente" modal="true" height="250" width="600" id="dlgClientes">
 
-						<p:dataTable var="cliente" value="#{nuevaCompraMB.clientes}" scrollHeight="200" >
-
-							<p:column style="width:32px;text-align: center">
-								<p:commandButton	update=":form4:panel4_1,:form4:dlgClientes,:form4:panel4_3" 
-													oncomplete="PF('dlgSeleccionarCliente').hide();" icon="ui-icon-check" title="SELECCIONAR"
-													actionListener="#{nuevaCompraMB.seleccionaCliente(cliente.id)}">
-
-								</p:commandButton>
-							</p:column>
-
-							<p:column headerText="RAZÓN SOCIAL :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
-								<h:outputText value="#{cliente.razonSocial}" />
-							</p:column>
-
-							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
-								<h:outputText value="#{cliente.razonSocial}" />
-							</p:column>
-
-							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">
-								<h:outputText value="#{cliente.rfc}" />
-							</p:column>
-
-							<p:column headerText="TELEFONOS :">
-								<h:outputText value="#{cliente.telefonos}" />
-							</p:column>
-						</p:dataTable>
-					</p:dialog> 
-
-					<h:panelGrid columns="1" id="panel4_1" cellpadding="0" columnClasses="leftAlign" width="100%">
-
-						<p:outputLabel value="CLIENTE ( RAZ.SOC. / NOM.EST.):" />
-
-						<h:panelGrid width="100%" columns="2" columnClasses="columnWidth90 leftAlign, columnWidth10 rightAlign">
-
-							<h:panelGrid width="100%" columns="1" rendered="#{not empty nuevaCompraMB.clienteSeleccionado}"  cellpadding="0" cellspacing="0">
-
-								<h:outputText value="#{nuevaCompraMB.clienteSeleccionado.razonSocial}/" 
-											  style="font-size: 60%; color: #2e6e9e;" />
-								<h:outputText value="#{nuevaCompraMB.clienteSeleccionado.nombreEstablecimiento}" 
-											  style="font-size: 60%; color: #2e6e9e;" />
-
-							</h:panelGrid>
-
-							<h:outputText id="cteSeleccNull" value="--SELECCIONE--" 
-										  style="font-size: 80%; color: #2e6e9e;" rendered="#{empty nuevaCompraMB.clienteSeleccionado}"/>
-
-							<p:commandButton icon="ui-icon-triangle-1-s" type="button" onclick="PF('dlgSeleccionarCliente').show();" disabled="#{nuevaCompraMB.compraFinalizada}"/>
-
-						</h:panelGrid>
-					</h:panelGrid>
 					<h:panelGrid columns="1" id="panel4_2" cellpadding="0" columnClasses="leftAlign" width="100%">
-												
-						<p:outputLabel value="CONDICIONES :" />
-
-						<h:inputText id="condiciones" value="#{nuevaCompraMB.pedidoVenta.condicionesDePago}" size="30"
-										 title="CONDICIONES DEL PEDIDO" disabled="#{nuevaCompraMB.compraFinalizada}">
-							<p:ajax		 event="blur" listener="#{nuevaCompraMB.onCondicionesChange}" 
-										 process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</h:inputText>
-						
+																		
 						<p:outputLabel value="COMENTARIOS :" />
 
 						<h:inputText id="comentarios" value="#{nuevaCompraMB.pedidoVenta.comentarios}" size="30"
@@ -338,7 +278,7 @@
 								<p:confirm header="CANCELAR CREACIÓN" message="¿ SEGURO QUE QUIERE CANCELAR CREACIÓN DE LA COMPRA ?" icon="ui-icon-alert" />
 							</p:commandButton>						
 
-							<p:commandButton value="CREAR COMPRA"  actionListener="#{nuevaCompraMB.guardar}" disabled="#{not nuevaCompraMB.crearDevolucion}" icon="ui-icon-play"
+							<p:commandButton value="CREAR COMPRA"  actionListener="#{nuevaCompraMB.guardar}" disabled="#{not nuevaCompraMB.crearCompra}" icon="ui-icon-play"
 											 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();">
 								<p:confirm header="CREAR COMPRA" message="¿ SEGURO YÁ TERMINÓ Y QUIERE CREAR LA COMPRA ?" icon="ui-icon-alert" />
 							</p:commandButton>

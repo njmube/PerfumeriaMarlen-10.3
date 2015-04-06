@@ -74,7 +74,7 @@ public class ComprasMB  {
 		this.editarCompraMB = editarCompraMB;
 	}
 
-	public ArrayList<EntradaSalidaQuickView> getCompraes() {
+	public ArrayList<EntradaSalidaQuickView> getCompras() {
 		logger.fine("->getCompraes");
 		return compras;
 	}
@@ -92,7 +92,7 @@ public class ComprasMB  {
 	
 	public int getSizeList(){
 		logger.fine("->getSizeList()");
-		return getCompraes().size();
+		return getCompras().size();
 	}
 
 	public int getViewRows() {

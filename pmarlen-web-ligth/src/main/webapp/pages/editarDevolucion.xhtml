@@ -333,21 +333,6 @@
 							<p:ajax listener="#{editarDevolucionMB.onFormaDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 						</p:selectOneMenu>
 
-						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
-						<h:panelGroup>
-							<p:inputSwitch id="autorizaDescuento" value="#{editarDevolucionMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not sessionUserMB.adminUser or (not editarDevolucionMB.verificable and not editarDevolucionMB.surtible)}">
-								<p:ajax listener="#{editarDevolucionMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-							</p:inputSwitch>
-							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{editarDevolucionMB.politicaDescuento}" />
-
-							<p:spacer width="10"/>
-							<p:selectOneMenu id="descuentoEspecial" value="#{editarDevolucionMB.devolucion.porcentajeDescuentoExtra}" disabled="#{not sessionUserMB.adminUser or (not editarDevolucionMB.verificable and not editarDevolucionMB.surtible)}" rendered="#{editarDevolucionMB.autorizaDescuento}">
-								<f:selectItems  value="#{editarDevolucionMB.descuentoEspacialList}"/>
-								<p:ajax listener="#{editarDevolucionMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-							</p:selectOneMenu>
-
-						</h:panelGroup>
-												
 						<p:outputLabel value="CONDICIONES :" />
 						<h:outputText  value="#{editarDevolucionMB.devolucion.condicionesDePago}"  style="font-size: 60%; color: blue;"
 									  rendered="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
@@ -381,12 +366,6 @@
 							<h:outputText value="I.V.A. :" />
 							<h:outputText value="#{editarDevolucionMB.devolucionFooter.importeIVA}">
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-							</h:outputText>
-
-							<h:outputText value="- DESCUENTO :" />
-							<h:outputText value="#{editarDevolucionMB.devolucionFooter.importeDescuentoAplicado}" 
-										  title="- ( #{editarDevolucionMB.devolucionFooter.descuentoCalculado}% + #{editarDevolucionMB.devolucionFooter.descuentoExtra}% = #{editarDevolucionMB.devolucionFooter.descuentoAplicado}% )">
-								<f:convertNumber maxFractionDigits="2" pattern="$ -###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 
 							<h:outputText value="T O T A L :" styleClass="bold_text"/>
