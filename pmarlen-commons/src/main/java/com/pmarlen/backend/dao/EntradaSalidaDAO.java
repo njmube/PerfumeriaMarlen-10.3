@@ -191,14 +191,12 @@ public class EntradaSalidaDAO {
 					+ "LEFT JOIN FORMA_DE_PAGO  FP  ON ES.FORMA_DE_PAGO_ID  = FP.ID\n"
 					+ "LEFT JOIN METODO_DE_PAGO MP  ON ES.METODO_DE_PAGO_ID = MP.ID\n"
 					+ "WHERE     1=1\n"
-					+ "AND       ES.ID = ?\n"
-					+ "AND       ES.TIPO_MOV = ?\n"		
+					+ "AND       ES.ID = ?\n"					
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.FECHA_CREO DESC");
 
 			ps.setInt(1, p.getId());
-			ps.setInt(2, p.getTipoMov());
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
