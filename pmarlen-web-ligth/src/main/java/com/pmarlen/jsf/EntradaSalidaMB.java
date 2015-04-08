@@ -117,6 +117,10 @@ public class EntradaSalidaMB{
 	
 	
 	public List<EntradaSalidaDetalleQuickView> getEntityList() {
+		int i=0;
+		for(EntradaSalidaDetalleQuickView d:entityList){
+			logger.info("\t====================>["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]@"+d.getAlmacenId());
+		}
 		return entityList;
 	}
 	
@@ -330,7 +334,7 @@ public class EntradaSalidaMB{
 		logger.info("->From: " + event.getFromIndex() + ", To:" + event.getToIndex());
 		int i=0;
 		for(EntradaSalidaDetalleQuickView d:entityList){
-			logger.info("\t->["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
+			logger.info("\t->["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]@"+d.getAlmacenId());
 		}
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
         FacesContext.getCurrentInstance().addMessage(null, msg);

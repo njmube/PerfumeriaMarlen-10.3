@@ -120,7 +120,7 @@ public class EditarEntradaSalidaMB{
 
 			logger.info("entityList:");
 			for(EntradaSalidaDetalleQuickView pv:entityList){
-				logger.info("\teditar: rowId="+pv.getRowId()+": ["+pv.getCantidad()+"]"+pv.getProductoCodigoBarras());
+				logger.info("\teditar: rowId="+pv.getRowId()+": "+pv.getCantidad()+" X ["+pv.getProductoCodigoBarras()+"]@"+pv.getAlmacenId());
 			}
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
@@ -395,7 +395,7 @@ public class EditarEntradaSalidaMB{
 		logger.info("->onRowReorder:From: " + event.getFromIndex() + ", To:" + event.getToIndex());
 		int i=0;
 		for(EntradaSalidaDetalleQuickView d:entityList){
-			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]");
+			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]@"+d.getAlmacenId());
 		}
 		hayCambios = true;
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());

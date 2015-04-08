@@ -767,7 +767,8 @@ public class EntradaSalidaDAO {
 			r = ps.executeUpdate();						
 
 			int rESD = conn.createStatement().executeUpdate("DELETE FROM ENTRADA_SALIDA_DETALLE WHERE ENTRADA_SALIDA_ID=" + x.getId());
-
+			logger.info("=>DELETE FROM ENTRADA_SALIDA_DETALLE WHERE ENTRADA_SALIDA_ID=" + x.getId()+"; affected="+rESD);
+			
 			psESD = conn.prepareStatement("INSERT INTO ENTRADA_SALIDA_DETALLE(ENTRADA_SALIDA_ID,PRODUCTO_CODIGO_BARRAS,ALMACEN_ID,CANTIDAD,PRECIO_VENTA) "
 					+ " VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			rESD = 0;
@@ -788,6 +789,7 @@ public class EntradaSalidaDAO {
 				psESD.setDouble(ciESD++, pvd.getPrecioVenta());
 
 				rESD += psESD.executeUpdate();
+				logger.info("\t=>INSERT INTO ENTRADA_SALIDA_DETALLE .... "+pvd.getCantidad()+" X "+pvd.getProductoCodigoBarras()+" @ "+pvd.getAlmacenId());
 			}
 
 			psESE = conn.prepareStatement("UPDATE ENTRADA_SALIDA_ESTADO SET FECHA=?,USUARIO_EMAIL=?,COMENTARIOS=? WHERE ENTRADA_SALIDA_ID=? AND ESTADO_ID=?");
