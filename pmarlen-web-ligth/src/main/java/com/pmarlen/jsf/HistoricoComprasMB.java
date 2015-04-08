@@ -41,33 +41,12 @@ public class HistoricoComprasMB  {
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
-		try {
-			compras = EntradaSalidaDAO.getInstance().findAllHistoricoCompras();
-			logger.info("->refrescar:compras.size()="+compras.size());
-			for(EntradaSalidaQuickView x:compras){
-				logger.finer("->x="+x.getId());
-			}
-		}catch(DAOException de){
-			compras = new ArrayList<EntradaSalidaQuickView>();
-			logger.severe(de.getMessage());
-		}
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		try {
-			compras = EntradaSalidaDAO.getInstance().findAllHistoricoCompras();
-			if(compras != null){
-				logger.info("->refrescar:compras.size()="+compras.size());
-				for(EntradaSalidaQuickView x:compras){
-					logger.finer("->x="+x.getId());
-				}
-			}
-		} catch (DAOException ex) {
-			logger.severe(ex.getMessage());
-		}
-		
+		compras = null;		
 	}
 
 	public void setEditarCompraMB(EditarCompraMB editarCompraMB) {
@@ -76,6 +55,18 @@ public class HistoricoComprasMB  {
 
 	public ArrayList<EntradaSalidaQuickView> getCompras() {
 		logger.fine("->getCompras");
+		if(compras == null){
+			try {
+				compras = EntradaSalidaDAO.getInstance().findAllHistoricoCompras();
+				logger.info("->refrescar:compras.size()="+compras.size());
+				if(compras != null){
+					logger.config("compras.size()="+compras.size());				 
+				}
+			}catch(DAOException de){
+				compras = new ArrayList<EntradaSalidaQuickView>();
+				logger.severe(de.getMessage());
+			}
+		}
 		return compras;
 	}
 	

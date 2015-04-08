@@ -41,33 +41,12 @@ public class PedidosVentaMB  {
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
-		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
-			logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
-			for(EntradaSalidaQuickView x:pedidosVentas){
-				logger.finer("->x="+x.getId());
-			}
-		}catch(DAOException de){
-			pedidosVentas = new ArrayList<EntradaSalidaQuickView>();
-			logger.severe(de.getMessage());
-		}
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
-			if(pedidosVentas != null){
-				logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());
-				for(EntradaSalidaQuickView x:pedidosVentas){
-					logger.finer("->x="+x.getId());
-				}
-			}
-		} catch (DAOException ex) {
-			logger.severe(ex.getMessage());
-		}
-		
+		pedidosVentas = null;
 	}
 
 	public void setEditarEntradaSalidaMB(EditarEntradaSalidaMB editarEntradaSalidaMB) {
@@ -76,6 +55,16 @@ public class PedidosVentaMB  {
 
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
 		logger.fine("->getPedidosVentas");
+		if(pedidosVentas == null){
+			try {
+				pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
+				if(pedidosVentas != null){
+					logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());			
+				}
+			} catch (DAOException ex) {
+				logger.severe(ex.getMessage());
+			}
+		}
 		return pedidosVentas;
 	}
 	

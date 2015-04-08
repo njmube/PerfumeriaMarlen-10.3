@@ -33,7 +33,7 @@ import org.primefaces.event.ReorderEvent;
 @SessionScoped
 public class HistoricoPedidosVentaMB {
 	private transient static Logger logger = Logger.getLogger("historicoPedidosVentaMB");
-	private int noPedidoBuscar;
+	
 	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
 	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
 	
@@ -42,29 +42,13 @@ public class HistoricoPedidosVentaMB {
 	
 	@PostConstruct
 	public void init(){
-		logger.info("->init:");
-		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
-			if(pedidosVentas != null){
-				logger.config("pedidosVentas.size()="+pedidosVentas.size());
-				noPedidoBuscar = pedidosVentas.get(0).getId();
-			}
-		}catch(DAOException de){
-			logger.severe(de.getMessage());
-		}
+		logger.info("->init:");		
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		try {
-			pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
-			if(pedidosVentas != null){
-				logger.config("pedidosVentas.size()="+pedidosVentas.size());
-			}
-		}catch(DAOException de){
-			logger.severe(de.getMessage());
-		}
+		pedidosVentas=null;		
 	}
 
 	public void setEditarEntradaSalidaMB(EditarEntradaSalidaMB editarEntradaSalidaMB) {
@@ -72,7 +56,16 @@ public class HistoricoPedidosVentaMB {
 	}	
 
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
-		logger.config("->getPedidosVentas");
+		if(pedidosVentas == null) {
+			try {
+				pedidosVentas = EntradaSalidaDAO.getInstance().findAllHistoricoPedidos();
+				if(pedidosVentas != null){
+					logger.config("pedidosVentas.size()="+pedidosVentas.size());					
+				}
+			}catch(DAOException de){
+				logger.severe(de.getMessage());
+			}
+		}
 		return pedidosVentas;
 	}
 	
@@ -101,21 +94,8 @@ public class HistoricoPedidosVentaMB {
 		logger.fine("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
+
 	public String getImporteMoneda(double f){
 		return Constants.getImporteMoneda(f);
-	}
-
-	public void setNoPedidoBuscar(int noPedidoBuscar) {
-		this.noPedidoBuscar = noPedidoBuscar;
-	}
-
-	public int getNoPedidoBuscar() {
-		return noPedidoBuscar;
-	}
-	
-	public String buscar(){
-		logger.info("->noPedidoBuscar="+noPedidoBuscar);
-		editarEntradaSalidaMB.editar(noPedidoBuscar);		
-		return "/pages/editarEntradaSalida";
 	}
 }

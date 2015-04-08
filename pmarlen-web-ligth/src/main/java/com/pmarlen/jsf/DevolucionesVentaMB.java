@@ -41,33 +41,12 @@ public class DevolucionesVentaMB  {
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
-		try {
-			devoluciones = EntradaSalidaDAO.getInstance().findAllActiveDevs();
-			logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
-			for(EntradaSalidaQuickView x:devoluciones){
-				logger.finer("->x="+x.getId());
-			}
-		}catch(DAOException de){
-			devoluciones = new ArrayList<EntradaSalidaQuickView>();
-			logger.severe(de.getMessage());
-		}
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		try {
-			devoluciones = EntradaSalidaDAO.getInstance().findAllActiveDevs();
-			if(devoluciones != null){
-				logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
-				for(EntradaSalidaQuickView x:devoluciones){
-					logger.finer("->x="+x.getId());
-				}
-			}
-		} catch (DAOException ex) {
-			logger.severe(ex.getMessage());
-		}
-		
+		devoluciones = null;
 	}
 
 	public void setEditarDevolucionMB(EditarDevolucionMB editarDevolucionMB) {
@@ -76,6 +55,18 @@ public class DevolucionesVentaMB  {
 
 	public ArrayList<EntradaSalidaQuickView> getDevoluciones() {
 		logger.fine("->getDevoluciones");
+		if(devoluciones == null){
+			try {
+				devoluciones = EntradaSalidaDAO.getInstance().findAllActiveDevs();
+				if(devoluciones != null){
+					logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
+				}				
+			}catch(DAOException de){
+				devoluciones = new ArrayList<EntradaSalidaQuickView>();
+				logger.severe(de.getMessage());
+			}
+
+		}
 		return devoluciones;
 	}
 	
