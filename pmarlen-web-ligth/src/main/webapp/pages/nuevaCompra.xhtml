@@ -293,11 +293,11 @@
 						<p:commandButton value="COMPRA FINALIZADA, CERRAR"  actionListener="#{nuevaCompraMB.cerrar}" rendered="#{nuevaCompraMB.compraFinalizada}" 
 										 process="@all" update=":form1,:form2,:form2a,:form3,:form4" oncomplete="updateComponentsOnWindowResize();"/>
 
-						<p:confirmDialog global="true" styleClass="centerAlign" closeOnEscape="true" >
+						<p:confirmDialog global="true" styleClass="centerAlign" closeOnEscape="true" widgetVar="dlgConfirmation">
 
 							<h:panelGrid columns="2" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign"  width="100%">
-								<p:commandButton value="SI, ESTOY SEGURO"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="¡ NO, MEJOR NO !"  type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton value="SI, ESTOY SEGURO"	type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="dlgConfirmation.hide(); return false;"/>
+								<p:commandButton value="¡ NO, MEJOR NO !"  type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"  oncomplete="dlgConfirmation.hide(); return false;"/>
 							</h:panelGrid>
 								
 						</p:confirmDialog>
