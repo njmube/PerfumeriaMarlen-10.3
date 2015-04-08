@@ -32,7 +32,7 @@ public class AlmacenProductoQuickView extends AlmacenProducto{
 	
 	private String productoUnidadEmpaque;
 	
-	private Integer rowId;        
+	private Integer rowId;
 
 	public AlmacenProductoQuickView() {
 	}

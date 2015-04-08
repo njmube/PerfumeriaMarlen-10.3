@@ -21,10 +21,18 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>SyncServlet</servlet-name>
+        <servlet-class>com.pmarlen.rest.servlet.SyncServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>SyncServlet</servlet-name>
+        <url-pattern>/sync/data.zip</url-pattern>
+    </servlet-mapping>    
     <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/PMARLEN_BACKEND_DS</res-ref-name>

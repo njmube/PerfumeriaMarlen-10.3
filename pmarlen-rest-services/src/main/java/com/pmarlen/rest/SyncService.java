@@ -6,9 +6,12 @@
 
 package com.pmarlen.rest;
 
+import com.pmarlen.backend.dao.AlmacenProductoDAO;
 import com.pmarlen.backend.dao.DAOException;
 import com.pmarlen.backend.dao.ProductoDAO;
+import com.pmarlen.backend.model.quickviews.InventarioSucursalQuickView;
 import com.pmarlen.backend.model.quickviews.ProductoQuickView;
+import com.pmarlen.rest.dto.P;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,11 +42,16 @@ public class SyncService {
 	@GET
 	@Path("/productos/{sucursalId}")
 	@Produces(MediaType.APPLICATION_JSON  + ";charset=" + encodingUTF8)
-	public List<ProductoQuickView> getAllProducto(@PathParam(value = "sucursalId")String sucursalId) throws WebApplicationException {
-        List<ProductoQuickView> l = null;
+	public List<P> getAllProducto(@PathParam(value = "sucursalId")String sucursalId) throws WebApplicationException {
+        List<P> l = null;
 		
 		try {
-			l=ProductoDAO.getInstance().findAllForMultiediaShow(1);
+			l = new ArrayList<P>();
+			int sucId=new Integer(sucursalId);
+			ArrayList<InventarioSucursalQuickView> p = AlmacenProductoDAO.getInstance().findAllBySucursal(sucId);
+			for(InventarioSucursalQuickView is: p){
+				l.add(is.getFaccadeForREST());
+			}
 		} catch (DAOException ex) {
 			logger.log(Level.SEVERE, null, ex);
 			throw new WebApplicationException(ex, Response.Status.INTERNAL_SERVER_ERROR);

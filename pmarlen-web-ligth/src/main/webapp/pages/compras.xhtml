@@ -31,7 +31,7 @@
 						<p:commandButton value="RECARGAR" actionListener="#{comprasMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
 					</f:facet>
 					
-					<p:column headerText="#" width="10%" sortBy="#{pv.id}">						
+					<p:column headerText="#" width="10%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
 							<h:outputLink value="editarCompra.jsf" >
 								<h:outputText value="#{pv.id}" />

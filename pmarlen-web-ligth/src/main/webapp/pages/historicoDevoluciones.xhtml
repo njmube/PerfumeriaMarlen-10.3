@@ -34,7 +34,7 @@
 
 					</f:facet>
 					
-					<p:column headerText="#" width="5%" sortBy="#{pv.id}">						
+					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
 							<h:outputLink value="editarPedidoVenta.jsf" >
 								<h:outputText value="#{pv.id}" />

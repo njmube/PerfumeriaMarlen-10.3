@@ -8,7 +8,11 @@
         <title>REST Services</title>
     </head>
     <body>
-		<h1>REST SERVICES Ver. 10.1 is running</h1>
+		<h1>PMARLEN-REST-SERVICES Ver. 10.3</h1>
+		<h2>REST:</h2>
 		<a href="rest/syncservice/productos/1">rest/syncservice/productos/1</a>
+		
+		<h2>SERVLET:</h2>
+		<a href="sync/data.zip?sucursalId=1">sync/data.zip?sucursalId=1</a>
     </body>
 </html>
