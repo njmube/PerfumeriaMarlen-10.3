@@ -7,15 +7,24 @@
 package com.pmarlen.rest.servlet;
 
 import com.pmarlen.backend.dao.AlmacenProductoDAO;
+import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.FormaDePagoDAO;
+import com.pmarlen.backend.dao.MetodoDePagoDAO;
+import com.pmarlen.backend.dao.SucursalDAO;
+import com.pmarlen.backend.dao.UsuarioDAO;
+import com.pmarlen.backend.model.Sucursal;
 import com.pmarlen.backend.model.quickviews.InventarioSucursalQuickView;
-import com.pmarlen.rest.dto.P;
+import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
+
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.ServletException;
@@ -30,6 +39,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class SyncServlet extends HttpServlet {
 
+	Logger logger=Logger.getLogger(SyncServlet.class.getName());
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
 	 * methods.
@@ -42,32 +52,64 @@ public class SyncServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		response.setContentType("application/zip");		
-		response.addHeader("Content-Disposition", "attachment; filename=data.zip");
-
+		
 		OutputStream os=response.getOutputStream();
-        List<P> l = null;
 		String sucursalId=request.getParameter("sucursalId");
+		String format=request.getParameter("format");
+		if(sucursalId==null){
+			sucursalId = "1";
+		}
+		if(format==null){
+			format="zip";
+		}
+		logger.info("-->>sucursalId="+sucursalId+", format="+format);
 		try {
-			l = new ArrayList<P>();
 			int sucId=new Integer(sucursalId);
-			ArrayList<InventarioSucursalQuickView> p = AlmacenProductoDAO.getInstance().findAllBySucursal(sucId);
-			for(InventarioSucursalQuickView is: p){
-				l.add(is.getFaccadeForREST());
-			}
+			SyncDTOPackage s= new SyncDTOPackage();
+			
+			s.setInventarioSucursalQVList(AlmacenProductoDAO.getInstance().findAllBySucursal(sucId));
+			s.setUsuarioList(UsuarioDAO.getInstance().findAllSimple());
+			s.setClienteList(ClienteDAO.getInstance().findAll());
+			s.setMetodoDePagoList(MetodoDePagoDAO.getInstance().findAll());
+			s.setFormaDePagoList(FormaDePagoDAO.getInstance().findAll());
+			s.setSucursal(SucursalDAO.getInstance().findBy(new Sucursal(sucId)));
+			
 			ObjectMapper mapper = new ObjectMapper();
-			String jsonString = mapper.writeValueAsString(l);
+			ByteArrayOutputStream baos=new ByteArrayOutputStream();
+			byte[] data=null;
 			
-			ZipOutputStream zos = new ZipOutputStream(os);
-
-			zos.putNextEntry(new ZipEntry("data.json"));
-			zos.write(jsonString.getBytes());
-			
-			zos.closeEntry();
-			zos.finish();
-
+			if(format.equals("zip")){
+				ZipOutputStream zos = new ZipOutputStream(baos);
+				zos.putNextEntry(new ZipEntry("data.json"));				
+				byte[] jsonData=mapper.writeValueAsBytes(s);
+				zos.write(jsonData);
+				zos.closeEntry();
+				zos.finish();				
+				
+				baos.close();
+				data=baos.toByteArray();
+				
+				response.setContentType("application/zip");		
+				response.addHeader("Content-Disposition", "attachment; filename=data.zip");
+				response.setContentLength(data.length);
+				logger.info("-->>zip:ContentLength="+data.length+" bytes, jsonData.length="+jsonData.length);
+				os.write(data);
+				os.flush();
+			} else if(format.equals("json")){
+				
+				mapper.writeValue(baos,s);
+				data=baos.toByteArray();
+				
+				response.setContentType("application/json");		
+				response.addHeader("Content-Disposition", "attachment; filename=data.json");
+				response.setContentLength(data.length);
+				logger.info("-->>json:ContentLength="+data.length+" bytes");
+				os.write(data);
+				os.flush();				
+			}
 		} catch (Exception ex) {
-			
+			ex.printStackTrace(System.err);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			os.close();
 		}

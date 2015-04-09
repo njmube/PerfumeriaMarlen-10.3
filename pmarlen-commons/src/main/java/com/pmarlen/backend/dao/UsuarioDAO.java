@@ -172,6 +172,60 @@ public class UsuarioDAO {
 		}
 		return r;		
 	};
+	
+    public ArrayList<Usuario> findAllSimple() throws DAOException {
+		ArrayList<Usuario> r = new ArrayList<Usuario>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement(
+					"SELECT   U.EMAIL,U.ABILITADO,U.NOMBRE_COMPLETO,U.PASSWORD\n" +
+					"FROM     USUARIO U\n" +
+					"ORDER BY U.NOMBRE_COMPLETO");
+			
+			rs = ps.executeQuery();
+			Usuario x = null;
+			String email = null;
+			String nombreCompleto=null;
+			String password=null;
+			Integer abilitado = null;
+			logger.info("============================================>");
+			while(rs.next()) {
+				email			= (String)rs.getObject("EMAIL");
+				abilitado		= (Integer)rs.getObject("ABILITADO");
+				nombreCompleto	= (String)rs.getObject("NOMBRE_COMPLETO");				
+				password		= (String)rs.getObject("PASSWORD");
+				
+				x = new Usuario();					
+				
+				x.setEmail(email);
+				x.setAbilitado(abilitado);
+				x.setNombreCompleto(nombreCompleto);
+				x.setPassword(password);
+				
+				r.add(x);
+			}
+			
+			logger.info("<============================================");
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	};
     
     public int insert(Usuario x) throws DAOException {
 		PreparedStatement ps = null;
