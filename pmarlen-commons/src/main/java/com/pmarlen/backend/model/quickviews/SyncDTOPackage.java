@@ -11,6 +11,7 @@ import com.pmarlen.backend.model.FormaDePago;
 import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Sucursal;
 import com.pmarlen.backend.model.Usuario;
+import com.pmarlen.rest.dto.P;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  * @author alfredo
  */
 public class SyncDTOPackage {
-	private List<InventarioSucursalQuickView> inventarioSucursalQVList;
+	private List<P> inventarioSucursalQVList;
 	private List<Usuario> usuarioList;
 	private List<ClienteQuickView> clienteList;
 	private List<MetodoDePago> metodoDePagoList;
@@ -28,14 +29,14 @@ public class SyncDTOPackage {
 	/**
 	 * @return the inventarioSucursalQVList
 	 */
-	public List<InventarioSucursalQuickView> getInventarioSucursalQVList() {
+	public List<P> getInventarioSucursalQVList() {
 		return inventarioSucursalQVList;
 	}
 
 	/**
 	 * @param inventarioSucursalQVList the inventarioSucursalQVList to set
 	 */
-	public void setInventarioSucursalQVList(List<InventarioSucursalQuickView> inventarioSucursalQVList) {
+	public void setInventarioSucursalQVList(List<P> inventarioSucursalQVList) {
 		this.inventarioSucursalQVList = inventarioSucursalQVList;
 	}
 

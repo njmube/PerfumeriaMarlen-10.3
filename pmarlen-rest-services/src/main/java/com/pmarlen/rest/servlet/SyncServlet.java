@@ -16,6 +16,7 @@ import com.pmarlen.backend.dao.UsuarioDAO;
 import com.pmarlen.backend.model.Sucursal;
 import com.pmarlen.backend.model.quickviews.InventarioSucursalQuickView;
 import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
+import com.pmarlen.rest.dto.P;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,6 +25,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -66,8 +68,12 @@ public class SyncServlet extends HttpServlet {
 		try {
 			int sucId=new Integer(sucursalId);
 			SyncDTOPackage s= new SyncDTOPackage();
-			
-			s.setInventarioSucursalQVList(AlmacenProductoDAO.getInstance().findAllBySucursal(sucId));
+			ArrayList<InventarioSucursalQuickView> xa = AlmacenProductoDAO.getInstance().findAllBySucursal(sucId);
+			ArrayList<P> xb=new ArrayList<P>();
+			for(InventarioSucursalQuickView xia: xa){
+				xb.add(xia.generateFaccadeForREST());
+			}
+			s.setInventarioSucursalQVList(xb);
 			s.setUsuarioList(UsuarioDAO.getInstance().findAllSimple());
 			s.setClienteList(ClienteDAO.getInstance().findAll());
 			s.setMetodoDePagoList(MetodoDePagoDAO.getInstance().findAll());
@@ -107,8 +113,9 @@ public class SyncServlet extends HttpServlet {
 				os.write(data);
 				os.flush();				
 			}
+			logger.info("OK, finish !");
 		} catch (Exception ex) {
-			ex.printStackTrace(System.err);
+			logger.log(Level.SEVERE, "-->>error:", ex);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			os.close();

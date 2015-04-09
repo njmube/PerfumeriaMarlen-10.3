@@ -52,7 +52,7 @@ public class InventarioSucursalQuickView extends Producto {
 	
 	//==========================================================================
 	
-	public P getFaccadeForREST(){
+	public P generateFaccadeForREST(){
 		P p=new P();
 		
 		p.setA(getAbrebiatura());

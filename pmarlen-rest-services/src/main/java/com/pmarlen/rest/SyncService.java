@@ -50,7 +50,7 @@ public class SyncService {
 			int sucId=new Integer(sucursalId);
 			ArrayList<InventarioSucursalQuickView> p = AlmacenProductoDAO.getInstance().findAllBySucursal(sucId);
 			for(InventarioSucursalQuickView is: p){
-				l.add(is.getFaccadeForREST());
+				l.add(is.generateFaccadeForREST());
 			}
 		} catch (DAOException ex) {
 			logger.log(Level.SEVERE, null, ex);
