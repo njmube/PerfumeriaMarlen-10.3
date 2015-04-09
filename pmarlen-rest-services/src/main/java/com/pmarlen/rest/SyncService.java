@@ -7,10 +7,17 @@
 package com.pmarlen.rest;
 
 import com.pmarlen.backend.dao.AlmacenProductoDAO;
+import com.pmarlen.backend.dao.ClienteDAO;
 import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.FormaDePagoDAO;
+import com.pmarlen.backend.dao.MetodoDePagoDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
+import com.pmarlen.backend.dao.SucursalDAO;
+import com.pmarlen.backend.dao.UsuarioDAO;
+import com.pmarlen.backend.model.Sucursal;
 import com.pmarlen.backend.model.quickviews.InventarioSucursalQuickView;
 import com.pmarlen.backend.model.quickviews.ProductoQuickView;
+import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
 import com.pmarlen.rest.dto.P;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,5 +65,36 @@ public class SyncService {
 		}
 		return l;
 	}
+
+	@GET
+	@Path("/syncdtopackage/{sucursalId}")
+	@Produces(MediaType.APPLICATION_JSON  + ";charset=" + encodingUTF8)
+	public SyncDTOPackage getSyncDTOPackage(@PathParam(value = "sucursalId")String sucursalId) throws WebApplicationException {
+        SyncDTOPackage s=null;
+		
+		try {
+			s= new SyncDTOPackage();
+			int sucId=new Integer(sucursalId);
+			ArrayList<InventarioSucursalQuickView> xa = AlmacenProductoDAO.getInstance().findAllBySucursal(sucId);
+			ArrayList<P> xb=new ArrayList<P>();
+			for(InventarioSucursalQuickView xia: xa){
+				xb.add(xia.generateFaccadeForREST());
+			}
+			s.setInventarioSucursalQVList(xb);
+			s.setUsuarioList(UsuarioDAO.getInstance().findAllForRest());
+			s.setClienteList(ClienteDAO.getInstance().findAll());
+			s.setMetodoDePagoList(MetodoDePagoDAO.getInstance().findAll());
+			s.setFormaDePagoList(FormaDePagoDAO.getInstance().findAll());
+			s.setSucursal(SucursalDAO.getInstance().findBy(new Sucursal(sucId)));
+			
+			logger.info("-->> ok, get data, return SyncDTOPackage{"+s+"} for JSON prsing.");
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, null, ex);
+			throw new WebApplicationException(ex, Response.Status.INTERNAL_SERVER_ERROR);
+		}
+		return s;
+	}
+	
+	
 	
 }

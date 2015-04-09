@@ -10,9 +10,14 @@
     <body>
 		<h1>PMARLEN-REST-SERVICES Ver. 10.3</h1>
 		<h2>REST:</h2>
-		<a href="rest/syncservice/productos/1">rest/syncservice/productos/1</a>
-		
+		<ul>
+			<li><a href="rest/syncservice/productos/1">rest/syncservice/productos/1</a></li>
+			<li><a href="rest/syncservice/syncdtopackage/1">rest/syncservice/syncdtopackage/1</a></li>
+		</ul>
 		<h2>SERVLET:</h2>
-		<a href="sync/data.zip?sucursalId=1">sync/data.zip?sucursalId=1</a>
+		<ul>
+			<li><a href="sync/data?sucursalId=1&format=zip">sync/data?sucursalId=1&amp;format=zip</a></li>
+			<li><a href="sync/data?sucursalId=1&format=json">sync/data?sucursalId=1&amp;format=json</a></li>
+		</ul>
     </body>
 </html>

@@ -2,42 +2,44 @@ package com.pmarlen.rest.client;
 
 
 import com.google.gson.*;
-import com.pmarlen.wscommons.services.dto.PaqueteDeSincronizacionSucursalHija;
-import com.pmarlen.wscommons.services.dto.Producto;
+import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SincronizacionSucursalServiceClient {
+public class SyncDTOPackageClient {
 	
-	private static String urlService = "http://localhost:8070/pmarlen-rest-services/rs/sicnonizacionSucursal/getAllOfSucursal";
+	private static String urlService = "http://localhost:8070/pmarlen-rest-services/rest/syncservice/syncdtopackage/1";
+	
+	private static String uriService = "/pmarlen-rest-services/rest/syncservice/syncdtopackage/1";
 
-	private static PaqueteDeSincronizacionSucursalHija getAllOfSucursal(){
-		PaqueteDeSincronizacionSucursalHija paqueteSinc=null;
+	private static SyncDTOPackage getAllOfSucursal(String hostPort){
+		SyncDTOPackage paqueteSinc=null;
 		try {
 			long t0=System.currentTimeMillis();
 			Client client = Client.create();
 			Gson gson=new Gson();
-
-			WebResource webResource = client.resource(urlService);
+			System.out.println("...creating WebResource");
+			WebResource webResource = client.resource(hostPort+uriService);
 			long t1=System.currentTimeMillis();
 			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+			System.out.println("...get response");
 			long t2=System.currentTimeMillis();
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed HTTP error code :"
 						+ response.getStatus());
 			}
+			System.out.println("OK, not error, trying get JSON response");
 
 			String output = response.getEntity(String.class);
 			long t3=System.currentTimeMillis();
-			//System.out.println("Output from Server .... \n");
-			//System.out.println(output);
+			System.out.println("Output from Server:output.length="+output.length());
 			
-			paqueteSinc = gson.fromJson(output, PaqueteDeSincronizacionSucursalHija.class);
+			paqueteSinc = gson.fromJson(output, SyncDTOPackage.class);
 			long t4=System.currentTimeMillis();
-			System.out.println("paqueteSinc="+paqueteSinc.toString());
+			
 			long t5=System.currentTimeMillis();
 			System.out.println("  T = "+(t5-t0));
 			System.out.println("+T1 = "+(t1-t0));
@@ -53,7 +55,8 @@ public class SincronizacionSucursalServiceClient {
 	}
 	
 	public static void main(String[] args) {
-		PaqueteDeSincronizacionSucursalHija paqueteSinc = SincronizacionSucursalServiceClient.getAllOfSucursal();
+		SyncDTOPackage paqueteSinc = SyncDTOPackageClient.getAllOfSucursal(args[0]);
+		System.out.println("-->> paqueteSinc{"+paqueteSinc+"}");
 	}
 
 }

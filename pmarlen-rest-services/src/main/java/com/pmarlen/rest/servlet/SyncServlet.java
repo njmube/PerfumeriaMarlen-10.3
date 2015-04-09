@@ -74,7 +74,7 @@ public class SyncServlet extends HttpServlet {
 				xb.add(xia.generateFaccadeForREST());
 			}
 			s.setInventarioSucursalQVList(xb);
-			s.setUsuarioList(UsuarioDAO.getInstance().findAllSimple());
+			s.setUsuarioList(UsuarioDAO.getInstance().findAllForRest());
 			s.setClienteList(ClienteDAO.getInstance().findAll());
 			s.setMetodoDePagoList(MetodoDePagoDAO.getInstance().findAll());
 			s.setFormaDePagoList(FormaDePagoDAO.getInstance().findAll());

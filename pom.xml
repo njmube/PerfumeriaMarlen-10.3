@@ -56,15 +56,10 @@
 	</properties>
   
 	<modules>		
-		<!--
-		<module>pmarlen-jpa-entity</module>		
-		-->
 		<module>pmarlen-commons</module>
 		<module>pmarlen-development-tasks</module>		
 		<module>pmarlen-rest-services</module>
-		<!--		
 		<module>pmarlen-rest-client</module>
-		-->
 		<module>pmarlen-web-ligth</module>		
 		<!--
 		<module>pmarlen-caja</module>
