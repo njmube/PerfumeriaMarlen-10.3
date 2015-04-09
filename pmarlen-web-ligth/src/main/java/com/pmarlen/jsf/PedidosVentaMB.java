@@ -5,6 +5,7 @@ import com.pmarlen.backend.dao.DAOException;
 import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.FormaDePagoDAO;
 import com.pmarlen.backend.dao.MetodoDePagoDAO;
+import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
 import com.pmarlen.backend.model.Cliente;
 import com.pmarlen.backend.model.FormaDePago;
@@ -32,8 +33,8 @@ import org.primefaces.event.ReorderEvent;
 public class PedidosVentaMB  {
 	private transient static Logger logger = Logger.getLogger(PedidosVentaMB.class.getSimpleName());
 	
-	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
-	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
+	@ManagedProperty(value = "#{editarPedidoVentaMB}")
+	private EditarPedidoVentaMB editarPedidoVentaMB;	
 	
 	ArrayList<EntradaSalidaQuickView> pedidosVentas;
 	private int viewRows;
@@ -49,8 +50,8 @@ public class PedidosVentaMB  {
 		pedidosVentas = null;
 	}
 
-	public void setEditarEntradaSalidaMB(EditarEntradaSalidaMB editarEntradaSalidaMB) {
-		this.editarEntradaSalidaMB = editarEntradaSalidaMB;
+	public void setEditarPedidoVentaMB(EditarPedidoVentaMB editarPedidoVentaMB) {
+		this.editarPedidoVentaMB = editarPedidoVentaMB;
 	}
 
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
@@ -70,13 +71,13 @@ public class PedidosVentaMB  {
 	
 	public String editarPedido(int pedidoVentaId){
 		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
-		return "/pages/editarEntradaSalida";
+		editarPedidoVentaMB.editar(pedidoVentaId);
+		return "/pages/editarPedidoVenta";
 	}
 	
 	public void onEditarPedido(int pedidoVentaId){
 		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
+		editarPedidoVentaMB.editar(pedidoVentaId);
 	}
 	
 	public int getSizeList(){

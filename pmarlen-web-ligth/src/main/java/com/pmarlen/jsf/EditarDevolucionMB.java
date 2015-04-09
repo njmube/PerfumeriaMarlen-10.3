@@ -53,7 +53,7 @@ import org.primefaces.model.StreamedContent;
 
 @ManagedBean(name="editarDevolucionMB")
 @SessionScoped
-public class EditarDevolucionMB extends EditarEntradaSalidaMB{
+public class EditarDevolucionMB extends EditarPedidoVentaMB{
 		
 	@PostConstruct
 	public void init() {

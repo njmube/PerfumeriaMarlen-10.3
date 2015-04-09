@@ -372,10 +372,8 @@
 
 		</h:panelGrid>
 		<script>
-			
 			var counterResized = 0;
 			function updateComponentsOnWindowResize() {
-
 				//var txt="";
 				//txt+="["+counterResized+"]Resized:(" + $(window).width() + " x  " + $(window).height() +"), table height:"+$(".ui-datatable-scrollable-body").height();
 				//$("#debugDivOutput").html(txt);
@@ -384,9 +382,8 @@
 			}
 
 			function setDataTableHeight() {
-				var winHeight = $(window).height();
-
-				var scrollHeight = winHeight - 460;
+				var docHeight = $(document).height();				
+				var scrollHeight = docHeight - (480-alturaExtraTabla);
 
 				var scrollBody = $(".ui-datatable-scrollable-body");
 				scrollBody.height(scrollHeight);

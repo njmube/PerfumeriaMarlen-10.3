@@ -57,7 +57,7 @@ public class HistoricoDevolucionesVentaMB  {
 		logger.fine("->getDevoluciones");
 		if(devoluciones == null) {
 			try {
-				devoluciones = EntradaSalidaDAO.getInstance().findAllHistoricoPedidos();
+				devoluciones = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
 				if(devoluciones != null){
 					logger.config("devoluciones.size()="+devoluciones.size());				 
 				}

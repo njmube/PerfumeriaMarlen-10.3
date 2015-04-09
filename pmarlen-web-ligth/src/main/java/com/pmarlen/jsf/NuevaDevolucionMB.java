@@ -46,7 +46,7 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean(name="nuevaDevolucionMB")
 @SessionScoped
-public class NuevaDevolucionMB extends EntradaSalidaMB{	
+public class NuevaDevolucionMB extends PedidoVentaMB{	
 	
 	@ManagedProperty(value = "#{sessionUserMB}")
 	private SessionUserMB sessionUserMB;

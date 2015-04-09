@@ -35,7 +35,7 @@ public class HistoricoPedidosVentaMB {
 	private transient static Logger logger = Logger.getLogger("historicoPedidosVentaMB");
 	
 	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
-	private EditarEntradaSalidaMB editarEntradaSalidaMB;	
+	private EditarPedidoVentaMB editarEntradaSalidaMB;	
 	
 	ArrayList<EntradaSalidaQuickView> pedidosVentas;
 	private int viewRows;
@@ -51,7 +51,7 @@ public class HistoricoPedidosVentaMB {
 		pedidosVentas=null;		
 	}
 
-	public void setEditarEntradaSalidaMB(EditarEntradaSalidaMB editarEntradaSalidaMB) {
+	public void setEditarEntradaSalidaMB(EditarPedidoVentaMB editarEntradaSalidaMB) {
 		this.editarEntradaSalidaMB = editarEntradaSalidaMB;
 	}	
 

@@ -103,7 +103,7 @@ public class EntradaSalidaDAO {
 			}
 			codigosBuscar = sbCB.toString();
 
-			logger.fine("pedidoVentaId=" + pedidoVentaId + ", codigosBuscar= ->" + codigosBuscar + "<-");
+			logger.info("pedidoVentaId=" + pedidoVentaId + ", codigosBuscar= ->" + codigosBuscar + "<-");
 
 			ps = conn.prepareStatement(
 					"SELECT AP.CANTIDAD,ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID,SUM(ESD.CANTIDAD) TOT_CANTIDAD \n"
@@ -114,13 +114,13 @@ public class EntradaSalidaDAO {
 					+ "AND    ESD.ENTRADA_SALIDA_ID = ES.ID \n"
 					+ "AND    ES.ESTADO_ID IN (1,2,4)\n"
 					+ "AND    ES.ID <> ? \n"
-					+ "AND    ES.TIPO_MOV = 30 \n"		
 					+ "AND    ESD.PRODUCTO_CODIGO_BARRAS IN ("
 					+ codigosBuscar
 					+ ")\n"
 					+ "GROUP BY ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID\n"
 					+ "ORDER BY ESD.PRODUCTO_CODIGO_BARRAS,ESD.ALMACEN_ID,ESD.ID");
 
+			
 			ps.setInt(1, pedidoVentaId);
 
 			rs = ps.executeQuery();
@@ -130,7 +130,7 @@ public class EntradaSalidaDAO {
 				int tcxi = rs.getInt("TOT_CANTIDAD");
 				int apcxi = rs.getInt("CANTIDAD");
 
-				logger.finer("Iteration:\t" + axi + "," + cbxi + ", " + tcxi + ", " + apcxi);
+				logger.info("Iteration:\t" + axi + "," + cbxi + ", " + tcxi + ", " + apcxi);
 
 				for (EntradaSalidaDetalleQuickView pvd : pvdList) {
 					if (pvd.getProductoCodigoBarras().equals(cbxi) && pvd.getAlmacenId() == axi) {
@@ -140,6 +140,7 @@ public class EntradaSalidaDAO {
 					}
 				}
 			}
+			logger.info("->OK, actualizado");
 
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);

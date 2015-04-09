@@ -51,10 +51,10 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-@ManagedBean(name="editarEntradaSalidaMB")
+@ManagedBean(name="editarPedidoVentaMB")
 @SessionScoped
-public class EditarEntradaSalidaMB{	
-	protected static transient Logger logger = Logger.getLogger("EditarEntradaSalidaMB");
+public class EditarPedidoVentaMB{	
+	protected static transient Logger logger = Logger.getLogger(EditarPedidoVentaMB.class.getName());
 	protected List<SelectItem> resultadoBusquedaList;
 	protected static final int LONG_MIN_DESC_CTE = 60;
 	protected static List<SelectItem> tipoAlmacenList;

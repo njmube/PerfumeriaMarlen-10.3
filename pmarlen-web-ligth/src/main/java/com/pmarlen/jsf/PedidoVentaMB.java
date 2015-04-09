@@ -44,10 +44,10 @@ import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
-@ManagedBean(name="entradaSalidaMB")
+@ManagedBean(name="pedidoVentaMB")
 @SessionScoped
-public class EntradaSalidaMB{	
-	protected static transient Logger logger = Logger.getLogger("EntradaSalidaMB");
+public class PedidoVentaMB{	
+	protected static transient Logger logger = Logger.getLogger(PedidoVentaMB.class.getName());
 	protected List<SelectItem> resultadoBusquedaList;
 	protected static final int LONG_MIN_DESC_CTE = 60;
 	protected static List<SelectItem> tipoAlmacenList;
