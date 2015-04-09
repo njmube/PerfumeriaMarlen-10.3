@@ -133,7 +133,7 @@
 													rendered="#{!editarDevolucionMB.tableDraggableEnabled}"
 													actionListener="#{editarDevolucionMB.actualizarTabla()}"
 													oncomplete="updateComponentsOnWindowResize();"
-													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>								
+													title="ACTUALIZA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>								
 								<p:spacer width="10"/>
 								<p:commandButton	value="VER + COLUMNAS" actionListener="#{editarDevolucionMB.expandirTabla}" process=":form3" update=":form3:panel3" 
 												 rendered="#{not editarDevolucionMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
@@ -181,14 +181,7 @@
 								<h:outputText value="#{pvd.cantidad}" rendered="#{editarDevolucionMB.tableDraggableEnabled or not (editarDevolucionMB.verificable or editarDevolucionMB.surtible)}"/>
 								
 								<h:panelGroup rendered="#{not editarDevolucionMB.tableDraggableEnabled and (editarDevolucionMB.verificable or editarDevolucionMB.surtible)}">
-									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
-												 rendered="#{pvd.cantidad le pvd.apCantidad}">
-										<f:convertNumber integerOnly="true" />
-										<f:validateLongRange minimum="1" maximum="99999"/>
-									</h:inputText>
-									
-									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
-												 rendered="#{pvd.cantidad gt pvd.apCantidad}" style="#{editarDevolucionMB.estiloInsuficiente}" title="NO SE PODRA SURTIR PEDIDO HASTA QUE HAYA SUFICIENTE">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" >
 										<f:convertNumber integerOnly="true" />
 										<f:validateLongRange minimum="1" maximum="99999"/>
 									</h:inputText>
@@ -316,22 +309,6 @@
 						</h:panelGrid>
 					</h:panelGrid>
 					<h:panelGrid columns="1" id="panel4_2" cellpadding="0" columnClasses="leftAlign" width="100%">
-						<p:outputLabel value="MÉTODO DE PAGO :" />
-
-						<p:selectOneMenu id="metodoDePago" value="#{editarDevolucionMB.devolucion.metodoDePagoId}" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}">
-							<f:selectItems  value="#{editarDevolucionMB.metodoDePagoList}"/>
-							<p:ajax listener="#{editarDevolucionMB.onMetodoDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</p:selectOneMenu>
-						
-						<p:outputLabel value="NÚMERO DE CUENTA :" />
-						<p:inputText value="#{editarDevolucionMB.devolucion.numDeCuenta}" size="20" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
-
-						<p:outputLabel value="FORMA DE PAGO :" />
-
-						<p:selectOneMenu id="formaDePago" value="#{editarDevolucionMB.devolucion.formaDePagoId}" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}">							
-							<f:selectItems  value="#{editarDevolucionMB.formaDePagoList}"/>
-							<p:ajax listener="#{editarDevolucionMB.onFormaDePagoListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
-						</p:selectOneMenu>
 
 						<p:outputLabel value="CONDICIONES :" />
 						<h:outputText  value="#{editarDevolucionMB.devolucion.condicionesDePago}"  style="font-size: 60%; color: blue;"
@@ -395,8 +372,7 @@
 						</p:commandButton>
 
 						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.surtible)}"  
-										 actionListener="#{editarDevolucionMB.surtir}" process="@all" update="@all"
-										 disabled="#{not editarDevolucionMB.posibleSurtir}">
+										 actionListener="#{editarDevolucionMB.surtir}" process="@all" update="@all">
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>
