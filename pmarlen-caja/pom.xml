@@ -81,12 +81,20 @@
 	
 	
 	<dependencies>
-		
+		<!-- ================= MAIN DEPENDENCIES ============ --> 
 		<dependency>
 			<groupId>com.pmarlen.erp</groupId>
 			<artifactId>pmarlen-commons</artifactId>
-			<version>10.3</version>
+			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.pmarlen.erp</groupId>
+			<artifactId>pmarlen-rest-client</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+
+		<!-- ================= LIBRARY DEPENDENCIES ============ --> 		
 		
 		<dependency>
 			<groupId>junit</groupId>

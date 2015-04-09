@@ -4,7 +4,7 @@
  */
 package com.pmarlen.caja.model;
 
-import com.pmarlen.backend.model.PedidoVentaDetalle;
+import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.Producto;
 
 /**
@@ -13,9 +13,9 @@ import com.pmarlen.backend.model.Producto;
  */
 public class PedidoVentaDetalleTableItem {
 	private Producto producto;
-	private PedidoVentaDetalle pvd;
+	private EntradaSalidaDetalle pvd;
 
-	public PedidoVentaDetalleTableItem(Producto producto, PedidoVentaDetalle pvd) {
+	public PedidoVentaDetalleTableItem(Producto producto, EntradaSalidaDetalle pvd) {
 		this.producto = producto;
 		this.pvd = pvd;
 		this.pvd.setCantidad(1);
@@ -61,7 +61,7 @@ public class PedidoVentaDetalleTableItem {
 		return producto;
 	}
 
-	public PedidoVentaDetalle getPvd() {
+	public EntradaSalidaDetalle getPvd() {
 		return pvd;
 	}
 

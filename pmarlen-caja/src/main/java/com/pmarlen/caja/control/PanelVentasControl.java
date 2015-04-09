@@ -4,12 +4,14 @@
  */
 package com.pmarlen.caja.control;
 
-import com.pmarlen.backend.dao.PedidoVentaDAO;
-import com.pmarlen.backend.dao.PedidoVentaDetalleDAO;
+import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.EntradaSalidaDAO;
+import com.pmarlen.backend.dao.EntradaSalidaDetalleDAO;
+import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.FechaCellRender;
 import com.pmarlen.backend.model.ImporteCellRender;
-import com.pmarlen.backend.model.PedidoVenta;
-import com.pmarlen.backend.model.PedidoVentaDetalle;
+import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.caja.model.VentaTableModel;
 import com.pmarlen.caja.view.PanelVentas;
 import java.awt.event.ActionEvent;
@@ -31,8 +33,7 @@ import javax.swing.event.TableModelListener;
 public class PanelVentasControl implements ActionListener,TableModelListener,MouseListener{
 
 	private PanelVentas panelVentas;
-	private PedidoVentaDAO pedidoVentaDAO;
-	private PedidoVentaDetalleDAO pedidoVentaDetelleDAO;	
+	private EntradaSalidaDAO pedidoVentaDAO;
 	private DecimalFormat df;
 	private VentaTableModel ventasTM;
 	private ImporteCellRender importeCellRender;
@@ -50,18 +51,22 @@ public class PanelVentasControl implements ActionListener,TableModelListener,Mou
 		
 		importeCellRender.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		pedidoVentaDAO = PedidoVentaDAO.getInstance();
-		pedidoVentaDetelleDAO = PedidoVentaDetalleDAO.getInstance();
+		pedidoVentaDAO = EntradaSalidaDAO.getInstance();
 	}
 	
 	public void refrescar() {
 		
-		List<PedidoVenta> ventaList  = (List<PedidoVenta>)pedidoVentaDAO.findAll();
+		List<EntradaSalidaQuickView> ventaList  = null;
+		try{
+			ventaList  = (List<EntradaSalidaQuickView>)pedidoVentaDAO.findAllActivePendidos();
+		}catch(DAOException e){
+		
+		}
 		Hashtable<Integer,Double> ventaImporteList = new Hashtable<Integer,Double>();
-		for(PedidoVenta v: ventaList){
+		for(EntradaSalida v: ventaList){
 			double t=0.0;
-			List<PedidoVentaDetalle> detalleVenta = null;//pedidoVentaDetelleDAO.findBy(v);
-			for(PedidoVentaDetalle dv: detalleVenta){
+			List<EntradaSalidaDetalle> detalleVenta = null;//pedidoVentaDetelleDAO.findBy(v);
+			for(EntradaSalidaDetalle dv: detalleVenta){
 				t += dv.getPrecioVenta() * dv.getCantidad();
 			}
 			

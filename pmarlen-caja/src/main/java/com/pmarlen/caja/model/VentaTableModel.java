@@ -4,7 +4,8 @@
  */
 package com.pmarlen.caja.model;
 
-import com.pmarlen.backend.model.PedidoVenta;
+import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,17 +28,17 @@ public class VentaTableModel implements TableModel{
 			Integer.class,Date.class,BigDecimal.class
 	};
 	
-	private List<PedidoVenta> ventaList;
+	private List<EntradaSalidaQuickView> ventaList;
 	private Hashtable<Integer,Double> ventaImporteList;
 	
 	private List<TableModelListener> tableModelListenerList;
 	
 	public VentaTableModel(){
-		this.ventaList = new ArrayList<PedidoVenta>();
+		this.ventaList = new ArrayList<EntradaSalidaQuickView>();
 		tableModelListenerList = new ArrayList<TableModelListener> ();
 	}
 	
-	public VentaTableModel(List<PedidoVenta> ventaList,Hashtable<Integer,Double> ventaImporteList){
+	public VentaTableModel(List<EntradaSalidaQuickView> ventaList,Hashtable<Integer,Double> ventaImporteList){
 		this.tableModelListenerList = new ArrayList<TableModelListener> ();
 		this.ventaList			= ventaList;
 		this.ventaImporteList	= ventaImporteList;
@@ -71,11 +72,11 @@ public class VentaTableModel implements TableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		final PedidoVenta dvti = ventaList.get(rowIndex);
+		final EntradaSalida dvti = ventaList.get(rowIndex);
 		if(columnIndex == 0)
 			return dvti.getId();
 		else if(columnIndex == 1)
-			return dvti.getFechaActualizacion();
+			return dvti.getFechaCreo();
 		else if(columnIndex == 2)
 			//return new Double(-1.0);
 			return new BigDecimal(ventaImporteList.get(dvti.getId()));
@@ -110,7 +111,7 @@ public class VentaTableModel implements TableModel{
 	/**
 	 * @return the detalleVentaTableItemList
 	 */
-	public List<PedidoVenta> getVentaList() {
+	public List<EntradaSalidaQuickView> getVentaList() {
 		return ventaList;
 	}
 

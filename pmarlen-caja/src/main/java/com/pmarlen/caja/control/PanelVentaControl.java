@@ -4,14 +4,15 @@
  */
 package com.pmarlen.caja.control;
 
-import com.pmarlen.backend.dao.PedidoVentaDAO;
+import com.pmarlen.backend.dao.DAOException;
+import com.pmarlen.backend.dao.EntradaSalidaDAO;
 import com.pmarlen.backend.dao.ProductoDAO;
+import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.EntradaSalidaDetalle;
+import com.pmarlen.backend.model.ImporteCellRender;
+import com.pmarlen.backend.model.Producto;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableItem;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableModel;
-import com.pmarlen.backend.model.ImporteCellRender;
-import com.pmarlen.backend.model.PedidoVenta;
-import com.pmarlen.backend.model.PedidoVentaDetalle;
-import com.pmarlen.backend.model.Producto;
 import com.pmarlen.caja.view.PanelVenta;
 import com.pmarlen.ticket.TicketPrinteService;
 import com.pmarlen.ticket.bluetooth.TicketBlueToothPrinter;
@@ -42,7 +43,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 	private PanelVenta panelVenta;
 	private ArrayList<PedidoVentaDetalleTableItem> detalleVentaTableItemList;
 	private ProductoDAO productoDAO;
-	private PedidoVentaDAO pedidoVentaDAO;
+	private EntradaSalidaDAO pedidoVentaDAO;
 	private DecimalFormat df;
 	private TicketPrinteService ticketPrinteService;
 
@@ -74,7 +75,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		});
 
 		detalleVentaTableItemList = (x).getDetalleVentaTableItemList();
-		pedidoVentaDAO = PedidoVentaDAO.getInstance();
+		pedidoVentaDAO = EntradaSalidaDAO.getInstance();
 
 		this.panelVenta.getCodigoBuscar().addActionListener(this);
 		this.panelVenta.getTerminar().addActionListener(this);
@@ -113,11 +114,16 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		String codigoBuscar = panelVenta.getCodigoBuscar().getText().trim();
 		productoBuscar.setCodigoBarras(codigoBuscar);
 		System.err.println("=>codigoBuscar_ActionPerformed:codigoBuscar=" + codigoBuscar);
-		Producto productoEncontrado = productoDAO.findBy(productoBuscar);
+		Producto productoEncontrado = null;
+		try{
+			productoEncontrado = productoDAO.findBy(productoBuscar);
+		}catch(DAOException e){
+		
+		}
 		System.err.println("=>codigoBuscar_ActionPerformed:productoEncontrado=" + productoEncontrado);
 
 		if (productoEncontrado != null) {
-			PedidoVentaDetalle pvd = new PedidoVentaDetalle();
+			EntradaSalidaDetalle pvd = new EntradaSalidaDetalle();
 			
 			PedidoVentaDetalleTableItem detalleVentaTableItemNuevo = null;
 			int idx = 0;
@@ -177,12 +183,12 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		}
 
 		try {
-			final PedidoVenta venta = new PedidoVenta();
-			final ArrayList<PedidoVentaDetalle> detalleVentaList = new ArrayList<PedidoVentaDetalle>();
+			final EntradaSalida venta = new EntradaSalida();
+			final ArrayList<EntradaSalidaDetalle> detalleVentaList = new ArrayList<EntradaSalidaDetalle>();
 
 			for (PedidoVentaDetalleTableItem dvil : detalleVentaTableItemList) {
-				//detalleVentaList.add(new PedidoVentaDetalle(0, 0, dvil.getCodigo(), dvil.getCantidad(), dvil.getPrecioVenta()));
-				PedidoVentaDetalle pvd= new PedidoVentaDetalle();
+				//detalleVentaList.add(new EntradaSalidaDetalle(0, 0, dvil.getCodigo(), dvil.getCantidad(), dvil.getPrecioVenta()));
+				EntradaSalidaDetalle pvd= new EntradaSalidaDetalle();
 				pvd.setCantidad(dvil.getCantidad());
 				pvd.setProductoCodigoBarras(dvil.getCodigo());
 				detalleVentaList.add(pvd);
@@ -316,7 +322,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		panelVenta.getCodigoBuscar().requestFocus();
 	}
 
-	private void imprimirTicket(PedidoVenta venta, List<PedidoVentaDetalle> detalleVentaList) {
+	private void imprimirTicket(EntradaSalida venta, List<EntradaSalidaDetalle> detalleVentaList) {
 		HashMap<String, String> extraInformation = new HashMap<String, String>();
 
 		extraInformation.put("recibimos", "100000.45");
@@ -324,7 +330,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 
 		boolean printed = false;
 		try {
-			Object ticketFile = ticketPrinteService.generateTicket(venta, (ArrayList<PedidoVentaDetalle>) detalleVentaList, extraInformation);
+			Object ticketFile = ticketPrinteService.generateTicket(venta, (ArrayList<EntradaSalidaDetalle>) detalleVentaList, extraInformation);
 			ticketPrinteService.sendToPrinter(ticketFile);
 			printed = true;
 		} catch (IOException ioe) {

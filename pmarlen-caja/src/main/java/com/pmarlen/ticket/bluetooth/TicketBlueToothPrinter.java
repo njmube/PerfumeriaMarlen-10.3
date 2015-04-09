@@ -4,11 +4,11 @@
  */
 package com.pmarlen.ticket.bluetooth;
 
-import com.pmarlen.caja.control.ApplicationLogic;
 import com.pmarlen.backend.dao.ProductoDAO;
+import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.Producto;
-import com.pmarlen.backend.model.PedidoVenta;
-import com.pmarlen.backend.model.PedidoVentaDetalle;
+import com.pmarlen.caja.control.ApplicationLogic;
 import com.pmarlen.ticket.NumeroCastellano;
 import com.pmarlen.ticket.TicketPrinteService;
 import java.io.*;
@@ -58,7 +58,7 @@ public class TicketBlueToothPrinter implements TicketPrinteService {
 	
 	
 	@Override
-    public Object generateTicket(PedidoVenta pv,ArrayList<PedidoVentaDetalle> pvdList,HashMap<String,String> extraInformation) throws IOException {
+    public Object generateTicket(EntradaSalida pv,ArrayList<EntradaSalidaDetalle> pvdList,HashMap<String,String> extraInformation) throws IOException {
         String tiketPrinted = null;
         PrintStream psPrintTicket = null;
         ProductoDAO productoDAO=null;
