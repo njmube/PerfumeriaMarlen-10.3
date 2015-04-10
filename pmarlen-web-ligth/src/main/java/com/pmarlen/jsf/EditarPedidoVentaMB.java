@@ -109,19 +109,20 @@ public class EditarPedidoVentaMB{
 	}
 
 	public String editar(int pedidoVentaID){
+		logger.info("--------------------------------<<<<<< inicio Editar");
 		logger.info("pedidoVentaID="+pedidoVentaID);		
 		try {
 			EntradaSalida es4Edit = new EntradaSalida(pedidoVentaID);
-			es4Edit.setTipoMov(30);
 			entradaSalida = EntradaSalidaDAO.getInstance().findBy(es4Edit);
 			logger.info("pedidoVenta="+entradaSalida);
 			entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
 			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
 
-			logger.info("entityList:");
+			logger.info("entityList:--------->>>");
 			for(EntradaSalidaDetalleQuickView pv:entityList){
 				logger.info("\teditar: rowId="+pv.getRowId()+": "+pv.getCantidad()+" X ["+pv.getProductoCodigoBarras()+"]@"+pv.getAlmacenId());
 			}
+			logger.info("entityList:<<<---------");
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			entradaSalida = new EntradaSalidaQuickView();
@@ -152,8 +153,8 @@ public class EditarPedidoVentaMB{
 		
 		actualizarTotales();
 		hayCambios = false;
-		logger.fine("fin Editar");
-		return "/pages/editarEntradaSalida";
+		logger.info("fin Editar");
+		return "/pages/editarPedidoVenta";
 	}
 	
 	public void actualizarCantidadesStockTiempoReal(){

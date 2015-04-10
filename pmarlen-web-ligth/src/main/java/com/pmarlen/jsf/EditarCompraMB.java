@@ -74,20 +74,21 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 	}
 	
 	@Override
-	public String editar(int pedidoVentaID){
-		logger.info("pedidoVentaID="+pedidoVentaID);		
+	public String editar(int compraID){
+		logger.info("--------------------------------<<<<<< inicio Editar");
+		logger.info("compraID="+compraID);		
 		try {
-			EntradaSalida es4Edit = new EntradaSalida(pedidoVentaID);
-			es4Edit.setTipoMov(21);
+			EntradaSalida es4Edit = new EntradaSalida(compraID);
 			entradaSalida = EntradaSalidaDAO.getInstance().findBy(es4Edit);
-			logger.info("pedidoVenta="+entradaSalida);
-			entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
+			logger.info("compra="+entradaSalida);
+			entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(compraID);
 			EntradaSalidaDAO.getInstance().actualizaCantidadPendienteParaOtrosES(entityList);
 
-			logger.info("entityList:");
+			logger.info("entityList:--------->>>");
 			for(EntradaSalidaDetalleQuickView pv:entityList){
-				logger.info("\teditar: rowId="+pv.getRowId()+": ["+pv.getCantidad()+"]"+pv.getProductoCodigoBarras());
+				logger.info("\teditar: rowId="+pv.getRowId()+": "+pv.getCantidad()+" X ["+pv.getProductoCodigoBarras()+"]@"+pv.getAlmacenId());
 			}
+			logger.info("entityList:<<<---------");
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			entradaSalida = new EntradaSalidaQuickView();
@@ -118,7 +119,8 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 		
 		actualizarTotales();
 		hayCambios = false;
-		logger.fine("fin Editar");
+		logger.info("fin Editar");
+		logger.info("-------------------------------->>>>>>> fin Editar");
 		return "/pages/editarCompra";
 	}
 
