@@ -398,7 +398,7 @@ public class EditarPedidoVentaMB{
 			logger.info("->onRowReorder["+(i++)+"]:\t + "+d.getCantidad()+" ["+d.getProductoCodigoBarras()+"]@"+d.getAlmacenId());
 		}
 		hayCambios = true;
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "RENGLÓN MOVIDO EN DETALLE", "DE " + (event.getFromIndex()+1) + " A " + (event.getToIndex()+1));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	

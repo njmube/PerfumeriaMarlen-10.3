@@ -329,7 +329,8 @@ public class EntradaSalidaDAO {
 					+ "AND    ESD.PRODUCTO_CODIGO_BARRAS = P.CODIGO_BARRAS\n"
 					+ "AND    ESD.PRODUCTO_CODIGO_BARRAS = AP.PRODUCTO_CODIGO_BARRAS\n"
 					+ "AND    AP.ALMACEN_ID=A.ID\n"
-					+ "AND    A.ID=ESD.ALMACEN_ID");
+					+ "AND    A.ID=ESD.ALMACEN_ID\n"
+					+ "ORDER BY ESD.ID");
 
 			ps.setInt(1, pedidoVentaId);
 
@@ -357,6 +358,8 @@ public class EntradaSalidaDAO {
 				x.setApUbicacion(rs.getString("UBICACION"));
 
 				x.setRowId(ct++);
+				
+				logger.info("\t==>>"+x.getCantidad()+" X ["+x.getProductoCodigoBarras()+"] @ "+x.getAlmacenId());
 				r.add(x);
 			}
 

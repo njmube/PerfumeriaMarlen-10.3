@@ -371,22 +371,21 @@
 							<p:confirm header="VERIFICAR" message="¿ SEGURO QUE YA HA VERIFICADO TODOS LOS ELEMENTOS ?" icon="ui-icon-alert" />
 						</p:commandButton>
 
-						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.surtible)}"  
+						<p:commandButton value="OK, SE AUTORIZA SURTIRSE (ENTRADA ALMACEN)" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.surtible)}"  
 										 actionListener="#{editarDevolucionMB.surtir}" process="@all" update="@all">
-							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
+							<p:confirm header="SURTIRSE ENTRADA" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE (ENTRADA ALMACEN) ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>
-							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.facturable)}"  
-											 disabled="#{editarDevolucionMB.actualizarEstadoPorResultadoWS}"
+							<p:commandButton value="GENERAR C.F.D. NOTA CRÉDITO" icon="ui-icon-contact" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.facturable)}"  
+											 disabled="true"
 											 actionListener="#{editarDevolucionMB.generaCFDReal}" process="@all" update="@all">
-								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
+								<p:confirm header="GENERAR C.F.D. N.C." message="¿ SEGURO QUE TODO ESTA LISTO PARA GENERAR LA NOTA DE CRÉDITO ?" icon="ui-icon-alert" />
 							</p:commandButton>
-
 						</h:panelGroup>
 						
-						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.cancelable)}" 
+						<p:commandButton value="CANCELAR DEVOLUCIÓN" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarDevolucionMB.hayCambios and editarDevolucionMB.cancelable)}" 
 										 process="@all" update="@all">
-							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR EL PEDIDO ?" icon="ui-icon-alert" />
+							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR LA DEVOLUCIÓN ?" icon="ui-icon-alert" />
 						</p:commandButton>
 												
 						<h:panelGrid columns="2" rendered="#{editarDevolucionMB.hayCambios}" columnClasses="columnWidth50 centerAlign, columnWidth50 centerAlign" width="100%">
@@ -397,7 +396,7 @@
 							
 							<p:commandButton value="CANCELAR CAMBIOS Y RECARGAR" actionListener="#{editarDevolucionMB.cancelarCambios}" oncomplete="updateComponentsOnWindowResize();"
 											 process="@all" update="@all" icon="ui-icon-cancel">
-								<p:confirm header="CANCELAR CAMBIOS Y RECARGAR" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS ? SE RECARGARIA EL PEDIDO" icon="ui-icon-alert" />
+								<p:confirm header="CANCELAR CAMBIOS Y RECARGAR" message="¿ SEGURO QUE QUIERE CANCELAR CAMBIOS ? SE RECARGARIA LA DEVOLUCIÓN" icon="ui-icon-alert" />
 							</p:commandButton>
 							
 						</h:panelGrid>
