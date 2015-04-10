@@ -36,10 +36,8 @@
 					
 					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<h:outputLink value="editarPedidoVenta.jsf" >
-								<h:outputText value="#{pv.id}" />
-								<p:ajax event="click" listener="#{historicoPedidosVentaMB.editarPedido(pv.id)}"/>
-							</h:outputLink>							
+							<p:commandButton action="#{historicoPedidosVentaMB.editarPedidoAction(pv.id)}" value="#{pv.id}"/>
+
 							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
 								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
 							</h:outputLink>

@@ -70,13 +70,7 @@ public class HistoricoComprasMB  {
 		return compras;
 	}
 	
-	public String editarCompra(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarCompraMB.editar(pedidoVentaId);
-		return "/pages/editarCompra";
-	}
-	
-	public void onEditarPedido(int pedidoVentaId){
+	public void editarCompra(int pedidoVentaId){
 		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
 		editarCompraMB.editar(pedidoVentaId);
 	}

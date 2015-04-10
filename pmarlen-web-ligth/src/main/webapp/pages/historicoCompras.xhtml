@@ -36,11 +36,10 @@
 					
 					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<h:outputLink value="editarPedidoVenta.jsf" >
+							<h:outputLink value="editarCompra.jsf" >
 								<h:outputText value="#{pv.id}" />
 								<p:ajax event="click" listener="#{historicoComprasMB.editarCompra(pv.id)}"/>
-							</h:outputLink>							
-							
+							</h:outputLink>														
 						</p:panelGrid>
 					</p:column>
 					

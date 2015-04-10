@@ -68,15 +68,9 @@ public class ComprasMB  {
 		return compras;
 	}
 	
-	public String editarCompra(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarCompraMB.editar(pedidoVentaId);
-		return "/pages/editarCompra";
-	}
-	
-	public void onEditarPedido(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarCompraMB.editar(pedidoVentaId);
+	public void editarCompra(int compraId){
+		logger.config("->editarCompra:compraId="+compraId);
+		editarCompraMB.editar(compraId);
 	}
 	
 	public int getSizeList(){

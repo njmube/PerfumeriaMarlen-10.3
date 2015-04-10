@@ -76,6 +76,7 @@ public class EditarDevolucionMB extends EditarPedidoVentaMB{
 	@Override
 	public String editar(int devolucionID){
 		logger.info("--------------------------------<<<<<< inicio Editar");
+		validarSiEstabaEditandoOtro("PEDIDO");
 		logger.info("devolucionID="+devolucionID);		
 		try {
 			EntradaSalida es4Edit = new EntradaSalida(devolucionID);
@@ -115,7 +116,7 @@ public class EditarDevolucionMB extends EditarPedidoVentaMB{
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
-		conservarBusqueda = false;
+		conservarBusqueda = true;
 		
 		actualizarTotales();
 		hayCambios = false;

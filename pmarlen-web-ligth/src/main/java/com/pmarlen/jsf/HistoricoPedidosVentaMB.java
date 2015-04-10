@@ -32,10 +32,10 @@ import org.primefaces.event.ReorderEvent;
 @ManagedBean(name="historicoPedidosVentaMB")
 @SessionScoped
 public class HistoricoPedidosVentaMB {
-	private transient static Logger logger = Logger.getLogger("historicoPedidosVentaMB");
+	private transient static Logger logger = Logger.getLogger(HistoricoPedidosVentaMB.class.getName());
 	
-	@ManagedProperty(value = "#{editarEntradaSalidaMB}")
-	private EditarPedidoVentaMB editarEntradaSalidaMB;	
+	@ManagedProperty(value = "#{editarPedidoVentaMB}")
+	private EditarPedidoVentaMB editarPedidoVentaMB;	
 	
 	ArrayList<EntradaSalidaQuickView> pedidosVentas;
 	private int viewRows;
@@ -51,10 +51,10 @@ public class HistoricoPedidosVentaMB {
 		pedidosVentas=null;		
 	}
 
-	public void setEditarEntradaSalidaMB(EditarPedidoVentaMB editarEntradaSalidaMB) {
-		this.editarEntradaSalidaMB = editarEntradaSalidaMB;
-	}	
-
+	public void setEditarPedidoVentaMB(EditarPedidoVentaMB editarPedidoVentaMB) {
+		this.editarPedidoVentaMB = editarPedidoVentaMB;
+	}
+	
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
 		if(pedidosVentas == null) {
 			try {
@@ -69,17 +69,11 @@ public class HistoricoPedidosVentaMB {
 		return pedidosVentas;
 	}
 	
-	public String editarPedido(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
-		return "/pages/editarEntradaSalida";
+	public String editarPedidoAction(int pedidoVentaId){
+		logger.info("->editarPedidoAction:pedidoVentaId="+pedidoVentaId);
+		return editarPedidoVentaMB.editar(pedidoVentaId);
 	}
-	
-	public void onEditarPedido(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarEntradaSalidaMB.editar(pedidoVentaId);
-	}
-	
+		
 	public int getSizeList(){
 		logger.fine("->getSizeList()");
 		return getPedidosVentas().size();

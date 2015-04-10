@@ -156,12 +156,6 @@
 								<h:outputLink id="pdfLink2" value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarCompraMB.compra.id}.pdf" target="_blank" rendered="false">
 									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA INTERNA (PARA ALMACÉN) DE VENTA ##{pv.id}"/>
 								</h:outputLink>
-								<p:spacer width="10"/>
-								<p:button href="/docs/notas/Nota_PerfumeriaMarlen_No_#{editarCompraMB.compra.id}.pdf" 
-										  target="_blank" icon="ui-icon-document"  title="PDF NOTA DE VENTA ##{pv.id}" />
-								<p:spacer width="10"/>
-								<p:button href="/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarCompraMB.compra.id}.pdf" 
-										  target="_blank" icon="ui-icon-document"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
 								
 							</f:facet>
 
@@ -181,14 +175,7 @@
 								<h:outputText value="#{pvd.cantidad}" rendered="#{editarCompraMB.tableDraggableEnabled or not (editarCompraMB.verificable or editarCompraMB.surtible)}"/>
 								
 								<h:panelGroup rendered="#{not editarCompraMB.tableDraggableEnabled and (editarCompraMB.verificable or editarCompraMB.surtible)}">
-									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
-												 rendered="#{pvd.cantidad le pvd.apCantidad}">
-										<f:convertNumber integerOnly="true" />
-										<f:validateLongRange minimum="1" maximum="99999"/>
-									</h:inputText>
-									
-									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" 
-												 rendered="#{pvd.cantidad gt pvd.apCantidad}" style="#{editarCompraMB.estiloInsuficiente}" title="NO SE PODRA SURTIR PEDIDO HASTA QUE HAYA SUFICIENTE">
+									<h:inputText value="#{pvd.cantidad}" size="2" validatorMessage="LA CANTIDAD ES INCORRECTA, DEBE SER > 0" converterMessage="DEBE SER UN NUMERO ENTERO > 0" >
 										<f:convertNumber integerOnly="true" />
 										<f:validateLongRange minimum="1" maximum="99999"/>
 									</h:inputText>

@@ -81,6 +81,7 @@ public class EditarPedidoVentaMB{
 	protected boolean hayCambios = false;
 	@ManagedProperty(value = "#{sessionUserMB}")
 	protected SessionUserMB sessionUserMB;
+	protected int ultimoESId=0;
 	
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
@@ -105,11 +106,13 @@ public class EditarPedidoVentaMB{
 		autorizaDescuento = true;
 		tablaExpandida = false;
 		tableDraggableEnabled = false;
+		ultimoESId=0;
 		logger.info("OK init");
 	}
 
 	public String editar(int pedidoVentaID){
 		logger.info("--------------------------------<<<<<< inicio Editar");
+		validarSiEstabaEditandoOtro("PEDIDO");
 		logger.info("pedidoVentaID="+pedidoVentaID);		
 		try {
 			EntradaSalida es4Edit = new EntradaSalida(pedidoVentaID);
@@ -149,13 +152,24 @@ public class EditarPedidoVentaMB{
 		cadenaBusqueda = null;
 		resultadoBusqueda = null;
 		resultadoBusquedaList = null;
-		conservarBusqueda = false;
+		conservarBusqueda = true;
 		
 		actualizarTotales();
 		hayCambios = false;
 		logger.info("fin Editar");
+		ultimoESId=pedidoVentaID;
 		return "/pages/editarPedidoVenta";
 	}
+	
+	protected void validarSiEstabaEditandoOtro(String tipoES){
+		if(ultimoESId != 0 && hayCambios){
+			logger.warning("Estaba editando #"+entradaSalida.getId());
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"ADVERTENCIA AL EDITAR ",
+					"ESTABA EDITANDO "+tipoES+" #"+entradaSalida.getId()+", ¡ Y NO GUARDO !, AL EDITAR ESTE SE PERDIERON LOS CAMBIOS EN LA EDICÓN ANTERIOR") );		
+		}
+	}
+	
 	
 	public void actualizarCantidadesStockTiempoReal(){
 		try {
@@ -168,6 +182,7 @@ public class EditarPedidoVentaMB{
 
 	public String reset() {
 		logger.info("->EntradaSalidaDetalleMB: rest.");
+		hayCambios=false;
 		editar(this.entradaSalida.getId());
 		prepareDownload();
 		return "/pages/cliente";
