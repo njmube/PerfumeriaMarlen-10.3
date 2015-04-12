@@ -331,7 +331,7 @@
 			</build>
 			
 			<properties>
-				<environment.stage>deve</environment.stage>
+				<environment.stage>test</environment.stage>
 				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
 				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
