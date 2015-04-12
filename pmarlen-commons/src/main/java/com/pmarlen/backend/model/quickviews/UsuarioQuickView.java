@@ -23,6 +23,13 @@ public class UsuarioQuickView extends Usuario{
 	private String passwordConfirm;
 	private boolean editPassword;
 
+	private boolean inRoleRoot;
+	private boolean inRoleAdmin;
+	private boolean inRoleFinances;
+	private boolean inRolePMarlenUser;
+	private boolean inRoleSales;
+	private boolean inRoleStock;
+	
 	public UsuarioQuickView() {
 		perfiles = new ArrayList<PerfiQuickView>();
 		passwordConfirm = null;
@@ -52,175 +59,139 @@ public class UsuarioQuickView extends Usuario{
 		return editPassword;
 	}
 	
-	public void addPerfil(String perfil){
-		perfiles.add(new PerfiQuickView(perfil));
+	/**
+	 * @return the inRoleRoot
+	 */
+	public boolean isInRoleRoot() {
+		return inRoleRoot;
 	}
 
-	public List<PerfiQuickView> getPerfiles() {
-		return perfiles;
-	}
-	private List<UsuarioQuickView> listForRenderRoles;
-	
-	public List<UsuarioQuickView> getListForRenderRoles(){
-		if(listForRenderRoles ==null){
-			listForRenderRoles = new  ArrayList<UsuarioQuickView>();
-			listForRenderRoles.add(this);
-		}
-		return listForRenderRoles;
-	}
-	
-	public boolean isInRoleAdmin(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_ADMIN)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void setInRoleAdmin(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_ADMIN)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_ADMIN));
-		}
-	}
-	
-	public boolean isInRoleRoot(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_ROOT)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void setInRoleRoot(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_ROOT)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_ROOT));
-		}
+	/**
+	 * @param inRoleRoot the inRoleRoot to set
+	 */
+	public void setInRoleRoot(boolean inRoleRoot) {
+		this.inRoleRoot = inRoleRoot;
 	}
 
-	public boolean isInRoleFinances(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_FINANCES)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void setInRoleFinances(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_FINANCES)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_FINANCES));
-		}
+	/**
+	 * @return the inRoleAdmin
+	 */
+	public boolean isInRoleAdmin() {
+		return inRoleAdmin;
 	}
 
-	public boolean isInRolePMarlenUser(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_PMARLENUSER)) {
-				return true;
-			}
-		}
-		return false;
+	/**
+	 * @param inRoleAdmin the inRoleAdmin to set
+	 */
+	public void setInRoleAdmin(boolean inRoleAdmin) {
+		this.inRoleAdmin = inRoleAdmin;
 	}
-	
-	public void setInRolePMarlenUser(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_PMARLENUSER)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_PMARLENUSER));
+
+	/**
+	 * @return the inRoleFinances
+	 */
+	public boolean isInRoleFinances() {
+		return inRoleFinances;
+	}
+
+	/**
+	 * @param inRoleFinances the inRoleFinances to set
+	 */
+	public void setInRoleFinances(boolean inRoleFinances) {
+		this.inRoleFinances = inRoleFinances;
+	}
+
+	/**
+	 * @return the inRolePMarlenUser
+	 */
+	public boolean isInRolePMarlenUser() {
+		return inRolePMarlenUser;
+	}
+
+	/**
+	 * @param inRolePMarlenUser the inRolePMarlenUser to set
+	 */
+	public void setInRolePMarlenUser(boolean inRolePMarlenUser) {
+		this.inRolePMarlenUser = inRolePMarlenUser;
+	}
+
+	/**
+	 * @return the inRoleSales
+	 */
+	public boolean isInRoleSales() {
+		return inRoleSales;
+	}
+
+	/**
+	 * @param inRoleSales the inRoleSales to set
+	 */
+	public void setInRoleSales(boolean inRoleSales) {
+		this.inRoleSales = inRoleSales;
+	}
+
+	/**
+	 * @return the inRoleStock
+	 */
+	public boolean isInRoleStock() {
+		return inRoleStock;
+	}
+
+	/**
+	 * @param inRoleStock the inRoleStock to set
+	 */
+	public void setInRoleStock(boolean inRoleStock) {
+		this.inRoleStock = inRoleStock;
+	}
+
+	public void addPerfil(String perfil) {
+		if(perfil.equalsIgnoreCase(Constants.PERFIL_ROOT)){
+			inRoleRoot = true;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_ADMIN)){
+			inRoleAdmin = true;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_FINANCES)){
+			inRoleFinances = true;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_PMARLENUSER)){
+			inRolePMarlenUser = true;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_SALES)){
+			inRoleSales = true;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_STOCK)){
+			inRoleStock = true;
 		}
 	}
 
-	public boolean isInRoleSales(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_SALES)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void setInRoleSales(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_SALES)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_SALES));
+	public void removePerfil(String perfil) {
+		if(perfil.equalsIgnoreCase(Constants.PERFIL_ROOT)){
+			inRoleRoot = false;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_ADMIN)){
+			inRoleAdmin = false;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_FINANCES)){
+			inRoleFinances = false;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_PMARLENUSER)){
+			inRolePMarlenUser = false;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_SALES)){
+			inRoleSales = false;
+		} else if(perfil.equalsIgnoreCase(Constants.PERFIL_STOCK)){
+			inRoleStock = false;
 		}
 	}
 	
-	public boolean isInRoleStock(){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_STOCK)) {
-				return true;
-			}
+	public List<String> getRoleList(){
+		List<String> rolesList=new ArrayList<String>();
+		
+		if(inRoleRoot){
+			rolesList.add(Constants.PERFIL_ROOT);
+		} else if(inRoleAdmin){
+			rolesList.add(Constants.PERFIL_ADMIN);
+		} else if(inRoleFinances){
+			rolesList.add(Constants.PERFIL_FINANCES);			
+		} else if(inRolePMarlenUser){
+			rolesList.add(Constants.PERFIL_PMARLENUSER);
+		} else if(inRoleSales){
+			rolesList.add(Constants.PERFIL_SALES);
+		} else if(inRoleStock){
+			rolesList.add(Constants.PERFIL_STOCK);
 		}
-		return false;
+		
+		return rolesList;
 	}
-	
-	public void setInRoleStock(){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(Constants.PERFIL_STOCK)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(Constants.PERFIL_STOCK));
-		}
-	}
-	//--------------------------------------------------------------------------
-	public boolean isInRole(String role){
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(role)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void setInRole(String role){
-		boolean exist=false;
-		for(PerfiQuickView pqv: perfiles){
-			if(pqv.getPerfil().equalsIgnoreCase(role)) {
-				exist=true;
-				break;
-			}
-		}
-		if(!exist){
-			perfiles.add(new PerfiQuickView(role));
-		}
-	}
-	
 }

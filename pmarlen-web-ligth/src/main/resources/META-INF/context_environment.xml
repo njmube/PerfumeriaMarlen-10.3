@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context allowLinking="true" antiJARLocking="true" crossContext="true" path="/pmarlen-web-ligth" reloadable="true">
 <!--
-	parent.version = 10.3
-	environment    = deve
-	url            = jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true
-	jndi           = jdbc/PMDB103_DEVE_DS
-	user           = PMDB103_DEVE_USR
-	password       = PMDB103_DEVE_PWD	
+	parent.version = ${project.parent.version}
+	environment    = ${environment.stage}
+	url            = ${environment.jdbc.url}
+	jndi           = ${environment.jdbc.jndi}
+	user           = ${environment.jdbc.user}
+	password       = ${environment.jdbc.password}	
 -->
 
   <Resource auth="Container" 
@@ -18,21 +18,21 @@
 			maxIdle="8" 
 			maxWait="20000" 
 			minIdle="4" 
-			name="jdbc/PMDB103_DEVE_DS" 
-			password="PMDB103_DEVE_PWD" 
+			name="${environment.jdbc.jndi}" 
+			password="${environment.jdbc.password}" 
 			removeAbandoned="true" 
 			removeAbandonedTimeout="60" 
 			testOnBorrow="true" 
 			testWhileIdle="true" 
 			timeBetweenEvictionRunsMillis="5000" 
 			type="javax.sql.DataSource" 
-			url="jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true" 
-			username="PMDB103_DEVE_USR" 
+			url="${environment.jdbc.url}" 
+			username="${environment.jdbc.user}" 
 			validationQuery="select 1"/>
   <Realm className="org.apache.catalina.realm.JDBCRealm" 
-		 connectionName="PMDB103_DEVE_USR" 
-		 connectionPassword="PMDB103_DEVE_PWD" 
-		 connectionURL="jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true" 
+		 connectionName="${environment.jdbc.user}" 
+		 connectionPassword="${environment.jdbc.password}" 
+		 connectionURL="${environment.jdbc.url}" 
 		 digest="MD5" 
 		 driverName="com.mysql.jdbc.Driver" 
 		 roleNameCol="PERFIL" 

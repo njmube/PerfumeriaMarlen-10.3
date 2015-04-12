@@ -100,7 +100,7 @@ public class UsuarioMB  {
 		
 	}
 
-	public Usuario getSelectedEntity() {
+	public UsuarioQuickView getSelectedEntity() {
 		return selectedEntity;
 	}
 	

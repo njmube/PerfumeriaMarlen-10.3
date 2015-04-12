@@ -4,6 +4,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+<!--
+	parent.version = ${project.parent.version}
+	environment    = ${environment.stage}
+	url            = ${environment.jdbc.url}
+	jndi           = ${environment.jdbc.jndi}
+	user           = ${environment.jdbc.user}
+	password       = ${environment.jdbc.password}
+-->
 
     <f:view contentType="text/html">
         <h:head>
@@ -26,7 +34,7 @@
 					<h:panelGrid columns="3" columnClasses="columnWidth10 centerAlign, columnWidth80 leftAlign,columnWidth10 centerAlign ">
 						
 						<h:outputLink id="link1" value="#{request.contextPath}/pages/home.jsf">
-							<p:graphicImage value="/images/turboload/Logo_T3.gif" alt="(LOGO)" title="PERFUMERIA-MARLEN > INICIO"/>
+							<p:graphicImage value="/images/Logo_T3.gif" alt="(LOGO)" title="PERFUMERIA-MARLEN > INICIO"/>
 						</h:outputLink>
 						
 						<h:panelGrid columns="1">
@@ -34,8 +42,7 @@
 								<h:outputText value="PERFUMERIA MARLEN S.A. DE C.V."	style="font: normal 80% 'News Cycle', arial, sans-serif;"/>								
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputText value="DISTRIBUCIONES"		style="font: normal 50%  'News Cycle', arial, sans-serif;"/>							
-								<h:outputText value=" ---(PRUEBAS)---"	style="font: normal 60%  'News Cycle', arial, sans-serif; color: red"/>
+								<h:outputText value="DISTRIBUCIONES"		style="font: normal 50%  'News Cycle', arial, sans-serif;"/>
 							</h:panelGroup>
 							
 						</h:panelGrid>
@@ -78,7 +85,7 @@
 								<p:menuitem value="HISTORICO" url="/pages/historicoDevoluciones.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="MERMAS" icon="ui-icon-trash">
+							<p:submenu label="MERMAS" icon="ui-icon-trash" rendered="false">
 								<p:menuitem value="NUEVA" url="/pages/pendiente.jsf" icon="ui-icon-cart"/>
 								<p:menuitem value="EN PROCESO" url="/pages/pendiente.jsf" icon="ui-icon-calculator"/>
 								<p:menuitem value="HISTORICO" url="/pages/pendiente.jsf" icon="ui-icon-clock"/>
@@ -120,22 +127,21 @@
 								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star" rendered="#{sessionUserMB.adminUser}"/>
 							</p:submenu>
 							
-							
 						</p:submenu>
 
 						<p:submenu label="CONTROL" icon="ui-icon-locked">
-							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock"></p:menuitem>
-							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"></p:menuitem>
-							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power"></p:menuitem>
-							<p:menuitem value="SQL" url="/pages/pendiente.jsf" icon="ui-icon-disk"></p:menuitem>
-							<p:menuitem value="RESPALDO" url="/pages/pendiente.jsf" icon="ui-icon-alert"></p:menuitem>
+							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock"  rendered="#{sessionUserMB.adminUser}"></p:menuitem>
+							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"  rendered="#{sessionUserMB.adminUser}" ></p:menuitem>
+							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power"  rendered="#{sessionUserMB.rootUser}"></p:menuitem>
+							<p:menuitem value="SQL" url="/pages/pendiente.jsf" icon="ui-icon-disk" rendered="#{sessionUserMB.rootUser}"></p:menuitem>
+							<p:menuitem value="RESPALDO" url="/pages/pendiente.jsf" icon="ui-icon-alert"  rendered="#{sessionUserMB.rootUser}"></p:menuitem>
 						</p:submenu>
 
 						<f:facet name="options">
 							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}" >
 								<p:menuitem value="AYUDA" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-help"/>
 								<p:menuitem value="INFORMACIÓN USUARIO" url="/logout" icon="ui-icon-contact" />
-								<p:menuitem value="WEB-MAIL" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-mail-closed"/>
+								<p:menuitem value="WEB-MAIL" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-mail-closed"  rendered="#{sessionUserMB.systemAccesible}"/>
 								<p:menuitem value="SALIR" url="/logout" icon="ui-icon-extlink" />
 							</p:menuButton>
 						</f:facet>
@@ -168,10 +174,11 @@
 			<br/>
 			<br/>
 			
-			<h:panelGroup class="footer-bar">
+			<h:panelGroup class="footer-bar-#{systemInfoMB.environment}">
 				<h:form>
 					<h:panelGrid columns="2" columnClasses="columnWidth95 centerAlign, columnWidth5 rightAlign" width="100%">
-						<h:outputText value="Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" title="Git RevID: #{systemInfoMB.gitSHA1}" />
+						<h:outputText	value="Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" 
+										title="( #{systemInfoMB.environment} ) Git RevID: #{systemInfoMB.gitSHA1}" />
 						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
 					</h:panelGrid>
 					

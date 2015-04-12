@@ -1,10 +1,11 @@
+<%@page import="com.pmarlen.web.security.managedbean.SystemInfoMB"%>
+<%@page import="com.pmarlen.model.Constants"%>
 <%@ page pageEncoding="UTF-8" %>
 <%
 	long to = request.getSession().getMaxInactiveInterval()*1000 + 3000;	
 	System.out.println("login.jsp->["+request.getSession().getId()+"]: timeOut="+(to/1000)+" secs. ="+((to/1000/60.0))+" mins.");
-
 %>
-<%@page import="com.pmarlen.model.Constants"%>
+
 
 <html>
     <head>
@@ -17,9 +18,8 @@
 			setTimeout("location.href = redirectURL;",redirectTime);
 		}
 		//   -->
-		</script>
-		
-
+		</script>		
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/default.css">
     </head>
 
     <body style="background-color: #DCEBF2;" onload="timedRedirect();">	
@@ -88,11 +88,13 @@
 			<br/>
 			<br/>
 			<br/>
-			<p style="text-align: center; font-size: small;">
-				Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. <%=Constants.getServerVersion()%> / Construido: <%=Constants.getBuildTimestamp()%> / GitRevId [<%=Constants.getGitSHA1()%>]
-			</p>
 		</td>
 	</tr>
 </table>
+
+<div class="footer-bar-<%=SystemInfoMB.getEnvironmentStaticlay()%>" title="( <%=SystemInfoMB.getEnvironmentStaticlay()%> ) Git RevID: <%=Constants.getGitSHA1()%>">
+	Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. <%=Constants.getServerVersion()%> / Construido: <%=Constants.getBuildTimestamp()%>
+</div>
+
 </body>	
 </html>

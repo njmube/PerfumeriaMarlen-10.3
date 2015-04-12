@@ -25,6 +25,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;	
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -292,35 +293,51 @@ public class UsuarioDAO {
 		return r;		
 	};
     
-    public int insert(Usuario x) throws DAOException {
-		PreparedStatement ps = null;
+    public int insert(UsuarioQuickView x) throws DAOException {
+		PreparedStatement ps   = null;
+		PreparedStatement psUP = null;
 		int r = -1;
 		Connection conn = null;
 		try {
-			conn = getConnection();
+			conn = getConnectionCommiteable();
 			ps = conn.prepareStatement("INSERT INTO USUARIO(EMAIL,ABILITADO,NOMBRE_COMPLETO,PASSWORD) "+
-					" VALUES(?,?,?,?)"
-					,Statement.RETURN_GENERATED_KEYS);			
+					" VALUES(?,?,?,?)");			
+			psUP = conn.prepareStatement("INSERT INTO USUARIO_PERFIL(EMAIL,PERFIL) VALUES(?,?)");			
+			
+			r = ps.executeUpdate();					
+
 			int ci=1;
+			
 			ps.setObject(ci++,x.getEmail());
 			ps.setObject(ci++,x.getAbilitado());
 			ps.setObject(ci++,x.getNombreCompleto());
 			ps.setObject(ci++,x.getPassword());
 
-			r = ps.executeUpdate();					
-			ResultSet rsk = ps.getGeneratedKeys();
-			if(rsk != null){
-				while(rsk.next()){
-					x.setEmail((String)rsk.getObject(1));
-				}
+			r = ps.executeUpdate();
+			
+			List<String> roleList = x.getRoleList();
+			for(String rol: roleList){
+				psUP.clearParameters();
+				psUP.setString(1, x.getEmail());
+				psUP.setString(2, rol);
+				psUP.executeUpdate();
 			}
+			conn.commit();
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
-			throw new DAOException("InUpdate:" + ex.getMessage());
+			try {
+				if(conn!=null){
+					conn.rollback();
+				}
+			} catch(SQLException re){
+				logger.log(Level.SEVERE, "SQLException:", re);
+			}
+			throw new DAOException("InInsert:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
 				try{				
 					ps.close();
+					psUP.close();
 					conn.close();
 				}catch(SQLException ex) {
 					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
@@ -331,14 +348,17 @@ public class UsuarioDAO {
 		return r;
 	}
 
-	public int update(Usuario x) throws DAOException {		
+	public int update(UsuarioQuickView x) throws DAOException {		
 		PreparedStatement ps = null;
+		PreparedStatement psUP = null;
 		int r= -1;
 		Connection conn = null;
 		try {
-			conn = getConnection();
+			conn = getConnectionCommiteable();
 			ps = conn.prepareStatement("UPDATE USUARIO SET ABILITADO=?,NOMBRE_COMPLETO=?,PASSWORD=? "+
 					" WHERE EMAIL=?");
+			psUP = conn.prepareStatement("DELETE FROM USUARIO_PERFIL WHERE EMAIL=?");
+			
 			logger.info("->x.email="+x.getEmail());
 			int ci=1;
 			ps.setObject(ci++,x.getAbilitado());
@@ -347,9 +367,31 @@ public class UsuarioDAO {
 			ps.setObject(ci++,x.getEmail());
 			
 			r = ps.executeUpdate();
-			logger.info("->r="+r);
+			
+			psUP.setString(1, x.getEmail());
+			
+			psUP.executeUpdate();
+			psUP.close();
+			
+			psUP = conn.prepareStatement("INSERT INTO USUARIO_PERFIL(EMAIL,PERFIL) VALUES(?,?)");
+			List<String> roleList = x.getRoleList();
+			for(String rol: roleList){
+				psUP.clearParameters();
+				psUP.setString(1, x.getEmail());
+				psUP.setString(2, rol);
+				psUP.executeUpdate();
+			}
+			
+			conn.commit();
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
+			try {
+				if(conn!=null){
+					conn.rollback();
+				}
+			} catch(SQLException re){
+				logger.log(Level.SEVERE, "SQLException:", re);
+			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {

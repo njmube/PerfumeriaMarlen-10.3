@@ -7,10 +7,14 @@ import com.pmarlen.backend.model.UsuarioPerfil;
 import com.pmarlen.model.Constants;
 import com.pmarlen.web.servlet.ContextAndSessionListener;
 import com.pmarlen.web.servlet.SessionInfo;
+import com.tracktopell.jdbc.DataSourceFacade;
+import com.tracktopell.jdbc.WEBDataSourceFacade;
+import java.io.IOException;
 import java.io.Serializable;
 
 import java.text.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -23,10 +27,18 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name="systemInfoMB")
 @SessionScoped
 public class SystemInfoMB  implements Serializable{
-
+	private static String environment=null;
 	private static final transient Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
 	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
+	private static Properties prop = new Properties();
+	static{
+		try {
+			prop.load(WEBDataSourceFacade.class.getResourceAsStream("/env_vars.properties"));
+		}catch(IOException ioe){
+			logger.log(Level.SEVERE, "Properties not found:", ioe);
+		}
+	}
+	
 	public String getSystemVersion() {
 		return Constants.getServerVersion();
 	}
@@ -48,7 +60,17 @@ public class SystemInfoMB  implements Serializable{
 	public void updateTime(){
 		sessionDate= sdf.format(new Date());
 	}
-
+	
+	public String getEnvironment(){
+		return getEnvironmentStaticlay();
+	}
+	
+	public static String getEnvironmentStaticlay(){
+		if(environment == null){
+			environment=prop.getProperty("environment");
+		}
+		return environment;
+	}
 
 
 }

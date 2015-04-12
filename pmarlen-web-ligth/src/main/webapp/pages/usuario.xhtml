@@ -86,7 +86,8 @@
 						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
 										 actionListener="#{usuarioMB.setSelectedEntity(usuario)}" 
 										 icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
-										 title="EDITAR DATOS DEL CLIENTE"/>
+										 title="EDITAR DATOS DEL USUARIO" rendered="#{sessionUserMB.adminUser}"
+										 disabled="#{usuario.inRoleRoot and not sessionUserMB.rootUser}"/>
 
 					</p:column>
 					
@@ -179,11 +180,9 @@
 						<h:outputLabel value="CONFIRMAR CONTRASEÑA:" style="font-weight:bold" />
 						<p:password id="usuario_password_confirm" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" redisplay="true"/>
 						<p:message   for="usuario_password_confirm"  showDetail="true"/>
-						
-						
-						<!--
+
 						<h:outputLabel value="PERFILES:" style="font-weight:bold" />
-						<h:panelGrid columns="6" id="usuario_perfiles">
+						<p:panelGrid columns="6" id="usuario_perfiles" >
 							<h:outputText value="SA"/>
 							<h:outputText value="PM"/>
 							<h:outputText value="AD"/>
@@ -191,17 +190,16 @@
 							<h:outputText value="AL"/>
 							<h:outputText value="VE"/>
 							
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleRoot}" />
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRolePMarlenUser}" />
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleAdmin}" />
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleFinances}" />
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleStock}" />
-							<p:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleSales}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleRoot}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRolePMarlenUser}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleAdmin}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleFinances}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleStock}" />
+							<h:selectBooleanCheckbox value="#{usuarioMB.selectedEntity.inRoleSales}" />
 							
-							
-						</h:panelGrid>
+						</p:panelGrid>
 						<p:message   for="usuario_perfiles"  showDetail="true"/>
-						-->
+
 					</h:panelGrid>
 
 					<h:panelGrid columns="1" cellpadding="5" width="100%">

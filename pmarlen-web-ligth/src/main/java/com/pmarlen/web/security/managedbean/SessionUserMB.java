@@ -126,6 +126,20 @@ public class SessionUserMB implements Serializable{
 			}
 		}
 	}
+	
+	public boolean isSystemAccesible() {
+		if (usuarioAuthenticated != null) {
+			for(UsuarioPerfil up: usuarioPerfiles){
+				if(up.getPerfil().equals(Constants.PERFIL_PMARLENUSER)){
+					return usuarioAuthenticated.getAbilitado() != 0;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
+
 
 	public boolean isRootUser() {
 		if (usuarioAuthenticated != null) {

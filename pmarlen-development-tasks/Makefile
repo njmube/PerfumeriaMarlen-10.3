@@ -1,19 +1,21 @@
-all: resetDB
-	rm PM*
-	wget http://perfumeriamarlen.dyndns.org:7080/exportPM91-1.0-SNAPSHOT/eb/PM.tgz
+# make init_DB_TEST MYSQL_ROOT_PASSWORD=xxxxxx
+
+resetDB_test:createB_test
+	if [ `find . -name PM*.tgz|wc -l` -gt 0 ]; then rm PM*.*; fi;
+	wget http://perfumeriamarlen.dyndns.org:7080/exportPM91-1.0-SNAPSHOT/eb/PM.tgz -O PM.tgz
 	tar xvfz PM.tgz
-	mysql --default-character-set=utf8 -u root -proot PMARLEN_DB_PROD < PM.sql
-	mvn clean compile exec:java -Dexec.mainClass=com.pmarlen.migration.ImportData -Dexec.args="root root jdbc:mysql://localhost/PMARLEN_DB_PROD?characterEncoding=UTF-8 root root jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8"
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) PMARLEN_DB_PROD < PM.sql
+	mvn clean compile exec:java -Dexec.mainClass=com.pmarlen.migration.ImportData -Dexec.args="root $(MYSQL_ROOT_PASSWORD) jdbc:mysql://localhost/PMARLEN_DB_PROD?characterEncoding=UTF-8 root root jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8"
 
-all_0: resetDB_0
-	rm PM*
-	wget http://perfumeriamarlen.dyndns.org:7080/exportPM91-1.0-SNAPSHOT/eb/PM.tgz
+resetDB_prod:createB_prod
+	if [ `find . -name PM*.tgz|wc -l` -gt 0 ]; then rm PM*.*; fi;
+	wget http://perfumeriamarlen.dyndns.org:7080/exportPM91-1.0-SNAPSHOT/eb/PM.tgz -O PM.tgz
 	tar xvfz PM.tgz
-	mysql --default-character-set=utf8 -u root -ppmarlen01admin PMARLEN_DB_PROD < PM.sql
-	mvn clean compile exec:java -Dexec.mainClass=com.pmarlen.migration.ImportData -Dexec.args="PMARLEN_PROD PMARLEN_PROD_PASSWORD jdbc:mysql://localhost/PMARLEN_DB_PROD?characterEncoding=UTF-8 PMDB103_DEVE_USR PMDB103_DEVE_PWD jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8"
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) PMARLEN_DB_PROD < PM.sql
+	mvn clean compile exec:java -Dexec.mainClass=com.pmarlen.migration.ImportData -Dexec.args="root $(MYSQL_ROOT_PASSWORD) jdbc:mysql://localhost/PMARLEN_DB_PROD?characterEncoding=UTF-8 PMDB103_PROD_USR PMDB103_PROD_PWD jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8"
 
-resetDB:
-	make -C ../pmarlen-commons/db_resources init_DB_DEVE init_DB_PROD MYSQL_ROOT_PASSWORD=root
+createB_test:
+	make -C ../pmarlen-commons/db_resources init_DB_DEVE MYSQL_ROOT_PASSWORD=$(MYSQL_ROOT_PASSWORD)
 
-resetDB_0:
-	make -C ../pmarlen-commons/db_resources init_DB_DEVE init_DB_PROD MYSQL_ROOT_PASSWORD=pmarlen01admin
+createB_prod:
+	make -C ../pmarlen-commons/db_resources init_DB_PROD MYSQL_ROOT_PASSWORD=$(MYSQL_ROOT_PASSWORD)

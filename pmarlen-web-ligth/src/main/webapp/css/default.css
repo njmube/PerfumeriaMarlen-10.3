@@ -24,10 +24,10 @@ body{
 }
 
 .footer-bar {
-	background: none repeat scroll 0 0 darkblue;
+	background: none repeat scroll 0 0 red;
     border-top: 3px solid orange;
 	color: yellow;
-    font: 50% 'Droid Sans',arial,sans-serif;
+    font: 60% 'Droid Sans',arial,sans-serif;
 	width: 100%;
 	left: 0px;
     height: 30px;
@@ -38,6 +38,55 @@ body{
 	position: fixed;
 	display: block;
 }
+
+.footer-bar-deve {
+	background: none repeat scroll 0 0 green;
+    border-top: 3px solid orange;
+	color: yellow;
+    font: 60% 'Droid Sans',arial,sans-serif;
+	width: 100%;
+	left: 0px;
+    height: 30px;
+    margin: 0;
+    padding: 5px 0 0;
+    text-align: center;
+	bottom: 0px;
+	position: fixed;
+	display: block;
+}
+
+.footer-bar-test {
+	background: none repeat scroll 0 0 orange;
+    border-top: 3px solid orange;
+	color: yellow;
+    font: 60% 'Droid Sans',arial,sans-serif;
+	width: 100%;
+	left: 0px;
+    height: 30px;
+    margin: 0;
+    padding: 5px 0 0;
+    text-align: center;
+	bottom: 0px;
+	position: fixed;
+	display: block;
+}
+
+.footer-bar-prod {
+	background: none repeat scroll 0 0 darkblue;
+    border-top: 3px solid orange;
+	color: yellow;
+    font: 60% 'Droid Sans',arial,sans-serif;
+	width: 100%;
+	left: 0px;
+    height: 30px;
+    margin: 0;
+    padding: 5px 0 0;
+    text-align: center;
+	bottom: 0px;
+	position: fixed;
+	display: block;
+}
+
 
 .ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
     padding: 10px 5px;
