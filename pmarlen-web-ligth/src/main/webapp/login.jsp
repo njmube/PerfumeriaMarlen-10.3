@@ -6,7 +6,6 @@
 	System.out.println("login.jsp->["+request.getSession().getId()+"]: timeOut="+(to/1000)+" secs. ="+((to/1000/60.0))+" mins.");
 %>
 
-
 <html>
     <head>
 		<title>PMARLEN</title>
