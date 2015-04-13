@@ -2,7 +2,7 @@
 <Context allowLinking="true" antiJARLocking="true" crossContext="true" path="/pmarlen-web-ligth" reloadable="true">
 <!--
 	parent.version = 10.3
-	environment    = test
+	environment    = deve
 	url            = jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true
 	jndi           = jdbc/PMDB103_DEVE_DS
 	user           = PMDB103_DEVE_USR
