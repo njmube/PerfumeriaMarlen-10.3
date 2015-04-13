@@ -5,21 +5,17 @@ code-update: pom.xml
 
 cloud-prod-redeploy:
 	mvn -pl pmarlen-web-ligth tomcat7:undeploy -P cloud_prod
-	mvn -pl pmarlen-rest-services tomcat7:undeploy -P cloud_prod
 	mvn clean install -P cloud_prod
 	sudo service tomcat7 stop
 	sudo service tomcat7 start
 	mvn -pl pmarlen-web-ligth tomcat7:deploy -P cloud_prod
-	mvn -pl pmarlen-rest-services tomcat7:deploy -P cloud_prod
 
 cloud-test-redeploy:
 	mvn -pl pmarlen-web-ligth tomcat7:undeploy -P cloud_test
-	mvn -pl pmarlen-rest-services tomcat7:undeploy -P cloud_test
 	mvn clean install -P cloud_test
-	~/tomcat7/bin/shutdown.sh
-	~/tomcat7/bin/startup.sh
+	/home/klouduser/apache-tomcat-7.0.59/bin/shutdown.sh
+	/home/klouduser/apache-tomcat-7.0.59/bin/startup.sh
 	mvn -pl pmarlen-web-ligth tomcat7:deploy -P cloud_test
-	mvn -pl pmarlen-rest-services tomcat7:deploy -P cloud_test
 
 local-dev-redeploy:
 	mvn -pl pmarlen-web-ligth tomcat7:undeploy -P local_dev
