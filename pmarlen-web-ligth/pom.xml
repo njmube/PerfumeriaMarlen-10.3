@@ -143,12 +143,12 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			
+			<!--
 			<resource>
 				<directory>src/main/web/WEB-INF/templates</directory>
 				<filtering>true</filtering>				
 			</resource>
-			
+			-->
 		</resources>		
 		
 		<plugins>
