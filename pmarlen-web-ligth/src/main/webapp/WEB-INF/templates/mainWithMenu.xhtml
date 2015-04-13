@@ -96,9 +96,9 @@
 
 						</p:submenu>
 
-						<p:submenu label="ADMINISTRACIÓN" icon="ui-icon-suitcase" >
+						<p:submenu label="ADMINISTRACI&Oacute;N" icon="ui-icon-suitcase" >
 							
-							<p:submenu label="CATÁLOGOS" icon="ui-icon-newwin">
+							<p:submenu label="CAT&Aacute;LOGOS" icon="ui-icon-newwin">
 								<p:menuitem value="PRODUCTOS" url="/pages/producto.jsf" icon="ui-icon-cart"/>						
 								
 								<p:menuitem value="CLIENTES"  url="/pages/cliente.jsf" icon="ui-icon-person"/>
@@ -132,7 +132,7 @@
 						<f:facet name="options">
 							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}" >
 								<p:menuitem value="AYUDA" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-help"/>
-								<p:menuitem value="INFORMACIÓN USUARIO" url="/logout" icon="ui-icon-contact" />
+								<p:menuitem value="INFORMACI&Oacute;N USUARIO" url="/logout" icon="ui-icon-contact" />
 								<p:menuitem value="WEB-MAIL" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-mail-closed"  rendered="#{sessionUserMB.systemAccesible}"/>
 								<p:menuitem value="SALIR" url="/logout" icon="ui-icon-extlink" />
 							</p:menuButton>
@@ -181,7 +181,7 @@
 							$(".txtFoter").css({ "color": 'red'});
 							if(!informeDescinetado) {
 								informeDescinetado = true;
-								alert("SE PERDIÓ LA CONECCIÓN, SE REDIRECCIONARA A LA DIRECCIÓN DE INCIO");
+								alert("SE PERDI&Oacute; LA CONECCI&Oacute;N, SE REDIRECCIONARA A LA DIRECCI&Oacute;N DE INCIO");
 								window.location.href = "#{request.contextPath}/";
 							}
 						}
