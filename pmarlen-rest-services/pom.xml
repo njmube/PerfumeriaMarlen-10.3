@@ -14,6 +14,17 @@
 	<properties>
 		<jackson.version>1.9.13</jackson.version>
 		<jdk.version>1.6</jdk.version>
+	
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+		<environment.stage>deve</environment.stage>
+		<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+		<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
+		<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
+		<environment.jdbc.jndi>jdbc/PMDB103_DEVE_DS</environment.jdbc.jndi>
+		<environment.jdbc.user>PMDB103_DEVE_USR</environment.jdbc.user>
+		<environment.jdbc.password>PMDB103_DEVE_PWD</environment.jdbc.password>
 	</properties>
 
 	<!-- ======================== DEPENDENCIES ==================== -->
@@ -74,35 +85,156 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<!--
+			<resource>
+				<directory>src/main/web/WEB-INF/templates</directory>
+				<filtering>true</filtering>				
+			</resource>
+			-->
+		</resources>		
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8070/manager/text</url>
+					<server>tomcat-7-0-X</server>
+					<path>/pmarlen-rest-services</path>
+				</configuration>
+			</plugin>
+
+			<plugin> 
+				<artifactId>maven-antrun-plugin</artifactId> 
+				<executions> 
+					<execution> 
+						<id>filter-web-config-files</id> 
+						<phase>process-resources</phase> 
+						<configuration> 
+							<tasks> 
+								<echo message="======================= filter-web-config-files, in process-resources phase : version_timeStamp=${version_timeStamp}, environment.stage=${environment.stage} ==============>>>"/>								
+								<copy file="target/classes/META-INF/context_environment.xml" tofile="src/main/webapp/META-INF/context.xml" />
+								<copy file="target/classes/WEB-INF/web_environment.xml" tofile="src/main/webapp/WEB-INF/web.xml" />
+							</tasks> 
+						</configuration> 
+						<goals> 
+							<goal>run</goal> 
+						</goals> 
+					</execution> 
+				</executions> 
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>${basedir}/src/main/webapp</directory>
+							<includes>
+								<include>WEB-INF/templates/*</include>								
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
+		<profile>
+			<id>local_dev</id>
+			<build>
+				<finalName>${artifactId}</finalName>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<url>http://localhost:8070/manager/text</url>
+							<server>tomcat7_dev</server>
+							<path>/pmarlen-rest-services</path>
+						</configuration>
+					</plugin>
+					
+				</plugins>
+			</build>
+			
+			<properties>
+				<environment.stage>deve</environment.stage>
+				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
+				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
+				<environment.jdbc.jndi>jdbc/PMDB103_DEVE_DS</environment.jdbc.jndi>
+				<environment.jdbc.user>PMDB103_DEVE_USR</environment.jdbc.user>
+				<environment.jdbc.password>PMDB103_DEVE_PWD</environment.jdbc.password>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>local_stage</id>
+			<build>
+				<finalName>${artifactId}</finalName>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<url>http://localhost:8080/manager/text</url>
+							<server>tomcat7_stage</server>
+							<path>/pmarlen-rest-services</path>
+						</configuration>
+					</plugin>
+					
+				</plugins>
+			</build>
+			
+			<properties>
+				<environment.stage>prod</environment.stage>
+				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
+				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
+				<environment.jdbc.jndi>jdbc/PMDB103_PROD_DS</environment.jdbc.jndi>
+				<environment.jdbc.user>PMDB103_PROD_USR</environment.jdbc.user>
+				<environment.jdbc.password>PMDB103_PROD_PWD</environment.jdbc.password>
+			</properties>
+		</profile>
+				
 		<profile>
 			<id>cloud_prod</id>
 			<build>
 				<finalName>${artifactId}</finalName>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>2.3.2</version>
-						<configuration>
-							<source>1.6</source>
-							<target>1.6</target>
-						</configuration>
-					</plugin>
 
 					<plugin>
 						<groupId>org.apache.tomcat.maven</groupId>
@@ -114,8 +246,19 @@
 							<path>/pmarlen-rest-services</path>
 						</configuration>
 					</plugin>
+					
 				</plugins>
-			</build>			
+			</build>
+			
+			<properties>
+				<environment.stage>prod</environment.stage>
+				<environment.webdescriptor.enviId>Production</environment.webdescriptor.enviId>
+				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
+				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
+				<environment.jdbc.jndi>jdbc/PMDB103_PROD_DS</environment.jdbc.jndi>
+				<environment.jdbc.user>PMDB103_PROD_USR</environment.jdbc.user>
+				<environment.jdbc.password>PMDB103_PROD_PWD</environment.jdbc.password>
+			</properties>
 		</profile>
 		
 		<profile>
@@ -123,15 +266,6 @@
 			<build>
 				<finalName>${artifactId}</finalName>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>2.3.2</version>
-						<configuration>
-							<source>1.6</source>
-							<target>1.6</target>
-						</configuration>
-					</plugin>
 
 					<plugin>
 						<groupId>org.apache.tomcat.maven</groupId>
@@ -143,38 +277,20 @@
 							<path>/pmarlen-rest-services</path>
 						</configuration>
 					</plugin>
+					
 				</plugins>
-			</build>			
-		</profile>		
-		<profile>
-			<id>srv1-test</id>
-			<build>
-				<finalName>${artifactId}</finalName>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>2.3.2</version>
-						<configuration>
-							<source>1.6</source>
-							<target>1.6</target>
-						</configuration>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.tomcat.maven</groupId>
-						<artifactId>tomcat7-maven-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<url>http://localhost:7080/manager/text</url>
-							<server>tomcat-7-dev</server>
-							<path>/pmarlen-rest-services</path>
-						</configuration>
-					</plugin>
-
-				</plugins>
-			</build>			
+			</build>
+			
+			<properties>
+				<environment.stage>test</environment.stage>
+				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
+				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
+				<environment.jdbc.jndi>jdbc/PMDB103_DEVE_DS</environment.jdbc.jndi>
+				<environment.jdbc.user>PMDB103_DEVE_USR</environment.jdbc.user>
+				<environment.jdbc.password>PMDB103_DEVE_PWD</environment.jdbc.password>
+			</properties>
 		</profile>
-		
-	</profiles>		
+
+	</profiles>	
 </project>
