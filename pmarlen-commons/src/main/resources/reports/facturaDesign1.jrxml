@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="396"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -70,21 +70,21 @@
 			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="163" width="375" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="147" width="67" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="0" y="131" width="67" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{rfc}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="67" y="147" width="300" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="0" y="148" width="300" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
@@ -92,7 +92,7 @@
 				<reportElement x="385" y="160" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Forma de pago"]]></textFieldExpression>
 			</textField>
@@ -102,7 +102,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaYHoraCert}]]></textFieldExpression>
 			</textField>
@@ -118,7 +118,7 @@
 				<reportElement x="385" y="80" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FOLIO FISCAL"]]></textFieldExpression>
 			</textField>
@@ -128,7 +128,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{folioFiscal}]]></textFieldExpression>
 			</textField>
@@ -136,7 +136,7 @@
 				<reportElement x="385" y="96" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["NO. DE SERIE DE CERTIFICADO DEL SAT"]]></textFieldExpression>
 			</textField>
@@ -146,7 +146,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{noSerCertSAT}]]></textFieldExpression>
 			</textField>
@@ -154,7 +154,7 @@
 				<reportElement x="385" y="112" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FECHA Y HORA DE CERTIFICACI\u00D3N"]]></textFieldExpression>
 			</textField>
@@ -162,7 +162,7 @@
 				<reportElement x="385" y="128" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["LUGAR DE EXPEDICI\u00D3N"]]></textFieldExpression>
 			</textField>
@@ -172,7 +172,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{lugarExp}]]></textFieldExpression>
 			</textField>
@@ -182,7 +182,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaYHoraExp}]]></textFieldExpression>
 			</textField>
@@ -190,7 +190,7 @@
 				<reportElement x="385" y="144" width="171" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FECHA Y HORA DE EXPEDICI\u00D3N"]]></textFieldExpression>
 			</textField>
@@ -247,7 +247,7 @@
 				<reportElement x="385" y="176" width="171" height="9" uuid="addc44af-1214-431a-ae95-97b5e69ce6a4"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["M\u00C9TODO DE PAGO"]]></textFieldExpression>
 			</textField>
@@ -257,7 +257,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{formaDePago}]]></textFieldExpression>
 			</textField>
@@ -267,7 +267,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#999999"/>
 				</box>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{metodoDePago}]]></textFieldExpression>
 			</textField>
@@ -295,23 +295,23 @@
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
-					<font size="6"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{comentarios}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="139" width="67" height="9" uuid="b1b6234f-7a9d-4cbc-b223-3616fd207d04"/>
+				<reportElement x="0" y="123" width="67" height="9" uuid="b1b6234f-7a9d-4cbc-b223-3616fd207d04"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["R.F.C."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="67" y="139" width="67" height="9" uuid="679459e5-cc40-45a8-8e3b-fc292fd5f542"/>
+				<reportElement x="0" y="139" width="67" height="9" uuid="679459e5-cc40-45a8-8e3b-fc292fd5f542"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["R\u00C1ZON SOCIAL"]]></textFieldExpression>
 			</textField>
@@ -319,7 +319,7 @@
 				<reportElement x="0" y="155" width="67" height="9" uuid="edd5fef2-0b23-4391-89ba-659443cd18d7"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["DIRECCI\u00D3N"]]></textFieldExpression>
 			</textField>
@@ -327,7 +327,7 @@
 				<reportElement x="0" y="171" width="67" height="9" uuid="e029fac1-5b64-4e96-99d5-adb6fa3eaf3c"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["COMENTARIOS"]]></textFieldExpression>
 			</textField>
@@ -337,7 +337,7 @@
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["NO. DE CUENTA"]]></textFieldExpression>
 			</textField>

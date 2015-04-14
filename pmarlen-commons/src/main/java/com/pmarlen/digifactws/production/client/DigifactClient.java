@@ -95,7 +95,7 @@ public class DigifactClient {
 			conceptoWS = new Concepto();
 
 			conceptoWS.setCantidad(esd.getCantidad());
-			conceptoWS.setUnidad(esd.getProductoUnidadMedida());
+			conceptoWS.setUnidad(esd.getProductoUnidadEmpaque());
 			conceptoWS.setDescripcion(esd.getProductoNombre() + "/" + esd.getProductoPresentacion() + "(" + esd.getProductoContenido() + " " + esd.getProductoUnidadMedida() + ")");
 			double precioPVD_CFD = esd.getPrecioVenta() / (1.0 + pedidoVenta.getFactorIva());
 			double importePVD_CFD = precioPVD_CFD * esd.getCantidad();
@@ -110,7 +110,7 @@ public class DigifactClient {
 		impuestoWS = new Impuesto();
 		impuestoWS.setTasa(pedidoVenta.getFactorIva() * 100.0);
 		impuestoWS.setTipoImpuesto("IVA");
-		impuestoWS.setImporte(esf.getTotal());
+		impuestoWS.setImporte(esf.getImporteIVA());
 		impuestos.getAnyType().add(impuestoWS);
 
             //impuestoWS = new Impuesto();

@@ -128,7 +128,7 @@ public class GeneradorImpresionPedidoVenta {
 			parameters.put("formaDePago" ,pedidoVenta.getFormaDePagoDescripcion().toUpperCase());
             parameters.put("metodoDePago",pedidoVenta.getMetodoDePagoDescripcion().toUpperCase());
             logger.info("->descuento:autorizadescuento?"+pedidoVenta.getAutorizaDescuento()+", "+pedidoVenta.getPorcentajeDescuentoCalculado()+"% + "+pedidoVenta.getPorcentajeDescuentoExtra());
-            parameters.put("subtotal" , df.format(esf.getSubTotalNoGrabado()));
+            parameters.put("subtotal" , df.format(esf.getSubTotalBruto()));
             parameters.put("iva" ,df.format(esf.getImporteIVA()));
             parameters.put("descuento" ,df.format(esf.getImporteDescuentoAplicado()));
             
