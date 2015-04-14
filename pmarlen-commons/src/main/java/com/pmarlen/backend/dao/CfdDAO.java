@@ -106,6 +106,50 @@ public class CfdDAO {
 		}
 		return r;		
 	}
+	
+	public Cfd findByNumCFDI(String numCFDI) throws DAOException, EntityNotFoundException{
+		Cfd r = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			ps = conn.prepareStatement("SELECT ID,ULTIMA_ACTUALIZACION,CONTENIDO_ORIGINAL_XML,CALLING_ERROR_RESULT,NUM_CFD,TIPO FROM CFD "+
+					"WHERE NUM_CFD=?"
+			);
+			ps.setString(1, numCFDI);
+			
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				r = new Cfd();
+				r.setId((Integer)rs.getObject("ID"));
+				r.setUltimaActualizacion((Timestamp)rs.getObject("ULTIMA_ACTUALIZACION"));
+				Blob bc=rs.getBlob("CONTENIDO_ORIGINAL_XML");
+				if(bc!=null)r.setContenidoOriginalXml(bc.getBytes(1, (int) bc.length()));
+				r.setCallingErrorResult((String)rs.getObject("CALLING_ERROR_RESULT"));
+				r.setNumCfd((String)rs.getObject("NUM_CFD"));
+				r.setTipo((String)rs.getObject("TIPO"));
+			} else {
+				throw new EntityNotFoundException("CFD NOT FOUND FOR NUM_CFD="+numCFDI);
+			}
+		}catch(SQLException ex) {
+			logger.log(Level.SEVERE, "SQLException:", ex);
+			throw new DAOException("InQuery:" + ex.getMessage());
+		} finally {
+			if(rs != null) {
+				try{
+					rs.close();
+					ps.close();
+					conn.close();
+				}catch(SQLException ex) {
+					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					throw new DAOException("Closing:"+ex.getMessage());
+				}
+			}
+		}
+		return r;		
+	}
+
 
     public ArrayList<Cfd> findAll() throws DAOException {
 		ArrayList<Cfd> r = new ArrayList<Cfd>();

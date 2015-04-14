@@ -69,6 +69,11 @@ public class PedidosVentaMB  {
 		return pedidosVentas;
 	}
 	
+	public void editar(int id){
+		logger.info("->editar:id="+id);
+		editarPedidoVentaMB.editar(id);
+	}
+	
 	public String editarPedidoAction(int pedidoVentaId){
 		logger.info("->editarPedidoAction:pedidoVentaId="+pedidoVentaId);
 		return editarPedidoVentaMB.editar(pedidoVentaId);

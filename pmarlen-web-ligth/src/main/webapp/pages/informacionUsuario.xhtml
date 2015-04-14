@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/mainWithMenu.xhtml">
+
+    <ui:define name="title">
+        PM > INICIO
+    </ui:define>
+	
+	<ui:define name="extraCss">
+        <link rel="stylesheet" href="#{request.contextPath}/login_css/login.css" type='text/css'/>
+    </ui:define>
+
+
+    <ui:define name="body-title">
+        <h:outputText value=".. ACERCA DE #{sessionUserMB.bienvenido}"/>
+    </ui:define>
+
+    <ui:define name="body">
+		<h:form id="formHome">
+			
+			<div class="ribbon"></div>
+			<div class="login">
+				<br/>
+				<img src="../images/PM_NewLogo_2.png"/>
+				<br/>
+				<br/>
+				<img src="../images/person_credential_2.png"/>
+				
+				<h3>
+					<h:outputText value="#{sessionUserMB.bienvenido}"/>
+				</h3>
+				<h:outputText value="#{sessionUserMB.usuarioAuthenticated.email}"/>
+				<br/><br/>
+				<h:outputText value="ADMINISTRADOR" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}"/><br/>
+				<h:outputText value="FINZANZAS" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsFinances}"/><br/>
+				<h:outputText value="USUARIO SISTEMA" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsPMarlenUser}"/><br/>
+				<h:outputText value="SUPER ADMINISTRADOR" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsRoot}"/><br/>
+				<h:outputText value="VENTAS" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsSales}"/><br/>
+				<h:outputText value="USUARIO ALMACÉN" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsStock}"/><br/>
+				<br/>
+			</div>
+			<br/>
+			<br/>
+		</h:form>		
+    </ui:define>
+
+</ui:composition>

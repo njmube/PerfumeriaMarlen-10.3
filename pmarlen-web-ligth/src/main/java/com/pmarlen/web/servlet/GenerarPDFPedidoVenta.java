@@ -82,7 +82,7 @@ public class GenerarPDFPedidoVenta extends HttpServlet {
 			ArrayList<EntradaSalidaDetalleQuickView> entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
 			Cliente clienteVenta = ClienteDAO.getInstance().findBy(new Cliente(pv.getClienteId()));
 			String uemail=request.getUserPrincipal().getName();
-			Usuario ui= UsuarioDAO.getInstance().findBy(new Usuario(uemail));			
+			Usuario ui= UsuarioDAO.getInstance().findBy(uemail);			
 			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPedidoVenta(pv,entityList,clienteVenta,fullPrint,interna,ui.getNombreCompleto().toUpperCase());
 			
 			System.err.println("-->>OK writing PDF bytes");

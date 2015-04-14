@@ -1,7 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.pmarlen.web.servlet;
 
 import com.pmarlen.backend.dao.CfdDAO;
@@ -15,7 +17,6 @@ import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.businesslogic.reports.GeneradorImpresionPedidoVenta;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alfredo
  */
-public class GenerarPDFFactura extends HttpServlet {
+public class GetXMLCFDI extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP
@@ -42,31 +43,25 @@ public class GenerarPDFFactura extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.err.println("-->>GenerarPDFFactura servlet: RequestURI="+request.getRequestURI());
+		System.err.println("-->>GetXMLCFDI servlet: RequestURI="+request.getRequestURI());
 		
 		ServletOutputStream outputStream = null;
 		Integer pedidoVentaId = null;
 		boolean fullPrint     = false;
 		String pedidoId=null;
 		try {
-			//                /docs/facturas/
-			//                /docs/facturas/Factura_PerfumeriaMarlen_No_#####_paraImprimir.pdf
-			//                /docs/facturas/Factura_PerfumeriaMarlen_No_#####.pdf			
-			// /pmarlen-webrf3/docs/facturas/Factura_PerfumeriaMarlen_No_316.pdf
+			//                /docs/cfdi/
+			//                /docs/cfdi/CFDI_PerfumeriaMarlen_No_#####.xml
+			// /pmarlen-webrf3/docs/cfdi/CFDI_PerfumeriaMarlen_No_316.xml
 			// 0---------1---------2---------3---------4---------5-------
 			String requestURI = request.getRequestURI();
 			//String requestURIByPaths[] = requestURI.split("/");
-			int pedidoIdIndex     = requestURI.lastIndexOf("No_")+3;
-			int paraImprimirIndex = requestURI.lastIndexOf("_paraImprimir");
-			int pdfIndex          = requestURI.lastIndexOf(".pdf");
-			System.err.println("-->>GenerarPDFFactura servlet: pedidoIdIndex="+pedidoIdIndex+", paraImprimirIndex="+paraImprimirIndex+", pdfIndex="+pdfIndex);
+			int pedidoIdIndex     = requestURI.lastIndexOf("No_")+3;			
+			int xmlIndex          = requestURI.lastIndexOf(".xml");
+			System.err.println("-->>GenerarPDFFactura servlet: pedidoIdIndex="+pedidoIdIndex+", xmlIndex="+xmlIndex);
 			
-			if(paraImprimirIndex > pedidoIdIndex) {
-				pedidoId = requestURI.substring(pedidoIdIndex,paraImprimirIndex);
-				pedidoVentaId = Integer.parseInt(pedidoId);
-				fullPrint     = false;				
-			} else if(pdfIndex > pedidoIdIndex) {
-				pedidoId = requestURI.substring(pedidoIdIndex,pdfIndex);
+			if(xmlIndex > pedidoIdIndex) {
+				pedidoId = requestURI.substring(pedidoIdIndex,xmlIndex);
 				pedidoVentaId = Integer.parseInt(pedidoId);
 				fullPrint     = true;
 			} else {
@@ -75,16 +70,15 @@ public class GenerarPDFFactura extends HttpServlet {
 			}
 			int pedidoVentaID = Integer.parseInt(pedidoId);
 			EntradaSalidaQuickView pv = EntradaSalidaDAO.getInstance().findBy(new EntradaSalida(pedidoVentaID));
-			ArrayList<EntradaSalidaDetalleQuickView> entityList = EntradaSalidaDAO.getInstance().findAllESDByEntradaSalida(pedidoVentaID);
-			Cliente clienteVenta = ClienteDAO.getInstance().findBy(new Cliente(pv.getClienteId()));
-			Cfd cfdFactura = CfdDAO.getInstance().findBy(new Cfd(pv.getCfdId()));
-			String uemail=request.getUserPrincipal().getName();
-			Usuario ui= UsuarioDAO.getInstance().findBy(uemail);
-			byte[] bytesPdf = GeneradorImpresionPedidoVenta.generaPdfPfacturaPedidoVenta(pv,cfdFactura,entityList,clienteVenta,fullPrint,ui.getNombreCompleto().toUpperCase());
+			String cfdi= pv.getCdfNumCFD();
+			
+			Cfd cfd = CfdDAO.getInstance().findByNumCFDI(cfdi);
+			
+			byte[] bytesPdf = cfd.getContenidoOriginalXml();
 			
 			System.err.println("-->>OK writing PDF bytes");
 			
-			response.setContentType("application/pdf");
+			response.setContentType("application/xml");
 			
 			outputStream = response.getOutputStream();
 			
@@ -139,3 +133,4 @@ public class GenerarPDFFactura extends HttpServlet {
 		return "Short description";
 	}// </editor-fold>
 }
+

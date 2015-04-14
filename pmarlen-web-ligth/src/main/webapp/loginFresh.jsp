@@ -15,9 +15,9 @@
 		setTimeout("location.href = redirectURL;",redirectTime);
 	}
 	//   -->
-	</script>		
-	
-	<link rel="stylesheet" href="<%=request.getContextPath()%>/login_css/login.css"                              type='text/css'/>
+	</script>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/login_css/login_bg.css"     type='text/css'/>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/login_css/login.css"     type='text/css'/>
 </head>
 <body  onload="timedRedirect();">
 	<br/>

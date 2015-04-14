@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/mainWithMenu.xhtml">
-    
+
     <ui:define name="title">
         PM > INICIO
     </ui:define>
@@ -12,42 +12,41 @@
     <ui:define name="body-title">
         <h:outputText value="INICIO, BIENVENIDO #{sessionUserMB.bienvenido}"/>
     </ui:define>
-    
+
     <ui:define name="body">
 		<h:form id="formHome">
 			<h:panelGrid columns="2" columnClasses="">
 				<h:panelGroup>
 					<h:graphicImage value="/images/icono_sistema.png"/>
 				</h:panelGroup>
-				
+
 				<h:panelGroup>
-			<p>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-			</p>
-			<h1>
-				<p>Este sistema tiene por objetivo el flujo de ciclo de vida de un Pedido, en Perfumeria Marlen.</p>
-				<p>La administración de Materiales y Procedimientos de Venta.</p>
-				<p>Los Reportes estadisticos de Pedidos. </p>
-			</h1>
-			<p>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-			</p>		
+					<p>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+					</p>
+					<h1>
+						<p>Este sistema tiene por objetivo el flujo de ciclo de vida de un Pedido, en Perfumeria Marlen.</p>
+						<p>La administración de Materiales y Procedimientos de Venta.</p>
+						<p>Los Reportes estadisticos de Pedidos. </p>
+					</h1>
+					<p>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+					</p>		
 				</h:panelGroup>
-				
+
 			</h:panelGrid>
-						
+
 		</h:form>		
     </ui:define>
 

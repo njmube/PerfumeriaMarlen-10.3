@@ -5,6 +5,7 @@ import com.pmarlen.backend.dao.UsuarioDAO;
 import com.pmarlen.backend.dao.UsuarioPerfilDAO;
 import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.UsuarioPerfil;
+import com.pmarlen.backend.model.quickviews.UsuarioQuickView;
 import com.pmarlen.model.Constants;
 import com.pmarlen.web.servlet.ContextAndSessionListener;
 import com.pmarlen.web.servlet.SessionInfo;
@@ -30,15 +31,15 @@ public class SessionUserMB implements Serializable{
 	private static final transient Logger logger = Logger.getLogger(SessionUserMB.class.getSimpleName());
 	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 	private long timeOutSession;
-	private Usuario usuarioAuthenticated;
-	private ArrayList<UsuarioPerfil> usuarioPerfiles;
+	private UsuarioQuickView usuarioAuthenticated;
 	
 	@PostConstruct
     public void init() {
- 		logger.info("------------->");
+		usuarioAuthenticated = getUsuarioAuthenticated();
+		logger.info("------------->usuarioAuthenticated="+usuarioAuthenticated);
     }
 
-	public Usuario getUsuarioAuthenticated() {
+	public UsuarioQuickView getUsuarioAuthenticated() {
 		if (usuarioAuthenticated == null) {
 			FacesContext fCtx = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = fCtx.getExternalContext();
@@ -59,10 +60,9 @@ public class SessionUserMB implements Serializable{
 				
 				timeOutSession = session.getMaxInactiveInterval()*1000 - 5000;
 				try {
-					usuarioAuthenticated = UsuarioDAO.getInstance().findBy(new Usuario(remoteUser));
+					usuarioAuthenticated = UsuarioDAO.getInstance().findBy(remoteUser);
 					if (!session.isNew()) {
 						logger.info("\t==>> usuarioAuthenticated : Session[" + sessionId + "] True enter :" + usuarioAuthenticated);
-						usuarioPerfiles = UsuarioPerfilDAO.getInstance().findBy(usuarioAuthenticated);
 						SessionInfo si = ContextAndSessionListener.sessionInfoHT.get(sessionId);
 						if (si != null) {
 							logger.info("\t==>> found, setUserName");
@@ -81,8 +81,6 @@ public class SessionUserMB implements Serializable{
 		}
 		return usuarioAuthenticated;
 	}
-	
-	
 	
 	public void onIdle() {
 		logger.info("onIdle, timeOutSession="+(timeOutSession/1000)+" secs., then Logout !");
@@ -126,81 +124,6 @@ public class SessionUserMB implements Serializable{
 			}
 		}
 	}
-	
-	public boolean isSystemAccesible() {
-		if (usuarioAuthenticated != null) {
-			for(UsuarioPerfil up: usuarioPerfiles){
-				if(up.getPerfil().equals(Constants.PERFIL_PMARLENUSER)){
-					return usuarioAuthenticated.getAbilitado() != 0;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-
-	public boolean isRootUser() {
-		if (usuarioAuthenticated != null) {
-			for(UsuarioPerfil up: usuarioPerfiles){
-				if(up.getPerfil().equals(Constants.PERFIL_ROOT)){
-					return true;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isAdminUser() {
-		if (usuarioAuthenticated != null) {
-			if(isRootUser()){
-				return true;
-			}
-			for(UsuarioPerfil up: usuarioPerfiles){
-				if(up.getPerfil().equals(Constants.PERFIL_ADMIN)){
-					return true;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isSalesUser() {
-		if (usuarioAuthenticated != null) {
-			if(isRootUser()){
-				return true;
-			}
-			for(UsuarioPerfil up: usuarioPerfiles){
-				if(up.getPerfil().equals(Constants.PERFIL_SALES)){
-					return true;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isStockUser() {
-		if (usuarioAuthenticated != null) {
-			if(isRootUser()){
-				return true;
-			}
-			for(UsuarioPerfil up: usuarioPerfiles){
-				if(up.getPerfil().equals(Constants.PERFIL_STOCK)){
-					return true;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
 
 	public int getSucursalId() {
 		return 1;
@@ -208,6 +131,6 @@ public class SessionUserMB implements Serializable{
 	
 	public String getBienvenido(){
 		updateLastVisitedPage("home.jsf");
-		return usuarioAuthenticated.getNombreCompleto().toUpperCase();
+		return getUsuarioAuthenticated().getNombreCompleto().toUpperCase();
 	}
 }

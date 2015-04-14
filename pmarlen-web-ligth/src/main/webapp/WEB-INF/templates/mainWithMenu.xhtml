@@ -15,6 +15,9 @@
 			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />   
 			<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/images/turboload/Logo_T3.gif" />
 			<link rel="icon"          type="image/x-icon" href="#{request.contextPath}/images/Logo_icono_3.ico"/>
+			<ui:insert name="extraCss">
+				<!-- HERE INSSERT EXTRA CSS -->
+			</ui:insert>
         </h:head>
 
 
@@ -83,13 +86,13 @@
 								<p:menuitem value="HISTORICO" url="/pages/pendiente.jsf" icon="ui-icon-clock"/>
 							</p:submenu>
 							
-							<p:submenu label="MOVS. ALMACENES" icon="ui-icon-transfer-e-w" rendered="#{sessionUserMB.adminUser}">
-								<p:menuitem value="A SUCURSAL" url="/pages/pendiente.jsf" icon="ui-icon-shuffle"  rendered="#{sessionUserMB.adminUser}"/>
-								<p:menuitem value="SUB-ALMACEN" url="/pages/pendiente.jsf" icon="ui-icon-arrow-1-se" rendered="#{sessionUserMB.adminUser}"/>								
+							<p:submenu label="MOVS. ALMACENES" icon="ui-icon-transfer-e-w" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
+								<p:menuitem value="A SUCURSAL" url="/pages/pendiente.jsf" icon="ui-icon-shuffle"  rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}"/>
+								<p:menuitem value="SUB-ALMACEN" url="/pages/pendiente.jsf" icon="ui-icon-arrow-1-se" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}"/>								
 							</p:submenu>
 
 							<p:submenu label="INVENTARIOS" icon="ui-icon-clipboard">					
-								<p:menuitem value="PRINCIPAL" url="/pages/inventarioPrincipal.jsf" icon="ui-icon-home" rendered="#{sessionUserMB.adminUser or sessionUserMB.salesUser}"/>
+								<p:menuitem value="PRINCIPAL" url="/pages/inventarioPrincipal.jsf" icon="ui-icon-home" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin and sessionUserMB.usuarioAuthenticated.playsAsSales}"/>
 								<p:menuitem value="CONTEO." url="/pages/pendiente.jsf" icon="ui-icon-shuffle"/>
 								<p:menuitem value="SUCURSALES " url="/pages/pendiente.jsf" icon="ui-icon-newwin"/>								
 							</p:submenu>
@@ -106,7 +109,7 @@
 							</p:submenu>
 							
 							<p:submenu label="REPORTES" icon="ui-icon-script">
-								<p:submenu label="VENTAS" icon="ui-icon-check" rendered="#{sessionUserMB.adminUser or sessionUserMB.salesUser}">
+								<p:submenu label="VENTAS" icon="ui-icon-check" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
 									<p:menuitem value="X #PEDIDO" url="/pages/pendiente.jsf" icon="ui-icon-star"/>
 									<p:menuitem value="X PRODUCTO" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>
 									<p:menuitem value="X LINEA-MARCA" url="/pages/pendiente.jsf" icon="ui-icon-bookmark"/>
@@ -114,26 +117,26 @@
 								</p:submenu>								
 							</p:submenu>
 							
-							<p:submenu label="SISTEMA" icon="ui-icon-newwin" rendered="#{sessionUserMB.adminUser}">
-								<p:menuitem value="USUARIOS" url="/pages/usuario.jsf" icon="ui-icon-person" rendered="#{sessionUserMB.adminUser}"/>
-								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star" rendered="#{sessionUserMB.adminUser}"/>
+							<p:submenu label="SISTEMA" icon="ui-icon-newwin" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
+								<p:menuitem value="USUARIOS" url="/pages/usuario.jsf" icon="ui-icon-person" />
+								<p:menuitem value="SUCURSALES" url="/pages/pendiente.jsf" icon="ui-icon-star" />
 							</p:submenu>
 							
 						</p:submenu>
 
-						<p:submenu label="CONTROL" icon="ui-icon-locked">
-							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock"  rendered="#{sessionUserMB.adminUser}"></p:menuitem>
-							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"  rendered="#{sessionUserMB.adminUser}" ></p:menuitem>
-							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power"  rendered="#{sessionUserMB.rootUser}"></p:menuitem>
-							<p:menuitem value="SQL" url="/pages/pendiente.jsf" icon="ui-icon-disk" rendered="#{sessionUserMB.rootUser}"></p:menuitem>
-							<p:menuitem value="RESPALDO" url="/pages/pendiente.jsf" icon="ui-icon-alert"  rendered="#{sessionUserMB.rootUser}"></p:menuitem>
+						<p:submenu label="CONTROL" icon="ui-icon-locked" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
+							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock" ></p:menuitem>
+							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"  ></p:menuitem>
+							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power" ></p:menuitem>
+							<p:menuitem value="SQL" url="/pages/pendiente.jsf" icon="ui-icon-disk" ></p:menuitem>
+							<p:menuitem value="RESPALDO" url="/pages/pendiente.jsf" icon="ui-icon-alert"  ></p:menuitem>
 						</p:submenu>
 
 						<f:facet name="options">
 							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}" >
-								<p:menuitem value="AYUDA" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-help"/>
-								<p:menuitem value="INFORMACI&Oacute;N USUARIO" url="/logout" icon="ui-icon-contact" />
-								<p:menuitem value="WEB-MAIL" url="#{request.contextPath}/pages/home.jsf" icon="ui-icon-mail-closed"  rendered="#{sessionUserMB.systemAccesible}"/>
+								<p:menuitem value="AYUDA" url="/pages/pendiente.jsf" icon="ui-icon-help"/>
+								<p:menuitem value="INFORMACI&Oacute;N USUARIO" url="/pages/informacionUsuario.jsf" icon="ui-icon-contact" />
+								<p:menuitem value="WEB-MAIL" url="/pages/pendiente.jsf" icon="ui-icon-mail-closed" />
 								<p:menuitem value="SALIR" url="/logout" icon="ui-icon-extlink" />
 							</p:menuButton>
 						</f:facet>
@@ -169,7 +172,7 @@
 			<h:panelGroup class="footer-bar-#{systemInfoMB.environment}">
 				<h:form>
 					<h:panelGrid columns="2" columnClasses="columnWidth95 centerAlign, columnWidth5 rightAlign" width="100%">
-						<h:outputText	value="Perfumeria Marlen, Sistema de Adminisración de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" 
+						<h:outputText	value="Perfumeria Marlen, Sistema de Adminisraci&oacute;n de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" 
 										title="( #{systemInfoMB.environment} ) Git RevID: #{systemInfoMB.gitSHA1}" />
 						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
 					</h:panelGrid>

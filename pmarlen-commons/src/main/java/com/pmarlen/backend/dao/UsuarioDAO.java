@@ -66,28 +66,53 @@ public class UsuarioDAO {
 		return DataSourceFacade.getStrategy().getConnectionCommiteable();
 	}
 
-    public Usuario findBy(Usuario x) throws DAOException, EntityNotFoundException{
-		Usuario r = null;
+    public UsuarioQuickView findBy(String e) throws DAOException, EntityNotFoundException{
+		UsuarioQuickView x = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT EMAIL,ABILITADO,NOMBRE_COMPLETO,PASSWORD FROM USUARIO "+
-					"WHERE EMAIL=?"
-			);
-			ps.setString(1, x.getEmail());
-			
+			ps = conn.prepareStatement(
+					"SELECT   U.EMAIL,U.ABILITADO,U.NOMBRE_COMPLETO,U.PASSWORD,UP.PERFIL\n" +
+					"FROM     USUARIO_PERFIL UP,USUARIO U\n" +
+					"WHERE    U.EMAIL = UP.EMAIL\n" +
+					"     AND U.EMAIL = ?\n" +		
+					"ORDER BY U.NOMBRE_COMPLETO");
+			ps.setString(1,e);
 			rs = ps.executeQuery();
-			if(rs.next()) {
-				r = new Usuario();
-				r.setEmail((String)rs.getObject("EMAIL"));
-				r.setAbilitado((Integer)rs.getObject("ABILITADO"));
-				r.setNombreCompleto((String)rs.getObject("NOMBRE_COMPLETO"));
-				r.setPassword((String)rs.getObject("PASSWORD"));
-			} else {
-				throw new EntityNotFoundException("USUARIO NOT FOUND FOR EMAIL="+x.getEmail());
+			
+			String email = null;
+			String perfil=null;
+			String nombreCompleto=null;
+			String password=null;
+			Integer abilitado = null;
+			logger.info("============================================>");
+			while(rs.next()) {
+				email			= (String)rs.getObject("EMAIL");
+				perfil			= (String)rs.getObject("PERFIL");
+				nombreCompleto	= (String)rs.getObject("NOMBRE_COMPLETO");
+				password		= (String)rs.getObject("PASSWORD");
+				abilitado		= (Integer)rs.getObject("ABILITADO");
+				logger.info("->"+email+","+perfil+","+nombreCompleto+","+password+","+abilitado);
+				if(x == null){
+					// NUEVO
+					x = new UsuarioQuickView();					
+				} else if(x.getEmail().equalsIgnoreCase(email)){
+					// EL MISMO EMAIL
+				} else {
+					// CAMBIO EMAIL					
+					x = new UsuarioQuickView();			
+				}
+				
+				x.setEmail(email);
+				x.setAbilitado(abilitado);
+				x.setNombreCompleto(nombreCompleto);
+				x.setPassword(password);
+				
+				x.addPerfil(perfil);
 			}
+			logger.info("<============================================");
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
@@ -103,7 +128,7 @@ public class UsuarioDAO {
 				}
 			}
 		}
-		return r;		
+		return x;
 	}
 
     public ArrayList<UsuarioQuickView> findAll() throws DAOException {

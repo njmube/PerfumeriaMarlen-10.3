@@ -19,8 +19,12 @@ user: #{sessionUserMB.usuarioAuthenticated.nombreCompleto}
     
 }
 
-body{
-	background-color:  #DCEBF2;
+html { 
+  background: url(../images/bg_blue.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .footer-bar {

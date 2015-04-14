@@ -28,7 +28,7 @@
 							 rowsPerPageTemplate="10,25,100" >
 					<f:facet name="header">
 						OPCIONES :
-						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1, :form2:dlg1Panel1" 
+						<p:commandButton	value="AGREGAR NUEVO USUARIO" update=":form1:panel1, :form2:dlg1Panel1" 
 											actionListener="#{usuarioMB.prepareForNew}" 
 											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
 						<p:spacer width="20"/>
@@ -86,14 +86,14 @@
 						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
 										 actionListener="#{usuarioMB.setSelectedEntity(usuario)}" 
 										 icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
-										 title="EDITAR DATOS DEL USUARIO" rendered="#{sessionUserMB.adminUser}"
-										 disabled="#{usuario.inRoleRoot and not sessionUserMB.rootUser}"/>
+										 title="EDITAR DATOS DEL USUARIO" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}"
+										 disabled="#{usuario.inRoleRoot and not sessionUserMB.usuarioAuthenticated.playsAsRoot}"/>
 
 					</p:column>
 					
 					<p:column sortBy="#{usuario.email}" >						
 						<h:outputText value="#{usuario.email}" />
-						<h:panelGroup rendered="#{sessionUserMB.rootUser}">
+						<h:panelGroup rendered="#{sessionUserMB.usuarioAuthenticated.playsAsRoot}">
 							<br/>
 							<h:outputText value="#{usuario.password}" />
 						</h:panelGroup>

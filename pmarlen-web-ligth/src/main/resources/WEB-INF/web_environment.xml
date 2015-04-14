@@ -48,6 +48,10 @@
         <servlet-class>com.pmarlen.web.servlet.GenerarPDFPedidoVenta</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetXMLCFDI</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.GetXMLCFDI</servlet-class>
+    </servlet>
+	<servlet>
         <servlet-name>GenerarPDFFactura</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.GenerarPDFFactura</servlet-class>
     </servlet>
@@ -91,6 +95,10 @@
     <servlet-mapping>
         <servlet-name>GenerarPDFPedidoVenta</servlet-name>
         <url-pattern>/docs/notas/*</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>GetXMLCFDI</servlet-name>
+        <url-pattern>/docs/cfdi/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GenerarPDFFactura</servlet-name>

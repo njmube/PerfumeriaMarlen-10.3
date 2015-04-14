@@ -128,38 +128,59 @@
 									  scrollHeight="200" >
 							<p:ajax event="rowReorder" listener="#{editarPedidoVentaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
 							<f:facet name="header">
-								<h:outputText value="OPCIONES DE VER TABLA:"/>
-								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
-													rendered="#{!editarPedidoVentaMB.tableDraggableEnabled}"
-													actionListener="#{editarPedidoVentaMB.actualizarTabla()}"
-													oncomplete="updateComponentsOnWindowResize();"
-													title="ACTUALIZA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>								
-								<p:spacer width="10"/>
-								<p:commandButton	value="VER + COLUMNAS" actionListener="#{editarPedidoVentaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
-												 rendered="#{not editarPedidoVentaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
-								<p:commandButton	value="VER - COLUMNAS" actionListener="#{editarPedidoVentaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
-													rendered="#{editarPedidoVentaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA"/>
+								
+								<h:outputLink value="#{request.contextPath}/pages/editarPedidoVenta.jsf" >
+									<h:graphicImage value="/images/table_refresh.png"/>
+								</h:outputLink>
+								
+								<p:spacer width="10"/>								
+								<p:commandLink     actionListener="#{editarPedidoVentaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{not editarPedidoVentaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA">
+									<h:graphicImage value="/images/table_mas.png"/>
+								</p:commandLink>								
+								<p:commandLink     actionListener="#{editarPedidoVentaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{editarPedidoVentaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA">
+									<h:graphicImage value="/images/table_menos.png"/>
+								</p:commandLink>								
 								<p:spacer width="10"/>
 								
-								<p:commandButton	value="MOVER RENGLONES"       actionListener="#{editarPedidoVentaMB.activarMover}"   process=":form3" update=":form3:panel3" 
-													rendered="#{!editarPedidoVentaMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
-													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible}"/>
-								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{editarPedidoVentaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
-													rendered="#{editarPedidoVentaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
-													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible}"/>
-								<p:spacer width="30"/>
+								<p:commandLink     actionListener="#{editarPedidoVentaMB.activarMover}"   process=":form3" update=":form3:panel3" 
+													rendered="#{(editarPedidoVentaMB.verificable or editarPedidoVentaMB.surtible) and !editarPedidoVentaMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
+													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible}">
+									<h:graphicImage value="/images/table_mover.png"/>
+								</p:commandLink>								
+								<p:commandLink     actionListener="#{editarPedidoVentaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
+													rendered="#{(editarPedidoVentaMB.verificable or editarPedidoVentaMB.surtible) and editarPedidoVentaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
+													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible}">
+									<h:graphicImage value="/images/table_fijos.png"/>
+								</p:commandLink>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
+								<p:spacer width="10"/>
 								
-								<p:button href="/docs/notas/Nota_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" 
-										  target="_blank" icon="ui-icon-document-b"  title="PDF NOTA DE VENTA ##{pv.id}" />
+								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_sola.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
 								<p:spacer width="10"/>
-								<p:button href="/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" 
-										  target="_blank" icon="ui-icon-clipboard"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
-								<p:spacer width="30" rendered="#{not empty pv.cfdId}"/>
-								<p:button href="/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" rendered="#{not empty pv.cfdId}"
-										  target="_blank" icon="ui-icon-document"  title="PDF FACTURA DE VENTA ##{pv.id}" />
+								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_interna.png" title="PDF NOTA DE VENTA ##{pv.id} INTERNA P/ALMACÉN"/>
+								</h:outputLink>
 								<p:spacer width="10"/>
-								<p:button href="/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}_paraImprimir.pdf.pdf" rendered="#{not empty pv.cfdId}"
-										  target="_blank" icon="ui-icon-print"  title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR" />
+								<h:outputLink value="/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" rendered="#{not empty pv.cfdId}" target="_blank">
+									<h:graphicImage value="/images/factura_email.png" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<h:outputLink value="/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" rendered="#{not empty pv.cfdId}" target="_blank">
+									<h:graphicImage value="/images/factura_imprimir.png" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR EN HOJA MEMBRETADA"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
+								<h:outputLink value="/docs/cfdi/CFDI_PerfumeriaMarlen_No_#{pv.id}.xml" rendered="#{not empty pv.cfdId}" target="_blank">
+									<h:graphicImage value="/images/xml_file.png" title="XML DE FACTURA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
 								
 							</f:facet>
 
@@ -206,7 +227,7 @@
 							</p:column>
 							
 							<p:column headerText="C.A." width="5%" >
-								<h:outputText value="#{pvd.apCantidad}" class="rightAlignColumn" title="HAY EN DISPUTA #{pvd.canPendteEnOtrosPV} UNIDADES EN OTROS PEDIDOS SIN SURTIR"/>
+								<h:outputText value="#{pvd.apCantidad}" class="rightAlignColumn" title="HAY #{pvd.apCantidad} EN ALMACEN Y EN DISPUTA #{pvd.canPendteEnOtrosPV} UNIDADES EN OTROS PEDIDOS SIN SURTIR"/>
 							</p:column>
 
 							<p:column headerText="PRODUCTO" width="#{editarPedidoVentaMB.codigoTableWidth}">
@@ -333,13 +354,13 @@
 
 						<p:outputLabel value="DESCUENTO :" title="HABILITAR O DESHABILITAR LA POLITICA DE DESCUENTO" />
 						<h:panelGroup>
-							<p:inputSwitch id="autorizaDescuento" value="#{editarPedidoVentaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not sessionUserMB.adminUser or (not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible)}">
+							<p:inputSwitch id="autorizaDescuento" value="#{editarPedidoVentaMB.autorizaDescuento}" onLabel="SI" offLabel="NO" disabled="#{not sessionUserMB.usuarioAuthenticated.playsAsAdmin  or (not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible)}">
 								<p:ajax listener="#{editarPedidoVentaMB.onAutorizaDescuentoChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:inputSwitch>
 							<p:tooltip id="toolTipDescuento" for="autorizaDescuento" value="#{editarPedidoVentaMB.politicaDescuento}" />
 
 							<p:spacer width="10"/>
-							<p:selectOneMenu id="descuentoEspecial" value="#{editarPedidoVentaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{not sessionUserMB.adminUser or (not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible)}" rendered="#{editarPedidoVentaMB.autorizaDescuento}">
+							<p:selectOneMenu id="descuentoEspecial" value="#{editarPedidoVentaMB.pedidoVenta.porcentajeDescuentoExtra}" disabled="#{not sessionUserMB.usuarioAuthenticated.playsAsAdmin  or (not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible)}" rendered="#{editarPedidoVentaMB.autorizaDescuento}">
 								<f:selectItems  value="#{editarPedidoVentaMB.descuentoEspacialList}"/>
 								<p:ajax listener="#{editarPedidoVentaMB.onDescuentoEspecialListChange}" process=":form4:panel4_2" update=":form4:panel4_2,:form4:panel4_3"/>
 							</p:selectOneMenu>
@@ -408,18 +429,18 @@
 						</p:panelGrid>
 						<p:spacer width="10"/>
 						
-						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.adminUser and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.verificable)}"
+						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.verificable)}"
 										 actionListener="#{editarPedidoVentaMB.verificar}" process="@all" update="@all">
 							<p:confirm header="VERIFICAR" message="¿ SEGURO QUE YA HA VERIFICADO TODOS LOS ELEMENTOS ?" icon="ui-icon-alert" />
 						</p:commandButton>
 
-						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.surtible)}"  
+						<p:commandButton value="OK, SE AUTORIZA SURTIRSE" icon="ui-icon-cart" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.surtible)}"  
 										 actionListener="#{editarPedidoVentaMB.surtir}" process="@all" update="@all"
 										 disabled="#{not editarPedidoVentaMB.posibleSurtir}">
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>
-							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.adminUser and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.facturable)}"  
+							<p:commandButton value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.facturable)}"  
 											 disabled="#{editarPedidoVentaMB.actualizarEstadoPorResultadoWS}"
 											 actionListener="#{editarPedidoVentaMB.generaCFDReal}" process="@all" update="@all">
 								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
@@ -427,7 +448,7 @@
 
 						</h:panelGroup>
 						
-						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.cancelable)}" 
+						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.cancelable)}" 
 										 process="@all" update="@all">
 							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR EL PEDIDO ?" icon="ui-icon-alert" />
 						</p:commandButton>

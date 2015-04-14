@@ -142,7 +142,26 @@ public class UsuarioQuickView extends Usuario{
 	public void setInRoleStock(boolean inRoleStock) {
 		this.inRoleStock = inRoleStock;
 	}
-
+	
+	public boolean getPlaysAsAdmin(){
+		return inRoleRoot || inRoleAdmin && isHabilitado();
+	}	
+	public boolean getPlaysAsFinances(){
+		return inRoleRoot || inRoleFinances && isHabilitado();
+	}
+	public boolean getPlaysAsPMarlenUser(){
+		return inRoleRoot || inRolePMarlenUser && isHabilitado();
+	}
+	public boolean getPlaysAsSales(){
+		return inRoleRoot || inRoleSales && isHabilitado();
+	}
+	public boolean getPlaysAsStock(){
+		return inRoleRoot || inRoleStock && isHabilitado();
+	}
+	public boolean getPlaysAsRoot(){
+		return inRoleRoot;
+	}
+	
 	public void addPerfil(String perfil) {
 		if(perfil.equalsIgnoreCase(Constants.PERFIL_ROOT)){
 			inRoleRoot = true;

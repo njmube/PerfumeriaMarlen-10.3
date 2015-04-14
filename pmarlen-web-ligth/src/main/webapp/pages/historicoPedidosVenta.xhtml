@@ -36,22 +36,22 @@
 					
 					<p:column headerText="#" width="10%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<p:commandButton action="#{historicoPedidosVentaMB.editarPedidoAction(pv.id)}" value="#{pv.id}"/>
+							<p:commandButton actionListener="#{historicoPedidosVentaMB.editar(pv.id)}" value="#{pv.id}" onsuccess="edit();"/>
 
-							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
-								<h:graphicImage value="/images/nota.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
-							</h:outputLink>
 							<h:panelGroup>
+								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_16x16.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+
 								<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
 											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura_marcaAgua.png" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+									<h:graphicImage value="/images/factura_16x16.png" title="PDF FACTURA DE VENTA ##{pv.id}"/>
 								</h:outputLink>
-								<p:spacer width="5"/>
-								<h:outputLink id="pdfLinkFactura_x" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank"
+								
+								<h:outputLink id="xmlLinkFactura" value="#{request.contextPath}/docs/cfdi/CFDI_PerfumeriaMarlen_No_#{pv.id}.xml" target="_blank"
 											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura.png" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR"/>
+									<h:graphicImage value="/images/xml.png" title="XML FACTURA DE VENTA ##{pv.id}"/>
 								</h:outputLink>
-							
 							</h:panelGroup>
 						</p:panelGrid>
 					</p:column>
