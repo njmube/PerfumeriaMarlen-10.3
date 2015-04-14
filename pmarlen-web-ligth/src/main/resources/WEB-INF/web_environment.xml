@@ -152,8 +152,8 @@
 			<form-login-page>/loginRealm.jsp</form-login-page>
 			<form-error-page>/loginRealm.jsp?error=ok</form-error-page>			
 			-->
-            <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/login.jsp?error=ok</form-error-page>
+            <form-login-page>/loginFresh.jsp</form-login-page>
+            <form-error-page>/loginFresh.jsp?error=ok</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>
