@@ -147,21 +147,19 @@
 								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{editarPedidoVentaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
 													rendered="#{editarPedidoVentaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
 													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarPedidoVentaMB.verificable and not editarPedidoVentaMB.surtible}"/>
-								<p:spacer width="10" rendered="false"/>
+								<p:spacer width="30"/>
 								
-								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" target="_blank" rendered="false">
-									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA DE VENTA ##{pv.id}"/>
-								</h:outputLink>
-								<p:spacer width="10"/>
-								<h:outputLink id="pdfLink2" value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" target="_blank" rendered="false">
-									<h:graphicImage value="/images/pdf.gif" title="IMPRIMIR NOTA INTERNA (PARA ALMACÉN) DE VENTA ##{pv.id}"/>
-								</h:outputLink>
-								<p:spacer width="10"/>
 								<p:button href="/docs/notas/Nota_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" 
-										  target="_blank" icon="ui-icon-document"  title="PDF NOTA DE VENTA ##{pv.id}" />
+										  target="_blank" icon="ui-icon-document-b"  title="PDF NOTA DE VENTA ##{pv.id}" />
 								<p:spacer width="10"/>
 								<p:button href="/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" 
-										  target="_blank" icon="ui-icon-document"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
+										  target="_blank" icon="ui-icon-clipboard"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
+								<p:spacer width="30" rendered="#{not empty pv.cfdId}"/>
+								<p:button href="/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" rendered="#{not empty pv.cfdId}"
+										  target="_blank" icon="ui-icon-document"  title="PDF FACTURA DE VENTA ##{pv.id}" />
+								<p:spacer width="10"/>
+								<p:button href="/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}_paraImprimir.pdf.pdf" rendered="#{not empty pv.cfdId}"
+										  target="_blank" icon="ui-icon-print"  title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR" />
 								
 							</f:facet>
 

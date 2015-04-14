@@ -39,7 +39,7 @@
 				</tr>
 				<tr>
 					<td width="20%" rowspan="6" valign="middle" align="center" >
-						<img src="<%=request.getContextPath()%>/images/secure.gif" />
+						<img src="<%=request.getContextPath()%>/images/login_person.png" />
 					</td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>

@@ -34,22 +34,22 @@
 
 					</f:facet>
 					
-					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
+					<p:column headerText="#" width="10%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
 							<p:commandButton action="#{historicoPedidosVentaMB.editarPedidoAction(pv.id)}" value="#{pv.id}"/>
 
 							<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
-								<h:graphicImage value="/images/pdf.gif" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								<h:graphicImage value="/images/nota.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
 							</h:outputLink>
 							<h:panelGroup>
 								<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
 											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+									<h:graphicImage value="/images/factura_marcaAgua.png" title="PDF FACTURA DE VENTA ##{pv.id}"/>
 								</h:outputLink>
 								<p:spacer width="5"/>
 								<h:outputLink id="pdfLinkFactura_x" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank"
 											  rendered="#{not empty pv.cfdId}">
-									<h:graphicImage value="/images/factura_qr_16x16.gif" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR"/>
+									<h:graphicImage value="/images/factura.png" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR"/>
 								</h:outputLink>
 							
 							</h:panelGroup>
@@ -64,7 +64,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="CLIENTE" width="25%">
+					<p:column headerText="CLIENTE" width="20%">
 						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 							<h:outputText value="R.F.C. :" />
 							<h:outputText value="#{pv.clienteRFC}" />
