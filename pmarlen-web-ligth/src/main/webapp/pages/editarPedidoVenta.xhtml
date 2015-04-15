@@ -129,7 +129,8 @@
 							<p:ajax event="rowReorder" listener="#{editarPedidoVentaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
 							<f:facet name="header">
 								
-								<h:outputLink value="#{request.contextPath}/pages/editarPedidoVenta.jsf" >
+								<h:outputLink value="#{request.contextPath}/pages/editarPedidoVenta.jsf">
+									<p:ajax event="click" listener="#{editarPedidoVentaMB.actualizarTabla}" process=":form3" update=":form3:panel3,:form4" />
 									<h:graphicImage value="/images/table_refresh.png"/>
 								</h:outputLink>
 								
@@ -162,24 +163,24 @@
 								<p:spacer width="10"/>
 								<p:spacer width="10"/>
 								
-								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
-									<h:graphicImage value="/images/nota_sola.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_sola.png" title="PDF NOTA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id}"/>
 								</h:outputLink>
 								<p:spacer width="10"/>
-								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
-									<h:graphicImage value="/images/nota_interna.png" title="PDF NOTA DE VENTA ##{pv.id} INTERNA P/ALMACÉN"/>
+								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_interna.png" title="PDF NOTA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id} INTERNA P/ALMACÉN"/>
 								</h:outputLink>
 								<p:spacer width="10"/>
-								<h:outputLink value="/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" rendered="#{not empty pv.cfdId}" target="_blank">
-									<h:graphicImage value="/images/factura_email.png" title="PDF FACTURA DE VENTA ##{pv.id}"/>
+								<h:outputLink value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" rendered="#{not empty editarPedidoVentaMB.pedidoVenta.cdfNumCFD}" target="_blank">
+									<h:graphicImage value="/images/factura_email.png" title="PDF FACTURA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id}"/>
 								</h:outputLink>
 								<p:spacer width="10"/>
-								<h:outputLink value="/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" rendered="#{not empty pv.cfdId}" target="_blank">
-									<h:graphicImage value="/images/factura_imprimir.png" title="PDF FACTURA DE VENTA ##{pv.id} PARA IMPRIMIR EN HOJA MEMBRETADA"/>
+								<h:outputLink value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}_paraImprimir.pdf" rendered="#{not empty editarPedidoVentaMB.pedidoVenta.cdfNumCFD}" target="_blank">
+									<h:graphicImage value="/images/factura_imprimir.png" title="PDF FACTURA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id} PARA IMPRIMIR EN HOJA MEMBRETADA"/>
 								</h:outputLink>
 								<p:spacer width="10"/>
-								<h:outputLink value="/docs/cfdi/CFDI_PerfumeriaMarlen_No_#{pv.id}.xml" rendered="#{not empty pv.cfdId}" target="_blank">
-									<h:graphicImage value="/images/xml_file.png" title="XML DE FACTURA DE VENTA ##{pv.id}"/>
+								<h:outputLink value="#{request.contextPath}/docs/cfdi/CFDI_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.xml" rendered="#{not empty editarPedidoVentaMB.pedidoVenta.cdfNumCFD}" target="_blank">
+									<h:graphicImage value="/images/xml_file.png" title="XML DE FACTURA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id}"/>
 								</h:outputLink>
 								
 							</f:facet>
