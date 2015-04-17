@@ -188,7 +188,7 @@ public class EditarPedidoVentaMB{
 		return "/pages/cliente";
 	}
 	
-	public EntradaSalida getPedidoVenta() {
+	public EntradaSalidaQuickView getPedidoVenta() {
 		return entradaSalida;
 	}
 

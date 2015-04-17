@@ -420,7 +420,7 @@
 							<h:outputText value="#{editarPedidoVentaMB.pedidoVenta.usuarioNombreCompleto}"/>
 
 							<h:outputText value="ESTADO :"/>
-							<h:outputText value="#{editarPedidoVentaMB.pedidoVenta.estadoDescripcion}" title="#{editarPedidoVentaMB.pedidoVenta.estadoId}"/>
+							<h:outputText value="#{editarPedidoVentaMB.pedidoVenta.estadoDescripcion}" title="POR #{editarPedidoVentaMB.pedidoVenta.estadoActualUsuarioNombreCompleto}"/>
 
 							<h:outputText value="#FACTURA :" rendered="#{not empty editarPedidoVentaMB.pedidoVenta.cdfNumCFD}"/>
 							<h:outputText value="#{editarPedidoVentaMB.pedidoVenta.cdfNumCFD}" rendered="#{not empty editarPedidoVentaMB.pedidoVenta.cdfNumCFD}"/>

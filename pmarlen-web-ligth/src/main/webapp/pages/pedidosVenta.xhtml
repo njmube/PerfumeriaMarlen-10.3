@@ -42,10 +42,10 @@
 						</p:panelGrid>
 					</p:column>
 					
-					<p:column headerText="ESTADO / FECHA" width="10%">
-						<p:panelGrid columns="1" columnClasses="centerAlign" style="border: none; border-collapse: none; ">
-							<h:outputText value="#{pv.estadoDescripcion}" />
-							<h:outputText value="#{pv.fechaCreo}" />
+					<p:column headerText="CREADO / ACTUAL" width="15%">
+						<p:panelGrid columns="1" columnClasses="centerAlign" style="border: none; border-collapse: none; ">							
+							<h:outputText value="CREADO / #{pv.fechaCreo} (#{pv.usuarioEmailCreo}) "/>
+							<h:outputText value="#{pv.estadoDescripcion} / #{pv.estadoActualFecha} (#{pv.estadoActualUsuarioEmail}" />							
 						</p:panelGrid>
 						
 					</p:column>
@@ -63,8 +63,6 @@
 					
 					<p:column headerText="DATOS" width="20%">
 						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-							<h:outputText value="USUARIO CREÓ :" />
-							<h:outputText value="#{pv.usuarioNombreCompleto}" />
 							<h:outputText value="ELEMENTOS :" />
 							<h:outputText value="#{pv.numElementos}" />
 							<h:outputText value="FORMA DE PAGO :" />

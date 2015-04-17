@@ -265,12 +265,14 @@ public class EntradaSalidaDAO {
 					+ "WHERE  1=1\n"
 					+ "AND    ESE.ESTADO_ID=E.ID\n"
 					+ "AND    ESE.USUARIO_EMAIL = U.EMAIL\n"
-					+ "AND    ESE.ENTRADA_SALIDA_ID=?");
+					+ "AND    ESE.ENTRADA_SALIDA_ID=?\n"
+					+ "ORDER BY ESE.FECHA DESC");
 			psESE.setInt(1, p.getId());
 
 			rsESE = psESE.executeQuery();
+			EntradaSalidaEstadoQuickView z = null;
 			while (rsESE.next()) {
-				EntradaSalidaEstadoQuickView z = new EntradaSalidaEstadoQuickView();
+				z = new EntradaSalidaEstadoQuickView();
 
 				z.setId(rsESE.getInt("ID"));
 				z.setEntradaSalidaId(rsESE.getInt("ENTRADA_SALIDA_ID"));
@@ -284,6 +286,12 @@ public class EntradaSalidaDAO {
 				pveList.add(z);
 			}
 			x.setPveList(pveList);
+			
+			if(z != null){
+				x.setEstadoActualFecha(z.getFecha());
+				x.setEstadoActualUsuarioEmail(z.getUsuarioEmail());
+				x.setEstadoActualUsuarioNombreCompleto(z.getUsuarioNombreCompleto());
+			}
 
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
@@ -382,18 +390,22 @@ public class EntradaSalidaDAO {
 	}
     
 	public ArrayList<EntradaSalidaQuickView> findAllActivePendidos() throws DAOException {
-		return findAllActive(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
+		return findAllActive(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA,1);
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllActiveDevs() throws DAOException {
-		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,1);
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllActiveCompras() throws DAOException {
-		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA);
+		return findAllActive(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA,1);
 	}
 	
-	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov) throws DAOException {
+	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov,int sucursalId) throws DAOException {
+		return findAllActive(tipoMov,sucursalId,true);
+	}
+	
+	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov,int sucursalId,boolean active) throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -414,8 +426,11 @@ public class EntradaSalidaDAO {
 					+ "MP.DESCRIPCION AS MP_DESCRIPCION,\n"
 					+ "CFD.NUM_CFD AS CFD_NUM_CFD,\n"
 					+ "COUNT(1) NUM_ELEMENTOS, \n"
-					+ "SUM(ESD.CANTIDAD * ESD.PRECIO_VENTA) AS IMPORTE_BRUTO\n"
-					+ "FROM      ENTRADA_SALIDA_DETALLE ESD,\n"
+					+ "SUM(ESD.CANTIDAD * ESD.PRECIO_VENTA) AS IMPORTE_BRUTO, \n"
+					+ "ESE.FECHA AS FECHA_ACTUALIZO, \n"		
+					+ "ESE.USUARIO_EMAIL AS USUARIO_ACTUALIZO\n"
+					+ "FROM      ENTRADA_SALIDA_ESTADO  ESE,\n"
+					+ "          ENTRADA_SALIDA_DETALLE ESD,\n"		
 					+ "          ENTRADA_SALIDA         ES\n"
 					+ "LEFT JOIN CFD            CFD ON ES.CFD_ID      = CFD.ID\n"
 					+ "LEFT JOIN SUCURSAL       S   ON ES.SUCURSAL_ID       = S.ID\n"
@@ -425,12 +440,18 @@ public class EntradaSalidaDAO {
 					+ "LEFT JOIN FORMA_DE_PAGO  FP  ON ES.FORMA_DE_PAGO_ID  = FP.ID\n"
 					+ "LEFT JOIN METODO_DE_PAGO MP  ON ES.METODO_DE_PAGO_ID = MP.ID\n"
 					+ "WHERE     1=1\n"
-					+ "AND       ES.ESTADO_ID IN(1,2,4)\n"
+					+ (active ? "AND       ES.ESTADO_ID IN (1,2,4)\n":
+							    "AND       ES.ESTADO_ID >  4\n" )
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
-					+ "AND       ES.TIPO_MOV  = ?\n"		
+					+ "AND       ES.ID        = ESE.ENTRADA_SALIDA_ID\n"
+					+ "AND       ES.ESTADO_ID = ESE.ESTADO_ID\n"		
+					+ "AND       ES.TIPO_MOV  = ?\n"
+					+ "AND       ES.SUCURSAL_ID= ?\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.ID DESC");
+					+ "ORDER BY  ES.FECHA_CREO DESC");
 			ps.setInt(1, tipoMov);
+			ps.setInt(2, sucursalId);
+			
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();				
@@ -478,6 +499,8 @@ public class EntradaSalidaDAO {
 					x.setImporteDescuento(0.0);
 					x.setImporteTotal(x.getImporteBruto() );
 				}
+				x.setEstadoActualFecha((Timestamp) rs.getObject("FECHA_ACTUALIZO"));
+				x.setEstadoActualUsuarioEmail((String) rs.getObject("USUARIO_ACTUALIZO"));
 
 				r.add(x);
 			}
@@ -499,18 +522,22 @@ public class EntradaSalidaDAO {
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllHistoricoPedidos() throws DAOException {
-		return findAllHistorico(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA);
+		return findAllHistorico(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA,1);
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllHistoricoDevs() throws DAOException {
-		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,1);
 	}
 	
 	public ArrayList<EntradaSalidaQuickView> findAllHistoricoCompras() throws DAOException {
-		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION);
+		return findAllHistorico(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,1);
 	}
 	
-    private ArrayList<EntradaSalidaQuickView> findAllHistorico(int tipoMov) throws DAOException {
+	private ArrayList<EntradaSalidaQuickView> findAllHistorico(int tipoMov,int sucursalId) throws DAOException {
+		return findAllActive(tipoMov,sucursalId,false);
+	}
+    
+	private ArrayList<EntradaSalidaQuickView> __findAllHistorico(int tipoMov,int sucursalId) throws DAOException {
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -545,9 +572,11 @@ public class EntradaSalidaDAO {
 					+ "AND       ES.ESTADO_ID > 4\n"
 					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
 					+ "AND       ES.TIPO_MOV  = ?\n"		
+					+ "AND       ES.SUCURSAL_ID= ?\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.ID DESC");
+					+ "ORDER BY  ES.FECHA_CREO DESC");
 			ps.setInt(1, tipoMov);
+			ps.setInt(2, sucursalId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
@@ -741,15 +770,15 @@ public class EntradaSalidaDAO {
 			conn = getConnectionCommiteable();
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 			
-			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET TIPO_MOV=?,SUCURSAL_ID=?,ESTADO_ID=?,FECHA_CREO=?,USUARIO_EMAIL_CREO=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=?,AUTORIZA_DESCUENTO=? "
+			ps = conn.prepareStatement("UPDATE ENTRADA_SALIDA SET TIPO_MOV=?,SUCURSAL_ID=?,ESTADO_ID=?,CLIENTE_ID=?,FORMA_DE_PAGO_ID=?,METODO_DE_PAGO_ID=?,FACTOR_IVA=?,COMENTARIOS=?,CFD_ID=?,NUMERO_TICKET=?,CAJA=?,IMPORTE_RECIBIDO=?,APROBACION_VISA_MASTERCARD=?,PORCENTAJE_DESCUENTO_CALCULADO=?,PORCENTAJE_DESCUENTO_EXTRA=?,CONDICIONES_DE_PAGO=?,NUM_DE_CUENTA=?,AUTORIZA_DESCUENTO=? "
 					+ " WHERE ID=?");
 			
 			int ci = 1;
 			ps.setObject(ci++, x.getTipoMov());
 			ps.setObject(ci++, x.getSucursalId());
 			ps.setObject(ci++, x.getEstadoId());
-			ps.setObject(ci++, x.getFechaCreo());
-			ps.setObject(ci++, x.getUsuarioEmailCreo());
+			//ps.setObject(ci++, x.getFechaCreo());
+			//ps.setObject(ci++, x.getUsuarioEmailCreo());
 			ps.setObject(ci++, x.getClienteId());
 			ps.setObject(ci++, x.getFormaDePagoId());
 			ps.setObject(ci++, x.getMetodoDePagoId());

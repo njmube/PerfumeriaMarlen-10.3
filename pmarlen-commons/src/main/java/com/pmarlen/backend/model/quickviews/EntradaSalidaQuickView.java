@@ -51,6 +51,12 @@ public class EntradaSalidaQuickView extends EntradaSalida {
 	
 	private ArrayList<EntradaSalidaEstadoQuickView>  pveList;
 	
+	private String estadoActualUsuarioEmail;
+	
+	private String estadoActualUsuarioNombreCompleto;
+	
+	private java.sql.Timestamp estadoActualFecha;
+	
     /** 
      * Default Constructor
      */
@@ -274,5 +280,47 @@ public class EntradaSalidaQuickView extends EntradaSalida {
 	public void setPveList(ArrayList<EntradaSalidaEstadoQuickView> pveList) {
 		this.pveList = pveList;
 	}
-		
+
+	/**
+	 * @return the estadoActualUsuarioEmail
+	 */
+	public String getEstadoActualUsuarioEmail() {
+		return estadoActualUsuarioEmail;
+	}
+
+	/**
+	 * @param estadoActualUsuarioEmail the estadoActualUsuarioEmail to set
+	 */
+	public void setEstadoActualUsuarioEmail(String estadoActualUsuarioEmail) {
+		this.estadoActualUsuarioEmail = estadoActualUsuarioEmail;
+	}
+
+	/**
+	 * @return the estadoActualUsuarioNombreCompleto
+	 */
+	public String getEstadoActualUsuarioNombreCompleto() {
+		return estadoActualUsuarioNombreCompleto;
+	}
+
+	/**
+	 * @param estadoActualUsuarioNombreCompleto the estadoActualUsuarioNombreCompleto to set
+	 */
+	public void setEstadoActualUsuarioNombreCompleto(String estadoActualUsuarioNombreCompleto) {
+		this.estadoActualUsuarioNombreCompleto = estadoActualUsuarioNombreCompleto;
+	}
+
+	/**
+	 * @return the estadoActualFecha
+	 */
+	public java.sql.Timestamp getEstadoActualFecha() {
+		return estadoActualFecha;
+	}
+
+	/**
+	 * @param estadoActualFecha the estadoActualFecha to set
+	 */
+	public void setEstadoActualFecha(java.sql.Timestamp estadoActualFecha) {
+		this.estadoActualFecha = estadoActualFecha;
+	}
+	
 }
