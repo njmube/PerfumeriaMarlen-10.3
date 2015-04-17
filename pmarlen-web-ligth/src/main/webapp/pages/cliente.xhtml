@@ -28,7 +28,7 @@
 							 rowsPerPageTemplate="10,25,100" >
 					<f:facet name="header">
 						OPCIONES :
-						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1, :form2:dlg1Panel1" 
+						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1,:form2" 
 											actionListener="#{clienteMB.prepareForNew}" 
 											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
 						<p:spacer width="20"/>
@@ -41,7 +41,7 @@
 					
 					<p:column width="5%">
 
-						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
+						<p:commandButton	update=":form1:panel1, :form2" 
 										 actionListener="#{clienteMB.setSelectedEntity(cliente)}" 
 										 icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
 										 title="EDITAR DATOS DEL CLIENTE"/>
@@ -131,7 +131,7 @@
 						<p:message for="cliente_numExterior"  showDetail="true"/>
 
 						<h:outputLabel for="cliente_numInterior" value="NUM. INTERIOR:" style="font-weight:bold"/>
-						<p:inputText id="cliente_numInterior" value="#{clienteMB.selectedEntity.numInterior}" required="true" label="NUM. INTERIOR:" size="10" maxlength="16">
+						<p:inputText id="cliente_numInterior" value="#{clienteMB.selectedEntity.numInterior}" required="false" label="NUM. INTERIOR:" size="10" maxlength="16">
 							<f:validateLength minimum="1" maximum="16" />
 						</p:inputText>
 						<p:message for="cliente_numInterior"  showDetail="true"/>
@@ -199,7 +199,7 @@
 
 						<h:outputLabel for="cliente_numCuenta" value="NUM. CUENTA:" style="font-weight:bold"/>
 						<p:inputText id="cliente_numCuenta" value="#{clienteMB.selectedEntity.numCuenta}" required="false" label="NUM. CUENTA:" size="10">
-							<f:validateLength minimum="5" maximum="64" />							
+							<f:validateLength minimum="2" maximum="64" />							
 						</p:inputText>
 						<p:message for="cliente_numCuenta" />
 
@@ -210,9 +210,9 @@
 						<p:message for="cliente_banco" />
 
 						<h:outputLabel for="cliente_direccionFacturacion" value="DIRECCIÓN DE FACTURACIÓN:" style="font-weight:bold"/>
-						<p:inputText id="cliente_direccionFacturacion" value="#{clienteMB.selectedEntity.direccionFacturacion}" required="false" label="DIRECCIÓN DE FACTURACIÓN:" size="35">
-							<f:validateLength minimum="5" maximum="64" />							
-						</p:inputText>
+						<p:inputTextarea id="cliente_direccionFacturacion" value="#{clienteMB.selectedEntity.direccionFacturacion}" required="false" label="DIRECCIÓN DE FACTURACIÓN:"  cols="55" rows="3">
+							<f:validateLength minimum="5" maximum="255" />							
+						</p:inputTextarea>
 						<p:message for="cliente_direccionFacturacion" />
 
 					</h:panelGrid>
