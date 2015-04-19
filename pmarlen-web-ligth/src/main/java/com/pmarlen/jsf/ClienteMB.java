@@ -38,7 +38,7 @@ public class ClienteMB  {
 		}
 		System.out.println("->ClienteMB: init:entityList="+entityList);
 		viewRows = 10;
-		dialogTitle ="CLIETE";
+		dialogTitle ="DATOS DEL CLIENTE";
     }
 	
 	public String reset() {
@@ -63,14 +63,17 @@ public class ClienteMB  {
 	
 	public void prepareForNew() {
 		System.out.println("->ClienteMB prepareForNew");
-		dialogTitle ="AGREGAR NUEVO CLIETE";
+		//dialogTitle ="AGREGAR NUEVO CLIETE";
 		this.selectedEntity = new ClienteQuickView();
 	}
 	
 	public void setSelectedEntity(ClienteQuickView selectedCliente) {
 		System.out.println("->ClienteMB setSelectedCliente.id="+selectedCliente.getId());
-		dialogTitle ="EDITAR CLIENTE ID #"+selectedCliente.getId();
+		//dialogTitle ="INFORMACIÓN DEL CLEINTE";
 		this.selectedEntity = selectedCliente;
+		if(this.selectedEntity.getDireccionFacturacion()== null){
+			this.selectedEntity.setDireccionFacturacion(this.selectedEntity.getDireccion());
+		}
 	}
 	
 	public void save(){

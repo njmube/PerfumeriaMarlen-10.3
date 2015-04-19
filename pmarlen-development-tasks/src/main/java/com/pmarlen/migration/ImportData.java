@@ -137,7 +137,7 @@ public class ImportData {
 				arrXC[3]=arrXC[3]!=null?((String)arrXC[3]).toUpperCase():null;
 				arrXC[4]=arrXC[4]!=null?((String)arrXC[4]).toUpperCase():null;
 				arrXC[5]=arrXC[5]!=null?((String)arrXC[5]).toUpperCase():null;				
-				arrXC[6]=arrXC[6]!=null?((String)arrXC[6]).toUpperCase():null;
+				arrXC[6]=arrXC[6]!=null?((String)arrXC[6]).toLowerCase():null;
 				arrXC[7]=arrXC[7]!=null?((String)arrXC[7]).toLowerCase():null;
 				arrXC[8]=arrXC[8]!=null?((String)arrXC[8]).toUpperCase():null;				
 				
@@ -148,9 +148,21 @@ public class ImportData {
 				arrXC[13]=arrXC[13]!=null?((String)arrXC[13]).toUpperCase():null;
 				arrXC[14]=arrXC[14]!=null?((String)arrXC[14]).toUpperCase():null;
 				arrXC[15]=arrXC[15]!=null?((String)arrXC[15]).toUpperCase():null;
-				arrXC[16]=arrXC[16]!=null?((String)arrXC[16]).toUpperCase():null;
-				
+				String direccionFacturacion=(String)arrXC[16];
+				if(direccionFacturacion == null){
+					direccionFacturacion =	arrXC[8] + 
+											(arrXC[10]!=null?(",NUM EXT."+arrXC[10]):(","))+
+											(arrXC[ 9]!=null?(",NUM INT."+arrXC[9]):(","))+
+											", "+arrXC[11]+
+											", "+arrXC[12]+
+											((! arrXC[12].equals(arrXC[13]))?(", CIUDAD "+arrXC[13]):(""))+
+											", "+arrXC[14]+
+											", C.P. "+arrXC[15];
+					direccionFacturacion = direccionFacturacion.toUpperCase();
+				}				
+				arrXC[16]=direccionFacturacion;
 			}
+			//											0	1	2			3						4		5			6	7				8	9				10			11		12		13		14	  15	16
 			executeMultipleUpdates("INSERT INTO CLIENTE(ID,RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CONTACTO,TELEFONOS,EMAIL,OBSERVACIONES,CALLE,NUM_INTERIOR,NUM_EXTERIOR,COLONIA,MUNICIPIO,CIUDAD,ESTADO,CP,DIRECCION_FACTURACION) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", resultCliente);
 			resultCliente = null;
 

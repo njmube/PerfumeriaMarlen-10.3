@@ -28,7 +28,7 @@
 							 rowsPerPageTemplate="10,25,100" >
 					<f:facet name="header">
 						OPCIONES :
-						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1,:form2" 
+						<p:commandButton	value="AGREGAR NUEVO CLIENTE" update=":form1:panel1, :form2:dlg1Panel1" 
 											actionListener="#{clienteMB.prepareForNew}" 
 											icon="ui-icon-circle-plus" onsuccess="PF('dlg1').show();"/>
 						<p:spacer width="20"/>
@@ -41,14 +41,14 @@
 					
 					<p:column width="5%">
 
-						<p:commandButton	update=":form1:panel1, :form2" 
+						<p:commandButton	update=":form1:panel1, :form2:dlg1Panel1" 
 										 actionListener="#{clienteMB.setSelectedEntity(cliente)}" 
 										 icon="ui-icon-pencil" onsuccess="PF('dlg1').show();"
 										 title="EDITAR DATOS DEL CLIENTE"/>
 
 					</p:column>
 					
-					<p:column headerText="RFC" sortBy="#{cliente.rfc}" width="15%">
+					<p:column headerText="RFC" sortBy="#{cliente.rfc}" width="10%">
 						<h:outputText value="#{cliente.rfc}" />
 					</p:column>
 
@@ -74,6 +74,8 @@
 							<p:outputLabel value="DIRECCIÓN:"/>
 							<h:outputText value="#{cliente.direccion}" />
 							
+							<p:outputLabel value="DIRECCIÓN FACTURACIÓN:"/>
+							<h:outputText value="#{cliente.direccionFacturacion}" />
 							
 							<p:outputLabel value="OBSERVACIONES:"/>
 							<h:outputText value="#{cliente.observaciones}" />
@@ -181,7 +183,9 @@
 						<h:outputLabel for="cliente_telefonos" value="TELEFONOS:" style="font-weight:bold"/>
 						<p:inputText id="cliente_telefonos" value="#{clienteMB.selectedEntity.telefonos}" required="false" label="TELEFONOS:" size="15">
 							<f:validateLength minimum="5" maximum="128" />
+							<!--
 							<f:validateRegex pattern="[0-9]+([-,X]+[0-9]+)*" for="cliente_telefonos"/>
+							-->
 						</p:inputText>
 						<p:message for="cliente_telefonos" />
 						

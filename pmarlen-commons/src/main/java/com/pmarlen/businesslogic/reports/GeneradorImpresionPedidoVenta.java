@@ -108,7 +108,7 @@ public class GeneradorImpresionPedidoVenta {
             parameters.put("cliente",clienteVenta.getRazonSocial());
             parameters.put("rfc",clienteVenta.getRfc());
 			String direccionValue = null;
-			direccionValue = null;
+			direccionValue = clienteVenta.getDireccionFacturacion();
 			if(direccionValue == null){
 				direccionValue = clienteVenta.getCalle()+
 						", Num. Ext. "+(clienteVenta.getNumExterior()!=null&&clienteVenta.getNumExterior().length()>0?clienteVenta.getNumExterior():"S/N")+
@@ -282,7 +282,7 @@ public class GeneradorImpresionPedidoVenta {
 			parameters.put("fechaHoraImpr",sdf_cdf.format(new Date()));
 						
 			String direccionValue = null;
-			direccionValue = null;
+			direccionValue = clienteVenta.getDireccionFacturacion();
 			if(direccionValue == null){
 				direccionValue = clienteVenta.getCalle()+
 						", Num. Ext. "+(clienteVenta.getNumExterior()!=null&&clienteVenta.getNumExterior().length()>0?clienteVenta.getNumExterior():"S/N")+
