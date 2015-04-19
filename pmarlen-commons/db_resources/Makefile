@@ -18,20 +18,20 @@ init_DB_DEVE : create_users_DEVE
 	echo import from previous DB to be defined.
 
 create_users_DEVE : create_DB_DEVE sql/CREATE_USER_DEVE.MySQL.SQL
-	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) < sql/CREATE_USER_DEVE.MySQL.SQL
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) --verbose < sql/CREATE_USER_DEVE.MySQL.SQL
 
 create_DB_DEVE : sql/CREATE_PMDB$(PMDB_VER_NAME)_DEVE.MySQL.SQL
-	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) < sql/CREATE_PMDB$(PMDB_VER_NAME)_DEVE.MySQL.SQL
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) --verbose < sql/CREATE_PMDB$(PMDB_VER_NAME)_DEVE.MySQL.SQL
 
 
 init_DB_PROD : create_users_PROD 
 	echo import from previous DB to be defined.
 
 create_users_PROD : create_DB_PROD sql/CREATE_USER_PROD.MySQL.SQL
-	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) < sql/CREATE_USER_PROD.MySQL.SQL
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) --verbose < sql/CREATE_USER_PROD.MySQL.SQL
 
 create_DB_PROD : sql/CREATE_PMDB$(PMDB_VER_NAME)_PROD.MySQL.SQL
-	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) < sql/CREATE_PMDB$(PMDB_VER_NAME)_PROD.MySQL.SQL
+	mysql --default-character-set=utf8 -u root -p$(MYSQL_ROOT_PASSWORD) --verbose < sql/CREATE_PMDB$(PMDB_VER_NAME)_PROD.MySQL.SQL
 
 model_changed : $(JPABUILDER_JAR_PATH) run_regenerate_scripts_DB run_regenerate_BackEnd_DTOs run_generate_create_users_4_deve run_generate_create_users_4_prod
 
