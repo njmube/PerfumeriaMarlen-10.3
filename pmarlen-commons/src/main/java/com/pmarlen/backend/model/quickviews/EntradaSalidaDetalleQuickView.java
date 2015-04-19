@@ -62,12 +62,15 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	public String toStringShorten() {
 		StringBuilder sb= new StringBuilder(productoNombre);
 		
-		sb.append(" / ").
+		sb.append("/").
 				append(productoPresentacion).
 				append(" ").
 				append(productoContenido).
-				append(" ").
-				append(productoUnidadMedida);
+				append(productoUnidadMedida).
+				append("[").
+				append(productoUnidadesPorCaja).
+				append("]#").
+				append(apCantidad);
 		
 		return  sb.toString();
 	}

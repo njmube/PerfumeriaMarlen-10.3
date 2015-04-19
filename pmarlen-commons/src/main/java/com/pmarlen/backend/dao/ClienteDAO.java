@@ -184,11 +184,12 @@ public class ClienteDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("INSERT INTO CLIENTE(RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON,NUM_CUENTA,BANCO,DIRECCION_FACTURACION) "+
+			ps = conn.prepareStatement("INSERT INTO CLIENTE("
+					+ "RFC,RAZON_SOCIAL,NOMBRE_ESTABLECIMIENTO,CALLE,NUM_EXTERIOR,NUM_INTERIOR,COLONIA,MUNICIPIO,REFERENCIA,CIUDAD,"
+					+ "CP,ESTADO,EMAIL,TELEFONOS,CONTACTO,OBSERVACIONES,UBICACION_LAT,UBICACION_LON,NUM_CUENTA,BANCO,DIRECCION_FACTURACION) "+
 					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					,Statement.RETURN_GENERATED_KEYS);			
 			int ci=1;
-			ps.setObject(ci++,x.getId());
 			ps.setObject(ci++,x.getRfc());
 			ps.setObject(ci++,x.getRazonSocial());
 			ps.setObject(ci++,x.getNombreEstablecimiento());
@@ -211,11 +212,11 @@ public class ClienteDAO {
 			ps.setObject(ci++,x.getBanco());
 			ps.setObject(ci++,x.getDireccionFacturacion());
 
-			r = ps.executeUpdate();					
+			r = ps.executeUpdate();
 			ResultSet rsk = ps.getGeneratedKeys();
-			if(rsk != null){
+			if(rsk != null){				
 				while(rsk.next()){
-					x.setId((Integer)rsk.getObject(1));
+					x.setId(rsk.getInt(1));
 				}
 			}
 		}catch(SQLException ex) {

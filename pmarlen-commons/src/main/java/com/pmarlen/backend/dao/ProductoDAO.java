@@ -123,7 +123,7 @@ public class ProductoDAO {
 		try {
 			conn = getConnection();
 
-			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
@@ -157,6 +157,8 @@ public class ProductoDAO {
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
 				x.setProductoMarca(rs.getString("MARCA"));
 				x.setProductoLinea(rs.getString("LINEA"));
+				x.setProductoUnidadesPorCaja(rs.getObject("UNIDADES_X_CAJA").toString());
+				
 				x.setProductoContenido(rs.getString("CONTENIDO"));
 				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
 				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));
@@ -215,7 +217,7 @@ public class ProductoDAO {
 			}
 
 			conn = getConnection();
-			String extendedQuery = "SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			String extendedQuery = "SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
@@ -242,6 +244,7 @@ public class ProductoDAO {
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
 				x.setProductoMarca(rs.getString("MARCA"));
 				x.setProductoLinea(rs.getString("LINEA"));
+				x.setProductoUnidadesPorCaja(rs.getObject("UNIDADES_X_CAJA").toString());
 				x.setProductoContenido(rs.getString("CONTENIDO"));
 				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
 				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));

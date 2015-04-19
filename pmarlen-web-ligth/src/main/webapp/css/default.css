@@ -6,7 +6,10 @@ user: #{sessionUserMB.usuarioAuthenticated.nombreCompleto}
     Author     : alfredo
 */
 
-.ui-widget, .ui-widget .ui-widget {
+.ui-widget{
+    font-size: 90%;
+}
+.ui-widget .ui-widget {
     font-size: 80%;
 }
 
@@ -16,7 +19,6 @@ user: #{sessionUserMB.usuarioAuthenticated.nombreCompleto}
 }
 
 .preferencesPanel{
-    
 }
 
 html { 

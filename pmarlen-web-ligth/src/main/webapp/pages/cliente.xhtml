@@ -48,15 +48,15 @@
 
 					</p:column>
 					
-					<p:column headerText="RFC" sortBy="#{cliente.rfc}" width="10%">
+					<p:column headerText="RFC" filterBy="#{cliente.rfc}" filterMatchMode="contains" width="10%">
 						<h:outputText value="#{cliente.rfc}" />
 					</p:column>
 
-					<p:column headerText="RAZON SOCIAL" sortBy="#{cliente.razonSocial}" width="20%">
+					<p:column headerText="RAZON SOCIAL" filterBy="#{cliente.razonSocial}"  filterMatchMode="contains" width="20%">
 						<h:outputText value="#{cliente.razonSocial}" />
 					</p:column>
 
-					<p:column headerText="NOMBRE ESTABLECIMIENTO" sortBy="#{cliente.nombreEstablecimiento}" width="20%">
+					<p:column headerText="NOMBRE ESTABLECIMIENTO" filterBy="#{cliente.nombreEstablecimiento}"  filterMatchMode="contains" width="20%">
 						<h:outputText value="#{cliente.nombreEstablecimiento}" />
 					</p:column>
 

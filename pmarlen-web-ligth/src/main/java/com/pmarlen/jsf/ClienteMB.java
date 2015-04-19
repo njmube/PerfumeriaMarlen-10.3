@@ -9,6 +9,7 @@ import com.pmarlen.web.security.managedbean.SessionUserMB;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -29,20 +30,20 @@ public class ClienteMB  {
 	
 	@PostConstruct
     public void init() {
-		System.out.println("->ClienteMB: init.");
+		logger.info("->ClienteMB: init.");
         try{
 			entityList = ClienteDAO.getInstance().findAll();
 		}catch(DAOException de){
 			logger.severe(de.getMessage());
 			entityList = new ArrayList<ClienteQuickView>();
 		}
-		System.out.println("->ClienteMB: init:entityList="+entityList);
+		logger.info("->ClienteMB: init:entityList="+entityList);
 		viewRows = 10;
 		dialogTitle ="DATOS DEL CLIENTE";
     }
 	
 	public String reset() {
-		System.out.println("->ClienteMB: rest.");
+		logger.info("->ClienteMB: rest.");
         init();
 		return "/pages/cliente";
     }
@@ -54,21 +55,21 @@ public class ClienteMB  {
 	
 	
 	public void selectEntity(ActionEvent event){
-		System.out.println("->ClienteMB: selectCliente.");
+		logger.info("->ClienteMB: selectCliente.");
 	}
 	
 	public void actionX(ActionEvent event){
-		System.out.println("->ClienteMB: actionX.");
+		logger.info("->ClienteMB: actionX.");
 	}
 	
 	public void prepareForNew() {
-		System.out.println("->ClienteMB prepareForNew");
+		logger.info("->ClienteMB prepareForNew");
 		//dialogTitle ="AGREGAR NUEVO CLIETE";
 		this.selectedEntity = new ClienteQuickView();
 	}
 	
 	public void setSelectedEntity(ClienteQuickView selectedCliente) {
-		System.out.println("->ClienteMB setSelectedCliente.id="+selectedCliente.getId());
+		logger.info("->ClienteMB setSelectedCliente.id="+selectedCliente.getId());
 		//dialogTitle ="INFORMACIÓN DEL CLEINTE";
 		this.selectedEntity = selectedCliente;
 		if(this.selectedEntity.getDireccionFacturacion()== null){
@@ -77,7 +78,7 @@ public class ClienteMB  {
 	}
 	
 	public void save(){
-		System.out.println("->ClienteMB: saveSelectedCliente:id:"+selectedEntity.getId());
+		logger.info("->ClienteMB: saveSelectedCliente:id:"+selectedEntity.getId());
 		
 		try{
 //			if(selectedEntity.getTelefonos().contains("0000")){
@@ -93,6 +94,7 @@ public class ClienteMB  {
 			}
 			reset();
 		} catch(Exception e){
+			logger.log(Level.SEVERE,"AL GUARDAR CLIENTE:",e);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dialogTitle, "OCURRIO UN ERROR AL GUARDAR"));
 			FacesContext.getCurrentInstance().validationFailed();
 		}
