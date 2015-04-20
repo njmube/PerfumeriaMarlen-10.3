@@ -125,6 +125,11 @@ public class GeneradorImpresionPedidoVenta {
 			} else{
 				parameters.put("comentarios" ,null);
 			}
+			if(pedidoVenta.getCondicionesDePago()!=null && pedidoVenta.getCondicionesDePago().trim().length()>1){
+				parameters.put("condiciones" ,pedidoVenta.getCondicionesDePago());
+			} else{
+				parameters.put("condiciones" ,null);
+			}
 			parameters.put("formaDePago" ,pedidoVenta.getFormaDePagoDescripcion().toUpperCase());
             parameters.put("metodoDePago",pedidoVenta.getMetodoDePagoDescripcion().toUpperCase());
             logger.info("->descuento:autorizadescuento?"+pedidoVenta.getAutorizaDescuento()+", "+pedidoVenta.getPorcentajeDescuentoCalculado()+"% + "+pedidoVenta.getPorcentajeDescuentoExtra());
@@ -299,13 +304,18 @@ public class GeneradorImpresionPedidoVenta {
 			} else{
 				parameters.put("comentarios" ,null);
 			}
+			if(pedidoVenta.getCondicionesDePago()!=null && pedidoVenta.getCondicionesDePago().trim().length()>1){
+				parameters.put("condiciones" ,pedidoVenta.getCondicionesDePago());
+			} else{
+				parameters.put("condiciones" ,null);
+			}
 			
 			parameters.put("formaDePago" ,pedidoVenta.getFormaDePagoDescripcion().toUpperCase());
             parameters.put("metodoDePago",pedidoVenta.getMetodoDePagoDescripcion().toUpperCase());
             parameters.put("cadenaOriginalSAT"  ,cfdMap.get("cadenaOriginal"));            
             parameters.put("selloDigitalEmisor" ,cfdMap.get("sello"));
             parameters.put("selloDigitalSAT"    ,cfdMap.get("selloSAT"));
-			logger.info("->descuento:autorizadescuento?"+pedidoVenta.getAutorizaDescuento()+", "+pedidoVenta.getPorcentajeDescuentoCalculado()+"% + "+pedidoVenta.getPorcentajeDescuentoExtra());
+			logger.info("->descuento:autorizaDescuento ?"+pedidoVenta.getAutorizaDescuento()+", "+pedidoVenta.getPorcentajeDescuentoCalculado()+"% + "+pedidoVenta.getPorcentajeDescuentoExtra());
             parameters.put("subtotal" , df.format(esf.getSubTotalNoGrabado()));
             parameters.put("iva" ,df.format(esf.getImporteIVA()));
             parameters.put("descuento" ,df.format(esf.getImporteDescuentoAplicado()));

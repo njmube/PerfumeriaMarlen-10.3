@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="416"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -38,6 +38,7 @@
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<parameter name="noCuenta" class="java.lang.String"/>
+	<parameter name="condiciones" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from orders where orderid < 10255]]>
 	</queryString>
@@ -68,7 +69,7 @@
 		<band height="210" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{rfc} != null]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="163" width="375" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="0" y="163" width="375" height="13" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
 					<font size="6" isBold="false"/>
 				</textElement>
@@ -82,7 +83,7 @@
 				<textFieldExpression><![CDATA[$P{rfc}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="148" width="300" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="0" y="147" width="300" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
 					<font size="6" isBold="false"/>
 				</textElement>
@@ -291,7 +292,7 @@
 				<textFieldExpression><![CDATA["PEDIDO VENTA :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="179" width="375" height="9" uuid="15c7667e-631c-4e86-a4e4-ffe9cd105adf">
+				<reportElement x="0" y="201" width="375" height="9" uuid="15c7667e-631c-4e86-a4e4-ffe9cd105adf">
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -324,12 +325,12 @@
 				<textFieldExpression><![CDATA["DIRECCI\u00D3N"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="171" width="67" height="9" uuid="e029fac1-5b64-4e96-99d5-adb6fa3eaf3c"/>
+				<reportElement x="0" y="175" width="67" height="9" uuid="e029fac1-5b64-4e96-99d5-adb6fa3eaf3c"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["COMENTARIOS"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["CONDICIONES"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="385" y="192" width="67" height="9" uuid="d5671f0e-dc74-4fb2-82df-6ad64c30e67c">
@@ -350,6 +351,23 @@
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{noCuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="193" width="67" height="9" uuid="7e8b93d0-28b6-4f13-8c5b-de7c03f14c45"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COMENTARIOS"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="184" width="375" height="9" uuid="680c2b43-225c-4a38-a43c-1357bdfb2e00">
+					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condiciones}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
