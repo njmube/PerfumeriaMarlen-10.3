@@ -29,6 +29,15 @@ cloud-test-redeploy:
 	~/tomcat7_test/bin/startup.sh
 	mvn -pl pmarlen-web-ligth tomcat7:deploy -P cloud_test
 
+#-------------------------------------------------------------------
+
+local-dev-deploy:
+	mvn clean install -P local_dev
+	~/tomcat7_test/bin/shutdown.sh
+	~/tomcat7_test/bin/startup.sh
+	mvn -pl pmarlen-web-ligth tomcat7:deploy -P local_dev
+	mvn -pl pmarlen-rest-services tomcat7:deploy -P local_dev
+
 local-dev-redeploy:
 	mvn -pl pmarlen-web-ligth tomcat7:undeploy -P local_dev
 	mvn -pl pmarlen-rest-services tomcat7:undeploy -P local_dev
@@ -36,7 +45,7 @@ local-dev-redeploy:
 	~/tomcat7_test/bin/shutdown.sh
 	~/tomcat7_test/bin/startup.sh
 	mvn -pl pmarlen-web-ligth tomcat7:deploy -P local_dev
-	mvn -pl pmarlen-rest-services tomcat7:deploy -P cloud_test
+	mvn -pl pmarlen-rest-services tomcat7:deploy -P local_dev
 
 local-stage-redeploy:
 	mvn -pl pmarlen-web-ligth tomcat7:undeploy -P local_stage

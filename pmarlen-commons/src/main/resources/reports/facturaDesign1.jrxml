@@ -291,7 +291,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA["PEDIDO VENTA :"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="201" width="375" height="9" uuid="15c7667e-631c-4e86-a4e4-ffe9cd105adf">
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
@@ -352,7 +352,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{noCuenta}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="false">
 				<reportElement x="0" y="193" width="67" height="9" uuid="7e8b93d0-28b6-4f13-8c5b-de7c03f14c45"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top">
@@ -360,9 +360,9 @@
 				</textElement>
 				<textFieldExpression><![CDATA["COMENTARIOS"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="184" width="375" height="9" uuid="680c2b43-225c-4a38-a43c-1357bdfb2e00">
-					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{condiciones} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="6" isBold="false"/>
