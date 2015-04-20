@@ -10,6 +10,12 @@ cloud-prod-redeploy:
 	sudo service tomcat7 start
 	mvn -pl pmarlen-web-ligth tomcat7:deploy -P cloud_prod
 
+cloud-prod-deploy:
+	mvn clean install -P cloud_prod
+	sudo service tomcat7 stop
+	sudo service tomcat7 start
+	mvn -pl pmarlen-web-ligth tomcat7:deploy -P cloud_prod
+
 cloud-test-deploy:
 	mvn clean install -P cloud_test
 	~/tomcat7_test/bin/shutdown.sh
@@ -44,8 +50,8 @@ local-stage-redeploy:
 cloud_test_data-update: pom.xml
 	make -C pmarlen-development-tasks resetDB_test MYSQL_ROOT_PASSWORD=root
 
-cloud_prod_data-update: pom.xml
-	make -C pmarlen-development-tasks resetDB_prod MYSQL_ROOT_PASSWORD=root
+#cloud_prod_data-update: pom.xml
+#	make -C pmarlen-development-tasks resetDB_prod MYSQL_ROOT_PASSWORD=root
 
 local_test-data-update: pom.xml
 	make -C pmarlen-development-tasks resetDB_test MYSQL_ROOT_PASSWORD=root
