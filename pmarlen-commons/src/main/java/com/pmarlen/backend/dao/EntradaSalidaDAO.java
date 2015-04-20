@@ -448,7 +448,7 @@ public class EntradaSalidaDAO {
 					+ "AND       ES.TIPO_MOV  = ?\n"
 					+ "AND       ES.SUCURSAL_ID= ?\n"
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.FECHA_CREO DESC");
+					+ "ORDER BY  ES.ID DESC");
 			ps.setInt(1, tipoMov);
 			ps.setInt(2, sucursalId);
 			

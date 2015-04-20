@@ -1,9 +1,11 @@
-
 package com.tracktopell.jdbc;
 
 import com.tracktopell.jdbc.DataSourceFacade;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -17,23 +19,29 @@ import javax.sql.DataSource;
  */
 public class WEBDataSourceFacade extends DataSourceFacade{
 	
-	Logger logger = Logger.getLogger(WEBDataSourceFacade.class.getName());
-	
+	private static Logger logger = Logger.getLogger(WEBDataSourceFacade.class.getName());
+	private static Properties prop = new Properties();
 	public static void registerStrategy(){
-		DataSourceFacade.setStrategy(new WEBDataSourceFacade());
+		try {
+			prop.load(WEBDataSourceFacade.class.getResourceAsStream("/env_vars.properties"));
+			logger.info("->prop="+prop);
+			DataSourceFacade.setStrategy(new WEBDataSourceFacade());
+		}catch(IOException ioe){
+			logger.log(Level.SEVERE, "Properties not found:", ioe);
+		}		
 	}
 	
 	public Connection getConnection() {
 		Context ctx = null;
 		Connection conn = null;
         try {   
-			logger.fine("->getConnection: 1)ds="+ds);
+			logger.info("->getConnection: 1)ds="+ds);
 			if(ds == null) {
 				ctx = new InitialContext();
-				logger.finest("->getConnection: ctx="+ctx);
-				ds = (DataSource) ctx.lookup("java:comp/env/jdbc/PMARLEN_BACKEND_DS");			
+				logger.info("->getConnection: ctx="+ctx+" look for :"+prop.getProperty("jndi"));
+				ds = (DataSource) ctx.lookup("java:comp/env/"+prop.getProperty("jndi"));			
 				                              
-				logger.finest("->getConnection: 2)ds?"+ds);
+				logger.info("->getConnection: 2)ds?"+ds);
 			}
 			conn = ds.getConnection();
         } catch (Exception e) {
@@ -50,8 +58,9 @@ public class WEBDataSourceFacade extends DataSourceFacade{
         try {    
 			if(ds == null) {
 				ctx = new InitialContext();
-				ds = (DataSource) ctx.lookup("java:comp/env/jdbc/SCM_INT_DS");
+				ds = (DataSource) ctx.lookup("java:comp/env/"+prop.getProperty("jndi"));			
 			}
+			//logger.info("-->>DataSource class:"+ds.getClass()+" implements "+Arrays.asList(ds.getClass().getInterfaces()));
 			conn = ds.getConnection();
 			conn.setAutoCommit(false);
         } catch (Exception e) {
