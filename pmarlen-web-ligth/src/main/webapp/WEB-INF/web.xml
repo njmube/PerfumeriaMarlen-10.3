@@ -64,6 +64,26 @@
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.ImageServlet</servlet-class>
     </servlet>
+	
+	<servlet>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.pmarlen.rest</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>SyncServlet</servlet-name>
+        <servlet-class>com.pmarlen.rest.servlet.SyncServlet</servlet-class>
+    </servlet>
+
+	
     <servlet-mapping>
         <servlet-name>UtfReportExample</servlet-name>
         <url-pattern>/docs/utfExample.pdf</url-pattern>
@@ -108,6 +128,15 @@
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/images/pmarlen_multimedio/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>SyncServlet</servlet-name>
+        <url-pattern>/sync/data</url-pattern>
+    </servlet-mapping>    
 
     <!--
     <filter>

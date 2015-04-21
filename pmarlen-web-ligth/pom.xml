@@ -54,7 +54,6 @@
 			<scope>provided</scope>
 			<version>2.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
@@ -97,13 +96,7 @@
 			<scope>provided</scope>
 			<version>1.2</version>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
-			<version>2.1</version>
-		</dependency>
+		
 		<!-- JDBC MySQL -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -120,20 +113,25 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.34</version>
 		</dependency>		
-		<!--
-		<dependency>
-			<groupId>com.sun.facelets</groupId>
-			<artifactId>jsf-facelets</artifactId>
-			<version>1.1.15</version>
-		</dependency>
-		-->
 		<!-- EL -->
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>el-impl</artifactId>
 			<version>2.2</version>
 		</dependency>
-		
+		<!-- REST -->
+        <dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.8</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>${artifactId}</finalName>
