@@ -5,6 +5,8 @@
 package com.pmarlen.caja.control;
 
 import com.pmarlen.backend.model.ConfiguracionSistema;
+import com.pmarlen.caja.dao.MemoryDAO;
+import com.pmarlen.rest.dto.U;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -290,30 +292,20 @@ public class ApplicationLogic {
 		}
 	}
 	
-	boolean checkForAdmin(String plainPassword) {
-		return checkFor("ADMIN_PASSWD", plainPassword);
-	}
-	
-	boolean checkForUser(String plainPassword) {
-		return checkFor("USER_PASSWD", plainPassword);
-	}
-	
-	void updateForAdmin(String plainPassword) {
-		updateFor("ADMIN_PASSWD", plainPassword);
-	}
-	
-	void updateForUser(String plainPassword) {
-		updateFor("USER_PASSWD", plainPassword);
-	}
-	
-	private boolean checkFor(String property,String plainPassword) {
-		return false;
+	U checkForUser(String usuarioEmail,String plainPassword) {
+		U logged=null;
+		List<U> usuarioList = MemoryDAO.getPaqueteSinc().getUsuarioList();
+		for(U u: usuarioList){
+			if(u.getE().equals(usuarioEmail)){
+				if(u.getP().equals(getMD5Encrypted(plainPassword))){
+					logged=u;
+					break;
+				}
+			}
+		}
+		return logged;
 	}
 
-	private void updateFor(String property,String plainPassword) {
-		
-	}
-	
 	private String getMD5Encrypted(String e) {
 
         MessageDigest mdEnc = null; // Encryption algorithm

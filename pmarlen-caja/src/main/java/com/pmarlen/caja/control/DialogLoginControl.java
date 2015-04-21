@@ -5,6 +5,7 @@
 package com.pmarlen.caja.control;
 
 import com.pmarlen.caja.view.DialogLogin;
+import com.pmarlen.rest.dto.U;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -18,7 +19,7 @@ public class DialogLoginControl implements ActionListener{
 	private boolean leggedIn;
 	final int MAX_INTENTOS = 3;
 	int intentos;
-	boolean isAdmin;
+	U logged;
 
 	private static DialogLoginControl instance;
 
@@ -63,12 +64,7 @@ public class DialogLoginControl implements ActionListener{
 		} else {
 			leggedIn = true;
 			
-			ApplicationLogic.getInstance().setAdminLogedIn(isAdmin);					
-			if(isAdmin) {
-				JOptionPane.showMessageDialog(dialogLogin, "¡ Bienvenido al Sistema Administrador!", "Entrar", JOptionPane.INFORMATION_MESSAGE);			
-			} else {
-				JOptionPane.showMessageDialog(dialogLogin, "¡ Bienvenido al Sistema Usuario!", "Entrar", JOptionPane.INFORMATION_MESSAGE);						
-			}
+			JOptionPane.showMessageDialog(dialogLogin, "¡ Bienvenido al Sistema "+logged.getNc()+" !", "Entrar", JOptionPane.INFORMATION_MESSAGE);									
 			
 			dialogLogin.dispose();
 		}
@@ -80,20 +76,12 @@ public class DialogLoginControl implements ActionListener{
 		if(passwordValue.trim().length()<1){
 			return false;
 		}
-		isAdmin = ApplicationLogic.getInstance().checkForAdmin(passwordValue);
-		if(! isAdmin){
-			return ApplicationLogic.getInstance().checkForUser(passwordValue);			
-		} else {
-			return isAdmin;
-		}
+		logged =ApplicationLogic.getInstance().checkForUser(dialogLogin.getEmail().getText(),passwordValue);
+		return 	logged != null;	
 		
 	}
 
 	public boolean isLoggedIn() {
-		return leggedIn;
-	}
-
-	public boolean isAdminLogedIn() {
-		return isAdmin;
+		return logged != null;
 	}
 }

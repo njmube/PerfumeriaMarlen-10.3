@@ -10,10 +10,12 @@ import com.pmarlen.backend.dao.ProductoDAO;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.ImporteCellRender;
-import com.pmarlen.backend.model.Producto;
+import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
+import com.pmarlen.caja.dao.MemoryDAO;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableItem;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableModel;
 import com.pmarlen.caja.view.PanelVenta;
+import com.pmarlen.rest.dto.P;
 import com.pmarlen.ticket.TicketPrinteService;
 import com.pmarlen.ticket.bluetooth.TicketBlueToothPrinter;
 import java.awt.Color;
@@ -42,8 +44,6 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 
 	private PanelVenta panelVenta;
 	private ArrayList<PedidoVentaDetalleTableItem> detalleVentaTableItemList;
-	private ProductoDAO productoDAO;
-	private EntradaSalidaDAO pedidoVentaDAO;
 	private DecimalFormat df;
 	private TicketPrinteService ticketPrinteService;
 
@@ -58,8 +58,8 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		importeCellRender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelVenta.getDetalleVentaJTable().addMouseListener(this);
 		panelVenta.getDetalleVentaJTable().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(5).setCellRenderer(importeCellRender);
-		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(6).setCellRenderer(importeCellRender);
+		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(2).setCellRenderer(importeCellRender);
+		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(3).setCellRenderer(importeCellRender);
 		panelVenta.getDetalleVentaJTable().addComponentListener(new JTableColumnAutoResizeHelper(
 				new int[]{5,18,27,15,15,10,10}));
 		
@@ -75,7 +75,6 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		});
 
 		detalleVentaTableItemList = (x).getDetalleVentaTableItemList();
-		pedidoVentaDAO = EntradaSalidaDAO.getInstance();
 
 		this.panelVenta.getCodigoBuscar().addActionListener(this);
 		this.panelVenta.getTerminar().addActionListener(this);
@@ -87,9 +86,6 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 	}
 
 	public void estadoInicial() {
-		if (productoDAO == null) {
-			productoDAO = ProductoDAO.getInstance();
-		}
 		if (detalleVentaTableItemList.size() > 0) {
 			detalleVentaTableItemList.clear();
 		}
@@ -108,16 +104,16 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		}
 
 	}
-	private Producto productoBuscar = new Producto();
+	private P productoBuscar = new P();
 
 	private void codigoBuscar_ActionPerformed() {
 		String codigoBuscar = panelVenta.getCodigoBuscar().getText().trim();
-		productoBuscar.setCodigoBarras(codigoBuscar);
+		
 		System.err.println("=>codigoBuscar_ActionPerformed:codigoBuscar=" + codigoBuscar);
-		Producto productoEncontrado = null;
+		P productoEncontrado = null;
 		try{
-			productoEncontrado = productoDAO.findBy(productoBuscar);
-		}catch(DAOException e){
+			productoEncontrado = MemoryDAO.fastSearchProducto(codigoBuscar);
+		}catch(Exception e){
 		
 		}
 		System.err.println("=>codigoBuscar_ActionPerformed:productoEncontrado=" + productoEncontrado);
@@ -125,23 +121,17 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		if (productoEncontrado != null) {
 			EntradaSalidaDetalle pvd = new EntradaSalidaDetalle();
 			
-			PedidoVentaDetalleTableItem detalleVentaTableItemNuevo = null;
+			pvd.setAlmacenId(1);
+			pvd.setCantidad(1);
+			pvd.setPrecioVenta(productoEncontrado.getA1p());
+			pvd.setProductoCodigoBarras(productoEncontrado.getCb());
+			
+			PedidoVentaDetalleTableItem detalleVentaTableItemNuevo = new PedidoVentaDetalleTableItem(productoEncontrado, pvd);
 			int idx = 0;
-			for (PedidoVentaDetalleTableItem dvti : detalleVentaTableItemList) {
-				if (dvti.getCodigo().equals(codigoBuscar)) {
-					detalleVentaTableItemNuevo = dvti;
-					break;
-				}
-				idx++;
-			}
+			
+			idx = detalleVentaTableItemList.size();
+			detalleVentaTableItemList.add(detalleVentaTableItemNuevo);
 
-			if (detalleVentaTableItemNuevo == null) {
-				detalleVentaTableItemNuevo = null; //new PedidoVentaDetalleTableItem(productoEncontrado, detalleVenta);
-				idx = detalleVentaTableItemList.size();
-				detalleVentaTableItemList.add(detalleVentaTableItemNuevo);
-			} else {
-				detalleVentaTableItemNuevo.setCantidad(detalleVentaTableItemNuevo.getCantidad() + 1);
-			}
 
 			panelVenta.getCodigoBuscar().setText("");
 			panelVenta.getDetalleVentaJTable().getSelectionModel().setSelectionInterval(idx, idx);
@@ -270,7 +260,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		}
 	}
 
-	private void cargarImagenDeProducto(Producto prod) {
+	private void cargarImagenDeProducto(P prod) {
 		
 	}
 

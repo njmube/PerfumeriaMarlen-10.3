@@ -128,28 +128,36 @@
 									  editable="true" editMode="cell" 
 									  scrollHeight="200" >
 							<p:ajax event="rowReorder" listener="#{pedidoVentaMB.onRowReorder}" update=":form3:panel3,:form4:panel4_3" oncomplete="updateComponentsOnWindowResize();"/>
-							<f:facet name="header">								
-								<h:outputText value="OPCIONES DE VER TABLA:"/>
-								<p:commandButton	icon="ui-icon-arrowrefresh-1-s" value="ACTUALIZAR TOTALES" process=":form3" update=":form3,:form4:panel4_3" 
-													rendered="#{not pedidoVentaMB.pedidoFinalizado and !pedidoVentaMB.tableDraggableEnabled}"
-													actionListener="#{pedidoVentaMB.actualizarTotales()}"
-													oncomplete="updateComponentsOnWindowResize();"
-													title="ACTUALZIA TOTALES DESPUES QUE SE CAMBIAN CANTIDADES Y DESCUENTOS"/>
-								<p:spacer width="10"/>
-								<p:commandButton	value="VER + COLUMNAS" actionListener="#{pedidoVentaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
-												 rendered="#{not pedidoVentaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA"/>
-								<p:commandButton	value="VER - COLUMNAS" actionListener="#{pedidoVentaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
-													rendered="#{pedidoVentaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA"/>
+							<f:facet name="header">
+								
+								<h:outputLink value="#{request.contextPath}/pages/pedidoVenta.jsf">
+									<p:ajax event="click" listener="#{pedidoVentaMB.actualizarTabla}" process=":form3" update=":form3:panel3,:form4" />
+									<h:graphicImage value="/images/table_refresh.png"/>
+								</h:outputLink>
+								
+								<p:spacer width="10"/>								
+								<p:commandLink     actionListener="#{pedidoVentaMB.expandirTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{not pedidoVentaMB.tablaExpandida}" oncomplete="updateComponentsOnWindowResize();" title="VER MAS COLUMNAS EN LA TABLA, PARA VISTA MÁS DETALLADA">
+									<h:graphicImage value="/images/table_mas.png"/>
+								</p:commandLink>								
+								<p:commandLink     actionListener="#{pedidoVentaMB.contraerTabla}" process=":form3" update=":form3:panel3" 
+													rendered="#{pedidoVentaMB.tablaExpandida}"  oncomplete="updateComponentsOnWindowResize();" title="VER MENOS COLUMNAS EN LA TABLA, VISTA RESUMIDA">
+									<h:graphicImage value="/images/table_menos.png"/>
+								</p:commandLink>								
 								<p:spacer width="10"/>
 								
-								<p:commandButton	value="MOVER RENGLONES"       actionListener="#{pedidoVentaMB.activarMover}"   process=":form3" update=":form3:panel3" 
+								<p:commandLink     actionListener="#{pedidoVentaMB.activarMover}"   process=":form3" update=":form3:panel3" 
 													rendered="#{!pedidoVentaMB.tableDraggableEnabled}" oncomplete="updateComponentsOnWindowResize();" 
-													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES" disabled="#{pedidoVentaMB.pedidoFinalizado}"/>
-								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{pedidoVentaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
+													title="PERMITE REORDENAR LOS RENGLONES EN DETALLE, SIN ALTERAR TOTALES NI CANTIDADES">
+									<h:graphicImage value="/images/table_mover.png"/>
+								</p:commandLink>								
+								<p:commandLink     actionListener="#{pedidoVentaMB.desactivarMover}" process=":form3" update=":form3:panel3" 
 													rendered="#{pedidoVentaMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
-													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{pedidoVentaMB.pedidoFinalizado}"/>
+													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" >
+									<h:graphicImage value="/images/table_fijos.png"/>
+								</p:commandLink>
+								
 							</f:facet>
-
 							<p:column headerText="." width="3%">
 								<p:commandButton icon="ui-icon-trash" actionListener="#{pedidoVentaMB.deleteRow(pvd.rowId)}" 
 												 title="ELIMINAR ESTE ELEMENTO DEL DETALLE" process=":form3" update=":form3,:form4:panel4_3"
@@ -203,11 +211,6 @@
 								<h:outputText value="#{pvd.productoContenido} #{pvd.productoUnidadMedida}" />
 							</p:column>
 							
-							<p:column headerText="PRECIO" width="8%">
-								<h:outputText value="#{pvd.precioVenta}" title="#{pedidoVentaMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
-									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-								</h:outputText>
-							</p:column>
 							
 							<p:column headerText="PRECIO" width="10%">
 								<h:outputText value="#{pvd.precioVenta}" title="#{pedidoVentaMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
@@ -417,15 +420,21 @@
 				//$("#debugDivOutput").html(txt);
 				setDataTableHeight();
 				counterResized++;
+				scrollDownTablaPedidos();
 			}
 
 			function setDataTableHeight() {
 				var docHeight = $(document).height();				
-				var scrollHeight = docHeight - 480;
+				var scrollHeight = docHeight - 505;
 
 				var scrollBody = $(".ui-datatable-scrollable-body");
 				scrollBody.height(scrollHeight);
 
+			}
+			
+			function scrollDownTablaPedidos(){
+				var d = $('.ui-datatable-scrollable-body');
+				d.scrollTop(d.prop("scrollHeight"));				
 			}
 
 			$(document).ready(function() {

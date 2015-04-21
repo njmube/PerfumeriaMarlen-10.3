@@ -82,17 +82,19 @@
 	
 	<dependencies>
 		<!-- ================= MAIN DEPENDENCIES ============ --> 
+		
 		<dependency>
 			<groupId>com.pmarlen.erp</groupId>
 			<artifactId>pmarlen-commons</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>com.pmarlen.erp</groupId>
 			<artifactId>pmarlen-rest-client</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
+		-->
 
 		<!-- ================= LIBRARY DEPENDENCIES ============ --> 		
 		
@@ -102,23 +104,23 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- MySQL database -->
+		
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.9</version>
+		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
 		</dependency>
             
 		<dependency>
@@ -142,7 +144,6 @@
 		</dependency>
 		
 	</dependencies>
-	
 	
 	<profiles>		
 		

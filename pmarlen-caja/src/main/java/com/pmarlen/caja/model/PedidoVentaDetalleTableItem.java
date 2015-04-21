@@ -5,17 +5,17 @@
 package com.pmarlen.caja.model;
 
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
-import com.pmarlen.backend.model.Producto;
+import com.pmarlen.rest.dto.P;
 
 /**
  *
  * @author alfredo
  */
 public class PedidoVentaDetalleTableItem {
-	private Producto producto;
+	private P producto;
 	private EntradaSalidaDetalle pvd;
 
-	public PedidoVentaDetalleTableItem(Producto producto, EntradaSalidaDetalle pvd) {
+	public PedidoVentaDetalleTableItem(P producto, EntradaSalidaDetalle pvd) {
 		this.producto = producto;
 		this.pvd = pvd;
 		this.pvd.setCantidad(1);
@@ -31,33 +31,22 @@ public class PedidoVentaDetalleTableItem {
 	}
 	
 	public String getCodigo() {
-		return producto.getCodigoBarras();
+		return producto.getC();
 	}
 
-	public String getNombre() {
-		return producto.getNombre();
+	public String getShortDesc() {
+		return producto.getCb()+" "+producto.getN()+"/"+producto.getP()+"("+producto.getC()+producto.getUm()+")";
 	}
 	
-	public String getLinea() {
-		return producto.getLinea();
-	}
-	
-	public String getMarca() {
-		return producto.getMarca();
-	}
-
 	public Double getPrecioVenta() {
-		return 0.0;
+		return producto.getA1p();
 	}
 	
 	public Double getImporete() {
-		return pvd.getCantidad() * 0.0;
+		return pvd.getCantidad() * producto.getA1p();
 	}
 
-	/**
-	 * @return the producto
-	 */
-	public Producto getProducto() {
+	public P getProducto() {
 		return producto;
 	}
 

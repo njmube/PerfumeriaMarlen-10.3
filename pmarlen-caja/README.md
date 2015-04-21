@@ -15,3 +15,4 @@ Update & Upload the installer int the website
 
 	mvn clean install -Pinstaller
 
+mvn exec:java -Dexec.mainClass=com.pmarlen.caja.Main

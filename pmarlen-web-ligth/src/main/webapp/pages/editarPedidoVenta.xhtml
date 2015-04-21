@@ -498,16 +498,23 @@
 				//$("#debugDivOutput").html(txt);
 				setDataTableHeight();
 				counterResized++;
+				scrollDownTablaPedidos();
 			}
 
 			function setDataTableHeight() {
 				var docHeight = $(document).height();				
-				var scrollHeight = docHeight - (480-alturaExtraTabla);
+				var scrollHeight = docHeight - (505-alturaExtraTabla);
 
 				var scrollBody = $(".ui-datatable-scrollable-body");
 				scrollBody.height(scrollHeight);
-
 			}
+			
+			function scrollDownTablaPedidos(){
+				var d = $('.ui-datatable-scrollable-body');
+				d.scrollTop(d.prop("scrollHeight"));				
+			}
+
+
 
 			$(document).ready(function() {
 

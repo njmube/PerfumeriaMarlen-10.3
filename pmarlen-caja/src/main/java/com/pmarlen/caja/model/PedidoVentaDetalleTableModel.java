@@ -17,7 +17,7 @@ import javax.swing.table.TableModel;
 public class PedidoVentaDetalleTableModel implements TableModel{
 	
 	private static String[] columnNames = new String [] {
-		"Cantidad", "Codigo", "Producto", "Presención","Linea", "Marca", "Precio", "Importe"
+		"#", "Producto", "Precio", "Importe"
 	};
 	private static Class[] columnClasses = new Class [] {
 			Integer.class,String.class,String.class,String.class,String.class,Double.class,Double.class
@@ -63,16 +63,10 @@ public class PedidoVentaDetalleTableModel implements TableModel{
 		if(columnIndex == 0)
 			return dvti.getCantidad();
 		else if(columnIndex == 1)
-			return dvti.getCodigo();
+			return dvti.getShortDesc();
 		else if(columnIndex == 2)
-			return dvti.getNombre();
-		else if(columnIndex == 3)
-			return dvti.getLinea();
-		else if(columnIndex == 4)
-			return dvti.getMarca();
-		else if(columnIndex == 5)
 			return dvti.getPrecioVenta();
-		else if(columnIndex == 6)
+		else if(columnIndex == 3)
 			return dvti.getImporete();
 		else 
 			throw new IndexOutOfBoundsException("for column:"+columnIndex);

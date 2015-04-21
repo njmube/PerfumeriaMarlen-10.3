@@ -11,16 +11,17 @@ import java.util.List;
 
 public class SyncDTOPackageClient {
 	
-	private static String urlService = "http://localhost:8070/pmarlen-rest-services/rest/syncservice/syncdtopackage/1";
+	private static String urlService = "http://localhost:8070/pmarlen-web-ligth/rest/syncservice/syncdtopackage/1";
 	
-	private static String uriService = "/pmarlen-rest-services/rest/syncservice/syncdtopackage/1";
+	private static String uriService = "/pmarlen-web-ligth/rest/syncservice/syncdtopackage/1";
 
 	private static SyncDTOPackage getAllOfSucursal(String hostPort){
 		SyncDTOPackage paqueteSinc=null;
+		Gson gson=new Gson();
+
 		try {
 			long t0=System.currentTimeMillis();
 			Client client = Client.create();
-			Gson gson=new Gson();
 			System.out.println("...creating WebResource");
 			WebResource webResource = client.resource(hostPort+uriService);
 			long t1=System.currentTimeMillis();

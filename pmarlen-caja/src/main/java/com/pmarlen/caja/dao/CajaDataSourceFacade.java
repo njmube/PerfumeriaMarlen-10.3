@@ -6,7 +6,6 @@
 
 package com.pmarlen.caja.dao;
 
-import biz.source_code.miniConnectionPoolManager.MiniConnectionPoolManager;
 import com.tracktopell.jdbc.DataSourceFacade;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,40 +23,17 @@ public class CajaDataSourceFacade extends DataSourceFacade{
 	public static void registerStrategy(){
 		DataSourceFacade.setStrategy(new CajaDataSourceFacade());
 	}
-	private static MiniConnectionPoolManager poolMgr;
+	
 	
 	public Connection getConnection(){
 		Connection conn = null;
-		try {
-			if(poolMgr == null){
-				ConnectionPoolDataSource dataSource = DataSourceFactory.createDataSource();
-				poolMgr = new MiniConnectionPoolManager(dataSource, 10);
-			}
-			conn = poolMgr.getConnection();
-
-			conn = null;
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-		} finally{
-			return conn;
-		}
+		return conn;
+		
 	}
 	
 	public Connection getConnectionCommiteable(){
-	
 		Connection conn = null;
-		try {    
-			ConnectionPoolDataSource dataSource = DataSourceFactory.createDataSource();
-			poolMgr = new MiniConnectionPoolManager(dataSource, 10);
-			conn = poolMgr.getConnection();
-
-			conn = null;
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-		} finally{
-			return conn;
-		}
-
+		return conn;
 	}
 	
 }
