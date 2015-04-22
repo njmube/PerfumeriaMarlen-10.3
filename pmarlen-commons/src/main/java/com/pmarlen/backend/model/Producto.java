@@ -22,6 +22,11 @@ public class Producto implements java.io.Serializable {
     * codigo barras
     */
     private String codigoBarras;
+
+	/**
+    * proveedor
+    */
+    private String proveedor;
     
     /**
     * industria
@@ -108,6 +113,14 @@ public class Producto implements java.io.Serializable {
         this.codigoBarras = v;
     }
 
+	public String getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	
     public String getIndustria() {
         return this.industria;
     }
@@ -247,6 +260,9 @@ public class Producto implements java.io.Serializable {
 		sb.append(this.codigoBarras);
 		sb.append(s);
 		// String
+		sb.append(this.proveedor);
+		sb.append(s);
+		// String
 		sb.append(this.industria);
 		sb.append(s);
 		// String
@@ -292,6 +308,9 @@ public class Producto implements java.io.Serializable {
 			
 			// String
 			this.codigoBarras = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
+			nf++;
+			// String
+			this.proveedor = srcSpplited[nf].equals("null")?null:srcSpplited[nf];
 			nf++;
 			// String
 			this.industria = srcSpplited[nf].equals("null")?null:srcSpplited[nf];

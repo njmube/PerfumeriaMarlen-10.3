@@ -20,6 +20,8 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 	
 	private String productoNombre;
 	
+	private String productoProveedor;
+	
 	private String productoPresentacion;
 	
 	private String productoContenido;
@@ -89,6 +91,14 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
 		this.productoNombre = productoNombre;
 	}
 
+	public String getProductoProveedor() {
+		return productoProveedor;
+	}
+
+	public void setProductoProveedor(String productoProveedor) {
+		this.productoProveedor = productoProveedor;
+	}
+	
 	/**
 	 * @return the productoPresentacion
 	 */

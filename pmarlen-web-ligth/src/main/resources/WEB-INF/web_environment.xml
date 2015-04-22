@@ -48,6 +48,10 @@
         <servlet-class>com.pmarlen.web.servlet.GenerarPDFPedidoVenta</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GenerarPDFTicketPedidoVenta</servlet-name>
+		<servlet-class>com.pmarlen.web.servlet.GenerarPDFTicketPedidoVenta</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetXMLCFDI</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.GetXMLCFDI</servlet-class>
     </servlet>
@@ -83,7 +87,6 @@
         <servlet-class>com.pmarlen.rest.servlet.SyncServlet</servlet-class>
     </servlet>
 
-	
     <servlet-mapping>
         <servlet-name>UtfReportExample</servlet-name>
         <url-pattern>/docs/utfExample.pdf</url-pattern>
@@ -115,6 +118,10 @@
     <servlet-mapping>
         <servlet-name>GenerarPDFPedidoVenta</servlet-name>
         <url-pattern>/docs/notas/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerarPDFTicketPedidoVenta</servlet-name>
+        <url-pattern>/docs/tickets/*</url-pattern>
     </servlet-mapping>
 	<servlet-mapping>
         <servlet-name>GetXMLCFDI</servlet-name>

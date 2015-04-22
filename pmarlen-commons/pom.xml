@@ -17,57 +17,8 @@
 
 	<dependencies>
 		<!-- ================= MAIN DEPENDENCIES ============ --> 
-		<!--
-		<dependency>
-			<groupId>com.pmarlen.erp</groupId>
-			<artifactId>pmarlen-jpa-entity</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		-->
 		<!-- ================= LIBRARY DEPENDENCIES ============ --> 
 
-		<!-- Derby database -->
-
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
- <!--
-		<dependency>
-			<groupId>org.slf4j</groupId>  
-			<artifactId>com.springsource.slf4j.api</artifactId> 
-			<version>${slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
-			<version>${slf4j.version}</version>
-		</dependency>   
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.7</version>
-		</dependency>
-        -->    	
-		<!--
-		  No Commons Logging -
-		  Based on http://day-to-day-stuff.blogspot.com/2007/07/no-more-commons-logging.html
-		<dependency>
-		  <groupId>org.apache.commons</groupId>
-		  <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		  <version>99.0-does-not-exist</version>
-		  <scope>provided</scope>
-		</dependency>		
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>

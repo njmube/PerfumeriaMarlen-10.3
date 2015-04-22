@@ -17,6 +17,7 @@ import com.pmarlen.backend.model.quickviews.ClienteQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.businesslogic.GeneradorNumTicket;
 import com.pmarlen.model.Constants;
 import com.pmarlen.web.common.view.messages.Messages;
 import com.pmarlen.web.security.managedbean.SessionUserMB;
@@ -675,7 +676,7 @@ public class PedidoVentaMB{
 			entradaSalida.setSucursalId(sessionUserMB.getSucursalId());
 			entradaSalida.setUsuarioEmailCreo(sessionUserMB.getUsuarioAuthenticated().getEmail());
 			entradaSalida.setAutorizaDescuento(autorizaDescuento?1:0);
-						
+			entradaSalida.setNumeroTicket(GeneradorNumTicket.getNumTicket(1, 1, entradaSalida.getClienteId(), entradaSalidaFooter.getTotal()));
 			EntradaSalidaDAO.getInstance().insertPedidoVenta(entradaSalida,entityList);
 			logger.info("->guardar:entradaSalida.id:"+entradaSalida.getId());
 			
