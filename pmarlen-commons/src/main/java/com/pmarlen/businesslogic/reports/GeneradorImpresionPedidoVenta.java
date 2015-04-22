@@ -44,9 +44,9 @@ public class GeneradorImpresionPedidoVenta {
 			logger.info("Default Locale:"+Locale.getDefault());
             
 			if(interna){
-				reportPath = "/reports/pedidoVentaDesign1.jrxml";
+				reportPath = "/reports/pedidoVentaDesignInterno2.jrxml";
 			} else{
-				reportPath = "/reports/pedidoVentaDesign2.jrxml";
+				reportPath = "/reports/pedidoVentaDesignCliente.jrxml";
 			}
             InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
             
@@ -68,11 +68,11 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                
+                vals.put("descripcionYCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+" "+pvd.getProductoUnidadMedida()+")");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
-					vals.put("ubic"  ,"N/D");
+					vals.put("ubic"  ,"--N/D--");
 				} else {
 					vals.put("ubic"  ,pvd.getApUbicacion());
 				}
@@ -128,7 +128,12 @@ public class GeneradorImpresionPedidoVenta {
 			if(pedidoVenta.getCondicionesDePago()!=null && pedidoVenta.getCondicionesDePago().trim().length()>1){
 				parameters.put("condiciones" ,pedidoVenta.getCondicionesDePago());
 			} else{
-				parameters.put("condiciones" ,null);
+				parameters.put("condiciones" ,"--NO IDENTIFICADO--");
+			}
+			if(pedidoVenta.getNumDeCuenta()!=null && pedidoVenta.getNumDeCuenta().trim().length()>1){
+				parameters.put("noCuenta" ,pedidoVenta.getNumDeCuenta());
+			} else{
+				parameters.put("noCuenta" ,"--NO IDENTIFICADO--");
 			}
 			parameters.put("formaDePago" ,pedidoVenta.getFormaDePagoDescripcion().toUpperCase());
             parameters.put("metodoDePago",pedidoVenta.getMetodoDePagoDescripcion().toUpperCase());
@@ -208,7 +213,7 @@ public class GeneradorImpresionPedidoVenta {
 		try {
 			String reportPath;
             
-            reportPath = "/reports/facturaDesign1.jrxml";
+            reportPath = "/reports/facturaDesignNueva.jrxml";
             InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
             
             Collection<Map<String,?>> col = new ArrayList<Map<String,?>>();
@@ -307,7 +312,12 @@ public class GeneradorImpresionPedidoVenta {
 			if(pedidoVenta.getCondicionesDePago()!=null && pedidoVenta.getCondicionesDePago().trim().length()>1){
 				parameters.put("condiciones" ,pedidoVenta.getCondicionesDePago());
 			} else{
-				parameters.put("condiciones" ,null);
+				parameters.put("condiciones" ,"--NO IDENTIFICADO--");
+			}
+			if(pedidoVenta.getNumDeCuenta()!=null && pedidoVenta.getNumDeCuenta().trim().length()>1){
+				parameters.put("noCuenta" ,pedidoVenta.getNumDeCuenta());
+			} else{
+				parameters.put("noCuenta" ,"--NO IDENTIFICADO--");
 			}
 			
 			parameters.put("formaDePago" ,pedidoVenta.getFormaDePagoDescripcion().toUpperCase());
