@@ -325,7 +325,7 @@ public class EntradaSalidaDAO {
 			conn = getConnection();
 			
 			ps = conn.prepareStatement(
-					"SELECT   P.CODIGO_BARRAS,P.PROVEEDOR,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDADES_X_CAJA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.UBICACION,ESD.ID AS ESD_ID,A.ID AS ALMACEN_ID,A.TIPO_ALMACEN,ESD.CANTIDAD AS CANTIDAD_ESD,ESD.PRECIO_VENTA\n"
+					"SELECT   P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDADES_X_CAJA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.UBICACION,ESD.ID AS ESD_ID,A.ID AS ALMACEN_ID,A.TIPO_ALMACEN,ESD.CANTIDAD AS CANTIDAD_ESD,ESD.PRECIO_VENTA\n"
 					+ "FROM   ENTRADA_SALIDA ES,\n"
 					+ "       ENTRADA_SALIDA_DETALLE ESD,\n"
 					+ "       PRODUCTO P,\n"
@@ -347,8 +347,7 @@ public class EntradaSalidaDAO {
 			while (rs.next()) {
 				EntradaSalidaDetalleQuickView x = new EntradaSalidaDetalleQuickView();
 				x.setEntradaSalidaId(pedidoVentaId);
-				x.setProductoCodigoBarras(rs.getString("CODIGO_BARRAS"));
-				x.setProductoProveedor(rs.getString("PROVEEDOR"));
+				x.setProductoCodigoBarras(rs.getString("CODIGO_BARRAS"));				
 				x.setProductoNombre(rs.getString("NOMBRE"));
 				x.setProductoPresentacion(rs.getString("PRESENTACION"));
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));

@@ -51,7 +51,7 @@ public class GeneradorImpresionPedidoVenta {
 			logger.info("Default Locale:"+Locale.getDefault());
             
 			if(interna){
-				reportFileName = "pedidoVentaDesignInterno2";				
+				reportFileName = "pedidoVentaDesignInterno";				
 			} else{
 				reportFileName = "pedidoVentaDesignCliente";
 				
@@ -80,7 +80,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                vals.put("descripcionYCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+" "+pvd.getProductoUnidadMedida()+")");
+                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadEmpaque()+"xCj."+" )");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
@@ -227,7 +227,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                vals.put("descripcionYCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+" "+pvd.getProductoUnidadMedida()+")");
+                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadEmpaque()+"xCj."+" )");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){

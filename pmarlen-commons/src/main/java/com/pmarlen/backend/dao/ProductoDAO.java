@@ -72,7 +72,7 @@ public class ProductoDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT CODIGO_BARRAS,PROVEEDOR,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA FROM PRODUCTO "
+			ps = conn.prepareStatement("SELECT CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA FROM PRODUCTO "
 					+ "WHERE CODIGO_BARRAS=?"
 			);
 			ps.setString(1, x.getCodigoBarras());
@@ -80,8 +80,7 @@ public class ProductoDAO {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				r = new Producto();
-				r.setCodigoBarras((String) rs.getObject("CODIGO_BARRAS"));
-				r.setProveedor((String) rs.getObject("PROVEEDOR"));
+				r.setCodigoBarras((String) rs.getObject("CODIGO_BARRAS"));				
 				r.setIndustria((String) rs.getObject("INDUSTRIA"));
 				r.setLinea((String) rs.getObject("LINEA"));
 				r.setMarca((String) rs.getObject("MARCA"));
@@ -124,7 +123,7 @@ public class ProductoDAO {
 		try {
 			conn = getConnection();
 
-			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PROVEEDOR,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
@@ -153,7 +152,6 @@ public class ProductoDAO {
 
 				x.setAlmacenId(almacenId);
 				x.setProductoCodigoBarras(rs.getString("CODIGO_BARRAS"));
-				x.setProductoProveedor((String) rs.getObject("PROVEEDOR"));
 				x.setProductoNombre(rs.getString("NOMBRE"));
 				x.setProductoPresentacion(rs.getString("PRESENTACION"));
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
@@ -219,7 +217,7 @@ public class ProductoDAO {
 			}
 
 			conn = getConnection();
-			String extendedQuery = "SELECT P.CODIGO_BARRAS,P.PROVEEDOR,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			String extendedQuery = "SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
@@ -240,8 +238,7 @@ public class ProductoDAO {
 				EntradaSalidaDetalleQuickView x = new EntradaSalidaDetalleQuickView();
 
 				x.setAlmacenId(almacenId);
-				x.setProductoCodigoBarras(rs.getString("CODIGO_BARRAS"));
-				x.setProductoProveedor((String) rs.getObject("PROVEEDOR"));
+				x.setProductoCodigoBarras(rs.getString("CODIGO_BARRAS"));				
 				x.setProductoNombre(rs.getString("NOMBRE"));
 				x.setProductoPresentacion(rs.getString("PRESENTACION"));
 				x.setProductoIndustria(rs.getString("INDUSTRIA"));
@@ -287,13 +284,12 @@ public class ProductoDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT CODIGO_BARRAS,PROVEEDOR,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA FROM PRODUCTO");
+			ps = conn.prepareStatement("SELECT CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA FROM PRODUCTO");
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				ProductoQuickView x = new ProductoQuickView();
-				x.setCodigoBarras((String)rs.getObject("CODIGO_BARRAS"));
-				x.setProveedor((String) rs.getObject("PROVEEDOR"));
+				x.setCodigoBarras((String)rs.getObject("CODIGO_BARRAS"));				
 				x.setIndustria((String)rs.getObject("INDUSTRIA"));
 				x.setLinea((String)rs.getObject("LINEA"));
 				x.setMarca((String)rs.getObject("MARCA"));
@@ -332,7 +328,7 @@ public class ProductoDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("SELECT     CODIGO_BARRAS,PROVEEDOR,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,\n" +
+			ps = conn.prepareStatement("SELECT     CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA,\n" +
 										"          MULTIMEDIO_ID,M.MIME_TYPE,M.RUTA_CONTENIDO,M.SIZE_BYTES,M.NOMBRE_ARCHIVO,\n" +
 										"          ALMACEN_ID,PRECIO\n" +
 										"FROM      PRODUCTO P\n" +
@@ -386,7 +382,6 @@ AND       AP.ALMACEN_ID=1;
 				
 				x.setCodigoBarras(cb);
 				x.setIndustria((String)rs.getObject("INDUSTRIA"));
-				x.setProveedor((String) rs.getObject("PROVEEDOR"));
 				x.setLinea((String)rs.getObject("LINEA"));
 				x.setMarca((String)rs.getObject("MARCA"));
 				x.setNombre((String)rs.getObject("NOMBRE"));
@@ -444,12 +439,11 @@ AND       AP.ALMACEN_ID=1;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("INSERT INTO PRODUCTO(CODIGO_BARRAS,PROVEEDOR,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA) "+
-					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+			ps = conn.prepareStatement("INSERT INTO PRODUCTO(CODIGO_BARRAS,INDUSTRIA,LINEA,MARCA,NOMBRE,PRESENTACION,ABREBIATURA,UNIDADES_X_CAJA,CONTENIDO,UNIDAD_MEDIDA,UNIDAD_EMPAQUE,COSTO,COSTO_VENTA) "+
+					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					,Statement.RETURN_GENERATED_KEYS);			
 			int ci=1;
 			ps.setObject(ci++,x.getCodigoBarras());
-			ps.setObject(ci++,x.getProveedor());
 			ps.setObject(ci++,x.getIndustria());
 			ps.setObject(ci++,x.getLinea());
 			ps.setObject(ci++,x.getMarca());
@@ -487,11 +481,10 @@ AND       AP.ALMACEN_ID=1;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			ps = conn.prepareStatement("UPDATE PRODUCTO SET PROVEEDOR=?,INDUSTRIA=?,LINEA=?,MARCA=?,NOMBRE=?,PRESENTACION=?,ABREBIATURA=?,UNIDADES_X_CAJA=?,CONTENIDO=?,UNIDAD_MEDIDA=?,UNIDAD_EMPAQUE=?,COSTO=?,COSTO_VENTA=? "+
+			ps = conn.prepareStatement("UPDATE PRODUCTO SET INDUSTRIA=?,LINEA=?,MARCA=?,NOMBRE=?,PRESENTACION=?,ABREBIATURA=?,UNIDADES_X_CAJA=?,CONTENIDO=?,UNIDAD_MEDIDA=?,UNIDAD_EMPAQUE=?,COSTO=?,COSTO_VENTA=? "+
 					" WHERE CODIGO_BARRAS=?");
 			
 			int ci=1;
-			ps.setObject(ci++,x.getProveedor());
 			ps.setObject(ci++,x.getIndustria());
 			ps.setObject(ci++,x.getLinea());
 			ps.setObject(ci++,x.getMarca());

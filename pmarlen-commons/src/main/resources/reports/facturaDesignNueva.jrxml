@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="544"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="364"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -376,7 +376,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CANT."]]></textFieldExpression>
 			</textField>
@@ -389,7 +389,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CODIGO"]]></textFieldExpression>
 			</textField>
@@ -402,7 +402,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["NOMBRE / PRESENTACI\u00D3N"]]></textFieldExpression>
 			</textField>
@@ -415,7 +415,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["PRECIO U."]]></textFieldExpression>
 			</textField>
@@ -428,7 +428,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["IMPORTE"]]></textFieldExpression>
 			</textField>
@@ -441,7 +441,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CONT."]]></textFieldExpression>
 			</textField>
@@ -454,7 +454,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["U/E"]]></textFieldExpression>
 			</textField>
@@ -470,7 +470,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
@@ -506,7 +506,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
@@ -518,7 +518,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codigoBarras}]]></textFieldExpression>
 			</textField>
@@ -542,7 +542,7 @@
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ue}]]></textFieldExpression>
 			</textField>
@@ -606,7 +606,7 @@
 				<reportElement x="491" y="24" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{descuento}]]></textFieldExpression>
 			</textField>
@@ -622,7 +622,7 @@
 				<reportElement x="491" y="35" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
-					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
@@ -645,7 +645,7 @@
 					<printWhenExpression><![CDATA[$P{descuento}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["DESCUENTO :"]]></textFieldExpression>
 			</textField>
@@ -659,21 +659,21 @@
 			<textField>
 				<reportElement x="441" y="35" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TOTAL :"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="106" y="84" width="297" height="10" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Cadena Original del complemento de certificaci\u00D3n del SAT :"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="1" width="90" height="10" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["IMPORTE CON LETRA :"]]></textFieldExpression>
 			</textField>
@@ -687,14 +687,14 @@
 			<textField>
 				<reportElement x="106" y="23" width="126" height="10" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Sello digital del emisor :"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="106" y="56" width="126" height="10" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Sello digital del SAT :"]]></textFieldExpression>
 			</textField>

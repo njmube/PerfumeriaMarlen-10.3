@@ -36,7 +36,9 @@
 					
 					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<p:commandButton action="#{historicoDevolucionesVentaMB.editarDevolucionAction(pv.id)}" value="#{pv.id}"/>
+							<p:panelGrid columns="1" columnClasses="centerAlign" >
+								<p:commandButton actionListener="#{historicoDevolucionesVentaMB.editar(pv.id)}" value="#{pv.id}" onsuccess="edit();"/>							
+							</p:panelGrid>
 						</p:panelGrid>
 					</p:column>
 					
@@ -105,7 +107,15 @@
 
 					</f:facet>
 				</p:dataTable>
+			<script>
+				function edit(){
+					location.href = "editarPedidoDevolucion.jsf";
+				}
+				
+				$(document).ready(function() {
 
+				});
+			</script>
 			</h:panelGrid>
 		</h:form>
 
