@@ -158,6 +158,7 @@ public class GeneradorImpresionPedidoVenta {
             JasperReport jasperReport = null;
             //String intDecParts[] = dfEnt.format(esf.getTotal()).split("\\.");
 			File compiledReportPathFile=new File(compiledReportPath);
+			/*
             if(! compiledReportPathFile.exists()){
 				InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
 				JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
@@ -166,6 +167,11 @@ public class GeneradorImpresionPedidoVenta {
 			}
 			
 			jasperReport = (JasperReport)JRLoader.loadObject(compiledReportPathFile);
+			*/
+			InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
 			logger.info("Ok, JasperReport loaded from:"+compiledReportPath);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, beanColDataSource);
@@ -315,14 +321,19 @@ public class GeneradorImpresionPedidoVenta {
             JasperReport jasperReport = null;
             //String intDecParts[] = dfEnt.format(esf.getTotal()).split("\\.");
 			File compiledReportPathFile=new File(compiledReportPath);
+			/*
             if(! compiledReportPathFile.exists()){
 				InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
 				JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
 				JasperCompileManager.compileReportToStream(jasperDesign,new FileOutputStream(compiledReportPathFile));
 				logger.info("Ok, JasperReport compiled and saved 1st time, to:"+compiledReportPath);				
 			}
-			
 			jasperReport = (JasperReport)JRLoader.loadObject(compiledReportPathFile);
+			*/
+			InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			jasperReport = JasperCompileManager.compileReport(jasperDesign);
+			
 			logger.info("Ok, JasperReport loaded from:"+compiledReportPath);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, beanColDataSource);
