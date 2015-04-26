@@ -6,6 +6,7 @@ import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.businesslogic.LogicaFinaciera;
 import com.pmarlen.model.Constants;
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
@@ -380,6 +381,7 @@ public class GeneradorImpresionPedidoVenta {
 			ByteArrayInputStream baosImageQR = new ByteArrayInputStream(qrImage);
 			
 			Image imageQR = ImageIO.read(baosImageQR);			
+			double precioNoGrabado=0.0;
 			for(EntradaSalidaDetalleQuickView pvd:esdList){
 				Map<String,Object> vals = new HashMap<String,Object> ();
                 
@@ -391,11 +393,15 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-				
-			    vals.put("precio",df.format(pvd.getPrecioVenta()));
+				precioNoGrabado=pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA());
+				vals.put("precio",df.format(pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA())));
+			    vals.put("precioNoGrabado",df.format(precioNoGrabado));
+								
+				vals.put("precioIVA",df.format(pvd.getPrecioVenta() * LogicaFinaciera.getImpuestoIVA()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				vals.put("ubic"  ,pvd.getApUbicacion());
-                vals.put("importe",df.format(n*pvd.getPrecioVenta()));
+				
+                vals.put("importe",df.format(n*precioNoGrabado));
                 vals.put("cont",pvd.getProductoContenido()+" "+pvd.getProductoUnidadMedida());
                 vals.put("isEmptyRow",false);
                 col.add(vals);
