@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="16"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="fechaHoraImpr" class="java.lang.String"/>
 	<parameter name="usuarioImpr" class="java.lang.String"/>
@@ -57,37 +57,37 @@
 		<band height="188" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{rfc} != null]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="78" y="137" width="270" height="25" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="78" y="119" width="270" height="25" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="124" width="78" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="0" y="105" width="78" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CLIENTE :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="78" y="124" width="270" height="14" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="78" y="105" width="270" height="14" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="78" y="161" width="111" height="14" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{formaDePago}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="161" width="78" height="14" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="0" y="161" width="78" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FORMA DE PAGO :"]]></textFieldExpression>
 			</textField>
@@ -100,19 +100,19 @@
 				<textFieldExpression><![CDATA["NOTA DE PEDIDO (P/ALMAC\u00C9N)"]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="152" y="15" width="297" height="50" uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a">
+				<reportElement x="113" y="15" width="281" height="40" uuid="811c159e-ca6c-4c09-9f2f-53a6b0dda42a">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA["reports/PMarlen_nombre.jpg"]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="0" y="0" width="135" height="114" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
+				<reportElement x="0" y="0" width="113" height="101" uuid="27c523cd-df0f-4822-976b-902c89e2b894">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA["reports/PMarlen_Logo_3.jpg"]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="443" y="18" width="117" height="31" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
+				<reportElement x="398" y="15" width="119" height="31" forecolor="#000080" uuid="9df5a8cb-79fe-4882-a269-5ad13cec94c2">
 					<printWhenExpression><![CDATA[$P{printImages}]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -121,30 +121,30 @@
 				<textFieldExpression><![CDATA["S.A. DE C.V."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="405" y="137" width="36" height="14" uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02"/>
+				<reportElement x="360" y="137" width="81" height="14" uuid="85c3c0b9-bc62-46e3-8f5e-95c1e384fb02"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FECHA IMPRESI\u00D3N :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="441" y="137" width="115" height="14" uuid="622c8ccb-d1be-4a9f-815d-c1a2c9234bd2"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaHoraImpr}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="405" y="151" width="36" height="14" uuid="70031f4c-1ae5-4f4c-bc0a-b903f64bd738"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["U. GENER\u00D3 :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["GENER\u00D3 :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="441" y="151" width="115" height="14" uuid="6b3b4a28-2b65-4393-a953-5470e41b8649"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
@@ -165,7 +165,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="441" y="165" width="115" height="14" uuid="1b231743-4e61-4224-91f9-f33d7f1d1349"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuarioImpr}]]></textFieldExpression>
 			</textField>
@@ -174,14 +174,14 @@
 					<printWhenExpression><![CDATA[$P{usuarioImpr}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["U. IMPRIMI\u00D3 :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["IMPRIMI\u00D3 :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="135" y="104" width="213" height="11" uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701"/>
+				<reportElement x="135" y="87" width="213" height="11" uuid="938ac47f-9ce4-4831-b6cd-d0e148aa7701"/>
 				<textElement textAlignment="Center">
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["http://perfumeriamarlen.com.mx"]]></textFieldExpression>
 			</textField>
@@ -193,11 +193,11 @@
 				<textFieldExpression><![CDATA[$P{pedidoVentaEstado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="174" width="78" height="14" uuid="f9e2880d-651f-42f0-956f-2ca1182c5c48">
+				<reportElement x="0" y="174" width="78" height="9" uuid="f9e2880d-651f-42f0-956f-2ca1182c5c48">
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["COMENTARIOS :"]]></textFieldExpression>
 			</textField>
@@ -206,21 +206,21 @@
 					<printWhenExpression><![CDATA[$P{comentarios} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{comentarios}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="189" y="161" width="104" height="14" uuid="21b67f0b-61cc-450e-adad-1521975fa14f"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["M\u00C9TODO DE PAGO :"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="293" y="161" width="112" height="14" uuid="ab988d6c-e533-4c6c-9c50-17ec851eb52c"/>
 				<textElement>
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{metodoDePago}]]></textFieldExpression>
 			</textField>
@@ -232,18 +232,26 @@
 				<textFieldExpression><![CDATA["Estatus :"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="135" y="73" width="213" height="29" uuid="2efe21e6-281e-4580-882e-a51feb39101a"/>
+				<reportElement x="135" y="57" width="213" height="29" uuid="2efe21e6-281e-4580-882e-a51feb39101a"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CALLE FRANCISCO VILLA LT3 MZ 98 NO. 121, Col. SAN MART\u00CDN AZCATEPEC, T\u00C9CAMAC. EDO. DE M\u00C9X. C.P. 55740, TEL. (55)5936-2597, TEL. SUC. (55)5936-7894"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="137" width="78" height="14" uuid="f3596d9d-cda6-4fad-a865-2f81a9b8d327"/>
+				<reportElement x="0" y="119" width="78" height="9" uuid="f3596d9d-cda6-4fad-a865-2f81a9b8d327"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7" isBold="false"/>
+					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["DIRECCI\u00D3N :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="348" y="80" width="208" height="10" forecolor="#FF0000" uuid="3805e236-a899-427c-a13f-07fdaa442528"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["--SOLO USO INTERNO--"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -276,7 +284,7 @@
 				<textFieldExpression><![CDATA["CODIGO"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="129" y="0" width="296" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="129" y="0" width="290" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -286,7 +294,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N (CONT.)"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="470" y="0" width="36" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
@@ -328,7 +336,7 @@
 				<textFieldExpression><![CDATA["ALM"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="425" y="0" width="45" height="12" uuid="2d7a31df-8b71-4c39-93a7-da4a90e18877"/>
+				<reportElement x="419" y="0" width="51" height="12" uuid="2d7a31df-8b71-4c39-93a7-da4a90e18877"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -359,7 +367,7 @@
 		<band height="10" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="22" height="10" uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -367,15 +375,15 @@
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
 				<reportElement x="470" y="0" width="36" height="10" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="129" y="0" width="296" height="10" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<reportElement x="129" y="0" width="290" height="10" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7" isBold="false"/>
 				</textElement>
@@ -383,7 +391,7 @@
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
 				<reportElement x="506" y="0" width="50" height="10" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -391,7 +399,7 @@
 			</textField>
 			<textField>
 				<reportElement x="44" y="0" width="55" height="10" uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -399,15 +407,15 @@
 			</textField>
 			<textField>
 				<reportElement x="99" y="0" width="30" height="10" uuid="2f47274f-d993-455a-bff3-a57705ef1f72"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="425" y="0" width="45" height="10" uuid="d63788fe-5da8-4f5f-ba0a-ab260f59a755"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<reportElement x="419" y="0" width="51" height="10" uuid="d63788fe-5da8-4f5f-ba0a-ab260f59a755"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="false"/>
 				</textElement>
@@ -415,7 +423,7 @@
 			</textField>
 			<textField>
 				<reportElement x="22" y="0" width="22" height="10" uuid="aef18a91-d17b-4fab-abf6-ed8489f09753"/>
-				<box leftPadding="5" rightPadding="5"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>

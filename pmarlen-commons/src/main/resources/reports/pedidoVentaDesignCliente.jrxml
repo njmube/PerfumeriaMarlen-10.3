@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="363"/>
-	<property name="ireport.y" value="160"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="225"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="fechaHoraImpr" class="java.lang.String"/>
 	<parameter name="usuarioImpr" class="java.lang.String"/>
@@ -273,7 +273,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N  (CONT.)"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="469" y="0" width="37" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>

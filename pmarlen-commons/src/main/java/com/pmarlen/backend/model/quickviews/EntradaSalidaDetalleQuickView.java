@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
  *
  * @author alfredo
  */
-public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
+public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle implements Comparable<EntradaSalidaDetalleQuickView>{
 	
 	private long rowId;
 	
@@ -263,4 +263,14 @@ public class EntradaSalidaDetalleQuickView extends EntradaSalidaDetalle{
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+	@Override
+	public int compareTo(EntradaSalidaDetalleQuickView o) {
+		if(		apUbicacion   != null && apUbicacion.trim().length()   > 1 &&
+				o.apUbicacion != null && o.apUbicacion.trim().length() > 1 ){
+			return apUbicacion.compareTo(o.apUbicacion);
+		} else {
+			return getId().compareTo(o.getId());
+		}		
+	}
 }

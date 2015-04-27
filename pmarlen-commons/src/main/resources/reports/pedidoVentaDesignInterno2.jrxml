@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidoVentaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="280"/>
-	<property name="ireport.y" value="100"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="fechaHoraImpr" class="java.lang.String"/>
 	<parameter name="usuarioImpr" class="java.lang.String"/>
@@ -33,7 +33,7 @@
 	<field name="clave" class="java.lang.Integer"/>
 	<field name="codigoBarras" class="java.lang.String"/>
 	<field name="ta" class="java.lang.String"/>
-	<field name="descripcionYCont" class="java.lang.String"/>
+	<field name="descripcionCont" class="java.lang.String"/>
 	<field name="precio" class="java.lang.String"/>
 	<field name="importe" class="java.lang.String"/>
 	<field name="ubic" class="java.lang.String"/>
@@ -291,7 +291,7 @@
 				<textFieldExpression><![CDATA["CODIGO"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="135" y="0" width="272" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="135" y="0" width="296" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -301,7 +301,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NOMBRE / DESCRIPCI\u00D3N (CONT.)"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="482" y="0" width="36" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
@@ -330,7 +330,7 @@
 				<textFieldExpression><![CDATA["IMPORTE"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="407" y="0" width="51" height="12" uuid="7b75a458-f93f-43e0-9a30-253793828109"/>
+				<reportElement x="431" y="0" width="51" height="12" uuid="7b75a458-f93f-43e0-9a30-253793828109"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -356,19 +356,6 @@
 				<textFieldExpression><![CDATA["U/E"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="458" y="0" width="24" height="12" uuid="d9263a4d-0741-4e88-9529-8ba8eaf2019f"/>
-				<box leftPadding="0">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["P/C"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
 				<reportElement x="111" y="0" width="24" height="12" uuid="4a16055d-9505-4b79-96cd-a83a87a2cd08"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -389,7 +376,7 @@
 				<reportElement x="0" y="0" width="22" height="12" uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
@@ -397,23 +384,23 @@
 				<reportElement x="481" y="0" width="37" height="12" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="135" y="0" width="272" height="12" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7"/>
+				<reportElement x="135" y="0" width="296" height="12" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{descripcionYCont}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descripcionCont}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
 				<reportElement x="518" y="0" width="38" height="12" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
@@ -421,31 +408,23 @@
 				<reportElement x="47" y="0" width="64" height="12" uuid="f5ebce7c-d8a1-4832-9127-db0eeaf8d310"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codigoBarras}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="407" y="0" width="51" height="12" uuid="f52b4255-ec7e-4efb-b1f2-844bf7459a6e"/>
+				<reportElement x="431" y="0" width="51" height="12" uuid="f52b4255-ec7e-4efb-b1f2-844bf7459a6e"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ubic}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="457" y="0" width="25" height="12" uuid="4b8ee153-2c58-4606-95c9-afdb706252ef"/>
-				<box leftPadding="2" rightPadding="2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ppc}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="22" y="0" width="25" height="12" uuid="121e153c-0c03-4e05-ae90-f8f5ba993db1"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ue}]]></textFieldExpression>
 			</textField>
@@ -453,7 +432,7 @@
 				<reportElement x="110" y="0" width="25" height="12" uuid="539ecd3a-a7a4-4f2e-9eb3-b38f5010789d"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ta}]]></textFieldExpression>
 			</textField>

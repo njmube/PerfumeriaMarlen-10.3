@@ -61,10 +61,6 @@
     </servlet>
     <!-- Map these files with JSF -->
     <servlet>
-        <servlet-name>UtfReportExample</servlet-name>
-        <servlet-class>com.pmarlen.web.servlet.UtfReportExample</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.ImageServlet</servlet-class>
     </servlet>
@@ -87,10 +83,6 @@
         <servlet-class>com.pmarlen.rest.servlet.SyncServlet</servlet-class>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>UtfReportExample</servlet-name>
-        <url-pattern>/docs/utfExample.pdf</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetTime</servlet-name>
         <url-pattern>/gt</url-pattern>

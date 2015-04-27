@@ -41,8 +41,9 @@ public class GeneradorImpresionPedidoVenta {
 	private static Logger logger = Logger.getLogger("GeneradorImpresionPedidoVenta");
 	private static String reportDesignDir="/reports/";
 	
-    public static byte[] generaPdfPedidoVenta(EntradaSalidaQuickView pedidoVenta,ArrayList<EntradaSalidaDetalleQuickView> esdList,Cliente clienteVenta,boolean fullPrint,boolean interna,String usuarioImr) {
+    public static byte[] generaPdfPedidoVenta(EntradaSalidaQuickView pedidoVenta,ArrayList<EntradaSalidaDetalleQuickView> esdListOriginal,Cliente clienteVenta,boolean fullPrint,boolean interna,String usuarioImr) {
 		byte[] pdfBytes = null;
+		ArrayList<EntradaSalidaDetalleQuickView> esdList=null;
 		try {
 			String reportFileName;
 			String reportPath;
@@ -52,8 +53,11 @@ public class GeneradorImpresionPedidoVenta {
 			logger.info("Default Locale:"+Locale.getDefault());
             
 			if(interna){
-				reportFileName = "pedidoVentaDesignInterno";				
+				reportFileName = "pedidoVentaDesignInterno2";
+				esdList = new ArrayList<EntradaSalidaDetalleQuickView>(esdListOriginal);
+				Collections.sort(esdList);
 			} else{
+				esdList=esdListOriginal;
 				reportFileName = "pedidoVentaDesignCliente";
 				
 			}
@@ -81,7 +85,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadEmpaque()+"xCj."+" )");
+                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadesPorCaja()+"xCj."+" )");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
@@ -234,7 +238,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadEmpaque()+"xCj."+" )");
+                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadesPorCaja()+"xCj."+" )");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
@@ -404,10 +408,11 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
+				vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadesPorCaja()+"xCj."+" )");
 				precioNoGrabado=pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA());
 				vals.put("precio",df.format(pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA())));
 			    vals.put("precioNoGrabado",df.format(precioNoGrabado));
-								
+				
 				vals.put("precioIVA",df.format(pvd.getPrecioVenta() * LogicaFinaciera.getImpuestoIVA()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				vals.put("ubic"  ,pvd.getApUbicacion());
@@ -534,34 +539,4 @@ public class GeneradorImpresionPedidoVenta {
         }
 		return pdfBytes;
     }
-	
-	public static byte[] generarPDFUtfExample(){
-			byte[] pdfBytes = null;
-		try {
-			String reportPath;
-            
-            reportPath = "/reports/utfExample.jrxml";
-            InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
-			
-			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
-			
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-            logger.info("Ok, JasperReport compiled: pageHeight="+jasperReport.getPageHeight());            
-            
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, new JREmptyDataSource());
-            logger.info("Ok, JasperPrint created");
-            
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            
-            JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
-			logger.info("Ok, JasperExportManager executed");
-			pdfBytes = baos.toByteArray();
-            
-            logger.info("Ok, finished");
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);            
-        }
-		return pdfBytes;	
-	}
-	
 }

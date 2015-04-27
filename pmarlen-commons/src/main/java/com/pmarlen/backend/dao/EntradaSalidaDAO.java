@@ -357,7 +357,7 @@ public class EntradaSalidaDAO {
 				x.setProductoUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
 				x.setPrecioVenta(rs.getDouble("PRECIO_VENTA"));
 				x.setProductoUnidadEmpaque(rs.getString("UNIDAD_EMPAQUE"));
-				x.setProductoUnidadesPorCaja(String.valueOf(rs.getInt("UNIDADES_X_CAJA")));
+				x.setProductoUnidadesPorCaja(rs.getString("UNIDADES_X_CAJA"));
 				x.setCantidad(rs.getInt("CANTIDAD_ESD"));
 				x.setId(rs.getInt("ESD_ID"));
 				x.setAlmacenId(rs.getInt("ALMACEN_ID"));
@@ -367,7 +367,7 @@ public class EntradaSalidaDAO {
 
 				x.setRowId(ct++);
 				
-				logger.info("\t==>>"+x.getCantidad()+" X ["+x.getProductoCodigoBarras()+"] @ "+x.getAlmacenId());
+				logger.info("\t==>>"+x.getCantidad()+" X ["+x.getProductoCodigoBarras()+"] @ "+x.getAlmacenId()+" ("+x.getProductoUnidadEmpaque()+":"+x.getProductoContenido()+" "+x.getProductoUnidadMedida()+")["+x.getProductoUnidadesPorCaja()+"]");
 				r.add(x);
 			}
 
