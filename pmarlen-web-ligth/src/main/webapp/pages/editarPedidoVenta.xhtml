@@ -109,7 +109,7 @@
 										 title="BUSCA Y AGREGA EL PRODUCTO POR EL CODIGO DE BARRAS">
 								<p:ajax  event="change" listener="#{editarPedidoVentaMB.buscarXCodigo}" 
 										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
-										 oncomplete="updateComponentsOnWindowResize();"/>
+										 oncomplete="updateComponentsOnWindowResize();scrollDownTablaPedidos();"/>
 							</p:inputText>						
 
 						</h:panelGroup>
@@ -503,7 +503,7 @@
 				//$("#debugDivOutput").html(txt);
 				setDataTableHeight();
 				counterResized++;
-				scrollDownTablaPedidos();
+				//scrollDownTablaPedidos();
 			}
 
 			function setDataTableHeight() {
@@ -518,8 +518,6 @@
 				var d = $('.ui-datatable-scrollable-body');
 				d.scrollTop(d.prop("scrollHeight"));				
 			}
-
-
 
 			$(document).ready(function() {
 

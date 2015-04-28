@@ -64,7 +64,7 @@
 
 							<p:commandButton value="+"  actionListener="#{pedidoVentaMB.agregarSeleccionadoDeBusqueda}" id="xx1" disabled="#{pedidoVentaMB.pedidoFinalizado}"
 											 process=":form2" update=":form1,:form2,:form2,:form3,:form4:panel4_3"  
-											 rendered="#{not empty pedidoVentaMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
+											 rendered="#{not empty pedidoVentaMB.resultadoBusqueda}" oncomplete="updateComponentsOnWindowResize();scrollDownTablaPedidos();"  title="AGREGAR EL PRODUCTO SELECCIONADO, SEGUN LA CANTIDAD"/>
 
 							<p:overlayPanel id="masInfoPanel" for="masInfo" hideEffect="fade" dismissable="true" showCloseIcon="false">
 								<h:panelGrid columns="2" cellpadding="0" width="300" columnClasses="columnWidth40 rightAlign, columnWidth60 leftAlign">
@@ -110,7 +110,7 @@
 										 title="BUSCA Y AGREGA EL PRODUCTO POR EL CODIGO DE BARRAS" disabled="#{pedidoVentaMB.pedidoFinalizado}">
 								<p:ajax  event="change" listener="#{pedidoVentaMB.buscarXCodigo}" 
 										 process=":form2a" update=":form1:panel1,:form2a:panel2a,:form3,:form4:panel4_3"
-										 oncomplete="updateComponentsOnWindowResize();"/>
+										 oncomplete="updateComponentsOnWindowResize();scrollDownTablaPedidos();"/>
 							</p:inputText>						
 
 						</h:panelGroup>
@@ -425,7 +425,7 @@
 				//$("#debugDivOutput").html(txt);
 				setDataTableHeight();
 				counterResized++;
-				scrollDownTablaPedidos();
+				//scrollDownTablaPedidos();
 			}
 
 			function setDataTableHeight() {
