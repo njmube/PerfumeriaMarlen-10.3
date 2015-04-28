@@ -33,11 +33,7 @@
 					
 					<p:column headerText="#" width="10%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >
-							<h:outputLink value="editarCompra.jsf" >
-								<h:outputText value="#{pv.id}" />
-								<p:ajax event="click" listener="#{comprasMB.editarCompra(pv.id)}"/>
-							</h:outputLink>
-							
+							<p:commandButton actionListener="#{comprasMB.editar(pv.id)}" value="#{pv.id}" onsuccess="edit();"/>
 						</p:panelGrid>
 					</p:column>
 					
@@ -90,6 +86,16 @@
 				</p:dataTable>
 
 			</h:panelGrid>
+			<script>
+				function edit(){
+					location.href = "editarCompra.jsf";
+				}
+				
+				$(document).ready(function() {
+
+				});
+			</script>		
+			
 		</h:form>
 
 	</ui:define>

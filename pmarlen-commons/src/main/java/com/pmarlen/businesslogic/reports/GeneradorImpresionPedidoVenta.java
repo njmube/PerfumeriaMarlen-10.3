@@ -336,11 +336,10 @@ public class GeneradorImpresionPedidoVenta {
 			jasperReport = (JasperReport)JRLoader.loadObject(compiledReportPathFile);
 			*/
 			InputStream inputStream = GeneradorImpresionPedidoVenta.class.getResourceAsStream(reportPath);
-			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+			JasperDesign jasperDesign = JRXmlLoader.load(inputStream);			
 			jasperReport = JasperCompileManager.compileReport(jasperDesign);
 			
 			logger.info("Ok, JasperReport loaded from:"+compiledReportPath);
-            
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, beanColDataSource);
             logger.info("Ok, JasperPrint created.");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -500,7 +499,7 @@ public class GeneradorImpresionPedidoVenta {
             
             String letrasParteEntera  = NumeroCastellano.numeroACastellano(Long.parseLong(intDecParts[0])).trim();
             String letrasParteDecimal = NumeroCastellano.numeroACastellano(Long.parseLong(intDecParts[1])).trim();
-            parameters.put("importeLetra" ,(letrasParteEntera+" Pesos "+intDecParts[1]+"/100 M.N.").toUpperCase());
+            parameters.put("importeLetra" ,"--("+(letrasParteEntera+" Pesos "+intDecParts[1]+"/100 M.N.").toUpperCase()+")--");
 			
             JasperReport jasperReport = null;
             //String intDecParts[] = dfEnt.format(esf.getTotal()).split("\\.");

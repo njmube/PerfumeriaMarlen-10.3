@@ -68,8 +68,8 @@ public class ComprasMB  {
 		return compras;
 	}
 	
-	public void editarCompra(int compraId){
-		logger.config("->editarCompra:compraId="+compraId);
+	public void editar(int compraId){
+		logger.config("->editar:compraId="+compraId);
 		editarCompraMB.editar(compraId);
 	}
 	
