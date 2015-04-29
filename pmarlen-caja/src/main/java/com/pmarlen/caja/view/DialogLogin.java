@@ -47,12 +47,14 @@ public class DialogLogin extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         aceptar = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
+        jPanel7 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -69,21 +71,22 @@ public class DialogLogin extends javax.swing.JDialog {
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jPanel5.setLayout(new java.awt.GridLayout(2, 0, 0, 20));
+        jPanel5.setLayout(new java.awt.GridLayout(4, 0, 0, 5));
+        jPanel5.add(jPanel8);
 
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 25));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Correo Electrónico :");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel4.add(jLabel2);
 
-        email.setColumns(10);
+        email.setColumns(22);
         jPanel4.add(email);
 
         jPanel5.add(jPanel4);
 
-        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 25));
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Contraseña :");
@@ -94,15 +97,19 @@ public class DialogLogin extends javax.swing.JDialog {
         jPanel6.add(password);
 
         jPanel5.add(jPanel6);
+        jPanel5.add(jPanel7);
 
         getContentPane().add(jPanel5, java.awt.BorderLayout.CENTER);
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(140, 200));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
         jLabel1.setIcon(getIcon());
-        jPanel2.add(jLabel1);
+        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.WEST);
 
-        setSize(new java.awt.Dimension(556, 232));
+        pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -118,6 +125,8 @@ public class DialogLogin extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JPasswordField password;
     // End of variables declaration//GEN-END:variables
 
@@ -131,7 +140,7 @@ public class DialogLogin extends javax.swing.JDialog {
 	private ImageIcon getIcon(){
 		ImageIcon icon = null;
 		try{
-			icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/sp_security.jpg")));
+			icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/login_security_2.png")));
 		} catch(Exception e){
 		
 		}

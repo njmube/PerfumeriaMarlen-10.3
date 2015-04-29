@@ -77,7 +77,7 @@ public class Main {
 			dialogLoginControl.estadoInicial();
 
 			if (!dialogLoginControl.isLoggedIn()) {
-				throw new IllegalAccessException("Contraseña incorrecta");
+				throw new IllegalAccessException("NO SE ACCESO ");
 			} else {
 				logger.info("->OK logedin, GO !");
 				framePrincipalControl.enableAndDisableAdminControls();
