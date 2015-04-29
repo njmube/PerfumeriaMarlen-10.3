@@ -1,0 +1,15 @@
+${-,l,100%,C}
+${titulo,c,20,C}
+${subTitulo,c,25,C}
+
+${fechaL,r,8,L}:${fecha,l,10,F}
+${clienteL,r,8,L}:${cliente,l,-10,F}
+
+#{n,r,4,L} #{c,r,15,F}
+#{p,r,8,C} #{i,r,10,R}
+${-,l,10,R}
+${st,r,15,R}
+${des,r,15,R}
+${iva,r,15,R}
+${tot,r,15,R}
+${=,l,100%,C}

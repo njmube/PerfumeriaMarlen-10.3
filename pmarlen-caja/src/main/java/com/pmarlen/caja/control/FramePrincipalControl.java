@@ -40,7 +40,7 @@ public class FramePrincipalControl implements ActionListener{
 		
 		framePrincipal = new FramePrincipal();
 		
-		framePrincipal.setTitle("XpressCashdrawer ["+ApplicationLogic.getInstance().getVersion()+"]- "+ApplicationLogic.getInstance().getNombreNegocio());
+		framePrincipal.setTitle("PerfumeriaMarlen ("+ApplicationLogic.getInstance().getVersion()+") - SISTEMA DE CAJA >> EXPRESS");
 		
 		panelVentaControl  = new PanelVentaControl ((PanelVenta)framePrincipal.getPanelVenta());
 		

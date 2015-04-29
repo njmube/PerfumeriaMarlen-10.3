@@ -18,10 +18,8 @@
 		<junit.version>4.8.1</junit.version>		
 		<maven.build.timestamp.format>yyyy/MM/dd_HH:mm</maven.build.timestamp.format>
 		<maven_build_timestamp>${maven.build.timestamp}</maven_build_timestamp>
-		<staging.dir>${project.build.directory}/staging</staging.dir>
-		<!--
-		<izpack-standalone.version>4.3.1</izpack-standalone.version>
-		-->
+		<staging.dir>${project.build.directory}/staging</staging.dir>		
+		<izpack-standalone.version>4.3.1</izpack-standalone.version>		
 	</properties>
 	<build>
 		<plugins>
@@ -194,9 +192,11 @@
 										<copy todir="${staging.dir}">
 											<fileset file="${project.build.directory}/classes/Readme.txt" />
 										</copy>
+										<!--
 										<copy todir="${staging.dir}/Productos">
 											<fileset dir="${basedir}/Productos" />
-										</copy>										
+										</copy>
+										-->
 									</target>
 								</configuration>
 							</execution>

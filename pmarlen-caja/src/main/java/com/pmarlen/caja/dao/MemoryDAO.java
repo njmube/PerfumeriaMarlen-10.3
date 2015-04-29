@@ -30,7 +30,9 @@ public class MemoryDAO {
 	static SyncDTOPackage paqueteSinc;
 	static Logger logger = Logger.getLogger(MemoryDAO.class.getName());
 	static String fileName = "./fileModel.zip";
-	static String urlDownload = "http://pmarlencloudsrv2.dyndns.org:8070/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
+	static String hostDownload = "localhost:8070"; //"pmarlencloudsrv2.dyndns.org:8070";
+	static String urlDownload = "http://"+hostDownload+"/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
+	
 	static HashMap<String,P> productosParaBuscar;
 	
 	public static void setPaqueteSinc(SyncDTOPackage paqueteSinc) {

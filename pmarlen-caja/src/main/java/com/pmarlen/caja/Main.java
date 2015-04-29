@@ -9,7 +9,12 @@ import com.pmarlen.caja.control.DialogLoginControl;
 import com.pmarlen.caja.control.FramePrincipalControl;
 import com.pmarlen.caja.dao.MemoryDAO;
 import com.pmarlen.caja.view.DialogLogin;
+import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  *
@@ -46,7 +51,20 @@ public class Main {
 		SyncDTOPackage paqueteSinc = MemoryDAO.getPaqueteSinc();
 		logger.info("<<<==========================================================");
 
+		try{
+			logger.info("L&Fs:"+Arrays.asList(UIManager.getInstalledLookAndFeels()));
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			JDialog.setDefaultLookAndFeelDecorated(true);
+					 
+		}catch(Exception e){
+			logger.log(Level.WARNING, "setLookAndFeel:", e);
+		}
+		
 		try {
+			
 			framePrincipalControl = FramePrincipalControl.getInstance();
 
 			DialogLogin dialogLogin = DialogLogin.getInstance(framePrincipalControl.getFramePrincipal());
