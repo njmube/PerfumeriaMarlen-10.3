@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
 	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="1583"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="652"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
@@ -54,6 +54,7 @@
 	<field name="isEmptyRow" class="java.lang.Boolean"/>
 	<field name="precioIVA" class="java.lang.String"/>
 	<field name="precioNoGrabado" class="java.lang.String"/>
+	<field name="descripcionCont" class="java.lang.String"/>
 	<background>
 		<band height="736" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle">
@@ -396,7 +397,7 @@
 				<textFieldExpression><![CDATA["CODIGO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="113" y="0" width="272" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="113" y="0" width="355" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -406,10 +407,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NOMBRE / PRESENTACI\u00D3N"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NOMBRE / PRESENTACI\u00D3N (CONT. / UxCj.)"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="428" y="0" width="40" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="468" y="0" width="40" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -435,19 +436,6 @@
 				<textFieldExpression><![CDATA["IMPORTE"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="385" y="0" width="43" height="12" uuid="e773d56e-a03f-4a8a-87b8-1dee716d717a"/>
-				<box leftPadding="0">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["CONT."]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="25" y="0" width="23" height="12" uuid="65e19bf4-12d8-4274-aa7b-a02de55338eb"/>
 				<box leftPadding="0">
 					<topPen lineWidth="0.5"/>
@@ -459,19 +447,6 @@
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["U/E"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="468" y="0" width="40" height="12" uuid="50a02085-c195-4bfd-b283-28e5f0273a71"/>
-				<box leftPadding="0">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["I.V.A."]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -490,7 +465,7 @@
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="428" y="0" width="40" height="12" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd">
+				<reportElement x="468" y="0" width="40" height="12" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd">
 					<printWhenExpression><![CDATA[! $F{isEmptyRow}]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -502,7 +477,7 @@
 				<textFieldExpression><![CDATA[$F{precioNoGrabado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="113" y="0" width="272" height="12" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7">
+				<reportElement x="113" y="0" width="355" height="12" uuid="b10f7b15-2491-45f0-a5a4-cd67e5a2e6a7">
 					<printWhenExpression><![CDATA[! $F{isEmptyRow}]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -511,7 +486,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descripcionCont}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
 				<reportElement x="508" y="0" width="48" height="12" uuid="41ff0ea2-7f08-4e2d-a735-69e4a18b67dd">
@@ -537,18 +512,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codigoBarras}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="385" y="0" width="43" height="12" uuid="efb7b852-e611-4b35-a5e8-bb6791ed7914">
-					<printWhenExpression><![CDATA[! $F{isEmptyRow}]]></printWhenExpression>
-				</reportElement>
-				<box leftPadding="2" rightPadding="2">
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cont}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="25" y="0" width="23" height="12" uuid="301e7ff1-713e-425b-92b2-10684a8fae8d">
 					<printWhenExpression><![CDATA[! $F{isEmptyRow}]]></printWhenExpression>
@@ -560,18 +523,6 @@
 					<font size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ue}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="468" y="0" width="40" height="12" uuid="9673608a-bc4e-4005-8bcc-5083f77b9310">
-					<printWhenExpression><![CDATA[! $F{isEmptyRow}]]></printWhenExpression>
-				</reportElement>
-				<box leftPadding="2" rightPadding="2">
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="6" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precioIVA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
