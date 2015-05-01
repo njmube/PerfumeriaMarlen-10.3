@@ -81,6 +81,49 @@ public class EntradaSalidaFooter implements Serializable{
 
 		total = subTotalNoGrabado + importeIVA - importeDescuentoAplicado ;		
 	}
+	
+	public void calculaParaFacturaTotalesDesde(EntradaSalida pv,ArrayList<? extends EntradaSalidaDetalle> dvpList){
+		reset();
+		double importeReg = 0.0;
+		double importeRegNG = 0.0;
+		totalUnidades = 0;
+		for(EntradaSalidaDetalle dvp: dvpList){
+			totalUnidades     += dvp.getCantidad();
+			importeReg         = dvp.getCantidad()*dvp.getPrecioVenta();
+			//importeIVA        += importeReg - (importeReg / Constants.MAS_IVA);
+			importeRegNG       = (importeReg / Constants.MAS_IVA);
+			subTotalNoGrabado += importeRegNG;
+			subTotalBruto     += importeReg;
+			
+		}
+		descuentoCalculado = 0;
+		descuentoExtra = 0;
+		descuentoAplicado =0;
+		importeDescuentoExtra = 0.0;
+		importeDescuentoAplicado = 0.0;
+		if(pv.getAutorizaDescuento()!=null && pv.getAutorizaDescuento().intValue()==1){			
+			if (subTotalBruto >= 5000 && subTotalBruto < 10000) {				
+				descuentoCalculado = 5;
+				importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
+			} else if (subTotalBruto >= 10000) {
+				descuentoCalculado = 10;
+				importeDescuentoCalculado = (subTotalBruto * descuentoCalculado)/100.0;
+			}
+			descuentoExtra = pv.getPorcentajeDescuentoExtra();
+			if(descuentoExtra == null){
+				descuentoExtra = 0;
+			}
+			
+			descuentoAplicado        = descuentoCalculado + descuentoExtra;		
+			importeDescuentoAplicado = importeDescuentoCalculado + importeDescuentoExtra;
+		} 
+		
+		pv.setPorcentajeDescuentoCalculado(descuentoCalculado);
+		importeDescuentoExtra = (subTotalBruto * descuentoExtra)/100.0;
+		
+		importeIVA = (subTotalBruto - importeDescuentoAplicado) * Constants.IVA;
+		total = subTotalBruto - importeDescuentoAplicado + importeIVA ;
+	}
 
 	/**
 	 * @return the subTotalNoGrabado

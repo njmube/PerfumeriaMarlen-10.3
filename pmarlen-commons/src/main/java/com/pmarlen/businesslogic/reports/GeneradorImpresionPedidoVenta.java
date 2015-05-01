@@ -65,8 +65,6 @@ public class GeneradorImpresionPedidoVenta {
 			compiledReportClassPath = reportDesignDir + reportFileName + ".jasper";
 			compiledReportPath = "./"+ reportFileName + ".jasper";
 			
-            
-            
             Collection<Map<String,?>> col = new ArrayList<Map<String,?>>();
             DecimalFormat    df    = new  DecimalFormat("$###,###,###,##0.00");
             DecimalFormat    dfEnt = new  DecimalFormat("###########0.00");
@@ -74,7 +72,7 @@ public class GeneradorImpresionPedidoVenta {
 			logger.info("Ok, jrxml loaded:"+pedidoVenta.getAutorizaDescuento()+"?,"+pedidoVenta.getPorcentajeDescuentoCalculado()+"%+"+pedidoVenta.getPorcentajeDescuentoExtra()+"%");
             int n;
 			EntradaSalidaFooter esf=new EntradaSalidaFooter();
-			esf.calculaTotalesDesde(pedidoVenta, esdList);
+			esf.calculaParaFacturaTotalesDesde(pedidoVenta, esdList);
 			for(EntradaSalidaDetalleQuickView pvd:esdList){
 				Map<String,Object> vals = new HashMap<String,Object> ();
                 
