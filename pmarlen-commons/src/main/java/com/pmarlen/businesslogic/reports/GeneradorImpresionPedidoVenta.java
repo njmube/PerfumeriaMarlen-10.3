@@ -2,7 +2,6 @@ package com.pmarlen.businesslogic.reports;
 
 import com.pmarlen.backend.model.Cfd;
 import com.pmarlen.backend.model.Cliente;
-import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaFooter;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
@@ -12,7 +11,6 @@ import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -23,11 +21,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.util.JRProperties;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.export.ExporterInput;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -72,7 +66,7 @@ public class GeneradorImpresionPedidoVenta {
 			logger.info("Ok, jrxml loaded:"+pedidoVenta.getAutorizaDescuento()+"?,"+pedidoVenta.getPorcentajeDescuentoCalculado()+"%+"+pedidoVenta.getPorcentajeDescuentoExtra()+"%");
             int n;
 			EntradaSalidaFooter esf=new EntradaSalidaFooter();
-			esf.calculaParaFacturaTotalesDesde(pedidoVenta, esdList);
+			esf.calculaTotalesDesde(pedidoVenta, esdList);
 			for(EntradaSalidaDetalleQuickView pvd:esdList){
 				Map<String,Object> vals = new HashMap<String,Object> ();
                 
