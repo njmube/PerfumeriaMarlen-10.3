@@ -42,6 +42,11 @@
 								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
 									<h:graphicImage value="/images/nota_16x16.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
 								</h:outputLink>
+								<p:spacer width="10" />
+								<h:outputLink id="pdfLinkNoLogo" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_16x16.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
+								</h:outputLink>
+								
 								<p:spacer width="10" rendered="#{not empty pv.cfdId}"/>
 								<h:outputLink id="pdfLinkFactura" value="#{request.contextPath}/docs/facturas/Factura_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank"
 											  rendered="#{not empty pv.cfdId}">

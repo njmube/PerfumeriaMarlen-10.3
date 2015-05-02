@@ -174,13 +174,12 @@
 						<p:message   for="usuario_habilitado"  showDetail="true"/>
 						
 						<h:outputLabel value="CONTRASEÑA:" style="font-weight:bold" />
-						<p:password id="usuario_password" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" match="usuario_password_confirm" redisplay="true"/>
-						<p:message   for="usuario_password"  showDetail="true"/>
+						<h:panelGroup>
+							<p:password id="usuario_password" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" match="usuario_password_confirm" redisplay="true"/>
+							<p:commandButton icon="ui-icon-mail-closed" immediate="true" actionListener="#{usuarioMB.checkPassword}" title="CHECAR CON SERVIDOR DE CORREO PARA VERIFICAR SI ES LA MISMA CONTRASEÑA"/>
+						</h:panelGroup>
+						<p:message   for="usuario_password"  showDetail="true"/>						
 						
-						<h:outputLabel value="CONFIRMAR CONTRASEÑA:" style="font-weight:bold" />
-						<p:password id="usuario_password_confirm" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" redisplay="true"/>
-						<p:message   for="usuario_password_confirm"  showDetail="true"/>
-
 						<h:outputLabel value="PERFILES:" style="font-weight:bold" />
 						<p:panelGrid columns="6" id="usuario_perfiles" >
 							<h:outputText value="SA"/>

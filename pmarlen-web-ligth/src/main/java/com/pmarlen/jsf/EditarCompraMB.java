@@ -101,7 +101,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		
-		getClientesList();
+		//getClientesList();
 		onClienteListChange();
 		
 		getFormaDePagoList();

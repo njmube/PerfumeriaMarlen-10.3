@@ -137,7 +137,7 @@ public class EditarPedidoVentaMB{
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		
-		getClientesList();
+		//getClientesList();
 		onClienteListChange();
 		
 		getFormaDePagoList();
@@ -431,30 +431,27 @@ public class EditarPedidoVentaMB{
 	}
 	
 	ArrayList<ClienteQuickView> clientes;
-	ArrayList<SelectItem> clientesList;
+//	ArrayList<SelectItem> clientesList;
 	Cliente clienteSeleccionado;
 
 	public ArrayList<ClienteQuickView> getClientes() {
-		if(clientes == null){
-			try {
-				clientes = ClienteDAO.getInstance().findAll();
-			}catch(DAOException de){
-				logger.severe(de.getMessage());
-				clientes = new ArrayList<ClienteQuickView>();
-			}
+		try {
+			clientes = ClienteDAO.getInstance().findAll();
+		}catch(DAOException de){
+			logger.severe(de.getMessage());
+			clientes = new ArrayList<ClienteQuickView>();
 		}
 		return clientes;
 	}
-	
-	
-	public List<SelectItem> getClientesList() {
-		if(clientesList == null){
-			clientesList = new ArrayList<SelectItem>();
-			clientesList.add(new SelectItem(0,"--SELECCIONE--"));
-			
-		}
-		return clientesList;
-	}
+		
+//	public List<SelectItem> getClientesList() {
+//		if(clientesList == null){
+//			clientesList = new ArrayList<SelectItem>();
+//			clientesList.add(new SelectItem(0,"--SELECCIONE--"));
+//			
+//		}
+//		return clientesList;
+//	}
 
 	public int getCantidadAgregarCodigo() {
 		return cantidadAgregarCodigo;
@@ -556,6 +553,7 @@ public class EditarPedidoVentaMB{
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
 				entradaSalida.setClienteId(c.getId());
+				entradaSalida.setNumDeCuenta(c.getNumCuenta());
 				clienteSeleccionado = c;
 				hayCambios = true;
 				break;

@@ -26,6 +26,7 @@
 	<parameter name="pedidoVentaEstado" class="java.lang.String"/>
 	<parameter name="comentarios" class="java.lang.String"/>
 	<parameter name="condiciones" class="java.lang.String"/>
+	<parameter name="nombreEstab" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from orders where orderid < 10255]]>
 	</queryString>
@@ -72,14 +73,14 @@
 				<textFieldExpression><![CDATA["DIRECCI\u00D3N"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="78" y="105" width="78" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="0" y="105" width="78" height="9" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement verticalAlignment="Top">
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CLIENTE"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="78" y="113" width="192" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="0" y="113" width="192" height="9" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
@@ -219,18 +220,18 @@
 				<textFieldExpression><![CDATA[$P{condiciones}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="105" width="66" height="9" uuid="aef299c1-5d9b-4b36-81eb-bef6a0d4ccf2"/>
+				<reportElement x="192" y="105" width="110" height="9" uuid="aef299c1-5d9b-4b36-81eb-bef6a0d4ccf2"/>
 				<textElement verticalAlignment="Top">
 					<font size="6" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["R.F.C."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NOMBRE ESTABLECIMIENTO"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="113" width="66" height="9" uuid="f18054e4-ade4-4b9c-a3e9-eb2230c58691"/>
+				<reportElement x="192" y="113" width="195" height="9" uuid="f18054e4-ade4-4b9c-a3e9-eb2230c58691"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{rfc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{nombreEstab}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

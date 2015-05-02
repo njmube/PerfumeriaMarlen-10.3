@@ -115,6 +115,7 @@ public class GeneradorImpresionPedidoVenta {
 			parameters.put("fechaHoraImpr",sdf_cdf.format(new Date()));
 						
             parameters.put("cliente",clienteVenta.getRazonSocial());
+			parameters.put("nombreEstab",clienteVenta.getNombreEstablecimiento());
             parameters.put("rfc",clienteVenta.getRfc());
 			String direccionValue = null;
 			direccionValue = clienteVenta.getDireccionFacturacion();

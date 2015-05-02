@@ -167,6 +167,10 @@
 									<h:graphicImage value="/images/nota_sola.png" title="PDF NOTA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id}"/>
 								</h:outputLink>
 								<p:spacer width="10"/>
+								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}_paraImprimir.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_sola.png" title="PDF NOTA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id} EN HOJA MEMBRETADA"/>
+								</h:outputLink>
+								<p:spacer width="10"/>
 								<h:outputLink value="#{request.contextPath}/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarPedidoVentaMB.pedidoVenta.id}.pdf" target="_blank">
 									<h:graphicImage value="/images/nota_interna.png" title="PDF NOTA DE VENTA ##{editarPedidoVentaMB.pedidoVenta.id} INTERNA P/ALMACÉN"/>
 								</h:outputLink>
@@ -298,8 +302,8 @@
 								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
 
-							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.razonSocial}" filterMatchMode="contains">
-								<h:outputText value="#{cliente.razonSocial}" />
+							<p:column headerText="NOMBRE ESTAB. :" filterBy="#{cliente.nombreEstablecimiento}" filterMatchMode="contains">
+								<h:outputText value="#{cliente.nombreEstablecimiento}" />
 							</p:column>
 
 							<p:column headerText="R.F.C. :" filterBy="#{cliente.rfc}" filterMatchMode="contains">

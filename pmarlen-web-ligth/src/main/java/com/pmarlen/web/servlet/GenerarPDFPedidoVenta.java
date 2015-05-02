@@ -68,7 +68,7 @@ public class GenerarPDFPedidoVenta extends HttpServlet {
 			if(paraImprimirIndex > pedidoIdIndex) {
 				pedidoId = requestURI.substring(pedidoIdIndex,paraImprimirIndex);
 				pedidoVentaId = Integer.parseInt(pedidoId);
-				fullPrint     = false;				
+				fullPrint     = false;
 			} else if(pdfIndex > pedidoIdIndex) {
 				pedidoId = requestURI.substring(pedidoIdIndex,pdfIndex);
 				pedidoVentaId = Integer.parseInt(pedidoId);

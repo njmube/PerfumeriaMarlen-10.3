@@ -5,6 +5,8 @@ import com.pmarlen.backend.dao.DAOException;
 import com.pmarlen.backend.dao.UsuarioDAO;
 import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.quickviews.UsuarioQuickView;
+import com.pmarlen.model.Constants;
+import com.pmarlen.web.security.managedbean.EmailChecker;
 import com.pmarlen.web.security.managedbean.SessionUserMB;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class UsuarioMB  {
 	Integer viewRows;
 	UsuarioQuickView selectedEntity;
 	String dialogTitle;
+	boolean checkSameEmailPassword;
 	
 	@PostConstruct
     public void init() {
@@ -73,15 +76,24 @@ public class UsuarioMB  {
 		logger.info("->UsuarioMB setSelectedUsuario.email="+selectedUsuario.getEmail());
 		dialogTitle ="EDITAR USUARIO:"+selectedUsuario.getEmail();
 		this.selectedEntity = selectedUsuario;
+		checkSameEmailPassword=false;
+	}
+
+	public boolean isCheckSameEmailPassword() {
+		return checkSameEmailPassword;
+	}
+	
+	public void checkPassword(){
+		checkSameEmailPassword = EmailChecker.isSameEmailPassword(this.selectedEntity.getEmail(), this.selectedEntity.getPassword());
 	}
 	
 	public void save(){
 		logger.info("->UsuarioMB: save selectedEntity:email:"+selectedEntity.getEmail());
 		
 		try{
-//			if(selectedEntity.getTelefonos().contains("0000")){
-//				throw new Exception("Telephone 0000 not allowed.");
-//			}
+			
+			selectedEntity.setPassword(Constants.getMD5Encrypted(selectedEntity.getPassword()));
+			
 			int u=-1;			
 			if(selectedEntity.getEmail()==null){
 				logger.info("->UsuarioMB:insert");

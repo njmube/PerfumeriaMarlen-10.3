@@ -35,9 +35,15 @@
 						<p:panelGrid columns="1" columnClasses="centerAlign" >							
 							<p:commandButton actionListener="#{pedidosVentaMB.editar(pv.id)}" value="#{pv.id}" onsuccess="edit();"/>
 							<h:panelGroup>
+								
 								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}.pdf" target="_blank">
 									<h:graphicImage value="/images/nota_16x16.png" title="PDF NOTA DE VENTA ##{pv.id}"/>
 								</h:outputLink>
+								<p:spacer width="5"/>
+								<h:outputLink id="pdfLinkNoImages" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{pv.id}_paraImprimir.pdf" target="_blank">
+									<h:graphicImage value="/images/nota_16x16.png" title="PDF NOTA DE VENTA ##{pv.id} PARA IMPRIMIR HOJAS MEMBRETADAS"/>
+								</h:outputLink>
+								
 							</h:panelGroup>
 						</p:panelGrid>
 					</p:column>
