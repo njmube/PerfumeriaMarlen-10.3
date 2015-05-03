@@ -347,6 +347,7 @@ public class UsuarioDAO {
 				psUP.setString(2, rol);
 				psUP.executeUpdate();
 			}
+			psUP.close();
 			conn.commit();
 		}catch(SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
@@ -406,6 +407,7 @@ public class UsuarioDAO {
 				psUP.setString(2, rol);
 				psUP.executeUpdate();
 			}
+			psUP.close();
 			
 			conn.commit();
 		}catch(SQLException ex) {

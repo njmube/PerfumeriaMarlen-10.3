@@ -82,6 +82,7 @@ public class EditarPedidoVentaMB{
 	@ManagedProperty(value = "#{sessionUserMB}")
 	protected SessionUserMB sessionUserMB;
 	protected int ultimoESId=0;
+	protected int digifactWSState=0;
 	
 	public void setSessionUserMB(SessionUserMB sessionUserMB) {
 		this.sessionUserMB = sessionUserMB;
@@ -107,6 +108,7 @@ public class EditarPedidoVentaMB{
 		tablaExpandida = false;
 		tableDraggableEnabled = false;
 		ultimoESId=0;
+		digifactWSState=0;
 		logger.info("OK init");
 	}
 
@@ -136,6 +138,7 @@ public class EditarPedidoVentaMB{
 		tipoAlmacen = Constants.ALMACEN_PRINCIPAL;
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
+		digifactWSState=0;
 		
 		//getClientesList();
 		onClienteListChange();
@@ -955,25 +958,36 @@ public class EditarPedidoVentaMB{
 		return tiempoTrasncurridoInvocarCFD;
 	}
 	
-	protected void generaCFDRealThread(){
+	
+	public void verifyDigifactWSState(){
+		logger.info("--->> digifactWSState="+digifactWSState);
+	}
+
+	protected void generaCFDSimulationThread(){
 		try{		
-			
+			digifactWSState = 1;
 			Cliente  c = ClienteDAO.getInstance().findBy(new Cliente(entradaSalida.getClienteId()));
 			Sucursal s = SucursalDAO.getInstance().findBy(new Sucursal(1));
 			tWS = System.currentTimeMillis();
 			logger.info(" invocando DAO para WS");
-			
-			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(entradaSalida,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
+			int st=5 + (int)(Math.random()*5);
+			for (int k=0;k<st;k++){
+				logger.info("---->>>["+k+"]");
+				Thread.sleep(1000L);
+				digifactWSState = 2;
+			}
+			digifactWSState=3;
 			logger.info("OK DAO y WS Digifact, invodocado");
 			
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			digifactWSState=4;
 		} finally{
 			logger.info("--->> fin Thread, actualizarEstadoPorResultadoWS=false");
 			actualizarEstadoPorResultadoWS = false;
 		}
 	}
-	
+
 	public void updateEstadoCFD(){
 		tiempoTrasncurridoInvocarCFD = (int)(( System.currentTimeMillis()/1000)-tWS);		
 		logger.info("->tiempoTrasncurridoInvocarCFD="+tiempoTrasncurridoInvocarCFD+", actualizarEstadoPorResultadoWS:"+actualizarEstadoPorResultadoWS+", pedidoVenta.getCfdId()="+entradaSalida.getCfdId());
@@ -981,18 +995,47 @@ public class EditarPedidoVentaMB{
 	
 	public void generaCFDReal(){
 		try{			
+			digifactWSState=1;
 			logger.info("pedidoVenta.id:"+entradaSalida.getId());
 			actualizarEstadoPorResultadoWS = true;
 			tiempoTrasncurridoInvocarCFD=0;
-			new Thread(){
-				@Override
-				public void run() {
-					generaCFDRealThread();
-				}
-			}.start();
+			
+			Cliente  c = ClienteDAO.getInstance().findBy(new Cliente(entradaSalida.getClienteId()));
+			Sucursal s = SucursalDAO.getInstance().findBy(new Sucursal(1));
+			tWS = System.currentTimeMillis();
+			logger.info(" invocando DAO para WS, estaod="+entradaSalida.getEstadoId());
+			digifactWSState=2;
+			EntradaSalidaDAO.getInstance().invocarInicioWSCFDI(entradaSalida,entityList,c,sessionUserMB.getUsuarioAuthenticated(),s);			
+			logger.info("OK DAO y WS Digifact, invodocado: estado="+entradaSalida.getEstadoId());
 			
 			FacesContext context = FacesContext.getCurrentInstance();         
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GENERAR C.F.D.",  "SE INVOCO EL WS DIGIFACT, ESPERE UNOS 5 A 60 SEGUNDOSPOR SU RESULTADO.") );			
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GENERAR C.F.D.",  "SE GENERÓ EL C.F.D.I.") );
+			digifactWSState=3;
+			
+			reset();
+			
+		} catch(Exception e){
+			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GENERAR C.F.D.",  "HUBO UN ERROR AL INVOCAR WS.") );
+			digifactWSState=4;
+		}
+	}
+
+	public int getDigifactWSState() {
+		return digifactWSState;
+	}
+	
+	public void generaCFDSimalation(){
+		try{			
+			logger.info("pedidoVenta.id:"+entradaSalida.getId());
+			actualizarEstadoPorResultadoWS = true;
+			tiempoTrasncurridoInvocarCFD=0;
+			
+			generaCFDSimulationThread();
+			
+			FacesContext context = FacesContext.getCurrentInstance();         
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GENERAR C.F.D.",  "SE GENRÓ EL C.F.D.I..") );			
 			
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "->verificar: Exception", e);

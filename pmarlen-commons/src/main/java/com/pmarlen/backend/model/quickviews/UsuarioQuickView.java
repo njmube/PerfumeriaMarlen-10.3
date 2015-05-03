@@ -199,15 +199,20 @@ public class UsuarioQuickView extends Usuario{
 		
 		if(inRoleRoot){
 			rolesList.add(Constants.PERFIL_ROOT);
-		} else if(inRoleAdmin){
+		} 
+		if(inRoleAdmin){
 			rolesList.add(Constants.PERFIL_ADMIN);
-		} else if(inRoleFinances){
+		} 
+		if(inRoleFinances){
 			rolesList.add(Constants.PERFIL_FINANCES);			
-		} else if(inRolePMarlenUser){
+		} 
+		if(inRolePMarlenUser){
 			rolesList.add(Constants.PERFIL_PMARLENUSER);
-		} else if(inRoleSales){
+		} 
+		if(inRoleSales){
 			rolesList.add(Constants.PERFIL_SALES);
-		} else if(inRoleStock){
+		} 
+		if(inRoleStock){
 			rolesList.add(Constants.PERFIL_STOCK);
 		}
 		

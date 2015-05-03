@@ -60,7 +60,7 @@
 				
 					
 					<p:menubar>
-						<p:submenu label="OPERACI&Oacute;N" icon="ui-icon-gear">
+						<p:submenu label="OPERACI&Oacute;N" icon="ui-icon-gear" rendered="#{sessionUserMB.usuarioAuthenticated.habilitado}">
 							
 							<p:submenu label="VENTAS" icon="ui-icon-contact">
 								<p:menuitem value="NUEVO" url="/pages/pedidoVenta.jsf" icon="ui-icon-cart"/>
@@ -99,7 +99,7 @@
 
 						</p:submenu>
 
-						<p:submenu label="ADMINISTRACI&Oacute;N" icon="ui-icon-suitcase" >
+						<p:submenu label="ADMINISTRACI&Oacute;N" icon="ui-icon-suitcase"  rendered="#{sessionUserMB.usuarioAuthenticated.habilitado}">
 							
 							<p:submenu label="CAT&Aacute;LOGOS" icon="ui-icon-newwin">
 								<p:menuitem value="PRODUCTOS" url="/pages/producto.jsf" icon="ui-icon-cart"/>						
@@ -124,7 +124,7 @@
 							
 						</p:submenu>
 
-						<p:submenu label="CONTROL" icon="ui-icon-locked" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
+						<p:submenu label="CONTROL" icon="ui-icon-locked" rendered="#{sessionUserMB.usuarioAuthenticated.habilitado and sessionUserMB.usuarioAuthenticated.playsAsAdmin}">
 							<p:menuitem value="SESIONES ACTIVAS" url="/pages/sesionesActivas.jsf" icon="ui-icon-clock" ></p:menuitem>
 							<p:menuitem value="CONFIGURACIONES" url="/pages/pendiente.jsf" icon="ui-icon-wrench"  ></p:menuitem>
 							<p:menuitem value="REINICIAR SERVIDOR" url="/pages/pendiente.jsf" icon="ui-icon-power" ></p:menuitem>
@@ -134,9 +134,9 @@
 
 						<f:facet name="options">
 							<p:menuButton value="#{sessionUserMB.usuarioAuthenticated.nombreCompleto}" >
-								<p:menuitem value="AYUDA" url="/pages/pendiente.jsf" icon="ui-icon-help"/>
-								<p:menuitem value="INFORMACI&Oacute;N USUARIO" url="/pages/informacionUsuario.jsf" icon="ui-icon-contact" />
-								<p:menuitem value="WEB-MAIL" url="/pages/pendiente.jsf" icon="ui-icon-mail-closed" />
+								<p:menuitem value="AYUDA" url="/pages/pendiente.jsf" icon="ui-icon-help"  rendered="#{sessionUserMB.usuarioAuthenticated.habilitado}"/>
+								<p:menuitem value="INFORMACI&Oacute;N USUARIO" url="/pages/informacionUsuario.jsf" icon="ui-icon-contact"  rendered="#{sessionUserMB.usuarioAuthenticated.habilitado}"/>
+								<p:menuitem value="WEB-MAIL" url="/pages/pendiente.jsf" icon="ui-icon-mail-closed"  rendered="#{sessionUserMB.usuarioAuthenticated.habilitado}"/>
 								<p:menuitem value="SALIR" url="/logout" icon="ui-icon-extlink" />
 							</p:menuButton>
 						</f:facet>

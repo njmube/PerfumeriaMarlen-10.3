@@ -1,5 +1,6 @@
 package com.pmarlen.rest.servlet;
 
+import com.pmarlen.web.security.managedbean.EmailChecker;
 import com.tracktopell.jdbc.WEBDataSourceFacade;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class ContextAndSessionListener implements ServletContextListener, HttpSe
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 		logger.info("================++++++++++++++++++++++++++++++++++++++=============>>contextInitialized");
-        WEBDataSourceFacade.registerStrategy();		
+        WEBDataSourceFacade.registerStrategy();	
     }
 
     @Override

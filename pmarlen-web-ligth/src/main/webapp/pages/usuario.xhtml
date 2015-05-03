@@ -150,7 +150,7 @@
 		</h:form>
 
 		<h:form id="form2">
-			<p:dialog header="#{usuarioMB.dialogTitle}" widgetVar="dlg1" modal="true" width="450" height="250" closable="false" resizable="true">
+			<p:dialog header="#{usuarioMB.dialogTitle}" widgetVar="dlg1" modal="true" width="480" height="290" closable="false" resizable="true">
 				<h:panelGrid columns="1" cellpadding="5" id="dlg1Panel1" width="100%">
 
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
@@ -161,10 +161,9 @@
 						<h:outputText id="usuario_email_o" value="#{usuarioMB.selectedEntity.email}" rendered="#{not empty usuarioMB.selectedEntity.email}"/>
 						<h:inputText  id="usuario_email"   value="#{usuarioMB.selectedEntity.email}"  required="true" rendered="#{empty usuarioMB.selectedEntity.email}"/>
 						<p:message   for="usuario_email"  showDetail="true"/>
-						
-						
+												
 						<h:outputLabel for="usuario_nombreCompleto" value="NOMBRE:" style="font-weight:bold"/>
-						<p:inputText id="usuario_nombreCompleto" value="#{usuarioMB.selectedEntity.nombreCompleto}" required="true" label="NOMBRE" size="25">
+						<p:inputText id="usuario_nombreCompleto" value="#{usuarioMB.selectedEntity.nombreCompleto}" required="true" label="NOMBRE" size="35">
 							<f:validateLength minimum="4" maximum="64" />	
 						</p:inputText>
 						<p:message for="usuario_nombreCompleto" />
@@ -174,9 +173,18 @@
 						<p:message   for="usuario_habilitado"  showDetail="true"/>
 						
 						<h:outputLabel value="CONTRASEÑA:" style="font-weight:bold" />
-						<h:panelGroup>
-							<p:password id="usuario_password" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" match="usuario_password_confirm" redisplay="true"/>
-							<p:commandButton icon="ui-icon-mail-closed" immediate="true" actionListener="#{usuarioMB.checkPassword}" title="CHECAR CON SERVIDOR DE CORREO PARA VERIFICAR SI ES LA MISMA CONTRASEÑA"/>
+						<h:panelGroup id="password_panelgroup">
+							<p:password id="usuario_password" value="#{usuarioMB.selectedEntity.password}" size="15" maxlength="32" redisplay="true"/>
+							<p:spacer width="10"/>
+							<p:commandButton	icon="ui-icon-mail-closed" 
+												immediate="false" update="password_panelgroup" process="@form"
+												actionListener="#{usuarioMB.checkPassword}" 
+												title="CHECAR CON SERVIDOR DE CORREO PARA VERIFICAR SI ES LA MISMA CONTRASEÑA" />
+							<p:spacer width="10"/>
+							<h:graphicImage value="/images/notpassed.png" title="ERROR, NO ES EL MISMO PASSWORD QUE EL SISTEMA DE CORREO" 
+											rendered="#{not empty usuarioMB.checkSameEmailPasswordState and usuarioMB.checkSameEmailPasswordState eq 1}"/>
+							<h:graphicImage value="/images/passed.png"    title="OK, ES EL MISMO PASSWORD QUE EL SISTEMA DE CORREO" 
+											rendered="#{not empty usuarioMB.checkSameEmailPasswordState and usuarioMB.checkSameEmailPasswordState eq 2}"/>
 						</h:panelGroup>
 						<p:message   for="usuario_password"  showDetail="true"/>						
 						
