@@ -94,22 +94,22 @@
 		<!-- JDBC MySQL -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-dbcp</artifactId>
-			<scope>provided</scope>
+			<artifactId>tomcat-dbcp</artifactId>			
+			<scope>compile</scope>
 			<version>7.0.26</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<scope>provided</scope>
+			<scope>compile</scope>
 			<version>7.0.26</version>
 		</dependency>		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.34</version>			
-			<scope>provided</scope>
-		</dependency>		
+			<scope>compile</scope>
+		</dependency>	
 		<!-- EL
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
