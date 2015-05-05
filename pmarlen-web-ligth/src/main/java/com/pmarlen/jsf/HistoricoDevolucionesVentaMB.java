@@ -67,12 +67,11 @@ public class HistoricoDevolucionesVentaMB  {
 		}		
 		return devoluciones;
 	}
-	
-	public String editarDevolucionAction(int devolucionId){
-		logger.config("->editarDevolucionAction:devolucionId="+devolucionId);
-		return editarDevolucionMB.editar(devolucionId);
+	public void editar(int devolucionId){
+		logger.config("->editar:devolucionId="+devolucionId);
+		editarDevolucionMB.editar(devolucionId);
 	}
-	
+
 	public int getSizeList(){
 		logger.fine("->getSizeList()");
 		return getDevoluciones().size();

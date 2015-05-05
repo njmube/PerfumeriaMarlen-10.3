@@ -147,6 +147,7 @@
 								<p:commandButton	value="RENGLONES FIJOS" actionListener="#{editarDevolucionMB.desactivarMover}" process=":form3" update=":form3:panel3" 
 													rendered="#{editarDevolucionMB.tableDraggableEnabled}"  oncomplete="updateComponentsOnWindowResize();" 
 													title="FIJA LOS RENGLONES Y PERMITE PODER ELIMINARLOS" disabled="#{not editarDevolucionMB.verificable and not editarDevolucionMB.surtible}"/>
+								<!--
 								<p:spacer width="10" rendered="false"/>
 								
 								<h:outputLink id="pdfLink" value="#{request.contextPath}/docs/notas/Nota_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" target="_blank" rendered="false">
@@ -162,7 +163,7 @@
 								<p:spacer width="10"/>
 								<p:button href="/docs/notas/Nota_interna_PerfumeriaMarlen_No_#{editarDevolucionMB.devolucion.id}.pdf" 
 										  target="_blank" icon="ui-icon-document"  title="PDF NOTA INTERNA (PARA LAMACÉN) DE VENTA ##{pv.id}" />
-								
+								-->
 							</f:facet>
 
 							<p:column headerText="." width="3%">

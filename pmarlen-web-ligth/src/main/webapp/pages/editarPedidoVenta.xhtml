@@ -450,11 +450,10 @@
 							<p:confirm header="SURTIRSE" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE ?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:panelGroup>
-							<p:commandButton id="generarCFDbtn" value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.facturable)}"  
-											 disabled="#{editarPedidoVentaMB.actualizarEstadoPorResultadoWS}"
+							<p:commandButton id="generarCFDbtn" value="GENERAR C.F.D. FACTURA" icon="ui-icon-contact" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.facturable)}"											 
 											 actionListener="#{editarPedidoVentaMB.generaCFDReal}" process="@all" update="@all" >
 								<p:confirm header="GENERAR C.F.D." message="¿ SEGURO QUE TODO ESTA LISTO PARA FACTURAR ?" icon="ui-icon-alert" />
-							</p:commandButton>		
+							</p:commandButton>
 						</h:panelGroup>
 						
 						<p:commandButton value="CANCELAR PEDIDO" icon="ui-icon-close" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin  and (not editarPedidoVentaMB.hayCambios and editarPedidoVentaMB.cancelable)}" 
