@@ -48,7 +48,11 @@ public class Main {
 		 }
 		 */
 		logger.info("==========================================================>>>");
+		
+		MemoryDAO.loadProperties();		
+		
 		SyncDTOPackage paqueteSinc = MemoryDAO.getPaqueteSinc();
+		
 		logger.info("<<<==========================================================");
 
 		try{

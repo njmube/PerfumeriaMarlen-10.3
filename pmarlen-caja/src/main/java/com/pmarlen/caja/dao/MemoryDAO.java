@@ -10,12 +10,15 @@ import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
 import com.pmarlen.rest.dto.P;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -26,14 +29,48 @@ import java.util.zip.ZipFile;
  * @author alfredo
  */
 public class MemoryDAO {
-
+	static Properties properties = new Properties();
+	
+	static {
+		properties.put("host","localhost");
+		properties.put("port","8070");
+		properties.put("context","/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip");
+	}
+	
 	static SyncDTOPackage paqueteSinc;
 	static Logger logger = Logger.getLogger(MemoryDAO.class.getName());
 	static String fileName = "./fileModel.zip";
-	static String hostDownload = "localhost:8070"; //"pmarlencloudsrv2.dyndns.org:8070";
-	static String urlDownload = "http://"+hostDownload+"/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
+	//static String hostDownload = "localhost:8070"; //"pmarlencloudsrv2.dyndns.org:8070";
+	static String urlDownload = null;//"http://"+hostDownload+"/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
 	
 	static HashMap<String,P> productosParaBuscar;
+	static String propertiesFileNAme="./system.properties";
+	
+	public static void loadProperties() {
+		
+		File fileProperties = new File(propertiesFileNAme);
+		boolean exsistFile = false;
+		Properties propF1=null;
+		if(fileProperties.canRead()){
+			try {
+				logger.info("->reading File Properties.");
+				propF1.load(new FileInputStream(fileProperties));
+				logger.info("->ok, writing.");
+				exsistFile = true;
+			}catch(IOException ioe){				
+				logger.log(Level.WARNING, "Can`t read File for properties", ioe);
+			}
+		}
+		if(!exsistFile) {
+			try {
+				logger.info("->wrinting File Properties.");
+				properties.store(new FileOutputStream(propertiesFileNAme), fileName);
+				logger.info("->ok, writing.");
+			}catch(IOException ioe){
+				logger.log(Level.WARNING, "Can`t create File for properties", ioe);
+			}
+		}	
+	}	
 	
 	public static void setPaqueteSinc(SyncDTOPackage paqueteSinc) {
 		MemoryDAO.paqueteSinc = paqueteSinc;
@@ -63,7 +100,13 @@ public class MemoryDAO {
 
 		try {
 			logger.info(">> Downloading");
-			url = new URL("http://pmarlencloudsrv2.dyndns.org:8070/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip");
+			StringBuilder sbURL = new StringBuilder();
+			sbURL.append("http://").
+					append(properties.get("host")).
+					append(":").
+					append(properties.get("port")).
+					append(properties.get("context"));
+			url = new URL(sbURL.toString());
 			InputStream is = url.openStream();
 			FileOutputStream fos = new FileOutputStream(fileName);
 

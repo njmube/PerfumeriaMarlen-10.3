@@ -380,7 +380,7 @@ public class GeneradorImpresionPedidoVenta {
             logger.info("Ok, jrxml loaded:"+pedidoVenta.getAutorizaDescuento()+"?,"+pedidoVenta.getPorcentajeDescuentoCalculado()+"%+"+pedidoVenta.getPorcentajeDescuentoExtra()+"%");
             int n;
             EntradaSalidaFooter esf=new EntradaSalidaFooter();
-			esf.calculaTotalesDesde(pedidoVenta, esdList);
+			esf.calculaParaFacturaTotalesDesde(pedidoVenta, esdList);
 			
             InputStream isXMLCFD = new ByteArrayInputStream(cfdFactura.getContenidoOriginalXml());
 			HashMap cfdMap = ParseCFDXML.parseCFDXML(isXMLCFD);
@@ -480,11 +480,14 @@ public class GeneradorImpresionPedidoVenta {
             parameters.put("metodoDePago",pedidoVenta.getMetodoDePagoDescripcion().toUpperCase());
             parameters.put("cadenaOriginalSAT"  ,cfdMap.get("cadenaOriginal"));            
             parameters.put("selloDigitalEmisor" ,cfdMap.get("sello"));
-            parameters.put("selloDigitalSAT"    ,cfdMap.get("selloSAT"));
-			logger.info("->descuento:autorizaDescuento ?"+pedidoVenta.getAutorizaDescuento()+", "+pedidoVenta.getPorcentajeDescuentoCalculado()+"% + "+pedidoVenta.getPorcentajeDescuentoExtra());
+            parameters.put("selloDigitalSAT"    ,cfdMap.get("selloSAT"));			
             parameters.put("subtotal" , df.format(esf.getSubTotalNoGrabado()));
-            parameters.put("iva" ,df.format(esf.getImporteIVA()));
-            parameters.put("descuento" ,df.format(esf.getImporteDescuentoAplicado()));
+			if(esf.getDescuentoAplicado()>0){
+				parameters.put("descuento" ,df.format(esf.getImporteDescuentoAplicado()));
+			}else{
+				parameters.put("descuento" ,null);
+			}
+			parameters.put("iva" ,df.format(esf.getImporteIVA()));
             
             parameters.put("total" ,df.format(esf.getTotal()));  
             

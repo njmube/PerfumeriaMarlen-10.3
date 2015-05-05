@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDesign1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="27" uuid="11a92365-c4f5-4806-b1a1-ad327ebfdc78">
-	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="652"/>
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="1815"/>
+	<property name="ireport.y" value="1706"/>
 	<property name="ireport.callouts" value="##Sat Jul 21 10:43:27 CDT 2012"/>
 	<parameter name="codigoPedido" class="java.lang.Integer"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -573,7 +573,7 @@
 	<lastPageFooter>
 		<band height="130">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="491" y="2" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="495" y="2" width="60" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -581,7 +581,7 @@
 				<textFieldExpression><![CDATA[$P{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="491" y="24" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="495" y="13" width="60" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="7" isBold="false"/>
@@ -589,7 +589,7 @@
 				<textFieldExpression><![CDATA[$P{descuento}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="491" y="13" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="495" y="24" width="60" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -597,7 +597,7 @@
 				<textFieldExpression><![CDATA[$P{iva}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="491" y="35" width="65" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
+				<reportElement x="495" y="35" width="60" height="12" uuid="0520cc06-b769-4a56-a09c-26bfe0084802"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
@@ -612,30 +612,30 @@
 				<textFieldExpression><![CDATA[$P{importeLetra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="441" y="2" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="441" y="2" width="54" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["SUBTOTAL :"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="441" y="24" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0">
+				<reportElement x="441" y="13" width="54" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0">
 					<printWhenExpression><![CDATA[$P{descuento}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DESCUENTO :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-DESCUENTO :"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="441" y="13" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="441" y="24" width="54" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["I.V.A. :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" + I.V.A. :"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="441" y="35" width="50" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
+				<reportElement x="441" y="35" width="54" height="12" uuid="6ed43173-89c5-4942-b022-deaf25bafde0"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
