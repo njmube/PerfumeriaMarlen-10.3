@@ -4,9 +4,11 @@
  */
 package com.pmarlen.caja.view;
 
+import java.awt.Font;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -31,8 +33,6 @@ public class DialogLogin extends javax.swing.JDialog {
 		
 		return instance;
 	}
-	
-	
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -49,10 +49,10 @@ public class DialogLogin extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        labelEmail = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        labelContrasena = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
         jPanel7 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -76,22 +76,22 @@ public class DialogLogin extends javax.swing.JDialog {
 
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Correo Electrónico :");
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel4.add(jLabel2);
+        labelEmail.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelEmail.setText("CORREO ELECTRÓNICO :");
+        labelEmail.setPreferredSize(new java.awt.Dimension(290, 30));
+        jPanel4.add(labelEmail);
 
-        email.setColumns(22);
+        email.setColumns(20);
         jPanel4.add(email);
 
         jPanel5.add(jPanel4);
 
         jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Contraseña :");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel6.add(jLabel3);
+        labelContrasena.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelContrasena.setText("CONTRASEÑA :");
+        labelContrasena.setPreferredSize(new java.awt.Dimension(290, 30));
+        jPanel6.add(labelContrasena);
 
         password.setColumns(10);
         jPanel6.add(password);
@@ -117,8 +117,6 @@ public class DialogLogin extends javax.swing.JDialog {
     private javax.swing.JButton aceptar;
     private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -127,6 +125,8 @@ public class DialogLogin extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel labelContrasena;
+    private javax.swing.JLabel labelEmail;
     private javax.swing.JPasswordField password;
     // End of variables declaration//GEN-END:variables
 
@@ -155,5 +155,25 @@ public class DialogLogin extends javax.swing.JDialog {
 	public JTextField getEmail() {
 		return email;
 	}
-	
+
+	public JLabel getLabelContrasena() {
+		return labelContrasena;
+	}
+
+	public JLabel getLabelEmail() {
+		return labelEmail;
+	}
+
+	@Override
+	public void setFont(Font f) {
+		super.setFont(f); //To change body of generated methods, choose Tools | Templates.
+		if(email != null) {
+			email.setFont(f);
+			password.setFont(f);
+			labelContrasena.setFont(f);
+			labelEmail.setFont(f);
+			aceptar.setFont(f);			
+		}
+	}
+		
 }

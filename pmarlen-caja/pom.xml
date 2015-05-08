@@ -19,7 +19,8 @@
 		<maven.build.timestamp.format>yyyy/MM/dd_HH:mm</maven.build.timestamp.format>
 		<maven_build_timestamp>${maven.build.timestamp}</maven_build_timestamp>
 		<staging.dir>${project.build.directory}/staging</staging.dir>		
-		<izpack-standalone.version>4.3.1</izpack-standalone.version>		
+		<izpack-standalone.version>4.3.1</izpack-standalone.version>
+		<finalJar.filename>PM-Caja-${project.parent.version}</finalJar.filename>		
 	</properties>
 	<build>
 		<plugins>
@@ -42,7 +43,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.perfumeriamarlen.xpresscashdrawer.Main</mainClass>
+							<mainClass>com.pmarlen.caja.Main</mainClass>
 							<classpathPrefix>dependency-jars/</classpathPrefix>
 						</manifest>
 					</archive>
@@ -150,7 +151,7 @@
             
 			<build>
                 
-				<finalName>${project.name}</finalName>
+				<finalName>${finalJar.filename}</finalName>
 				<plugins>
 										
 					<plugin>

@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 public class Main {
 
 	private static Logger logger = Logger.getLogger(Main.class.getName());
-	public static final String INTELBTH = "intelbth";
+	//public static final String INTELBTH = "intelbth";
 
 	/**
 	 * @param args the command line arguments
@@ -73,13 +73,15 @@ public class Main {
 
 			DialogLogin dialogLogin = DialogLogin.getInstance(framePrincipalControl.getFramePrincipal());
 			dialogLoginControl = DialogLoginControl.getInstance(dialogLogin);
-
+			framePrincipalControl.setFontBigest();
 			framePrincipalControl.estadoInicial();
 
 			logger.info("-------->> antes de login");
-
+			dialogLoginControl.setFontBigest();
+			dialogLoginControl.getDialogLogin().pack();
+			dialogLoginControl.getDialogLogin().setLocationRelativeTo(null);
 			dialogLoginControl.estadoInicial();
-
+			
 			if (!dialogLoginControl.isLoggedIn()) {
 				throw new IllegalAccessException("NO SE ACCESO ");
 			} else {

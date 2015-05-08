@@ -6,11 +6,10 @@ package com.pmarlen.caja.control;
 
 import com.pmarlen.backend.dao.DAOException;
 import com.pmarlen.backend.dao.EntradaSalidaDAO;
-import com.pmarlen.backend.dao.EntradaSalidaDetalleDAO;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.backend.model.FechaCellRender;
-import com.pmarlen.backend.model.ImporteCellRender;
+import com.pmarlen.caja.model.ImporteCellRender;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.caja.model.VentaTableModel;
 import com.pmarlen.caja.view.PanelVentas;

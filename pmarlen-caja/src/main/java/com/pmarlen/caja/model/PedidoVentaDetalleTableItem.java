@@ -31,7 +31,7 @@ public class PedidoVentaDetalleTableItem {
 	}
 	
 	public String getCodigo() {
-		return producto.getC();
+		return producto.getCb();
 	}
 
 	public String getShortDesc() {

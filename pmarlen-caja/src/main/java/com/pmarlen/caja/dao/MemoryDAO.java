@@ -32,9 +32,10 @@ public class MemoryDAO {
 	static Properties properties = new Properties();
 	
 	static {
-		properties.put("host","localhost");
+		properties.put("host","pmarlencloudsrv1.dyndns.org");
 		properties.put("port","8070");
 		properties.put("context","/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip");
+		properties.put("dropboxdir",System.getProperty("user.home")+"/DropBox/");
 	}
 	
 	static SyncDTOPackage paqueteSinc;
@@ -53,7 +54,8 @@ public class MemoryDAO {
 		Properties propF1=null;
 		if(fileProperties.canRead()){
 			try {
-				logger.info("->reading File Properties.");
+				logger.info("->reading File Properties:"+propertiesFileNAme);
+				propF1 = new Properties();
 				propF1.load(new FileInputStream(fileProperties));
 				logger.info("->ok, writing.");
 				exsistFile = true;
@@ -181,6 +183,10 @@ public class MemoryDAO {
 			logger.log(Level.SEVERE, null, ex);
 		}
 
+	}
+	
+	public static String getProperty(String p){
+		return properties.getProperty(p);
 	}
 
 	public static P fastSearchProducto(String codigoBuscar) {

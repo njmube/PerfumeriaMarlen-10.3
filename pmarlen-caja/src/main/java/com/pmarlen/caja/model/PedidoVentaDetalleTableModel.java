@@ -63,7 +63,7 @@ public class PedidoVentaDetalleTableModel implements TableModel{
 		if(columnIndex == 0)
 			return dvti.getCantidad();
 		else if(columnIndex == 1)
-			return dvti.getShortDesc();
+			return dvti.getProducto();
 		else if(columnIndex == 2)
 			return dvti.getPrecioVenta();
 		else if(columnIndex == 3)

@@ -4,6 +4,8 @@
  */
 package com.pmarlen.caja.view;
 
+import java.awt.Font;
+
 /**
  *
  * @author alfredo
@@ -30,6 +32,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         panelVenta = new PanelVenta();
         panelProductos = new PanelProductos();
         panelVentas = new PanelVentas();
+        statusPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         productosMenu = new javax.swing.JMenuItem();
@@ -62,6 +68,20 @@ public class FramePrincipal extends javax.swing.JFrame {
         panels.add(panelVentas, "panelVentas");
 
         getContentPane().add(panels, java.awt.BorderLayout.CENTER);
+
+        statusPanel.setPreferredSize(new java.awt.Dimension(42, 35));
+        statusPanel.setLayout(new java.awt.GridLayout(1, 3));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        statusPanel.add(jPanel1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        statusPanel.add(jPanel2);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        statusPanel.add(jPanel3);
+
+        getContentPane().add(statusPanel, java.awt.BorderLayout.SOUTH);
 
         archivoMenu.setText("Archivo");
 
@@ -115,7 +135,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(766, 470));
+        setSize(new java.awt.Dimension(1024, 790));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -158,6 +178,9 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu configMenu;
     private javax.swing.JMenuItem impresoraBTMenu;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem negocioConfigMenu;
     private javax.swing.JPanel panelProductos;
@@ -166,6 +189,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panels;
     private javax.swing.JMenuItem productosMenu;
     private javax.swing.JMenuItem salirMenu;
+    private javax.swing.JPanel statusPanel;
     private javax.swing.JMenuItem usuarioAdminMenu;
     private javax.swing.JMenuItem usuarioCajaMenu;
     private javax.swing.JMenuItem ventaActualMenu;
@@ -186,8 +210,8 @@ public class FramePrincipal extends javax.swing.JFrame {
 	/**
 	 * @return the panelVenta
 	 */
-	public javax.swing.JPanel getPanelVenta() {
-		return panelVenta;
+	public PanelVenta getPanelVenta() {
+		return (PanelVenta)panelVenta;
 	}
 
 	/**
@@ -307,5 +331,11 @@ public class FramePrincipal extends javax.swing.JFrame {
 	 */
 	public javax.swing.JMenu getConfigMenu() {
 		return configMenu;
+	}
+	
+	public void setFont(Font font){
+		panelVenta.setFont(font);
+		panelProductos.setFont(font);
+		panelVentas.setFont(font);
 	}
 }

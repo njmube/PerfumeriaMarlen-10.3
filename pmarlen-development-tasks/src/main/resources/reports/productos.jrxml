@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7f33680-6294-47ff-a56c-2f883407c9c3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="codigo_barras" class="java.lang.String"/>
+	<field name="producto_desc" class="java.lang.String"/>
+	<field name="codigo_barras_ean13" class="java.lang.String"/>
+	<field name="img" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20" uuid="2071ea0f-51f6-4b8c-8302-07fc1636d53b"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[PRODUCTOS PERFUMERIA MARLEN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="92" height="15" uuid="4fe788b8-021e-460b-b3c4-75e53374770a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="0" width="216" height="15" uuid="85d2a049-3408-4b5b-849d-90c4149b57e1"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[PRODUCTO / PRESENTACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="0" width="120" height="15" uuid="aac90d4d-ef07-4ec6-8f17-4efc9d74ab36"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[EAN128]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="0" width="107" height="15" uuid="9dd457bb-51d9-4cac-bab8-b3242989a2a2"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[EAN13]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="92" height="20" uuid="0b0a876a-f580-4d4a-9459-683d0fd76731"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo_barras}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="129" y="0" width="216" height="20" uuid="05c4cf4d-bb6d-4509-9e29-47b04e466233"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_desc}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="452" y="0" width="120" height="20" uuid="fe05c37c-49c2-4371-8c7a-d5baef17df49"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="EAN128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{codigo_barras}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="345" y="0" width="107" height="20" uuid="817e981e-bf11-463c-85c6-5fda769bbce0">
+					<printWhenExpression><![CDATA[$F{codigo_barras_ean13}!=null]]></printWhenExpression>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="EAN13" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{codigo_barras_ean13}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<image>
+				<reportElement x="103" y="2" width="16" height="16" uuid="23e25b0d-4563-4f1b-b584-ebd52c446550">
+					<printWhenExpression><![CDATA[$F{img} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{img}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

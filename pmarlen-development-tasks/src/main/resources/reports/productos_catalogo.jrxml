@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productos" language="groovy" columnCount="2" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="286" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7f33680-6294-47ff-a56c-2f883407c9c3">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="codigo_barras" class="java.lang.String"/>
+	<field name="producto_desc" class="java.lang.String"/>
+	<field name="codigo_barras_ean13" class="java.lang.String"/>
+	<field name="img" class="java.lang.String"/>
+	<field name="presentacion" class="java.lang.String"/>
+	<field name="precio" class="java.lang.String"/>
+	<field name="contenido" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20" uuid="2071ea0f-51f6-4b8c-8302-07fc1636d53b"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[PRODUCTOS PERFUMERIA MARLEN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="142" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="127" width="106" height="8" uuid="0b0a876a-f580-4d4a-9459-683d0fd76731"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo_barras}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="125" y="4" width="157" height="49" uuid="05c4cf4d-bb6d-4509-9e29-47b04e466233"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_desc}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="1" width="106" height="106" uuid="23e25b0d-4563-4f1b-b584-ebd52c446550">
+					<printWhenExpression><![CDATA[$F{img} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{img}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="125" y="53" width="157" height="30" uuid="d04eefb9-3ac9-45df-88db-4e8e242aa593"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{presentacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="125" y="83" width="157" height="13" uuid="6ed1666b-d1ab-49dc-8612-349dca03bde8"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contenido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="125" y="96" width="157" height="38" uuid="b8528f9c-1e24-4229-9353-5896758d93a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="5" y="109" width="116" height="15" uuid="e56ce60e-ba86-4bd2-8aa1-20d8c518fb52"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{codigo_barras}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

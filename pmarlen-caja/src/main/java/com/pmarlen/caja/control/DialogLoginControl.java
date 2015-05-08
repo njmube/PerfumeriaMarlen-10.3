@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.FontUIResource;
 
 /**
  *
@@ -41,6 +42,10 @@ public class DialogLoginControl implements ActionListener , FocusListener{
 		this.dialogLogin.getAceptar() .addActionListener(this);
 		this.dialogLogin.getPassword().addActionListener(this);
 	}
+
+	public DialogLogin getDialogLogin() {
+		return dialogLogin;
+	}
 	
 	public void estadoInicial(){
 		this.dialogLogin.setVisible(true);
@@ -57,9 +62,10 @@ public class DialogLoginControl implements ActionListener , FocusListener{
 	}
 	
 	private void aceptar_ActionPerformed(){
-		if(!validate()){
-			
-			JOptionPane.showMessageDialog(dialogLogin, "Complete los campos por favor", "Entrar", JOptionPane.WARNING_MESSAGE);
+		if(!validate()){			
+			javax.swing.UIManager.put("OptionPane.font", new FontUIResource(new java.awt.Font("Tahoma", 0, 24))); 			
+			javax.swing.UIManager.put("JOptionPane.font", new FontUIResource(new java.awt.Font("Tahoma", 0, 24))); 			
+			JOptionPane.showMessageDialog(dialogLogin, "Complete los campos por favor", "ENTRAR", JOptionPane.WARNING_MESSAGE);
 			dialogLogin.getEmail().requestFocus();
 			
 			return;
@@ -67,7 +73,9 @@ public class DialogLoginControl implements ActionListener , FocusListener{
 		
 		if(!autheticate()){
 			dialogLogin.getPassword().setText("");
-			JOptionPane.showMessageDialog(dialogLogin, "Correo/Contraseña incorrecta", "Entrar", JOptionPane.ERROR_MESSAGE);
+			javax.swing.UIManager.put("OptionPane.font", new FontUIResource(new java.awt.Font("Tahoma", 0, 24))); 			
+			javax.swing.UIManager.put("JOptionPane.font", new FontUIResource(new java.awt.Font("Tahoma", 0, 24))); 			
+			JOptionPane.showMessageDialog(dialogLogin, "Correo/Contraseña incorrecta", "ENTRAR", JOptionPane.ERROR_MESSAGE);
 			dialogLogin.getPassword().requestFocus();
 			intentos++;
 			if(intentos>=3){
@@ -77,7 +85,7 @@ public class DialogLoginControl implements ActionListener , FocusListener{
 		} else {
 			leggedIn = true;
 			
-			JOptionPane.showMessageDialog(dialogLogin, "¡ Bienvenido al Sistema "+logged.getNc()+" !", "Entrar", JOptionPane.INFORMATION_MESSAGE);									
+			JOptionPane.showMessageDialog(dialogLogin, "¡ BIENVENIDO "+logged.getNc().toUpperCase()+" !", "ENTRAR", JOptionPane.INFORMATION_MESSAGE);									
 			
 			dialogLogin.dispose();
 		}
@@ -126,5 +134,9 @@ public class DialogLoginControl implements ActionListener , FocusListener{
 		if(emailValue.trim().length()>2 && !emailValue.contains(DOMAIN_NAME)){
 			dialogLogin.getEmail().setText(emailValue+DOMAIN_NAME);
 		}
+	}
+	
+	public void setFontBigest() {
+		dialogLogin.setFont(new java.awt.Font("Tahoma", 0, 24));
 	}
 }

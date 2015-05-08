@@ -4,18 +4,27 @@
  */
 package com.pmarlen.caja.view;
 
+import com.pmarlen.caja.dao.MemoryDAO;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableModel;
+import com.pmarlen.rest.dto.P;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JSplitPane;
 
 /**
  *
  * @author alfredo
  */
 public class PanelVenta extends javax.swing.JPanel {
-
+	private static DecimalFormat df = new DecimalFormat("$ ###,###,##0.00");
+	private static String imagesDir = null;
 	/**
 	 * Creates new form PanelVenta
 	 */
@@ -35,17 +44,28 @@ public class PanelVenta extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         codigoBuscar = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        detalleVentaJTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        labelTotal = new javax.swing.JLabel();
         total = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         terminar = new javax.swing.JButton();
+        chechar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
+        splitPanel = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        detalleVentaJTable = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         imgProducto = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        labelNombre = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        labelPresentacion = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        labelContenido = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        labelPrecio = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -60,22 +80,13 @@ public class PanelVenta extends javax.swing.JPanel {
 
         add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 200));
-
-        detalleVentaJTable.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        detalleVentaJTable.setModel(new PedidoVentaDetalleTableModel());
-        detalleVentaJTable.setRowHeight(28);
-        jScrollPane1.setViewportView(detalleVentaJTable);
-
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
         jPanel3.setLayout(new java.awt.GridLayout(2, 1));
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Total :");
-        jPanel1.add(jLabel2);
+        labelTotal.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        labelTotal.setText("Total :");
+        jPanel1.add(labelTotal);
 
         total.setColumns(12);
         total.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -86,34 +97,113 @@ public class PanelVenta extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
 
-        terminar.setText("Terminar Venta [ F2 ]");
+        terminar.setText("TERMINAR VENTA [ F2 ]");
         jPanel4.add(terminar);
 
-        cancelar.setText("Cancelar [ F12 ]");
+        chechar.setText("CHECAR [ F3 ]");
+        jPanel4.add(chechar);
+
+        cancelar.setText("CANCELAR [ F12 ]");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
         jPanel4.add(cancelar);
 
         jPanel3.add(jPanel4);
 
         add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(180, 10));
-        jPanel5.add(imgProducto);
+        splitPanel.setDividerLocation(500);
+        splitPanel.setOneTouchExpandable(true);
 
-        add(jPanel5, java.awt.BorderLayout.LINE_END);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 200));
+
+        detalleVentaJTable.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        detalleVentaJTable.setModel(new com.pmarlen.caja.model.PedidoVentaDetalleTableModel());
+        detalleVentaJTable.setRowHeight(28);
+        jScrollPane1.setViewportView(detalleVentaJTable);
+
+        splitPanel.setLeftComponent(jScrollPane1);
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setPreferredSize(new java.awt.Dimension(180, 10));
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        imgProducto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imgProducto.setIcon(getDefaultProductoImageIcon());
+        jPanel5.add(imgProducto, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        labelNombre.setFont(new java.awt.Font("Lucida Grande", 0, 15)); // NOI18N
+        labelNombre.setText("NOMBRE PRODUCTO");
+        jPanel7.add(labelNombre);
+
+        jPanel6.add(jPanel7);
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        labelPresentacion.setFont(new java.awt.Font("Lucida Grande", 2, 13)); // NOI18N
+        labelPresentacion.setText("PRESENTACIÓN");
+        jPanel8.add(labelPresentacion);
+
+        jPanel6.add(jPanel8);
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        labelContenido.setText("CONTENIDO");
+        jPanel9.add(labelContenido);
+
+        jPanel6.add(jPanel9);
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+
+        labelPrecio.setFont(new java.awt.Font("Lucida Grande", 1, 48)); // NOI18N
+        labelPrecio.setText("$ PRECIO");
+        jPanel10.add(labelPrecio);
+
+        jPanel6.add(jPanel10);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.NORTH);
+
+        splitPanel.setRightComponent(jPanel5);
+
+        add(splitPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelar;
+    private javax.swing.JButton chechar;
     private javax.swing.JTextField codigoBuscar;
     private javax.swing.JTable detalleVentaJTable;
     private javax.swing.JLabel imgProducto;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelContenido;
+    private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelPrecio;
+    private javax.swing.JLabel labelPresentacion;
+    private javax.swing.JLabel labelTotal;
+    private javax.swing.JSplitPane splitPanel;
     private javax.swing.JButton terminar;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
@@ -164,6 +254,89 @@ public class PanelVenta extends javax.swing.JPanel {
 		} catch(Exception ioe){
 		}
 		return ii;
+	}
+
+	public JSplitPane getSplitPanel() {
+		return splitPanel;
+	}
+	
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font); //To change body of generated methods, choose Tools | Templates.
+		if(codigoBuscar!=null) {
+			codigoBuscar.setFont(font);
+			labelTotal.setFont(font);
+			total.setFont(font);
+			terminar.setFont(font);
+			chechar.setFont(font);
+			cancelar.setFont(font);
+			detalleVentaJTable.setFont(font);
+			detalleVentaJTable.setRowHeight(font.getSize()*2);
+		}
+	}
+	ImageIcon defaultProductoImageIcon = null;
+
+	public static String getImagesDir() {
+		if(imagesDir == null){
+			imagesDir = MemoryDAO.getProperty("dropboxdir");
+		}
+		return imagesDir;
+	}
+	
+	private ImageIcon getDefaultProductoImageIcon(){
+		if(defaultProductoImageIcon==null){
+			try{
+				//defaultProductoImageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/cardboard-box-icon-320x320_1.jpg")));
+				defaultProductoImageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/cardboard-box-icon-256x256_1.png")));
+			} catch(Exception e){
+				e.printStackTrace(System.err);
+			}
+		}
+		return defaultProductoImageIcon;	
+	}
+	
+	String imagePath = "/PM_MULTIMEDIO_MIN_JPG/";
+	
+	private ImageIcon getProductoImageIcon(P p){
+		System.err.println("=>getProductoImageIcon(" + p +")");
+		ImageIcon productoImageIcon = null;
+		File fileImage=null;
+		try{
+			//fileImage = new File(imagePath+"/MED_PRODUCTO_MULTIMEDIO_"+p.getCb()+"_1.jpg");
+			fileImage = new File(getImagesDir()+imagePath+"/MIN_PRODUCTO_MULTIMEDIO_"+p.getCb()+"_1.jpg");
+			if(fileImage.exists() && fileImage.canRead()) {
+				System.err.println("=>getProductoImageIcon: fileImage:" + fileImage);
+				productoImageIcon = new ImageIcon(ImageIO.read(new FileInputStream(fileImage)));
+			} else {
+				throw new Exception("Image not found for :"+p.getCb());				
+			}
+		} catch(Exception e){
+			e.printStackTrace(System.err);
+			productoImageIcon = getDefaultProductoImageIcon();
+		}
+		return productoImageIcon;	
+	}
+	
+	public void resetInfoForProducto(final P p){
+		System.err.println("=>resetInfoForProducto=" + p);
+		if(p!=null){
+			labelNombre.setText(p.getN());		
+			labelPresentacion.setText(p.getP());
+			labelContenido.setText(p.getC()+" "+p.getUm());
+			labelPrecio.setText(df.format(p.getA1p()));
+			new Thread(){
+				@Override
+				public void run() {
+					imgProducto.setIcon(getProductoImageIcon(p));
+				}
+			}.start();
+		} else {
+			labelNombre.setText("NOMBRE PRODUCTO");		
+			labelPresentacion.setText("PRESENTACIÓN");
+			labelContenido.setText("CONTENIDO");
+			labelPrecio.setText("$ PRECIO");
+			imgProducto.setIcon(getDefaultProductoImageIcon());
+		}
 	}
 
 }

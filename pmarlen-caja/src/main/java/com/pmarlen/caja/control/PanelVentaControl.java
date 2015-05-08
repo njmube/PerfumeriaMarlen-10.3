@@ -4,17 +4,14 @@
  */
 package com.pmarlen.caja.control;
 
-import com.pmarlen.backend.dao.DAOException;
-import com.pmarlen.backend.dao.EntradaSalidaDAO;
-import com.pmarlen.backend.dao.ProductoDAO;
 import com.pmarlen.backend.model.EntradaSalida;
 import com.pmarlen.backend.model.EntradaSalidaDetalle;
-import com.pmarlen.backend.model.ImporteCellRender;
-import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
+import com.pmarlen.caja.model.ImporteCellRender;
 import com.pmarlen.caja.dao.MemoryDAO;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableItem;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableModel;
 import com.pmarlen.caja.view.PanelVenta;
+import com.pmarlen.caja.view.ProductoCellRender;
 import com.pmarlen.rest.dto.P;
 import com.pmarlen.ticket.TicketPrinteService;
 import com.pmarlen.ticket.bluetooth.TicketBlueToothPrinter;
@@ -53,15 +50,25 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		x.addTableModelListener(this);
 		System.err.println("->>table columns=" + panelVenta.getDetalleVentaJTable().getColumnCount());
 
-		final ImporteCellRender importeCellRender = new ImporteCellRender();
+		Color bgc= panelVenta.getDetalleVentaJTable().getBackground();
+		Color fgc= panelVenta.getDetalleVentaJTable().getForeground();
+		Color sbgc= panelVenta.getDetalleVentaJTable().getSelectionBackground();
+		Color sfgc= panelVenta.getDetalleVentaJTable().getSelectionForeground();
+		
+		final ImporteCellRender importeCellRender   = new ImporteCellRender();
+		final ProductoCellRender productoCellRender = new ProductoCellRender();
+		productoCellRender.setColors(bgc, fgc, sbgc, sfgc);
 
 		importeCellRender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelVenta.getDetalleVentaJTable().addMouseListener(this);
 		panelVenta.getDetalleVentaJTable().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(1).setCellRenderer(productoCellRender);
 		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(2).setCellRenderer(importeCellRender);
 		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(3).setCellRenderer(importeCellRender);
+		
 		panelVenta.getDetalleVentaJTable().addComponentListener(new JTableColumnAutoResizeHelper(
-				new int[]{5,18,27,15,15,10,10}));
+				new int[]{9,64,12,15}));
 		
 		panelVenta.getDetalleVentaJTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -90,6 +97,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 			detalleVentaTableItemList.clear();
 		}
 		panelVenta.getDetalleVentaJTable().updateUI();
+		panelVenta.resetInfoForProducto(null);
 		renderTotal();
 	}
 
@@ -104,7 +112,8 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		}
 
 	}
-	private P productoBuscar = new P();
+	
+	//private P productoBuscar = new P();
 
 	private void codigoBuscar_ActionPerformed() {
 		String codigoBuscar = panelVenta.getCodigoBuscar().getText().trim();
@@ -119,6 +128,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		System.err.println("=>codigoBuscar_ActionPerformed:productoEncontrado=" + productoEncontrado);
 
 		if (productoEncontrado != null) {
+			panelVenta.resetInfoForProducto(productoEncontrado);
 			EntradaSalidaDetalle pvd = new EntradaSalidaDetalle();
 			
 			pvd.setAlmacenId(1);
@@ -131,8 +141,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 			
 			idx = detalleVentaTableItemList.size();
 			detalleVentaTableItemList.add(detalleVentaTableItemNuevo);
-
-
+			
 			panelVenta.getCodigoBuscar().setText("");
 			panelVenta.getDetalleVentaJTable().getSelectionModel().setSelectionInterval(idx, idx);
 			panelVenta.getDetalleVentaJTable().updateUI();
@@ -254,14 +263,10 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		System.out.println("=>Selected:sr=" + sr);
 		if(sr != -1){
 			PedidoVentaDetalleTableItem prod = detalleVentaTableItemList.get(sr);
-			cargarImagenDeProducto(prod.getProducto());
+			panelVenta.resetInfoForProducto(prod.getProducto());
 		} else {
-			cargarImagenDeProducto(null);
+			panelVenta.resetInfoForProducto(null);
 		}
-	}
-
-	private void cargarImagenDeProducto(P prod) {
-		
 	}
 
 	@Override
