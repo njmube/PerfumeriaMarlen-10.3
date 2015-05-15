@@ -62,4 +62,13 @@ local_test-data-update: pom.xml
 
 local_prod-stage_update: pom.xml
 	make -C pmarlen-development-tasks resetDB_prod MYSQL_ROOT_PASSWORD=root
+#
+#	make MYSQL_ROOT_PASSWORD=xxxxxx DUMP_SQL=yyyyyyyy
 
+restore-deve-db-from-dump:
+	make -C pmarlen-commons/db_resources/ init_DB_DEVE MYSQL_ROOT_PASSWORD=pmarlen01admin
+	mysql --default-character-set=utf8 -u root -p${MYSQL_ROOT_PASSWORD} PMDB103_DEVE < ${DUMP_SQL}
+
+restore-prod-db-from-dump:
+	make -C pmarlen-commons/db_resources/ init_DB_PROD MYSQL_ROOT_PASSWORD=pmarlen01admin
+	mysql --default-character-set=utf8 -u root -p${MYSQL_ROOT_PASSWORD} PMDB103_PROD < ${DUMP_SQL}
