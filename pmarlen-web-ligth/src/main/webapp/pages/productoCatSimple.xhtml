@@ -20,35 +20,39 @@
 
 				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 
-				<p:dataGrid   var="producto" value="#{productoCatSimple.entityList}"
+				<p:dataGrid   var="producto" value="#{productoMB.entityList}"
 							 columns="4" rows="24" paginator="true" 
 							 id="productoTable"
 							 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{productoCatSimple.sizeList}]"
-							 rowsPerPageTemplate="12,24,40">
+							 rowsPerPageTemplate="12,24,40" style="background: none repeat scroll 0 0 #ffffff;">
 
-					<p:panel header="#{producto.codigoBarras}" style="text-align:center">
-
+					
 						<h:panelGrid columns="1" style="width:100%">
+							
+							<p:graphicImage id="img" value="/multimedio/productos/min/#{producto.codigoBarras}" 
+											cache="true"
+											alt="Producto #{producto.codigoBarras}" 
+											title="Producto #{producto.codigoBarras}"
+											style="cursor:pointer"/>
+							
+							<p:overlayPanel  id="imgPanel" for="img" showEffect="blind" hideEffect="explode" showEvent="click" hideEvent="mousedown"
+											dismissable="false" showCloseIcon="true">
+								
+								<p:graphicImage value="/multimedio/productos/med/#{producto.codigoBarras}"/>
+								
+							</p:overlayPanel>
+							
 
-							<h:outputText value="#{producto.nombre}" />
-
-							<h:outputText value="#{producto.presentacion}" />
+							<h:outputText value="#{producto.nombre}/#{producto.presentacion} #{producto.contenido} #{producto.unidadMedida}" />
 							
-							<h:outputText value="#{producto.marca}" />
+							<h:outputText value="MARCA: #{producto.marca}" />
 							
-							<h:outputText value="#{producto.linea}" />
+							<h:outputText value="LINEA: #{producto.linea}" />
 							
-							<h:outputText value="#{producto.contenido} #{producto.unidadMedida}" />
+							<h:outputText value="" />
 							
-							<p:commandButton update="@form" icon="ui-icon-cart"/>
-							
-							<p:graphicImage value="/images/pmarlen_multimedio/ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg" rendered="#{not empty producto.firstMultimedio}"
-											alt="IMG_ICONO" 
-											title="ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"/>
-							
-							<h:outputText value="#{producto.firstMultimedio.nombreArchivo}" rendered="#{not empty producto.firstMultimedio}" />
-
-						</h:panelGrid></p:panel>
+						</h:panelGrid>
+				
 
 					<f:facet name="footer">
 						xx-xx

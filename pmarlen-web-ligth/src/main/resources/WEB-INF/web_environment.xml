@@ -125,7 +125,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
-        <url-pattern>/images/pmarlen_multimedio/*</url-pattern>
+        <url-pattern>/multimedio/productos/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

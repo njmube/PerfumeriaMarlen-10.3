@@ -135,7 +135,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(1024, 790));
+        setSize(new java.awt.Dimension(1018, 679));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

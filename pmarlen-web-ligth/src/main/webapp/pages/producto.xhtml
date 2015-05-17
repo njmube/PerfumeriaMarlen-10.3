@@ -39,17 +39,16 @@
 						<p:columnToggler datasource="entityTable" trigger="toggler" />
 					</f:facet>
 					
-					<p:column width="2%" rendered="false">
-						<p:graphicImage		id="icoProd" value="/images/pmarlen_multimedio/ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg" 
-											rendered="#{not empty producto.firstMultimedio}" alt="IMG_ICONO" />
+					<p:column width="2%" rendered="true">
+						<p:graphicImage		id="icoProd" value="/multimedio/productos/ico/#{producto.codigoBarras}" 
+											alt="IMG_ICONO" />
 						
-						<p:overlayPanel id="imagePanel" for="icoProd" hideEffect="fade"  rendered="#{not empty producto.firstMultimedio}" showEvent="mouseover" showCloseIcon="true" dynamic="true">
-							<p:graphicImage		value="/images/pmarlen_multimedio/MED_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"
+						<p:overlayPanel id="imagePanel" for="icoProd" hideEffect="fade" showEvent="click" showCloseIcon="true" dynamic="true">
+							<p:graphicImage		value="/multimedio/productos/med/#{producto.codigoBarras}" 
 											alt="IMG_ICONO" 
-											title="ICO_PRODUCTO_MULTIMEDIO_#{producto.codigoBarras}_1.jpg"/>
+											title="PRODUCTO #{producto.codigoBarras}"/>
 						</p:overlayPanel>
 						
-						<p:commandButton id="img_btn" icon="ui-icon-image" rendered="#{empty producto.firstMultimedio}" title="NO HAY IMAGEN PARA ESTE PRODUCTO"/>	
 					</p:column>
 
 					

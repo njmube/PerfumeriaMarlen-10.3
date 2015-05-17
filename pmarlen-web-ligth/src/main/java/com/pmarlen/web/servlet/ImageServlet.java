@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,17 +39,43 @@ public class ImageServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Logger logger=Logger.getLogger(ImageServlet.class.getName());
-		String fn = request.getRequestURI();
-		logger.finer("->request URI="+fn);
-		fn = fn.substring(fn.lastIndexOf("/"));
+		String uri = request.getRequestURI();
+		//   http://host:port/pmarlen-web-ligth/multimedio/productos/med/8410190297579
+		//   http://host:port/pmarlen-web-ligth/multimedio/productos/min/8410190297579
+		//   http://host:port/pmarlen-web-ligth/multimedio/productos/def/8410190297579
+		//   http://host:port/pmarlen-web-ligth/multimedio/productos/ico/8410190297579		
+		
+		//   /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_MED_JPG/MED_PRODUCTO_MULTIMEDIO_8714789135243_1.png
+		//	 /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_MIN_JPG/MIN_PRODUCTO_MULTIMEDIO_8714789135243_1.png
+		//	 /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_DEF_JPG/DEF_PRODUCTO_MULTIMEDIO_8714789135243_1.png
+		//	 /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_ICO_JPG/ICO_PRODUCTO_MULTIMEDIO_8714789135243_1.png
+		
+		logger.info("->request URI="+uri);
+		String urix[]=uri.split("/");
+		
+		logger.info("->urix="+Arrays.asList(urix));
+		
+		String size = uri.substring(uri.lastIndexOf("/")-3,uri.lastIndexOf("/")).toUpperCase();
+		String cb   = uri.substring(uri.lastIndexOf("/")+1);
+		logger.info("->size="+size+",cb="+cb);
+		
 		OutputStream os = null;
 		InputStream is = null;
-		File f =  new File("/usr/local/pmarlen_multimedio/"+fn);
-		logger.finer("->try to read:="+f);
+		
+		File f =  new File((new StringBuilder(
+				"/usr/local/pmarlen_multimedio/imgs_productos/").append(
+				size).append(
+				"/png/").append(
+				size.toUpperCase()).append(
+				"-NWM_")).append(
+				cb).append(
+				"_01.png"
+				).toString());
+		
+		logger.info("->try to read file:="+f+", exsist?"+f.exists()+",read?"+f.canRead());
 		if(f.exists() && f.canRead()){
-			if(fn.equalsIgnoreCase("jpeg")||fn.equalsIgnoreCase("jpg")){
-				response.setContentType("image/jpeg");
-			}
+			logger.info("->Found, ok reading for dispatch");
+			response.setContentType("image/png");			
 			response.setContentLength((int)f.length());
 			is = new FileInputStream(f);
 			os = response.getOutputStream();
@@ -59,9 +87,33 @@ public class ImageServlet extends HttpServlet {
 			}
 			is.close();
 			os.close();			
-		} else {
-			logger.log(Level.WARNING, "read image: not found");
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			logger.info("->Done dispatch for:"+uri);
+		} else {			
+			String defaultImageURI = (new StringBuilder(
+				"/imgs/").append(
+				size.toUpperCase()).append(
+				".png")).toString();
+			
+			logger.info("->File not found, for size:"+size.toUpperCase()+", read from classpath to:"+defaultImageURI);
+			response.setContentType("image/png");			
+			//response.setContentLength();
+			is = getClass().getResourceAsStream(defaultImageURI);
+			logger.info("->is="+is);
+			if(is != null){
+				
+				os = response.getOutputStream();
+				byte buffer[]=new byte[1024*8];
+				int r=-1;
+				while((r=is.read(buffer, 0, buffer.length)) != -1){
+					os.write(buffer, 0, r);
+					os.flush();
+				}
+				is.close();
+				os.close();			
+				logger.info("->Done dispatch for:"+uri);
+			} else{
+				logger.info("->Can't dispatch default image, reading:"+defaultImageURI);
+			}
 		}
 		
 	}

@@ -43,6 +43,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 	private ArrayList<PedidoVentaDetalleTableItem> detalleVentaTableItemList;
 	private DecimalFormat df;
 	private TicketPrinteService ticketPrinteService;
+	private boolean estadoChecando = false;
 
 	public PanelVentaControl(PanelVenta panelVenta) {
 		this.panelVenta = panelVenta;
@@ -98,6 +99,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		}
 		panelVenta.getDetalleVentaJTable().updateUI();
 		panelVenta.resetInfoForProducto(null);
+		estadoChecando = false;
 		renderTotal();
 	}
 

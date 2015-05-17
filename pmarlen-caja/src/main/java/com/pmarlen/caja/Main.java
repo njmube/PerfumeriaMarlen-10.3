@@ -50,8 +50,8 @@ public class Main {
 		logger.info("==========================================================>>>");
 		
 		MemoryDAO.loadProperties();		
-		
-		SyncDTOPackage paqueteSinc = MemoryDAO.getPaqueteSinc();
+		//MemoryDAO.getPaqueteSinc();
+		MemoryDAO.startPaqueteSyncService();
 		
 		logger.info("<<<==========================================================");
 

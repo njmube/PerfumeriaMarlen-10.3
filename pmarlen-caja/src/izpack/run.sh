@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar XpressCashDrawer.jar
+java -jar PM-Caja-10.3.jar
