@@ -234,6 +234,24 @@
 							<p:column headerText="C.A." width="5%" >
 								<h:outputText value="#{pvd.apCantidad}" class="rightAlignColumn" title="HAY #{pvd.apCantidad} EN ALMACEN Y EN DISPUTA #{pvd.canPendteEnOtrosPV} UNIDADES EN OTROS PEDIDOS SIN SURTIR"/>
 							</p:column>
+							
+							<p:column width="2%" rendered="true">
+								<p:lightBox id="lighbox2" >
+									<h:outputLink value="#">
+										<p:graphicImage id="img2" value="/multimedio/productos/ico/#{pvd.productoCodigoBarras}" 
+														cache="true"
+														alt="Producto #{pvd.productoCodigoBarras}" 
+														title="Producto #{pvd.productoCodigoBarras}"
+														style="cursor:pointer"/>
+									</h:outputLink>
+
+									<f:facet name="inline">
+										<p:panelGrid columns="1">
+											<p:graphicImage value="/multimedio/productos/med/#{pvd.productoCodigoBarras}" />
+										</p:panelGrid>									
+									</f:facet>
+								</p:lightBox>
+							</p:column>
 
 							<p:column headerText="PRODUCTO" width="#{editarPedidoVentaMB.codigoTableWidth}">
 								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not editarPedidoVentaMB.tablaExpandida}"/>

@@ -191,6 +191,24 @@
 								<h:outputText value="OPO" rendered="#{pvd.apTipoAlmacen eq 2}" class="centerAlignColumn"/>
 								<h:outputText value="REG" rendered="#{pvd.apTipoAlmacen eq 3}" class="centerAlignColumn"/>
 							</p:column>
+							
+							<p:column width="2%" rendered="true">
+								<p:lightBox id="lighbox2" >
+									<h:outputLink value="#">
+										<p:graphicImage id="img2" value="/multimedio/productos/ico/#{pvd.productoCodigoBarras}" 
+														cache="true"
+														alt="Producto #{pvd.productoCodigoBarras}" 
+														title="Producto #{pvd.productoCodigoBarras}"
+														style="cursor:pointer"/>
+									</h:outputLink>
+
+									<f:facet name="inline">
+										<p:panelGrid columns="1">
+											<p:graphicImage value="/multimedio/productos/med/#{pvd.productoCodigoBarras}" />
+										</p:panelGrid>									
+									</f:facet>
+								</p:lightBox>
+							</p:column>
 
 							<p:column headerText="PRODUCTO" width="#{pedidoVentaMB.codigoTableWidth}">
 								<h:outputText value="#{pvd.productoCodigoBarras} #{pvd.productoNombre} / #{pvd.productoPresentacion} #{pvd.productoContenido} #{pvd.productoUnidadMedida}" rendered="#{not pedidoVentaMB.tablaExpandida}"/>

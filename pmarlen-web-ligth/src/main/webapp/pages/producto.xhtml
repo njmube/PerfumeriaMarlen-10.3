@@ -41,11 +41,11 @@
 					
 					<p:column width="2%" rendered="true">
 						<p:graphicImage		id="icoProd" value="/multimedio/productos/ico/#{producto.codigoBarras}" 
-											alt="IMG_ICONO" />
+											alt="IMG #{producto.codigoBarras}" />
 						
 						<p:overlayPanel id="imagePanel" for="icoProd" hideEffect="fade" showEvent="click" showCloseIcon="true" dynamic="true">
 							<p:graphicImage		value="/multimedio/productos/med/#{producto.codigoBarras}" 
-											alt="IMG_ICONO" 
+											alt="IMG #{producto.codigoBarras}" 
 											title="PRODUCTO #{producto.codigoBarras}"/>
 						</p:overlayPanel>
 						

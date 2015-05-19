@@ -28,7 +28,7 @@
 
 					
 						<h:panelGrid columns="1" style="width:100%">
-							
+							<!--
 							<p:graphicImage id="img" value="/multimedio/productos/min/#{producto.codigoBarras}" 
 											cache="true"
 											alt="Producto #{producto.codigoBarras}" 
@@ -41,13 +41,40 @@
 								<p:graphicImage value="/multimedio/productos/med/#{producto.codigoBarras}"/>
 								
 							</p:overlayPanel>
+							-->
+							<p:lightBox id="lighbox2" >
+								<h:outputLink value="#">
+									<p:graphicImage id="img2" value="/multimedio/productos/min/#{producto.codigoBarras}" 
+													cache="true"
+													alt="Producto #{producto.codigoBarras}" 
+													title="Producto #{producto.codigoBarras}"
+													style="cursor:pointer"/>
 							
+								</h:outputLink>
 
-							<h:outputText value="#{producto.nombre}/#{producto.presentacion} #{producto.contenido} #{producto.unidadMedida}" />
+								<f:facet name="inline">
+										<p:panelGrid columns="2">
+											<p:graphicImage value="/multimedio/productos/med/#{producto.codigoBarras}"/>
+											<p:panelGrid columns="1">
+												<h:outputText value="CÓDIGO:#{producto.codigoBarras}" />
+												
+												<h:outputText value="NOMBRE:#{producto.nombre}/#{producto.presentacion} #{producto.contenido} #{producto.unidadMedida}" />
+												
+												<h:outputText value="PRESENTACION:#{producto.presentacion}" />
+												
+												<h:outputText value="CONTENIDO:#{producto.contenido} #{producto.unidadMedida}" />
 							
-							<h:outputText value="MARCA: #{producto.marca}" />
-							
-							<h:outputText value="LINEA: #{producto.linea}" />
+												<h:outputText value="MARCA: #{producto.marca}" />
+
+												<h:outputText value="LINEA: #{producto.linea}" />
+
+											</p:panelGrid>
+										</p:panelGrid>
+									
+								</f:facet>
+							</p:lightBox>
+
+							<h:outputText value="#{producto.nombre}/#{producto.presentacion}" />
 							
 							<h:outputText value="" />
 							
