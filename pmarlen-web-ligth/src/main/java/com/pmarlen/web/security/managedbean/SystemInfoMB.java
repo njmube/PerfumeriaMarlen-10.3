@@ -54,6 +54,7 @@ public class SystemInfoMB  implements Serializable{
 	private String sessionDate=sdf.format(new Date());
 
 	public String getSessionDate() {
+		updateTime();
 		return sessionDate;
 	}
 	

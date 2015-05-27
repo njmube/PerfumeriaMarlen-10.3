@@ -50,14 +50,14 @@ public class ImageServlet extends HttpServlet {
 		//	 /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_DEF_JPG/DEF_PRODUCTO_MULTIMEDIO_8714789135243_1.png
 		//	 /usr/local/pmarlen_multimedio/PM_MULTIMEDIO_ICO_JPG/ICO_PRODUCTO_MULTIMEDIO_8714789135243_1.png
 		
-		logger.info("->request URI="+uri);
+		//logger.info("->request URI="+uri);
 		String urix[]=uri.split("/");
 		
-		logger.info("->urix="+Arrays.asList(urix));
+		//logger.info("->urix="+Arrays.asList(urix));
 		
 		String size = uri.substring(uri.lastIndexOf("/")-3,uri.lastIndexOf("/")).toUpperCase();
 		String cb   = uri.substring(uri.lastIndexOf("/")+1);
-		logger.info("->size="+size+",cb="+cb);
+		//logger.info("->size="+size+",cb="+cb);
 		
 		OutputStream os = null;
 		InputStream is = null;
@@ -72,9 +72,9 @@ public class ImageServlet extends HttpServlet {
 				"_01.png"
 				).toString());
 		
-		logger.info("->try to read file:="+f+", exsist?"+f.exists()+",read?"+f.canRead());
+		//logger.info("->try to read file:="+f+", exsist?"+f.exists()+",read?"+f.canRead());
 		if(f.exists() && f.canRead()){
-			logger.info("->Found, ok reading for dispatch");
+			//logger.info("->Found, ok reading for dispatch");
 			response.setContentType("image/png");			
 			response.setContentLength((int)f.length());
 			is = new FileInputStream(f);
@@ -87,18 +87,18 @@ public class ImageServlet extends HttpServlet {
 			}
 			is.close();
 			os.close();			
-			logger.info("->Done dispatch for:"+uri);
+			//logger.info("->Done dispatch for:"+uri);
 		} else {			
 			String defaultImageURI = (new StringBuilder(
 				"/imgs/").append(
 				size.toUpperCase()).append(
 				".png")).toString();
 			
-			logger.info("->File not found, for size:"+size.toUpperCase()+", read from classpath to:"+defaultImageURI);
+			//logger.info("->File not found, for size:"+size.toUpperCase()+", read from classpath to:"+defaultImageURI);
 			response.setContentType("image/png");			
 			//response.setContentLength();
 			is = getClass().getResourceAsStream(defaultImageURI);
-			logger.info("->is="+is);
+			//logger.info("->is="+is);
 			if(is != null){
 				
 				os = response.getOutputStream();
@@ -110,9 +110,9 @@ public class ImageServlet extends HttpServlet {
 				}
 				is.close();
 				os.close();			
-				logger.info("->Done dispatch for:"+uri);
+				//logger.info("->Done dispatch for:"+uri);
 			} else{
-				logger.info("->Can't dispatch default image, reading:"+defaultImageURI);
+				//logger.info("->Can't dispatch default image, reading:"+defaultImageURI);
 			}
 		}
 		

@@ -57,8 +57,7 @@ public class DigifactClient {
 		datosCFD.setEmailMensaje("FACTURA PEDIDO:" + pedidoVenta.getId());
 
 		EntradaSalidaFooter esf = new EntradaSalidaFooter();
-
-		esf.calculaTotalesDesde(pedidoVenta, esdList);
+		esf.calculaParaFacturaTotalesDesde(pedidoVenta, esdList);
 
 		datosCFD.setSubtotal(esf.getSubTotalNoGrabado());
 
@@ -113,7 +112,7 @@ public class DigifactClient {
 		impuestoWS.setImporte(esf.getImporteIVA());
 		impuestos.getAnyType().add(impuestoWS);
 
-            //impuestoWS = new Impuesto();
+        //impuestoWS = new Impuesto();
 		//impuestoWS.setTasa(8);
 		//impuestoWS.setTipoImpuesto("IVAR");
 		//impuestoWS.setImporte(110.39);

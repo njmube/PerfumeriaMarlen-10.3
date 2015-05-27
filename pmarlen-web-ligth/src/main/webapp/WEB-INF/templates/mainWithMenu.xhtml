@@ -177,7 +177,7 @@
 						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
 					</h:panelGrid>
 					
-					<p:poll interval="120" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" />
+					<p:poll interval="120" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" rendered="false" />
 					<script>
 						var informeDescinetado = false;
 						function errorGetTime(){							
