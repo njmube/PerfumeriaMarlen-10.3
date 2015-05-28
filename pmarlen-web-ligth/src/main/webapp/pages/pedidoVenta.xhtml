@@ -379,15 +379,15 @@
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 
-							<h:outputText value="I.V.A. :" />
-							<h:outputText value="#{pedidoVentaMB.pedidoVentaFooter.importeIVA}">
-								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-							</h:outputText>
-
 							<h:outputText value="- DESCUENTO :" />
 							<h:outputText value="#{pedidoVentaMB.pedidoVentaFooter.importeDescuentoAplicado}" 
 										  title="- ( #{pedidoVentaMB.pedidoVentaFooter.descuentoCalculado}% + #{pedidoVentaMB.pedidoVentaFooter.descuentoExtra}% = #{pedidoVentaMB.pedidoVentaFooter.descuentoAplicado}% )">
 								<f:convertNumber maxFractionDigits="2" pattern="$ -###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+							
+							<h:outputText value="+ I.V.A. :" />
+							<h:outputText value="#{pedidoVentaMB.pedidoVentaFooter.importeIVA}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 
 							<h:outputText value="T O T A L :" styleClass="bold_text"/>

@@ -9,16 +9,20 @@
 
 package com.pmarlen.backend.dao;
 
-import com.pmarlen.backend.model.*;
+import com.pmarlen.backend.model.Cfd;
+import com.pmarlen.backend.model.Cliente;
+import com.pmarlen.backend.model.EntradaSalida;
+import com.pmarlen.backend.model.EntradaSalidaDetalle;
+import com.pmarlen.backend.model.EntradaSalidaEstado;
+import com.pmarlen.backend.model.Sucursal;
+import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaEstadoQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
 import com.pmarlen.digifactws.production.client.DigifactClient;
 import com.pmarlen.model.Constants;
 import com.tracktopell.jdbc.DataSourceFacade;
-
 import java.io.ByteArrayInputStream;
-import java.lang.reflect.InvocationTargetException;
 
 import java.sql.Blob;
 import java.sql.Connection;
@@ -31,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
@@ -450,7 +453,7 @@ public class EntradaSalidaDAO {
 					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
 					+ "ORDER BY  ES.ID DESC";
 			
-			logger.info("->Query:"+q);
+			logger.info("->QUERY :"+q);
 			
 			ps = conn.prepareStatement(q);
 			ps.setInt(1, tipoMov);
@@ -494,21 +497,29 @@ public class EntradaSalidaDAO {
 				x.setNumElementos(rs.getInt("NUM_ELEMENTOS"));
 				x.setImporteBruto(rs.getDouble("IMPORTE_BRUTO"));
 
-				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));
-				x.setImporteIVA(x.getImporteBruto() - x.getImporteNoGravado());
+				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));	
+				//logger.info("========================");
+				//logger.info("PEDIDO ID:        :\t"+x.getId());
+				//logger.info("IMPORTE BRUTO     :\t"+x.getImporteBruto());
+				//logger.info("IMPORTE NO GRABADO:\t"+x.getImporteNoGravado());
 				if(x.getImporteBruto() !=null && x.getPorcentajeDescuentoCalculado()!=null && x.getPorcentajeDescuentoExtra()!=null){
-					x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
-					x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+					x.setImporteDescuento((x.getImporteNoGravado()* (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);															
 				} else {
-					x.setImporteDescuento(0.0);
-					x.setImporteTotal(x.getImporteBruto() );
+					x.setImporteDescuento(0.0);					
 				}
+				x.setImporteIVA((x.getImporteNoGravado() - x.getImporteDescuento())*Constants.IVA);
+				x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				//logger.info("% DESCUENTOS      :\t"+x.getPorcentajeDescuentoCalculado()+"% + "+x.getPorcentajeDescuentoExtra());
+				//logger.info("I.V.A.            :\t"+x.getImporteIVA());
+				//logger.info("    T O T A L     :\t"+x.getImporteTotal());
+				
 				x.setEstadoActualFecha((Timestamp) rs.getObject("FECHA_ACTUALIZO"));
 				x.setEstadoActualUsuarioEmail((String) rs.getObject("USUARIO_ACTUALIZO"));
 
 				r.add(x);
 			}
-			logger.info("->Added:"+r.size());
+			logger.info("------------------------------");
+			logger.info("->FOUND :"+r.size()+" RECORDS.");
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
@@ -542,113 +553,6 @@ public class EntradaSalidaDAO {
 		return findAllActive(tipoMov,sucursalId,false);
 	}
     
-	private ArrayList<EntradaSalidaQuickView> __findAllHistorico(int tipoMov,int sucursalId) throws DAOException {
-		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Connection conn = null;
-		try {
-			conn = getConnection();
-
-			ps = conn.prepareStatement(
-					"SELECT	ES.ID,ES.TIPO_MOV,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,ES.AUTORIZA_DESCUENTO,\n"
-					+ "CFD.ID AS CFD_ID,\n"
-					+ "S.NOMBRE AS SUCURSAL_NOMBRE,\n"
-					+ "E.DESCRIPCION AS E_DESCRIPCION,\n"
-					+ "U.NOMBRE_COMPLETO AS U_NOMBRE_COMPLETO,\n"
-					+ "C.RFC AS C_RFC,\n"
-					+ "C.RAZON_SOCIAL AS C_RAZON_SOCIAL,\n"
-					+ "C.NOMBRE_ESTABLECIMIENTO AS C_NOMBRE_ESTABLECIMIENTO,\n"
-					+ "FP.DESCRIPCION AS FP_DESCRIPCION,\n"
-					+ "MP.DESCRIPCION AS MP_DESCRIPCION,\n"
-					+ "CFD.NUM_CFD AS CFD_NUM_CFD,\n"
-					+ "COUNT(1) NUM_ELEMENTOS, \n"
-					+ "SUM(ESD.CANTIDAD * ESD.PRECIO_VENTA) AS IMPORTE_BRUTO\n"
-					+ "FROM      ENTRADA_SALIDA_DETALLE ESD,\n"
-					+ "          ENTRADA_SALIDA         ES\n"
-					+ "LEFT JOIN CFD            CFD ON ES.CFD_ID      = CFD.ID\n"
-					+ "LEFT JOIN SUCURSAL       S   ON ES.SUCURSAL_ID       = S.ID\n"
-					+ "LEFT JOIN ESTADO         E   ON ES.ESTADO_ID         = E.ID\n"
-					+ "LEFT JOIN USUARIO        U   ON ES.USUARIO_EMAIL_CREO= U.EMAIL\n"
-					+ "LEFT JOIN CLIENTE        C   ON ES.CLIENTE_ID        = C.ID\n"
-					+ "LEFT JOIN FORMA_DE_PAGO  FP  ON ES.FORMA_DE_PAGO_ID  = FP.ID\n"
-					+ "LEFT JOIN METODO_DE_PAGO MP  ON ES.METODO_DE_PAGO_ID = MP.ID\n"
-					+ "WHERE     1=1\n"
-					+ "AND       ES.ESTADO_ID > 4\n"
-					+ "AND       ES.ID        = ESD.ENTRADA_SALIDA_ID\n"
-					+ "AND       ES.TIPO_MOV  = ?\n"		
-					+ "AND       ES.SUCURSAL_ID= ?\n"
-					+ "GROUP BY  ESD.ENTRADA_SALIDA_ID\n"
-					+ "ORDER BY  ES.FECHA_CREO DESC");
-			ps.setInt(1, tipoMov);
-			ps.setInt(2, sucursalId);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				EntradaSalidaQuickView x = new EntradaSalidaQuickView();
-				x.setId((Integer) rs.getObject("ID"));
-				x.setTipoMov((Integer) rs.getObject("TIPO_MOV"));
-				x.setSucursalId((Integer) rs.getObject("SUCURSAL_ID"));
-				x.setEstadoId((Integer) rs.getObject("ESTADO_ID"));
-				x.setFechaCreo((Timestamp) rs.getObject("FECHA_CREO"));
-				x.setUsuarioEmailCreo((String) rs.getObject("USUARIO_EMAIL_CREO"));
-				x.setClienteId((Integer) rs.getObject("CLIENTE_ID"));
-				x.setFormaDePagoId((Integer) rs.getObject("FORMA_DE_PAGO_ID"));
-				x.setMetodoDePagoId((Integer) rs.getObject("METODO_DE_PAGO_ID"));
-				x.setFactorIva((Double) rs.getObject("FACTOR_IVA"));
-				x.setComentarios((String) rs.getObject("COMENTARIOS"));
-				x.setCfdId((Integer) rs.getObject("CFD_ID"));
-				x.setNumeroTicket((String) rs.getObject("NUMERO_TICKET"));
-				x.setCaja((Integer) rs.getObject("CAJA"));
-				x.setImporteRecibido((Double) rs.getObject("IMPORTE_RECIBIDO"));
-				x.setAprobacionVisaMastercard((String) rs.getObject("APROBACION_VISA_MASTERCARD"));
-				x.setPorcentajeDescuentoCalculado((Integer) rs.getObject("PORCENTAJE_DESCUENTO_CALCULADO"));
-				x.setPorcentajeDescuentoExtra((Integer) rs.getObject("PORCENTAJE_DESCUENTO_EXTRA"));
-				x.setCondicionesDePago((String) rs.getObject("CONDICIONES_DE_PAGO"));
-				x.setNumDeCuenta((String) rs.getObject("NUM_DE_CUENTA"));
-				x.setAutorizaDescuento((Integer) rs.getObject("AUTORIZA_DESCUENTO"));
-
-				x.setSucursalNombre((String) rs.getObject("SUCURSAL_NOMBRE"));
-				x.setEstadoDescripcion((String) rs.getObject("E_DESCRIPCION"));
-				x.setUsuarioNombreCompleto((String) rs.getObject("U_NOMBRE_COMPLETO"));
-				x.setClienteRFC((String) rs.getObject("C_RFC"));
-				x.setClienteRazonSocial((String) rs.getObject("C_RAZON_SOCIAL"));
-				x.setClienteNombreEstablecimiento((String) rs.getObject("C_NOMBRE_ESTABLECIMIENTO"));
-				x.setMetodoDePagoDescripcion((String) rs.getObject("MP_DESCRIPCION"));
-				x.setFormaDePagoDescripcion((String) rs.getObject("FP_DESCRIPCION"));
-				x.setCdfNumCFD((String) rs.getObject("CFD_NUM_CFD"));
-
-				x.setNumElementos(rs.getInt("NUM_ELEMENTOS"));
-				x.setImporteBruto(rs.getDouble("IMPORTE_BRUTO"));
-
-				x.setImporteNoGravado(x.getImporteBruto() / (1.0 + x.getFactorIva()));
-				x.setImporteIVA(x.getImporteBruto() - x.getImporteNoGravado());
-				if(x.getImporteBruto() !=null && x.getPorcentajeDescuentoCalculado()!=null && x.getPorcentajeDescuentoExtra()!=null){
-					x.setImporteDescuento((x.getImporteBruto() * (x.getPorcentajeDescuentoCalculado()+x.getPorcentajeDescuentoExtra()))/100.0);
-					x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
-				} else {
-					x.setImporteDescuento(0.0);
-					x.setImporteTotal(x.getImporteBruto() );
-				}
-
-				r.add(x);
-			}
-		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
-			throw new DAOException("InQuery:" + ex.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-					ps.close();
-					conn.close();
-				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "findAll:clossing:", ex);
-				}
-			}
-		}
-		return r;
-	}
-	
 	public int insertPedidoVenta(EntradaSalida x, ArrayList<? extends EntradaSalidaDetalle> pvdList) throws DAOException {
 		return insert(Constants.TIPO_MOV_SALIDA_ALMACEN_VENTA,x,pvdList);
 	}

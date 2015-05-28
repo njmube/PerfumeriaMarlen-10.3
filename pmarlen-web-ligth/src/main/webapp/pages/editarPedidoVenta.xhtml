@@ -424,16 +424,16 @@
 							<h:outputText value="#{editarPedidoVentaMB.pedidoVentaFooter.subTotalNoGrabado}">
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
-
-							<h:outputText value="I.V.A. :" />
-							<h:outputText value="#{editarPedidoVentaMB.pedidoVentaFooter.importeIVA}">
-								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-							</h:outputText>
-
+							
 							<h:outputText value="- DESCUENTO :" />
 							<h:outputText value="#{editarPedidoVentaMB.pedidoVentaFooter.importeDescuentoAplicado}" 
 										  title="- ( #{editarPedidoVentaMB.pedidoVentaFooter.descuentoCalculado}% + #{editarPedidoVentaMB.pedidoVentaFooter.descuentoExtra}% = #{editarPedidoVentaMB.pedidoVentaFooter.descuentoAplicado}% )">
 								<f:convertNumber maxFractionDigits="2" pattern="$ -###,###,##0.00" locale="es_MX"/>
+							</h:outputText>
+							
+							<h:outputText value="+ I.V.A. :" />
+							<h:outputText value="#{editarPedidoVentaMB.pedidoVentaFooter.importeIVA}">
+								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 
 							<h:outputText value="T O T A L :" styleClass="bold_text"/>

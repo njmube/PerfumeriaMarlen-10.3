@@ -76,7 +76,9 @@
 							<h:outputText value="RAZÓN SOCIAL :" />
 							<h:outputText value="#{pv.clienteRazonSocial}" />
 							<h:outputText value="NOMBRE ESTAB.:" />
-							<h:outputText value="#{pv.clienteNombreEstablecimiento}" />							
+							<h:outputText value="#{pv.clienteNombreEstablecimiento}" />
+							<h:outputText value="COMENTARIOS:" />
+							<h:outputText value="#{pv.comentarios}" />
 						</p:panelGrid>
 					</p:column>
 					
@@ -105,13 +107,13 @@
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 							
-							<h:outputText value="IMPORTE I.V.A. :" />
+							<h:outputText value="- DESCUENTOS :" />
+							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{historicoPedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
+							
+							<h:outputText value="+ I.V.A. :" />
 							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${historicoPedidosVentaMB.getImporteMoneda(pv.factorIva)}" >
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>									
-							
-							<h:outputText value="- DESCUENTOS :" />
-							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{historicoPedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
 							
 							<h:outputText value="TOTAL :" />
 							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">

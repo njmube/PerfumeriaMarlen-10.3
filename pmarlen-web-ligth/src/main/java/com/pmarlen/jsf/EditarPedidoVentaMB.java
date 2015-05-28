@@ -529,14 +529,14 @@ public class EditarPedidoVentaMB{
 	public void actualizarTotales(){
 		logger.info("actualizarTotales, forzar hay cambio");
 		hayCambios=true;
-		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
+		entradaSalidaFooter.calculaParaFacturaTotalesDesde(entradaSalida, entityList);
 	}
 	
 	public void actualizarTabla(){
 		logger.info("actualizarTabla");
 		actualizarCantidadesStockTiempoReal();
 		hayCambios=true;
-		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
+		entradaSalidaFooter.calculaParaFacturaTotalesDesde(entradaSalida, entityList);
 	}
 
 	public void onClienteListChange() {

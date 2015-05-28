@@ -60,7 +60,7 @@ public class DigifactClient {
 		esf.calculaParaFacturaTotalesDesde(pedidoVenta, esdList);
 
 		datosCFD.setSubtotal(esf.getSubTotalNoGrabado());
-
+		datosCFD.setDescuento(esf.getImporteDescuentoAplicado());
 		datosCFD.setTotal(esf.getTotal());
 		datosCFD.setLugarDeExpedicion("ESTADO DE MÉXICO");
 
@@ -70,7 +70,7 @@ public class DigifactClient {
 		receptor.setNumExt(cliente.getNumExterior().toUpperCase());
 		receptor.setNumInt(cliente.getNumInterior().toUpperCase());
 		receptor.setColonia(cliente.getColonia().toUpperCase());
-		receptor.setContacto1(cliente.getContacto() != null ? cliente.getContacto() : "ULISES LEÒN RESENDIZ");
+		receptor.setContacto1(cliente.getContacto() != null ? cliente.getContacto() : "ULISES LEÓN RESENDIZ");
 		receptor.setContacto2("LUCIANO LEÓN SANCHEZ");
 		receptor.setCP(cliente.getCp().toUpperCase());
 		receptor.setMunicipio(cliente.getMunicipio().toUpperCase());

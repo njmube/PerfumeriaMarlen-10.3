@@ -31,7 +31,7 @@
 						<p:commandButton value="RECARGAR" actionListener="#{pedidosVentaMB.refrescar}" update=":form1" icon="ui-icon-arrowrefresh-1-s"/>
 					</f:facet>
 					
-					<p:column headerText="#" width="5%" filterBy="#{pv.id}" filterMatchMode="contains">						
+					<p:column headerText="#" width="10%" filterBy="#{pv.id}" filterMatchMode="contains">						
 						<p:panelGrid columns="1" columnClasses="centerAlign" >							
 							<p:commandButton actionListener="#{pedidosVentaMB.editar(pv.id)}" value="#{pv.id}" onsuccess="edit();"/>
 							<h:panelGroup>
@@ -56,7 +56,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="CLIENTE" width="25%">
+					<p:column headerText="CLIENTE" width="20%">
 						<p:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 							<h:outputText value="R.F.C. :" />
 							<h:outputText value="#{pv.clienteRFC}" />
@@ -74,7 +74,9 @@
 							<h:outputText value="FORMA DE PAGO :" />
 							<h:outputText value="#{pv.formaDePagoDescripcion}" />
 							<h:outputText value="METODO DE PAGO:" />
-							<h:outputText value="#{pv.metodoDePagoDescripcion}" />							
+							<h:outputText value="#{pv.metodoDePagoDescripcion}" />	
+							<h:outputText value="COMENTARIOS:" />
+							<h:outputText value="#{pv.comentarios}" />
 						</p:panelGrid>
 					</p:column>
 					
@@ -90,13 +92,14 @@
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>
 							
-							<h:outputText value="IMPORTE I.V.A. :" />
+							<h:outputText value="- DESCUENTOS :" />
+							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{pedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
+							
+							<h:outputText value="+ I.V.A. :" />
 							<h:outputText value="#{pv.importeIVA}" title="FACTOR I.V.A.= ${pedidosVentaMB.getImporteMoneda(pv.factorIva)}" >
 								<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
 							</h:outputText>									
 							
-							<h:outputText value="- DESCUENTOS :" />
-							<h:outputText value="#{pv.porcentajeDescuentoCalculado}% + #{pv.porcentajeDescuentoExtra}%  = #{pedidosVentaMB.getImporteMoneda(pv.importeDescuento)}" />
 							
 							<h:outputText value="TOTAL :" />
 							<h:outputText value="#{pv.importeTotal}" styleClass="littleLabel_bold_right">
