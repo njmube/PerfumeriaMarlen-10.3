@@ -508,7 +508,7 @@ public class EntradaSalidaDAO {
 					x.setImporteDescuento(0.0);					
 				}
 				x.setImporteIVA((x.getImporteNoGravado() - x.getImporteDescuento())*Constants.IVA);
-				x.setImporteTotal(x.getImporteBruto() - x.getImporteDescuento());
+				x.setImporteTotal(x.getImporteNoGravado()- x.getImporteDescuento() + x.getImporteIVA());
 				//logger.info("% DESCUENTOS      :\t"+x.getPorcentajeDescuentoCalculado()+"% + "+x.getPorcentajeDescuentoExtra());
 				//logger.info("I.V.A.            :\t"+x.getImporteIVA());
 				//logger.info("    T O T A L     :\t"+x.getImporteTotal());
