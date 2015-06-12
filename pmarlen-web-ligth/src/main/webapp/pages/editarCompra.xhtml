@@ -297,17 +297,17 @@
 						</p:panelGrid>
 						<p:spacer width="10"/>
 						
-						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.adminUser and (not editarCompraMB.hayCambios and editarCompraMB.verificable)}"
+						<p:commandButton value="OK, SE HA VERIFICADO"  icon="ui-icon-check" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin and (not editarCompraMB.hayCambios and editarCompraMB.verificable)}"
 										 actionListener="#{editarCompraMB.verificar}" process="@all" update="@all">
 							<p:confirm header="VERIFICAR" message="¿ SEGURO QUE YA HA VERIFICADO TODOS LOS ELEMENTOS ?" icon="ui-icon-alert" />
 						</p:commandButton>
 
-						<p:commandButton value="OK, SE AUTORIZA SURTIRSE (ENTRADA ALMACEN)" icon="ui-icon-cart" rendered="#{sessionUserMB.adminUser and (not editarCompraMB.hayCambios and editarCompraMB.surtible)}"  
+						<p:commandButton value="OK, SE AUTORIZA SURTIRSE (ENTRADA ALMACEN)" icon="ui-icon-cart" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin and (not editarCompraMB.hayCambios and editarCompraMB.surtible)}"  
 										 actionListener="#{editarCompraMB.surtir}" process="@all" update="@all">
 							<p:confirm header="SURTIRSE ENTRADA" message="¿ SEGURO QUE ESTA LISTO PARA SURTIRSE (ENTRADA ALMACEN)?" icon="ui-icon-alert" />
 						</p:commandButton>
 						
-						<p:commandButton value="CANCELAR COMPRA" icon="ui-icon-close" rendered="#{sessionUserMB.adminUser and (not editarCompraMB.hayCambios and editarCompraMB.cancelable)}" 
+						<p:commandButton value="CANCELAR COMPRA" icon="ui-icon-close" rendered="#{sessionUserMB.usuarioAuthenticated.playsAsAdmin and (not editarCompraMB.hayCambios and editarCompraMB.cancelable)}" 
 										 process="@all" update="@all">
 							<p:confirm header="CANCELAR" message="¿ SEGURO QUE QUIERE CANCELAR LA COMPRA ?" icon="ui-icon-alert" />
 						</p:commandButton>
