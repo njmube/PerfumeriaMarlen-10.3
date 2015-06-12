@@ -77,7 +77,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-				vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+" ("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+"/"+pvd.getProductoUnidadesPorCaja()+"xCj.)");
+				vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+" ("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+")");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
@@ -231,7 +231,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+" "+pvd.getProductoUnidadesPorCaja()+"xCj."+" )");
+                vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+"("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+")");
 				vals.put("precio",df.format(pvd.getPrecioVenta()));
                 vals.put("ppc"  ,pvd.getProductoUnidadesPorCaja());
 				if(pvd.getApUbicacion() == null){
@@ -400,7 +400,7 @@ public class GeneradorImpresionPedidoVenta {
 				vals.put("ta",Constants.getDescripcionTipoAlmacen(pvd.getApTipoAlmacen()).substring(0,3));
                 vals.put("codigoBarras",pvd.getProductoCodigoBarras());                
                 vals.put("descripcion",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion());
-				vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+" ("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+"/"+pvd.getProductoUnidadesPorCaja()+"xCj.)");
+				vals.put("descripcionCont",pvd.getProductoNombre()+"/"+pvd.getProductoPresentacion()+" ("+pvd.getProductoContenido()+pvd.getProductoUnidadMedida()+")");
 				precioNoGrabado=pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA());
 				vals.put("precio",df.format(pvd.getPrecioVenta() / (1.0+LogicaFinaciera.getImpuestoIVA())));
 			    vals.put("precioNoGrabado",df.format(precioNoGrabado));

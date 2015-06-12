@@ -910,7 +910,7 @@ public class EditarPedidoVentaMB{
 	}
 	
 	public boolean isCancelable(){
-		return entradaSalida!=null && entradaSalida.getEstadoId() < Constants.ESTADO_CANCELADO ;
+		return entradaSalida!=null && entradaSalida.getEstadoId() < Constants.ESTADO_SURTIDO ;
 	}
 	
 	public int getAlturaExtraTabla() {

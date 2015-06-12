@@ -120,7 +120,7 @@
 		</h:form>
 
 		<h:form id="form2">
-			<p:dialog header="#{productoMB.dialogTitle}" widgetVar="dlg1" modal="true" width="500" height="500" closable="false" resizable="true">
+			<p:dialog header="#{productoMB.dialogTitle}" widgetVar="dlg1" modal="true" width="500" height="550" closable="false" resizable="true">
 				<h:panelGrid columns="1" cellpadding="5" id="dlg1Panel1" width="100%">
 
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
@@ -163,6 +163,13 @@
 							<f:validateLength minimum="5" maximum="255" />
 						</p:inputText>
 						<p:message for="producto_presentacion" />
+						
+						<h:outputLabel for="producto_abrebiatura" value="ABREBIATURA:" style="font-weight:bold"/>                    
+
+						<p:inputText id="producto_abrebiatura" value="#{productoMB.selectedEntity.abrebiatura}" required="true" label="ABREBIATURA:" size="20">
+							<f:validateLength minimum="5" maximum="64" />
+						</p:inputText>
+						<p:message for="producto_abrebiatura" />
 
 						<h:outputLabel for="producto_contenido" value="CONTENIDO:" style="font-weight:bold"/>
 						<p:inputText id="producto_contenido" value="#{productoMB.selectedEntity.contenido}" required="true" label="CONTENIDO:" size="6">

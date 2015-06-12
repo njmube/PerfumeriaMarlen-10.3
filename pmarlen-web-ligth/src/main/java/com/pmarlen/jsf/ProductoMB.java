@@ -65,8 +65,10 @@ public class ProductoMB  {
 	public void prepareForNew() {
 		nuevoProducto=true;
 		logger.info("->ProductoMB prepareForNew");
-		dialogTitle ="AGREGAR NUEVO CLIETE";
+		dialogTitle ="DATOS DEL PRODUCTO";
 		this.selectedEntity = new ProductoQuickView();
+		this.selectedEntity.setUnidadEmpaque("PZ");
+		this.selectedEntity.setUnidadesXCaja(12);		
 	}
 	
 	public void setSelectedEntity(ProductoQuickView selectedProducto) {

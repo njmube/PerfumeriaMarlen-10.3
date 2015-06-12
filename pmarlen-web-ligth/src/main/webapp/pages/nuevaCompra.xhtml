@@ -209,12 +209,6 @@
 								</h:outputText>
 							</p:column>
 							
-							<p:column headerText="PRECIO" width="10%">
-								<h:outputText value="#{pvd.precioVenta}" title="#{nuevaCompraMB.getImporteDesglosado(pvd.precioVenta)}" class="rightAlignColumn">
-									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
-								</h:outputText>
-							</p:column>
-
 							<p:column headerText="IMPORTE" width="10%">
 								<h:outputText value="#{pvd.cantidad * pvd.precioVenta}" title="#{nuevaCompraMB.getImporteDesglosado(pvd.cantidad * pvd.precioVenta)}" class="rightAlignColumn">
 									<f:convertNumber maxFractionDigits="2" pattern="$ ###,###,##0.00" locale="es_MX"/>
