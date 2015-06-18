@@ -200,17 +200,17 @@ public class PedidoVentaMB{
 	}
 	
 	public void buscarXCodigo() {
-		logger.finer("->buscarXCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
+		logger.info("->buscarXCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		EntradaSalidaDetalleQuickView dvpAdd = null;
 		try {
 			dvpAdd = ProductoDAO.getInstance().findByCodigo(tipoAlmacen,codigo);
 
-			logger.finer("->buscarXCodigo:dvpAdd="+dvpAdd);
+			logger.info("->buscarXCodigo:dvpAdd="+dvpAdd);
 
 
 			if(dvpAdd != null) {
 				dvpAdd.setCantidad(cantidadAgregarCodigo);
-				logger.finer("->buscarXCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
+				logger.info("->buscarXCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
 				entityList.add(dvpAdd);
 
 				FacesContext context = FacesContext.getCurrentInstance();         

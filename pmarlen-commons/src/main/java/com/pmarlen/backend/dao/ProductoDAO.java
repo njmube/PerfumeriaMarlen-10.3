@@ -115,22 +115,24 @@ public class ProductoDAO {
 	}
 
 	public EntradaSalidaDetalleQuickView findByCodigo(int almacenId, String codigo) throws DAOException {
-		logger.fine("->findAllExclusiveByCodigo");
+		logger.info("->findAllExclusiveByCodigo");
 		EntradaSalidaDetalleQuickView x = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-
-			ps = conn.prepareStatement("SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
+			String query = "SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.UNIDADES_X_CAJA,P.CONTENIDO,P.UNIDAD_MEDIDA,P.UNIDAD_EMPAQUE,AP.PRECIO,AP.CANTIDAD,AP.ALMACEN_ID,A.TIPO_ALMACEN\n"
 					+ "FROM   PRODUCTO P,ALMACEN_PRODUCTO AP,ALMACEN A \n"
 					+ "WHERE  1=1\n"
 					+ "AND    P.CODIGO_BARRAS=AP.PRODUCTO_CODIGO_BARRAS\n"
 					+ "AND    AP.ALMACEN_ID=?\n"
 					+ "AND    AP.ALMACEN_ID=A.ID\n"
 					+ "AND    P.CODIGO_BARRAS=?\n"
-					+ "ORDER BY P.NOMBRE,P.PRESENTACION,P.LINEA,P.MARCA");
+					+ "ORDER BY P.NOMBRE,P.PRESENTACION,P.LINEA,P.MARCA";
+			logger.info("->query:"+query);
+			
+			ps = conn.prepareStatement(query);
 			/*
 
 			 SELECT P.CODIGO_BARRAS,P.NOMBRE,P.PRESENTACION,P.INDUSTRIA,P.MARCA,P.LINEA,P.CONTENIDO,P.UNIDAD_MEDIDA,AP.PRECIO,AP.CANTIDAD
@@ -172,7 +174,7 @@ public class ProductoDAO {
 				x.setPrecioVenta(x.getApPrecio());
 
 			}
-			logger.fine("->findAllExclusiveByCodigo: read all resultset");
+			logger.info("->findAllExclusiveByCodigo: x="+x);
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
