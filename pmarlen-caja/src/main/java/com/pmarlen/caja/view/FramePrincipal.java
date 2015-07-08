@@ -4,7 +4,9 @@
  */
 package com.pmarlen.caja.view;
 
+import java.awt.Color;
 import java.awt.Font;
+import javax.swing.JLabel;
 
 /**
  *
@@ -36,6 +38,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        statusConeccion = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         productosMenu = new javax.swing.JMenuItem();
@@ -79,6 +82,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         statusPanel.add(jPanel2);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        statusConeccion.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        statusConeccion.setForeground(new java.awt.Color(153, 153, 0));
+        statusConeccion.setText("...CONECTANDO");
+        jPanel3.add(statusConeccion);
+
         statusPanel.add(jPanel3);
 
         getContentPane().add(statusPanel, java.awt.BorderLayout.SOUTH);
@@ -189,6 +198,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panels;
     private javax.swing.JMenuItem productosMenu;
     private javax.swing.JMenuItem salirMenu;
+    private javax.swing.JLabel statusConeccion;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JMenuItem usuarioAdminMenu;
     private javax.swing.JMenuItem usuarioCajaMenu;
@@ -332,10 +342,28 @@ public class FramePrincipal extends javax.swing.JFrame {
 	public javax.swing.JMenu getConfigMenu() {
 		return configMenu;
 	}
+
+	public JLabel getStatusConeccion() {
+		return statusConeccion;
+	}
+	
+	public void setConectado(){
+		statusConeccion.setText("CONECTADO :D");
+		statusConeccion.setForeground(Color.GREEN);		
+		statusConeccion.updateUI();
+	}
+	
+	public void setDesconectado(){
+		statusConeccion.setText("DESCONECTADO :(");
+		statusConeccion.setForeground(Color.RED);
+		statusConeccion.updateUI();
+	}
 	
 	public void setFont(Font font){
 		panelVenta.setFont(font);
 		panelProductos.setFont(font);
 		panelVentas.setFont(font);
+		statusPanel.setFont(font);
+		statusConeccion.setFont(font);
 	}
 }

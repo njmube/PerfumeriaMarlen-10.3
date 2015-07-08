@@ -1,3 +1,2 @@
 #!/bin/bash
-
-java -jar PM-Caja-10.3.jar
+java -jar ${project.artifactId}-${project.version}.jar

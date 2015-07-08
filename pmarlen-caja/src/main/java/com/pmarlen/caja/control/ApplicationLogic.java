@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -35,16 +36,17 @@ import javax.swing.JOptionPane;
  * @author Softtek
  */
 public class ApplicationLogic {
-	private static final String ULR_VERSION_FILE = "http://dulcesaga.com.mx/xcd/version.properties";
-	private static final String ULR_APP_PACKAGE  = "http://dulcesaga.com.mx/xcd/UPDATE_BUILD.zip";
-	private static final String FILE_APP_PACKAGE = "./UPDATE_BUILD.zip";
+	private static Logger logger = Logger.getLogger(ApplicationLogic.class.getName());
+	private static final String URI_VERSION_FILE = "/pmcajaupdate/version.properties";
+	private static final String URI_APP_PACKAGE  = "/pmcajaupdate/update.zip";
+	private static final String FILE_APP_PACKAGE = "./update.zip";
 	
 	private static String _version = null;
 	private static final boolean printingEnabled = false; 
 		
-	private static final String VERSION_PROPERTY = "xpresscashdrawer.version";
+	private static final String VERSION_PROPERTY = "pmarlencaja.version";
 	private boolean adminLogedIn = false;
-	
+	private String versionRead;
 	private static ApplicationLogic instance;
 	//private static PreferenciaDAO preferenciaDAO;
 	private ApplicationLogic(){	
@@ -113,6 +115,10 @@ public class ApplicationLogic {
 		}
 		return instance;
 	}
+
+	public String getVersionRead() {
+		return versionRead;
+	}
 	
 	public boolean needsUpdateApplciation(){
 		boolean updateApp =  false;
@@ -121,7 +127,8 @@ public class ApplicationLogic {
 		InputStream is = null;
 		BufferedReader br = null;
 		try{
-			url = new URL(ULR_VERSION_FILE);
+			url = new URL(MemoryDAO.getServerContext()+URI_VERSION_FILE);
+			logger.info("url="+url);
 			is = url.openStream();
 		}catch(IOException ioe){
 			return false;
@@ -133,18 +140,22 @@ public class ApplicationLogic {
 				if(lineRead.contains(VERSION_PROPERTY)){
 					
 					String[] propValue = lineRead.split("=");
-					String versionReadOfLine = propValue[1]; 
+					versionRead = propValue[1]; 
 					
-					System.err.println("->needsUpdateApplciation:lineRead="+lineRead+", versionReadOfLine="+versionReadOfLine);
-					System.err.println("->needsUpdateApplciation:version ="+getVersion());
-					System.err.println("->result ? ="+versionReadOfLine.compareTo(getVersion()));
+					logger.info("lineRead="+lineRead+", versionReadOfLine="+versionRead);
+					logger.info("current version ="+getVersion());					
 					
-					if(versionReadOfLine.compareTo(getVersion())>0){
-						System.err.println("->needsUpdateApplciation: Ok, update!");
+					String currentVersionParts[] = getVersion().split("\\.");
+					String versionReadParts[]    = versionRead.split("\\.");
+					
+					logger.info("comparing: "+Arrays.asList(currentVersionParts)+" < "+Arrays.asList(versionReadParts));
+					
+					if(Integer.parseInt(currentVersionParts[3])<Integer.parseInt(versionReadParts[3])){
+						logger.info("\t->needsUpdateApplciation: Ok, update!");
 						return true;
 					}
 				}
-			}
+			}			
 		} catch(IOException ioe){
 			return false;
 		}
@@ -175,18 +186,18 @@ public class ApplicationLogic {
 		HttpURLConnection conn = null;
 		
 		try{
-			url = new URL(ULR_APP_PACKAGE);
+			url = new URL(MemoryDAO.getServerContext()+URI_APP_PACKAGE);
 			conn = (HttpURLConnection)url.openConnection();
-			int length = conn.getContentLength();
+			long length = conn.getContentLengthLong();
 			is = conn.getInputStream();
 			FileOutputStream fos = new FileOutputStream(FILE_APP_PACKAGE);
 			byte[] buffer = new byte[1024 * 16];
-			int r = -1;
-			int t= 0;
+			long r = -1;
+			long t= 0;
 			keepDownlaod = true;
 			while ((r = is.read(buffer, 0, buffer.length)) != -1) {
 				if(!keepDownlaod){
-					int resp = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la descarga ?", "Cancelar", 
+					int resp = JOptionPane.showConfirmDialog(null, "¿ DESEA CANCELAR LA DESCARGA ?", "CANCELAR", 
 							JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 					if(resp == JOptionPane.YES_OPTION){
 						break;
@@ -195,37 +206,26 @@ public class ApplicationLogic {
 					}
 				}
 				t += r;
-				fos.write(buffer, 0, r);
+				fos.write(buffer, 0, (int)r);
 				fos.flush();
-				int advance = (100 * t) / length;
-				System.err.print("Downloaded:\t"+advance+" % \r");
-				ual.updateProgress(advance);				
+				long advance = (100L * t) / length;
+				//logger.info("------->> Downloaded:\t [+ "+r+"]( "+t+"/"+length+") : "+advance+" %");
+				ual.updateProgress((int)advance);
 			}
-			System.err.println("");
-			System.err.println("finished");
+			ual.updateProgress(100);
+			logger.info("");
+			logger.info("finished");
 			is.close();
 			fos.close();
 			if(!keepDownlaod){
 				throw new IllegalStateException("Update Canceled");
 			} else {
 				extractFolder(FILE_APP_PACKAGE);
-				JOptionPane.showMessageDialog(null, "Se ha actualizado la Aplicación, \nReinicie por favor.", 
-						"Actualización", JOptionPane.INFORMATION_MESSAGE);
-				//System.exit(2);			
+				ual.finisUpdate();
 			}
 		} catch (IOException ex) {
-			throw new IllegalStateException("Can't download UPDATE data package:"+ex.getMessage());
-		}
-		/*
-		try {
-			extractFolder(FILE_APP_PACKAGE);
-			JOptionPane.showMessageDialog(null, "Se ha actualizado la Aplicación, \nPor favor reinicie nuevamente", 
-					"Actualización", JOptionPane.INFORMATION_MESSAGE);
-			System.exit(2);
-		} catch (IOException ex) {
-			throw new IllegalStateException("Can't extract & deflate UPDATE data paclkage:"+ex.getMessage());
-		}
-		*/
+			ual.errorUpdate("ERROR AL ACTUALIZAR:"+ex.getMessage());
+		}		
 	}
 
 	private void extractFolder(String zipFile) throws ZipException, IOException {
@@ -239,13 +239,13 @@ public class ApplicationLogic {
 		Enumeration zipFileEntries = zip.entries();
 
 		// Process each entry
-		System.err.println("-> extracting :");
+		logger.info("-> extracting :");
 		while (zipFileEntries.hasMoreElements()) {
 			// grab a zip file entry
 			ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
 			String currentEntry = entry.getName();
 			File destFile = new File(destPathToInflate, currentEntry);
-			System.err.println("-> inflating :"+destFile.getPath());
+			logger.info("-> inflating :"+destFile.getPath());
 			//destFile = new File(newPath, destFile.getName());
 			File destinationParent = destFile.getParentFile();
 
@@ -273,12 +273,12 @@ public class ApplicationLogic {
 				is.close();
 			}
 		}
-		System.err.println("-> OK, finish extracting.");
+		logger.info("-> OK, finish extracting.");
 	}
 
 	boolean canDownlaodUpdateApplication() {
 		try {
-			URL  url = new URL(ULR_APP_PACKAGE);
+			URL  url = new URL(MemoryDAO.getServerContext()+URI_APP_PACKAGE);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			int length = conn.getContentLength();
 			if(length > 1024*1024){
@@ -318,12 +318,12 @@ public class ApplicationLogic {
         return (new BigInteger(1, mdEnc.digest())).toString(16);
     }
 
-	String getVersion() {
+	public String getVersion() {
 		if(_version == null){
 			Properties porpVersion = new Properties();
 			try {
 				porpVersion.load(getClass().getResourceAsStream("/version.properties"));
-				_version = porpVersion.getProperty("xpresscashdrawer.version");
+				_version = porpVersion.getProperty("pmarlencaja.version");
 			} catch (IOException ex) {
 				ex.printStackTrace(System.err);
 			}

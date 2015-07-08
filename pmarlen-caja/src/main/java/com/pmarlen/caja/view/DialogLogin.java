@@ -78,10 +78,10 @@ public class DialogLogin extends javax.swing.JDialog {
 
         labelEmail.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelEmail.setText("CORREO ELECTRÓNICO :");
-        labelEmail.setPreferredSize(new java.awt.Dimension(290, 30));
+        labelEmail.setPreferredSize(new java.awt.Dimension(310, 30));
         jPanel4.add(labelEmail);
 
-        email.setColumns(20);
+        email.setColumns(18);
         jPanel4.add(email);
 
         jPanel5.add(jPanel4);
@@ -90,7 +90,7 @@ public class DialogLogin extends javax.swing.JDialog {
 
         labelContrasena.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelContrasena.setText("CONTRASEÑA :");
-        labelContrasena.setPreferredSize(new java.awt.Dimension(290, 30));
+        labelContrasena.setPreferredSize(new java.awt.Dimension(310, 30));
         jPanel6.add(labelContrasena);
 
         password.setColumns(10);

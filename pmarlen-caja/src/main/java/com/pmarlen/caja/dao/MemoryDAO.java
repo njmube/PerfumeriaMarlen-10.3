@@ -7,6 +7,7 @@ package com.pmarlen.caja.dao;
 
 import com.google.gson.Gson;
 import com.pmarlen.backend.model.quickviews.SyncDTOPackage;
+import com.pmarlen.caja.control.FramePrincipalControl;
 import com.pmarlen.rest.dto.P;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,30 +31,32 @@ import java.util.zip.ZipFile;
  * @author alfredo
  */
 public class MemoryDAO {
-	static Properties properties = new Properties();
+	private static Properties properties = new Properties();
 	
 	static {
 		//properties.put("host","pmarlencloudsrv1.dyndns.org");
 		//properties.put("host","192.168.1.70");
+		properties.put("sucursal","0");
+		properties.put("caja","1");
 		properties.put("host","localhost");
 		properties.put("port","8070");
-		properties.put("context","/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip");
+		properties.put("context","/pmarlen-web-ligth");
 		properties.put("dropboxdir",System.getProperty("user.home")+"/DropBox/");
 	}
 	
-	static SyncDTOPackage paqueteSinc;
-	static Logger logger = Logger.getLogger(MemoryDAO.class.getName());
-	static String fileName = "./fileModel.zip";
+	private static SyncDTOPackage paqueteSinc;
+	private static Logger logger = Logger.getLogger(MemoryDAO.class.getName());
+	private static String fileName = "./fileModel.zip";
 	//static String hostDownload = "localhost:8070"; //"pmarlencloudsrv2.dyndns.org:8070";
-	static String urlDownload = null;//"http://"+hostDownload+"/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
+	private static String urlDownload = null;//"http://"+hostDownload+"/pmarlen-web-ligth/sync/data?sucursalId=1&format=zip";
 	
-	static HashMap<String,P> productosParaBuscar;
-	static String propertiesFileNAme="./system.properties";
+	private static HashMap<String,P> productosParaBuscar;
+	private static String propertiesFileNAme="./system.properties";
+	private static boolean exsistFile = false;	
 	
 	public static void loadProperties() {
 		
 		File fileProperties = new File(propertiesFileNAme);
-		boolean exsistFile = false;
 		
 		if(fileProperties.exists() && fileProperties.canRead()){
 			try {
@@ -65,16 +68,34 @@ public class MemoryDAO {
 				logger.log(Level.WARNING, "Can`t read File for properties", ioe);
 			}
 		}
-		if(!exsistFile) {
-			try {
-				logger.info("->Properties Doesn't exsist, wrinting File Properties.");
-				properties.store(new FileOutputStream(propertiesFileNAme), fileName);
-				logger.info("->ok, writing.");
-			}catch(IOException ioe){
-				logger.log(Level.WARNING, "Can`t create File for properties", ioe);
-			}
-		}	
-	}	
+	}
+
+	public static void persistPRoperties() {
+		try {
+			logger.info("->Properties Doesn't exsist, wrinting File Properties.");
+			properties.store(new FileOutputStream(propertiesFileNAme), "Persisted");
+			logger.info("->ok, writing.");
+		}catch(IOException ioe){
+			logger.log(Level.WARNING, "Can`t create File for properties", ioe);
+		}
+	}
+
+	public static boolean isExsistFile() {
+		return exsistFile;
+	}
+
+	public static Properties getProperties() {
+		return properties;
+	}
+	
+	public static String getServerContext(){
+		StringBuilder sbURL = new StringBuilder("http://");
+		sbURL.append(properties.get("host")).
+				append(":").
+				append(properties.get("port")).
+				append(properties.get("context"));
+		return sbURL.toString();
+	}
 	
 	public static void setPaqueteSinc(SyncDTOPackage paqueteSinc) {
 		MemoryDAO.paqueteSinc = paqueteSinc;
@@ -96,26 +117,31 @@ public class MemoryDAO {
 	private static boolean runnigPool = true;
 	
 	public static void getPaqueteSyncPoll(){
+		logger.info("----------------->>BEFORE while ");
 		while(runnigPool){
 			try {
-				logger.info("----------------->> while running, download");
+				logger.info("\t----------------->> while running, download");
 				download();
-				logger.info("----------------->> OK, downloded, read locally");
-				readLocally();				
+				logger.info("\t----------------->> OK, downloded, read locally");
+				readLocally();
+				FramePrincipalControl.getInstance().getFramePrincipal().setConectado();
+				//FramePrincipalControl.getInstance().getFramePrincipal().repaint();
 			}catch(MalformedURLException e){
-				logger.log(Level.SEVERE,"downoload",e);
+				logger.log(Level.SEVERE,"URL: downoload",e);
+				FramePrincipalControl.getInstance().getFramePrincipal().setDesconectado();
 				break;
 			}catch(Exception e){
-				logger.log(Level.SEVERE,"downoload",e);
+				logger.log(Level.SEVERE,"X: downoload",e);
+				FramePrincipalControl.getInstance().getFramePrincipal().setDesconectado();
 			}
 			
 			try {
-				logger.info("----------------->> while running, sleep,.....");
+				logger.info("\t----------------->> while running, sleep,.....");
 				Thread.sleep(60000L);
 			}catch(Exception e){
 				logger.log(Level.SEVERE,"downoload",e);
 			}
-		}	
+		}
 	}
 	
 	public static void startPaqueteSyncService(){
@@ -140,12 +166,15 @@ public class MemoryDAO {
 	private static void download() throws IOException{
 		URL url = null;
 
-		StringBuilder sbURL = new StringBuilder();
-		sbURL.append("http://").
-				append(properties.get("host")).
+		StringBuilder sbURL = new StringBuilder("http://");
+		sbURL.append(properties.get("host")).
 				append(":").
 				append(properties.get("port")).
-				append(properties.get("context"));
+				append(properties.get("context")).
+				append("/sync/data?format=zip&sucursalId=").
+				append(properties.get("sucursal")).
+				append("&caja=").
+				append(properties.get("caja"));
 		url = new URL(sbURL.toString());
 		logger.info(">> Downloading from:"+url);
 		InputStream is = url.openStream();

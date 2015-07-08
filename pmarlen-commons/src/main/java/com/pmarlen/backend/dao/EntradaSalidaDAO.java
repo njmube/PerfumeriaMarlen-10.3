@@ -409,13 +409,13 @@ public class EntradaSalidaDAO {
 	}
 	
 	private ArrayList<EntradaSalidaQuickView> findAllActive(int tipoMov,int sucursalId,boolean active) throws DAOException {
+		logger.info("->findAllActive(tipoMov="+tipoMov+",sucursalId="+sucursalId+",active="+active+")");
 		ArrayList<EntradaSalidaQuickView> r = new ArrayList<EntradaSalidaQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-
 			
 			String q="SELECT	ES.ID ES_ID,ES.TIPO_MOV,ES.SUCURSAL_ID,ES.ESTADO_ID,ES.FECHA_CREO,ES.USUARIO_EMAIL_CREO,ES.CLIENTE_ID,ES.FORMA_DE_PAGO_ID,ES.METODO_DE_PAGO_ID,ES.FACTOR_IVA,ES.COMENTARIOS,ES.CFD_ID,ES.NUMERO_TICKET,ES.CAJA,ES.IMPORTE_RECIBIDO,ES.APROBACION_VISA_MASTERCARD,ES.PORCENTAJE_DESCUENTO_CALCULADO,ES.PORCENTAJE_DESCUENTO_EXTRA,ES.CONDICIONES_DE_PAGO,ES.NUM_DE_CUENTA,ES.AUTORIZA_DESCUENTO,\n"
 					+ "CFD.ID AS CFD_ID,\n"
@@ -460,6 +460,11 @@ public class EntradaSalidaDAO {
 			ps.setInt(2, sucursalId);
 			
 			rs = ps.executeQuery();
+			rs.last();
+			int size = rs.getRow();
+			rs.beforeFirst();
+			logger.info("->size rs :"+size);
+			
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();				
 				x.setId((Integer) rs.getObject("ES_ID"));

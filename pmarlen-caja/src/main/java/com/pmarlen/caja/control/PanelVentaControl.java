@@ -69,7 +69,7 @@ public class PanelVentaControl implements ActionListener, TableModelListener, Mo
 		panelVenta.getDetalleVentaJTable().getColumnModel().getColumn(3).setCellRenderer(importeCellRender);
 		
 		panelVenta.getDetalleVentaJTable().addComponentListener(new JTableColumnAutoResizeHelper(
-				new int[]{9,64,12,15}));
+				new int[]{6,62,14,18}));
 		
 		panelVenta.getDetalleVentaJTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override

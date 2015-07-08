@@ -8,7 +8,7 @@
 		<version>10.3</version>
 	</parent>
 	<artifactId>pmarlen-caja</artifactId>
-	<version>${project.parent.version}</version>
+	<version>10.3.1.20</version>
 	<name>Perfumeria Marlen 10.3 - Caja</name>
 	
 	<properties>
@@ -20,65 +20,9 @@
 		<maven_build_timestamp>${maven.build.timestamp}</maven_build_timestamp>
 		<staging.dir>${project.build.directory}/staging</staging.dir>		
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
-		<finalJar.filename>PM-Caja-${project.parent.version}</finalJar.filename>		
+		<finalJar.filename>${project.artifactId}-${project.version}</finalJar.filename>		
 	</properties>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${project.jdk.version}</source>
-					<target>${project.jdk.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.pmarlen.caja.Main</mainClass>
-							<classpathPrefix>dependency-jars/</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.5.1</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${staging.dir}/dependency-jars/</outputDirectory>
-						</configuration>
-					</execution>							
-				</executions>	
-			</plugin>		  
-		</plugins>
-	
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	
-	</build>
-	
-	
+		
 	<dependencies>
 		<!-- ================= MAIN DEPENDENCIES ============ --> 
 		
@@ -143,6 +87,66 @@
 		</dependency>
 		
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${project.jdk.version}</source>
+					<target>${project.jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.pmarlen.caja.Main</mainClass>
+							<classpathPrefix>dependency-jars/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+ 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${staging.dir}/dependency-jars/</outputDirectory>
+						</configuration>
+					</execution>							
+				</executions>	
+			</plugin>		  
+		</plugins>
+	
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/izpack</directory>
+				<filtering>true</filtering>
+			</resource>
+
+		</resources>
+	
+	</build>
 	
 	<profiles>		
 		
@@ -210,10 +214,10 @@
 								<configuration>
 									<target>
 										<echo message="======================= preprare-bins-installer , in package phase, basedir=${basedir}, create ZIP for UPDATE ==============>>>"/>
-										<zip destfile="${project.build.directory}/UPDATE_BUILD.zip">
-											<zipfileset dir="${staging.dir}/dependency-jars"	prefix="dependency-jars/"	 includes="*.jar"/>
-											<zipfileset dir="${staging.dir}/"					includes="run*.*"/>
-											<zipfileset dir="${staging.dir}/../"				includes="PMXpressCashDrawer.jar"/>
+										<zip destfile="${project.build.directory}/update.zip">
+											<zipfileset dir="${staging.dir}/dependency-jars"		prefix="dependency-jars/"	 includes="*.jar"/>
+											<zipfileset dir="${project.build.directory}/classes/"	includes="run*.*"/>
+											<zipfileset dir="${staging.dir}/../"					includes="${finalJar.filename}.jar"/>
 										</zip>
 									</target>
 								</configuration>
@@ -227,34 +231,9 @@
 								</goals>
 								<configuration>
 									<target>
-										<echo message="=======================ANT Task in install phase, uploading (${project.name}-standard.jar,UPDATE_BUILD.zip,version.properties) to user accesible site ==============>>>"/>
-									<!--	
-										<ftp   server="dulcesaga.com.mx"
-											   port="21"
-											   remotedir="/domains/dulcesaga.com.mx/public_html/xcd"
-											   userid="dulcesag"
-											   password="0Yl8c7v1vR"
-											   passive="yes"
-											   depends="yes"
-											   verbose="true"
-											   binary="yes">
-											
-											<fileset dir="${project.build.directory}">
-												<include name="UPDATE_BUILD.zip"/>
-											</fileset>
-											<fileset dir="${project.build.directory}">
-												<include name="${project.name}-standard.jar"/>
-											</fileset>
-											
-											<fileset dir="${project.build.directory}/classes">
-												<include name="index.php"/>
-											</fileset>
-											
-											<fileset dir="${project.build.directory}/classes">
-												<include name="version.properties"/>
-											</fileset>
-										</ftp>
-									-->
+										<echo message="=======================ANT Task in install phase, preparing INSTALLER files : ${project.artifactId} ==============>>>"/>
+										<copy file="${project.build.directory}/${finalJar.filename}.jar" tofile="${project.build.directory}/${project.artifactId}.jar"/>
+										<copy file="${project.build.directory}/${finalJar.filename}-standard.jar" tofile="${project.build.directory}/${project.artifactId}-installer.jar"/>
 									</target>
 								</configuration>
 							</execution>

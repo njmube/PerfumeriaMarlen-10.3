@@ -82,6 +82,14 @@
         <servlet-name>SyncServlet</servlet-name>
         <servlet-class>com.pmarlen.rest.servlet.SyncServlet</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>PMCajaUpdateServlet</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.PMCajaUpdateServlet</servlet-class>
+        <init-param>
+            <param-name>pmcajadist</param-name>
+            <param-value>/usr/local/pmcajadist</param-value>
+        </init-param>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>GetTime</servlet-name>
@@ -136,7 +144,10 @@
         <servlet-name>SyncServlet</servlet-name>
         <url-pattern>/sync/data</url-pattern>
     </servlet-mapping>    
-
+	<servlet-mapping>
+        <servlet-name>PMCajaUpdateServlet</servlet-name>
+        <url-pattern>/pmcajaupdate/*</url-pattern>
+    </servlet-mapping>    
     <!--
     <filter>
         <filter-name>JSFTraceFilter</filter-name>

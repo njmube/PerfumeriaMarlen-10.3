@@ -57,6 +57,7 @@ public class SyncServlet extends HttpServlet {
 		
 		OutputStream os=response.getOutputStream();
 		String sucursalId=request.getParameter("sucursalId");
+		String cajaId=request.getParameter("caja");
 		String format=request.getParameter("format");
 		if(sucursalId==null){
 			sucursalId = "1";
@@ -64,7 +65,7 @@ public class SyncServlet extends HttpServlet {
 		if(format==null){
 			format="zip";
 		}
-		logger.info("-->>sucursalId="+sucursalId+", format="+format);
+		logger.info("-->>sucursalId="+sucursalId+", caja="+cajaId+", format="+format);
 		try {
 			int sucId=new Integer(sucursalId);
 			SyncDTOPackage s= new SyncDTOPackage();

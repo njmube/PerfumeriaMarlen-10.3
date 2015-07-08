@@ -30,7 +30,8 @@ public class ContextAndSessionListener implements ServletContextListener, HttpSe
 	
     private static SimpleDateFormat sdfDefault  = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
     private static SimpleDateFormat sdfExtended = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS zzzzzz (Z)");
-	public static final Hashtable<String , SessionInfo> sessionInfoHT = new Hashtable<String , SessionInfo>();    
+	public static final Hashtable<String , SessionInfo> sessionInfoHT = new Hashtable<String , SessionInfo>();
+	public static final Hashtable<String , String> cajaSessionInfoHT = new Hashtable<String , String>();
 	
     @Override
     public void contextInitialized(ServletContextEvent sce) {

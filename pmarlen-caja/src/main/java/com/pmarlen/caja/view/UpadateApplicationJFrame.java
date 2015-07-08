@@ -33,10 +33,10 @@ public class UpadateApplicationJFrame extends javax.swing.JFrame {
         cancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Actualizando la Aplicación");
+        setTitle("DESCARGANDO ACTUALIZACIÓN");
         getContentPane().setLayout(new java.awt.GridLayout(2, 1));
 
-        jLabel1.setText("Avance de la descarga :");
+        jLabel1.setText("AVANCE :");
         jPanel1.add(jLabel1);
         jPanel1.add(progressUpdate);
 

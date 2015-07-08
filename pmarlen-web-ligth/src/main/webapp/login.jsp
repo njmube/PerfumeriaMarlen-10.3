@@ -16,6 +16,15 @@
 		function timedRedirect() {
 			setTimeout("location.href = redirectURL;",redirectTime);
 		}
+		
+		function autoCompletteEmail(txtUserMail){
+			var txt=txtUserMail.value.toLowerCase();
+			if(!txt.indexOf("@")<0 && txt.indexOf("@perfumeriamarlen.com.mx")<0){
+				txtUserMail.value = txtUserMail.value+ "@perfumeriamarlen.com.mx"; 
+				return true;
+			}
+			return false;
+		}
 		//   -->
 		</script>		
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/default.css">
@@ -49,7 +58,7 @@
 						<span style="font-size : 10px;">USUARIO :</span>
 					</td>
 					<td align="left">
-						<input type="text" name="j_username" value="" size="30"/>
+						<input type="text" name="j_username" value="" size="30" onblur="return autoCompletteEmail(this);"/>
 					</td>
 				</tr>
 				<tr>

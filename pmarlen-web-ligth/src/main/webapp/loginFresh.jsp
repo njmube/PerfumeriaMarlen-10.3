@@ -14,6 +14,16 @@
 	function timedRedirect() {
 		setTimeout("location.href = redirectURL;",redirectTime);
 	}
+	
+	function autoCompletteEmail(txtUserMail){
+		var txt=txtUserMail.value.toLowerCase();
+		//alert("->txt="+txt);
+		if(txt.indexOf("@")<0 && txt.indexOf("@perfumeriamarlen.com.mx")<0){
+			txtUserMail.value = txtUserMail.value+ "@perfumeriamarlen.com.mx"; 
+			return true;
+		}
+		return false;
+	}	
 	//   -->
 	</script>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/login_css/login_bg.css"     type='text/css'/>
@@ -34,7 +44,7 @@
 		<form action="j_security_check" method="post" id="loginForm">
 			<div class="input">
 				<div class="blockinput">
-					<i class="icon-envelope-alt"></i><input type="mail" name="j_username" placeholder="Correo Electronico">
+					<i class="icon-envelope-alt"></i><input type="mail" name="j_username" placeholder="Correo Electronico" onblur="autoCompletteEmail(this);">
 				</div>
 				<div class="blockinput">
 					<i class="icon-unlock"></i><input type="password"  name="j_password" placeholder="Contraseña">

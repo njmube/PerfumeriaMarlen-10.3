@@ -7,7 +7,7 @@
         The meaning of the tags should be natural ...
     -->
     <info>
-		<appname>PM-Caja</appname>
+		<appname>${project.artifactId}</appname>
         <appversion>${project.version}</appversion>
         <authors>
             <author name="Alfredo Estrada Gonzalez" email="aestrada@perfumeriamarlen.com.mx"/>            
@@ -41,7 +41,7 @@
     -->
     <resources>
         <res id="LicencePanel.licence" src="Licence.txt"/>
-        <res id="InfoPanel.info" src="Readme.txt"/>
+        <res id="InfoPanel.info" src="Readme.txt"/>		
     </resources>
 
     <!-- 
@@ -70,11 +70,11 @@
             <file src="Readme.txt" targetdir="$INSTALL_PATH"/>
             <file src="Licence.txt" targetdir="$INSTALL_PATH"/>
 			
-			<file src="run.sh" targetdir="$INSTALL_PATH"/>
+			<file src="../classes/run.sh" targetdir="$INSTALL_PATH"/>
             <parsable   targetfile="$INSTALL_PATH/run.sh"/>
 			<executable targetfile="$INSTALL_PATH/run.sh" os="unix" type="bin"/>
 
-			<file src="run.cmd" targetdir="$INSTALL_PATH"/>
+			<file src="../classes/run.cmd" targetdir="$INSTALL_PATH"/>
             <parsable   targetfile="$INSTALL_PATH/run.cmd"/>
 			<executable targetfile="$INSTALL_PATH/run.cmd" os="windows" type="bin"/>
 
@@ -88,18 +88,14 @@
         <pack name="Resources" required="no">
             <description>The resources</description>
             <file src="resources" targetdir="$INSTALL_PATH"/>
-			<!--
-			<file src="Productos" targetdir="$INSTALL_PATH"/>
-			-->
         </pack>
         
         <pack name="Application" required="yes">
             <description>The Application</description>
             <file src="../${finalJar.filename}.jar"    targetdir="$INSTALL_PATH"/>
-			<executable targetfile="$INSTALL_PATH/${finalJar.filename}.jar" os="unix" type="bin"/>
-			<executable targetfile="$INSTALL_PATH/run.cmd" os="windows" type="bin"/>
-			<executable targetfile="$INSTALL_PATH/run.sh"  os="linux"   type="bin"/>
-			
+			<!--
+			<executable targetfile="$INSTALL_PATH/${finalJar.filename}.jar" os="unix" type="bin"/>						
+			-->
 			<file src="dependency-jars" targetdir="$INSTALL_PATH"/>
         </pack>
         

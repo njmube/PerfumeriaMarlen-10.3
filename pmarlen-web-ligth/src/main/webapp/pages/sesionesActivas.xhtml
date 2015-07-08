@@ -49,6 +49,24 @@
 
 				</p:dataTable>
 				
+				<p:dataTable var="sessionCajaInfo" value="#{sesionesActivasMB.sesionesCajaActivas}"
+							 sortMode="single"
+							 id="entityTable2" >
+					<f:facet name="header">
+										
+					</f:facet>
+					
+					<p:column width="25%">
+						-
+					</p:column>
+					
+					<p:column headerText="INFO" sortBy="#{sessionCajaInfo}" width="75%">
+						<h:outputText value="#{sessionCajaInfo}" />
+					</p:column>
+
+				</p:dataTable>
+
+				
 				<p:poll interval="5" listener="#{systemInfoMB.updateTime}" update="entityTable" onerror="errorGetTime();" onsuccess="successGetTime()" />				
 
 			</h:panelGrid>

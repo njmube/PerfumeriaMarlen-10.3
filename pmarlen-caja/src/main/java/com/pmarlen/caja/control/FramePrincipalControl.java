@@ -99,7 +99,7 @@ public class FramePrincipalControl implements ActionListener{
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {				
 				framePrincipal.setVisible(true);
-				panelVentaControl.estadoInicial();
+				panelVentaControl.estadoInicial();				
 			}
 		});
 	}
@@ -147,7 +147,7 @@ public class FramePrincipalControl implements ActionListener{
 		if(r == JOptionPane.OK_OPTION){
 			panelVentaControl.estadoInicial();
 		}
-	}	
+	}
 
 	private void productosMenu_actionPerformed() {
 		panelProductosControl.estadoInicial();

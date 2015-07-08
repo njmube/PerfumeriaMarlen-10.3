@@ -55,5 +55,15 @@ public class SesionesActivasMB {
 		return siList;
 	}
 
+	public List<String> getSesionesCajaActivas(){
+		List<String>  sesionesCajaActivas = new ArrayList<String> ();
+	
+		Enumeration<String> elements = ContextAndSessionListener.cajaSessionInfoHT.elements();
+		while(elements.hasMoreElements()){			
+			sesionesCajaActivas.add(elements.nextElement());
+		}
+		
+		return sesionesCajaActivas;
+	}
 
 }
