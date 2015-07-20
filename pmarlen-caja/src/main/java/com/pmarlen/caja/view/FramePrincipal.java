@@ -348,15 +348,20 @@ public class FramePrincipal extends javax.swing.JFrame {
 	}
 	
 	public void setConectado(){
-		statusConeccion.setText("CONECTADO :D");
-		statusConeccion.setForeground(Color.GREEN);		
-		statusConeccion.updateUI();
+		statusConeccion.setForeground(Color.GREEN);
+		for(int i=0; i< 200; i++) {
+			statusConeccion.setText("CONECTADO ("+i+")");			
+			statusConeccion.updateUI();
+		}
 	}
 	
 	public void setDesconectado(){
-		statusConeccion.setText("DESCONECTADO :(");
 		statusConeccion.setForeground(Color.RED);
-		statusConeccion.updateUI();
+		for(int i=0; i< 200; i++) {
+			statusConeccion.setText("DESCONECTADO ("+i+")");
+			
+			statusConeccion.updateUI();
+		}
 	}
 	
 	public void setFont(Font font){

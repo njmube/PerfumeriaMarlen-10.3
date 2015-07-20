@@ -463,7 +463,7 @@ public class EntradaSalidaDAO {
 			rs.last();
 			int size = rs.getRow();
 			rs.beforeFirst();
-			logger.info("->size rs :"+size);
+			logger.info("->rs.last(): rs.getRow()="+size);
 			
 			while (rs.next()) {
 				EntradaSalidaQuickView x = new EntradaSalidaQuickView();				
