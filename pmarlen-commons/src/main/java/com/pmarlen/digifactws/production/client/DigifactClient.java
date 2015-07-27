@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 /**
  *
  * @author alfredo
@@ -142,7 +140,7 @@ public class DigifactClient {
 			logger.info("-->>OK invocacion a DIGIFACT para pedidoVentaID=" + pedidoVenta.getId());
 			cfdVenta.setCallingErrorResult(null);
 		} catch (Exception ex) {
-			logger.log(Level.SEVERE, "-->>Error en invocacion a DIGIFACT para pedidoVentaID=" + pedidoVenta.getId(), ex);
+			logger.error("-->>Error en invocacion a DIGIFACT para pedidoVentaID=" + pedidoVenta.getId(), ex);
 			cfdVenta.setNumCfd(null);
 			cfdVenta.setTipo(null);
 			final String localizedMessage = ex.getLocalizedMessage().trim();

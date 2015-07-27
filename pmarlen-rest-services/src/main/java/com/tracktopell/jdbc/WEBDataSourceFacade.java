@@ -6,8 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.ConnectionPoolDataSource;
@@ -27,7 +27,7 @@ public class WEBDataSourceFacade extends DataSourceFacade{
 			logger.info("->prop="+prop);
 			DataSourceFacade.setStrategy(new WEBDataSourceFacade());
 		}catch(IOException ioe){
-			logger.log(Level.SEVERE, "Properties not found:", ioe);
+			logger.error("Properties not found:", ioe);
 		}		
 	}
 	

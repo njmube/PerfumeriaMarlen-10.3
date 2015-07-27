@@ -9,9 +9,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 /**
  * Constants
  */
@@ -91,7 +89,6 @@ public class Constants {
 	private static final String VERSION_FILE_RESOURCE = "/com/tracktopell/util/version/file/Version.properties";
 	
 	private static Logger logger = Logger.getLogger(Constants.class.getSimpleName());
-
 	private static String version   = null;
 	private static String buildTime = null;
 	private static String gitSHA1   = null;
@@ -110,7 +107,7 @@ public class Constants {
 				pro.load(resourceAsStream);
 				logger.info("->"+VERSION_FILE_RESOURCE+"=" + pro);				
 			} catch (IOException ex) {
-				logger.log(Level.SEVERE,"Can't load Version properties:", ex);
+				logger.error("Can't load Version properties:", ex);
 				throw new IllegalStateException("Can't load Version properties:"+VERSION_FILE_RESOURCE);
 			}
 		}

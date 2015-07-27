@@ -9,8 +9,8 @@ package com.pmarlen.caja.dao;
 import com.tracktopell.jdbc.DataSourceFacade;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
 

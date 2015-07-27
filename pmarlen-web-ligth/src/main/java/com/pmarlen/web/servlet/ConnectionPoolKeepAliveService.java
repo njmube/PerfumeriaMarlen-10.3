@@ -12,8 +12,8 @@ import com.pmarlen.backend.model.Estado;
 import com.pmarlen.backend.model.Usuario;
 import com.pmarlen.backend.model.quickviews.UsuarioQuickView;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -45,16 +45,16 @@ public class ConnectionPoolKeepAliveService extends Thread implements Runnable{
 	@Override
 	public void run() {
 		running = true;
-		logger.fine("-> run: running?"+running);
+		logger.debug("-> run: running?"+running);
 		
 		while(running){			
 			try {
 				ArrayList<Estado> estados = EstadoDAO.getInstance().findAll();
 				
-				logger.fine("\t-> while ("+running+"): getting estados:"+(estados!=null?estados.size()+" elements.":null));				
+				logger.debug("\t-> while ("+running+"): getting estados:"+(estados!=null?estados.size()+" elements.":null));				
 				Thread.sleep(60000);
 			} catch(Exception e){
-				logger.log(Level.SEVERE, "while running:", e);
+				logger.error("while running:", e);
 				break;
 			}
 		}

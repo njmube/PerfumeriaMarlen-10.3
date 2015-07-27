@@ -10,7 +10,7 @@ import com.pmarlen.web.security.managedbean.SessionUserMB;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -36,7 +36,7 @@ public class ProductoMB  {
         try{
 			entityList = ProductoDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			entityList = new ArrayList<ProductoQuickView>();
 		}
 		//logger.info("->ProductoMB: init:entityList="+entityList);

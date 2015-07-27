@@ -25,8 +25,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.ServletException;
@@ -116,7 +116,7 @@ public class SyncServlet extends HttpServlet {
 			}
 			logger.info("OK, finish !");
 		} catch (Exception ex) {
-			logger.log(Level.SEVERE, "-->>error:", ex);
+			logger.error("-->>error:", ex);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			os.close();

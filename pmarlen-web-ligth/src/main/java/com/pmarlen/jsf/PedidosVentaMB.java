@@ -18,8 +18,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -55,7 +55,7 @@ public class PedidosVentaMB  {
 	}
 
 	public ArrayList<EntradaSalidaQuickView> getPedidosVentas() {
-		logger.fine("->getPedidosVentas");
+		logger.debug("->getPedidosVentas");
 		if(pedidosVentas == null){
 			try {
 				pedidosVentas = EntradaSalidaDAO.getInstance().findAllActivePendidos();
@@ -63,7 +63,7 @@ public class PedidosVentaMB  {
 					logger.info("->refrescar:pedidosVentas.size()="+pedidosVentas.size());			
 				}
 			} catch (DAOException ex) {
-				logger.severe(ex.getMessage());
+				logger.error(ex.getMessage());
 			}
 		}
 		return pedidosVentas;
@@ -80,17 +80,17 @@ public class PedidosVentaMB  {
 	}
 	
 	public int getSizeList(){
-		logger.fine("->getSizeList()");
+		logger.debug("->getSizeList()");
 		return getPedidosVentas().size();
 	}
 
 	public int getViewRows() {
-		logger.fine("->getViewRows()");
+		logger.debug("->getViewRows()");
 		return viewRows;
 	}
 
 	public void setViewRows(int viewRows) {
-		logger.fine("->setViewRows("+viewRows+")");
+		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
 	public String getImporteMoneda(double f){

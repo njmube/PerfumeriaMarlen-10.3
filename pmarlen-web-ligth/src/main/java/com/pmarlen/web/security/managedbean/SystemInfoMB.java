@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 import java.text.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
@@ -30,14 +30,41 @@ public class SystemInfoMB  implements Serializable{
 	private static String environment=null;
 	private static final transient Logger logger = Logger.getLogger(SystemInfoMB.class.getSimpleName());
 	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	private static String db        = null;
+	private static String user      = null;
+	private static String password  = null;
+
 	private static Properties prop = new Properties();
 	static{
 		try {
 			prop.load(WEBDataSourceFacade.class.getResourceAsStream("/env_vars.properties"));
 		}catch(IOException ioe){
-			logger.log(Level.SEVERE, "Properties not found:", ioe);
+			logger.error("Properties not found:", ioe);
 		}
 	}
+
+	public static String getDB() {
+		if (db == null) {
+			db   = prop.getProperty("db");			
+		}
+		return db;
+	}
+	
+	public static String getUser() {
+		if (user == null) {
+			user  = prop.getProperty("user");			
+		}
+		return user;
+	}
+	
+	public static String getPassword() {
+		if (password == null) {
+			password   = prop.getProperty("password");			
+		}
+		return password;
+	}
+
+
 	
 	public String getSystemVersion() {
 		return Constants.getServerVersion();

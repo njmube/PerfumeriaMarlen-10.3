@@ -17,8 +17,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -54,39 +54,39 @@ public class HistoricoComprasMB  {
 	}
 
 	public ArrayList<EntradaSalidaQuickView> getCompras() {
-		logger.fine("->getCompras");
+		logger.debug("->getCompras");
 		if(compras == null){
 			try {
 				compras = EntradaSalidaDAO.getInstance().findAllHistoricoCompras();
 				logger.info("->refrescar:compras.size()="+compras.size());
 				if(compras != null){
-					logger.config("compras.size()="+compras.size());				 
+					logger.debug("compras.size()="+compras.size());				 
 				}
 			}catch(DAOException de){
 				compras = new ArrayList<EntradaSalidaQuickView>();
-				logger.severe(de.getMessage());
+				logger.error(de.getMessage());
 			}
 		}
 		return compras;
 	}
 	
 	public void editarCompra(int pedidoVentaId){
-		logger.config("->editarPedido:pedidoVentaId="+pedidoVentaId);
+		logger.debug("->editarPedido:pedidoVentaId="+pedidoVentaId);
 		editarCompraMB.editar(pedidoVentaId);
 	}
 	
 	public int getSizeList(){
-		logger.fine("->getSizeList()");
+		logger.debug("->getSizeList()");
 		return getCompras().size();
 	}
 
 	public int getViewRows() {
-		logger.fine("->getViewRows()");
+		logger.debug("->getViewRows()");
 		return viewRows;
 	}
 
 	public void setViewRows(int viewRows) {
-		logger.fine("->setViewRows("+viewRows+")");
+		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
 	public String getImporteMoneda(double f){

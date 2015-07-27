@@ -6,8 +6,8 @@ package com.pmarlen.caja.control;
 
 import com.pmarlen.backend.dao.DAOException;
 import com.pmarlen.backend.dao.ProductoDAO;
-import com.pmarlen.backend.model.CantidadCellRender;
-import com.pmarlen.backend.model.DetalleProductoTableModel;
+import com.pmarlen.caja.model.CantidadCellRender;
+import com.pmarlen.caja.model.DetalleProductoTableModel;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.ProductoQuickView;
 import com.pmarlen.caja.model.ImporteCellRender;

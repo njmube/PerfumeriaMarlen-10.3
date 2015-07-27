@@ -17,8 +17,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -54,36 +54,36 @@ public class HistoricoDevolucionesVentaMB  {
 	}
 
 	public ArrayList<EntradaSalidaQuickView> getDevoluciones() {
-		logger.fine("->getDevoluciones");
+		logger.debug("->getDevoluciones");
 		if(devoluciones == null) {
 			try {
 				devoluciones = EntradaSalidaDAO.getInstance().findAllHistoricoDevs();
 				if(devoluciones != null){
-					logger.config("devoluciones.size()="+devoluciones.size());				 
+					logger.debug("devoluciones.size()="+devoluciones.size());				 
 				}
 			}catch(DAOException de){
-				logger.severe(de.getMessage());
+				logger.error(de.getMessage());
 			}
 		}		
 		return devoluciones;
 	}
 	public void editar(int devolucionId){
-		logger.config("->editar:devolucionId="+devolucionId);
+		logger.debug("->editar:devolucionId="+devolucionId);
 		editarDevolucionMB.editar(devolucionId);
 	}
 
 	public int getSizeList(){
-		logger.fine("->getSizeList()");
+		logger.debug("->getSizeList()");
 		return getDevoluciones().size();
 	}
 
 	public int getViewRows() {
-		logger.fine("->getViewRows()");
+		logger.debug("->getViewRows()");
 		return viewRows;
 	}
 
 	public void setViewRows(int viewRows) {
-		logger.fine("->setViewRows("+viewRows+")");
+		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
 	public String getImporteMoneda(double f){

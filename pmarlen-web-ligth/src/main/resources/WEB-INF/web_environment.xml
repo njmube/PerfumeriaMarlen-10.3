@@ -25,6 +25,10 @@
 		<param-name>primefaces.FONT_AWESOME</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<context-param>
+		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
     <!-- Welcome page -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -59,11 +63,16 @@
         <servlet-name>GenerarPDFFactura</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.GenerarPDFFactura</servlet-class>
     </servlet>
-    <!-- Map these files with JSF -->
     <servlet>
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>com.pmarlen.web.servlet.ImageServlet</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>RespaldarDB</servlet-name>
+        <servlet-class>com.pmarlen.web.servlet.RespaldarDB</servlet-class>
+    </servlet>
+	<!-- Map these files with JSF -->
+
 	
 	<servlet>
         <servlet-name>jersey-serlvet</servlet-name>
@@ -147,7 +156,12 @@
 	<servlet-mapping>
         <servlet-name>PMCajaUpdateServlet</servlet-name>
         <url-pattern>/pmcajaupdate/*</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>RespaldarDB</servlet-name>
+        <url-pattern>/respaldardb/PMDB103_mysqldump.sql.tgz</url-pattern>
     </servlet-mapping>    
+
     <!--
     <filter>
         <filter-name>JSFTraceFilter</filter-name>

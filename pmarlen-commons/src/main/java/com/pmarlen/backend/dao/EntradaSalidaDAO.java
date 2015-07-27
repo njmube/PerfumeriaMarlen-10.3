@@ -33,8 +33,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;	
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
@@ -56,7 +55,7 @@ public class EntradaSalidaDAO {
 	private static EntradaSalidaDAO instance;
 
 	private EntradaSalidaDAO(){	
-		logger.fine("created EntradaSalidaDAO.");
+		logger.debug("created EntradaSalidaDAO.");
 	}
 
 	public static EntradaSalidaDAO getInstance() {
@@ -146,7 +145,7 @@ public class EntradaSalidaDAO {
 			logger.info("->OK, actualizado");
 
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -155,7 +154,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "findAll:clossing:", ex);
+					logger.error("findAll:clossing:", ex);
 				}
 			}
 		}
@@ -297,7 +296,7 @@ public class EntradaSalidaDAO {
 			}
 
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -310,7 +309,7 @@ public class EntradaSalidaDAO {
 
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -375,7 +374,7 @@ public class EntradaSalidaDAO {
 			}
 
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -384,7 +383,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -526,7 +525,7 @@ public class EntradaSalidaDAO {
 			logger.info("------------------------------");
 			logger.info("->FOUND :"+r.size()+" RECORDS.");
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -535,7 +534,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "findAll:clossing:", ex);
+					logger.error("findAll:clossing:", ex);
 				}
 			}
 		}
@@ -652,11 +651,11 @@ public class EntradaSalidaDAO {
 			conn.commit();
 			logger.info("->EntradaSalida after Commit");
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				conn.rollback();
 			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
+				logger.error("RollBack failed:", ex);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -665,7 +664,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -753,11 +752,11 @@ public class EntradaSalidaDAO {
 
 			conn.commit();
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				conn.rollback();
 			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
+				logger.error("RollBack failed:", ex);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -766,7 +765,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -808,11 +807,11 @@ public class EntradaSalidaDAO {
 
 			conn.commit();
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				conn.rollback();
 			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
+				logger.error("RollBack failed:", ex);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -821,7 +820,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -909,11 +908,11 @@ public class EntradaSalidaDAO {
 			conn.commit();
 
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				conn.rollback();
 			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
+				logger.error("RollBack failed:", ex);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -922,7 +921,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -976,7 +975,7 @@ public class EntradaSalidaDAO {
 			try {
 				logger.info("-->> cfd ="+BeanUtils.describe(cfd));
 			} catch (Exception ex) {
-				logger.log(Level.SEVERE, null, ex);
+				logger.error ("Describe fails:", ex);
 			}
 			logger.info("===================>> INSERTING OR UPDATING ================");
 			if(cfd.getId() == null){
@@ -1090,12 +1089,12 @@ public class EntradaSalidaDAO {
 			conn.commit();
 			logger.info("============== COMMIT =================");
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				conn.rollback();
 				logger.info("============== ROLLBACK =================");
 			} catch (SQLException exR) {
-				logger.log(Level.SEVERE, "RollBack failed:", ex);
+				logger.error("RollBack failed:", ex);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -1115,7 +1114,7 @@ public class EntradaSalidaDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -1123,7 +1122,7 @@ public class EntradaSalidaDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

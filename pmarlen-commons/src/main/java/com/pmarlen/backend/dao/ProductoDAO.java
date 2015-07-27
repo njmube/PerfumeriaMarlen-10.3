@@ -25,8 +25,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;	
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Class for ProductoDAO of Table PRODUCTO.
@@ -47,7 +46,7 @@ public class ProductoDAO {
 	private static ProductoDAO instance;
 
 	private ProductoDAO(){	
-		logger.fine("created ProductoDAO.");
+		logger.debug("created ProductoDAO.");
 	}
 
 	public static ProductoDAO getInstance() {
@@ -97,7 +96,7 @@ public class ProductoDAO {
 				throw new EntityNotFoundException("PRODUCTO NOT FOUND FOR CODIGO_BARRAS=" + x.getCodigoBarras());
 			}
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -106,7 +105,7 @@ public class ProductoDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -146,7 +145,7 @@ public class ProductoDAO {
 			 */
 			ps.setInt(1, almacenId);
 			ps.setString(2, codigo);
-			logger.fine("->findAllExclusiveByCodigo: set parameters, ok");
+			logger.debug("->findAllExclusiveByCodigo: set parameters, ok");
 
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -176,7 +175,7 @@ public class ProductoDAO {
 			}
 			logger.info("->findAllExclusiveByCodigo: x="+x);
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -185,7 +184,7 @@ public class ProductoDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -194,7 +193,7 @@ public class ProductoDAO {
 	}
 
 	public ArrayList<EntradaSalidaDetalleQuickView> findAllByDesc(int almacenId, String desc,boolean exclusive) throws DAOException {
-		logger.fine("almacenId="+almacenId+", desc="+desc+", exclusive="+exclusive);
+		logger.debug("almacenId="+almacenId+", desc="+desc+", exclusive="+exclusive);
 		ArrayList<EntradaSalidaDetalleQuickView> r = new ArrayList<EntradaSalidaDetalleQuickView>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -232,7 +231,7 @@ public class ProductoDAO {
 
 			ps = conn.prepareStatement(extendedQuery);
 			
-			logger.fine("Query->"+extendedQuery+"<-");
+			logger.debug("Query->"+extendedQuery+"<-");
 			ps.setInt(1, almacenId);
 
 			rs = ps.executeQuery();
@@ -262,7 +261,7 @@ public class ProductoDAO {
 				r.add(x);
 			}
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -271,7 +270,7 @@ public class ProductoDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -307,7 +306,7 @@ public class ProductoDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -316,7 +315,7 @@ public class ProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -418,7 +417,7 @@ AND       AP.ALMACEN_ID=1;
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -427,7 +426,7 @@ AND       AP.ALMACEN_ID=1;
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -461,7 +460,7 @@ AND       AP.ALMACEN_ID=1;
 
 			r = ps.executeUpdate();
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -469,7 +468,7 @@ AND       AP.ALMACEN_ID=1;
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -503,7 +502,7 @@ AND       AP.ALMACEN_ID=1;
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -511,7 +510,7 @@ AND       AP.ALMACEN_ID=1;
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -530,7 +529,7 @@ AND       AP.ALMACEN_ID=1;
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -538,7 +537,7 @@ AND       AP.ALMACEN_ID=1;
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

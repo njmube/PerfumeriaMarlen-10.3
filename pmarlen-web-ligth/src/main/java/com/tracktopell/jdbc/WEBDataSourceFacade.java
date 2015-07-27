@@ -12,8 +12,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.ConnectionPoolDataSource;
@@ -32,7 +32,7 @@ public class WEBDataSourceFacade extends DataSourceFacade{
 			prop.load(WEBDataSourceFacade.class.getResourceAsStream("/env_vars.properties"));
 			DataSourceFacade.setStrategy(new WEBDataSourceFacade());
 		}catch(IOException ioe){
-			logger.log(Level.SEVERE, "Properties not found:", ioe);
+			logger.error("Properties not found:", ioe);
 		}
 		
 	}
@@ -41,13 +41,13 @@ public class WEBDataSourceFacade extends DataSourceFacade{
 		Context ctx = null;
 		Connection conn = null;
         try {   
-			logger.fine("->getConnection: 1)ds="+ds);
+			logger.debug("->getConnection: 1)ds="+ds);
 			if(ds == null) {
 				ctx = new InitialContext();
-				logger.finest("->getConnection: ctx="+ctx);
+				logger.debug("->getConnection: ctx="+ctx);
 				ds = (DataSource) ctx.lookup("java:comp/env/"+prop.getProperty("jndi"));			
 				                              
-				logger.finest("->getConnection: 2)ds?"+ds);
+				logger.debug("->getConnection: 2)ds?"+ds);
 			}
 			conn = ds.getConnection();
         } catch (Exception e) {

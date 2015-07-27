@@ -21,8 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Blob;
 import java.sql.Timestamp;	
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 import com.pmarlen.backend.model.*;
 import com.tracktopell.jdbc.DataSourceFacade;
@@ -46,7 +45,7 @@ public class OfertaProductoDAO {
 	private static OfertaProductoDAO instance;
 
 	private OfertaProductoDAO(){	
-		logger.fine("created OfertaProductoDAO.");
+		logger.debug("created OfertaProductoDAO.");
 	}
 
 	public static OfertaProductoDAO getInstance() {
@@ -92,7 +91,7 @@ public class OfertaProductoDAO {
 				throw new EntityNotFoundException("OFERTA_PRODUCTO NOT FOUND FOR ID="+x.getId());
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -101,7 +100,7 @@ public class OfertaProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -133,7 +132,7 @@ public class OfertaProductoDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -142,7 +141,7 @@ public class OfertaProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -178,7 +177,7 @@ public class OfertaProductoDAO {
 				}
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -186,7 +185,7 @@ public class OfertaProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -217,7 +216,7 @@ public class OfertaProductoDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -225,7 +224,7 @@ public class OfertaProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -244,7 +243,7 @@ public class OfertaProductoDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -252,7 +251,7 @@ public class OfertaProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

@@ -26,9 +26,7 @@ import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 /**
  * Class for UsuarioDAO of Table USUARIO.
  * 
@@ -48,7 +46,7 @@ public class UsuarioDAO {
 	private static UsuarioDAO instance;
 
 	private UsuarioDAO(){	
-		logger.fine("created UsuarioDAO.");
+		logger.debug("created UsuarioDAO.");
 	}
 
 	public static UsuarioDAO getInstance() {
@@ -114,7 +112,7 @@ public class UsuarioDAO {
 			}
 			logger.info("<============================================");
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -123,7 +121,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -182,7 +180,7 @@ public class UsuarioDAO {
 			}
 			logger.info("<============================================");
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -191,7 +189,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -248,7 +246,7 @@ public class UsuarioDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -257,7 +255,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -301,7 +299,7 @@ public class UsuarioDAO {
 			}
 			
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -310,7 +308,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -350,13 +348,13 @@ public class UsuarioDAO {
 			psUP.close();
 			conn.commit();
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				if(conn!=null){
 					conn.rollback();
 				}
 			} catch(SQLException re){
-				logger.log(Level.SEVERE, "SQLException:", re);
+				logger.error("SQLException:", re);
 			}
 			throw new DAOException("InInsert:" + ex.getMessage());
 		} finally {
@@ -366,7 +364,7 @@ public class UsuarioDAO {
 					psUP.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -411,13 +409,13 @@ public class UsuarioDAO {
 			
 			conn.commit();
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			try {
 				if(conn!=null){
 					conn.rollback();
 				}
 			} catch(SQLException re){
-				logger.log(Level.SEVERE, "SQLException:", re);
+				logger.error("SQLException:", re);
 			}
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
@@ -426,7 +424,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -445,7 +443,7 @@ public class UsuarioDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -453,7 +451,7 @@ public class UsuarioDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

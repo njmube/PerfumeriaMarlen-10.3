@@ -7,8 +7,8 @@
 package com.pmarlen.web.security.managedbean;
 
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -68,7 +68,7 @@ public class EmailChecker {
 					port = port_2;
 					return true;
 				} catch (MessagingException me2) {
-					logger.log(Level.WARNING, "fail:", me2);
+					logger.error( "fail:", me2);
 					if(me2 instanceof javax.mail.AuthenticationFailedException && port ==null) {
 						port = port_2;
 					}

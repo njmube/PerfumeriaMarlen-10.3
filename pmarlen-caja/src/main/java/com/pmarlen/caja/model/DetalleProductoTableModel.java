@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pmarlen.backend.model;
+package com.pmarlen.caja.model;
 
 import com.pmarlen.backend.model.Producto;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import com.pmarlen.backend.model.EntradaSalidaDetalle;
 import com.pmarlen.model.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *

@@ -32,8 +32,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -129,7 +129,7 @@ public class EditarPedidoVentaMB{
 			}
 			logger.info("entityList:<<<---------");
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			entradaSalida = new EntradaSalidaQuickView();
 			entradaSalida.setId(0);
 			entradaSalidaFooter= new EntradaSalidaFooter();
@@ -166,7 +166,7 @@ public class EditarPedidoVentaMB{
 	
 	protected void validarSiEstabaEditandoOtro(String tipoES){
 		if(ultimoESId != 0 && hayCambios){
-			logger.warning("Estaba editando #"+entradaSalida.getId());
+			logger.warn("Estaba editando #"+entradaSalida.getId());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"ADVERTENCIA AL EDITAR ",
 					"ESTABA EDITANDO "+tipoES+" #"+entradaSalida.getId()+", ¡ Y NO GUARDO !, AL EDITAR ESTE SE PERDIERON LOS CAMBIOS EN LA EDICÓN ANTERIOR") );		
@@ -267,7 +267,7 @@ public class EditarPedidoVentaMB{
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"BUSACAR PRODUCTOS",  "NO SE SE ENCONTRÓ EL NADA CON ESA DESCRIPCIÓN.") );		
 				}
 			}catch(DAOException de){
-				logger.severe(de.getMessage());
+				logger.error(de.getMessage());
 				FacesContext context = FacesContext.getCurrentInstance();         
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"BUSACAR PRODUCTOS",  "OCURRIÓ UN ERROR AL BUSCAR") );		
 			}
@@ -313,7 +313,7 @@ public class EditarPedidoVentaMB{
 				cantidadAgregarCodigo   = 1;
 			}
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"AGREGAR PRODUCTO",  "OCURRIÓ UN ERROR AL BUSCAR.") );
 
@@ -441,7 +441,7 @@ public class EditarPedidoVentaMB{
 		try {
 			clientes = ClienteDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			clientes = new ArrayList<ClienteQuickView>();
 		}
 		return clientes;
@@ -516,7 +516,7 @@ public class EditarPedidoVentaMB{
 
 			}
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"AGREGAR PRODUCTO",  "OCURRIÓ UN ERROR AL BUSCAR.") );
 
@@ -570,7 +570,7 @@ public class EditarPedidoVentaMB{
 		try {
 			formaDePagos = FormaDePagoDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());			
+			logger.error(de.getMessage());			
 		}
 		if(formaDePagos != null){
 			formaDePagoList.add(new SelectItem(0,"--SELECCIONE--"));			
@@ -592,7 +592,7 @@ public class EditarPedidoVentaMB{
 		try {
 			metodoDePagos = MetodoDePagoDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 		}
 		if(metodoDePagos != null){
 			metodoDePagoList.add(new SelectItem(0,"--SELECCIONE--"));			
@@ -675,7 +675,7 @@ public class EditarPedidoVentaMB{
 				try {
 					dvpAdd = (EntradaSalidaDetalleQuickView) BeanUtils.cloneBean(pv);
 				} catch (Exception ex) {
-					logger.log(Level.SEVERE,"UPS, no se pudede clonar", ex);
+					logger.error("UPS, no se pudede clonar", ex);
 				}
 				dvpAdd.setRowId(System.currentTimeMillis());
 				dvpAdd.setAlmacenId(tipoAlmacen);
@@ -765,7 +765,7 @@ public class EditarPedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE ACTUALIZÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->guardar: Exception", e);
+			logger.error("->guardar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GUARDAR",  "HUBO UN ERROR AL GUARDAR.") );
 		}
@@ -782,7 +782,7 @@ public class EditarPedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"VERIFICAR",  "SE VERIFICÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"VERFICAR",  "HUBO UN ERROR AL VERIFICAR.") );
 		}		
@@ -798,7 +798,7 @@ public class EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"SURTIR",  "SE SURTIÓ CORRECTAMENTE EL PEDIDO #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL SURTIR.") );
 		}		
@@ -813,7 +813,7 @@ public class EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR",  "CANCELAR PENDIENTE PEDIDO #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL CANCELAR.") );
 		}		
@@ -826,7 +826,7 @@ public class EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR CAMBIOS",  "SE CANCELARON LOS CAMBIOS Y RECARGÓ EL PEDIDO #"+entradaSalida.getId()+".") );
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"CANCELAR CAMBIOS",  "HUBO UN ERROR AL CANCELAR CAMBIOS.") );
 		}		
@@ -914,7 +914,7 @@ public class EditarPedidoVentaMB{
 	}
 	
 	public int getAlturaExtraTabla() {
-		logger.fine("->getAlturaExtraTabla: isVerificable()="+isVerificable()+", isSurtible()="+isSurtible());
+		logger.debug("->getAlturaExtraTabla: isVerificable()="+isVerificable()+", isSurtible()="+isSurtible());
 		if(isVerificable() || isSurtible()){
 			logger.info("->getAlturaExtraTabla: 0");
 			return 0;
@@ -980,7 +980,7 @@ public class EditarPedidoVentaMB{
 			logger.info("OK DAO y WS Digifact, invodocado");
 			
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			digifactWSState=4;
 		} finally{
 			logger.info("--->> fin Thread, actualizarEstadoPorResultadoWS=false");
@@ -1015,7 +1015,7 @@ public class EditarPedidoVentaMB{
 			reset();
 			
 		} catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GENERAR C.F.D.",  "HUBO UN ERROR AL INVOCAR WS.") );
 			digifactWSState=4;
@@ -1038,7 +1038,7 @@ public class EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GENERAR C.F.D.",  "SE GENRÓ EL C.F.D.I..") );			
 			
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GENERAR C.F.D.",  "HUBO UN ERROR AL INVOCAR WS.") );
 		}

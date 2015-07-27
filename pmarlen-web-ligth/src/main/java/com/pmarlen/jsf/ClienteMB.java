@@ -9,8 +9,8 @@ import com.pmarlen.web.security.managedbean.SessionUserMB;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +34,7 @@ public class ClienteMB  {
         try{
 			entityList = ClienteDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			entityList = new ArrayList<ClienteQuickView>();
 		}
 		logger.info("->ClienteMB: init:entityList="+entityList);
@@ -94,7 +94,7 @@ public class ClienteMB  {
 			}
 			reset();
 		} catch(Exception e){
-			logger.log(Level.SEVERE,"AL GUARDAR CLIENTE:",e);
+			logger.error("AL GUARDAR CLIENTE:",e);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dialogTitle, "OCURRIO UN ERROR AL GUARDAR"));
 			FacesContext.getCurrentInstance().validationFailed();
 		}

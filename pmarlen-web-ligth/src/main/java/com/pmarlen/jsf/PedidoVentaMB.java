@@ -28,8 +28,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -99,11 +99,11 @@ public class PedidoVentaMB{
 		autorizaDescuento = true;
 		tablaExpandida = false;
 		tableDraggableEnabled = false;
-		logger.finer("OK");
+		logger.debug("OK");
 	}
 
 	public String reset() {
-		logger.finer("->EntradaSalidaDetalleMB: rest.");
+		logger.debug("->EntradaSalidaDetalleMB: rest.");
 		init();
 		return "/pages/cliente";
 	}
@@ -159,14 +159,14 @@ public class PedidoVentaMB{
 	}
 
 	public void cadenaBusquedaChanged(ValueChangeEvent e) {
-		logger.finer("->cadenaBusquedaChanged: e:"+e.getNewValue());
+		logger.debug("->cadenaBusquedaChanged: e:"+e.getNewValue());
 	}
 	public void codigoChanged(ValueChangeEvent e) {
-		logger.finer("->codigoChanged: e:"+e.getNewValue()+", cantidadAgregarCodigo="+cantidadAgregarCodigo);
+		logger.debug("->codigoChanged: e:"+e.getNewValue()+", cantidadAgregarCodigo="+cantidadAgregarCodigo);
 	}
 	
 	public void buscarXCadena() {
-		logger.finer("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
+		logger.debug("->buscarXCadena:tipoAlmacen="+tipoAlmacen+", cadenaBusqueda="+cadenaBusqueda);
 		if(cadenaBusqueda.trim().length()>3) {	
 			try {
 				boolean modoExclusivo = false;
@@ -181,14 +181,14 @@ public class PedidoVentaMB{
 					FacesContext context = FacesContext.getCurrentInstance();         
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"BUSCAR PRODUCTOS",  "SE ENCONTRARÓN "+resultadoBusqueda.size()+" PRODUCTO"+(resultadoBusqueda.size()>1?"S":"") ));
 
-					logger.finer("->buscar:findAllExclusiveByDesc:OK, resultadoBusqueda.size()="+resultadoBusqueda.size());
+					logger.debug("->buscar:findAllExclusiveByDesc:OK, resultadoBusqueda.size()="+resultadoBusqueda.size());
 					resultadoBusquedaSI = resultadoBusqueda.get(0);
 				} else {
 					FacesContext context = FacesContext.getCurrentInstance();         
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"BUSACAR PRODUCTOS",  "NO SE SE ENCONTRÓ EL NADA CON ESA DESCRIPCIÓN.") );		
 				}
 			}catch(DAOException de){
-				logger.severe(de.getMessage());
+				logger.error(de.getMessage());
 				FacesContext context = FacesContext.getCurrentInstance();         
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"BUSACAR PRODUCTOS",  "OCURRIÓ UN ERROR AL BUSCAR") );		
 			}
@@ -234,7 +234,7 @@ public class PedidoVentaMB{
 				cantidadAgregarCodigo   = 1;
 			}
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"AGREGAR PRODUCTO",  "OCURRIÓ UN ERROR AL BUSCAR.") );
 
@@ -245,24 +245,24 @@ public class PedidoVentaMB{
 	}
 	
 	public void cantidadDetalleCambio(long cambioRowId){
-		logger.finer("->cantidadDetalleCambio:cambioRowId="+cambioRowId);
+		logger.debug("->cantidadDetalleCambio:cambioRowId="+cambioRowId);
 		actualizarTotales();
 	}
 	
 	public void cantidadDetalleChanged(ValueChangeEvent event) {
 		int cantidadChanged = (Integer) event.getNewValue();
-		logger.finer("->updateCantidad:cantidadChanged="+cantidadChanged);
+		logger.debug("->updateCantidad:cantidadChanged="+cantidadChanged);
 		actualizarTotales();
 	}
 	
 	public void deleteRow(long deleteRowId){
-		logger.finer("->deleteRow:deleteRowId="+deleteRowId);
+		logger.debug("->deleteRow:deleteRowId="+deleteRowId);
 		int i=0;
 		int indexDelete=-1;
 		int cantidadEliminada=0;
 		String codigoEliminado="";
 		for(EntradaSalidaDetalleQuickView pv:entityList){
-			logger.finer("->deleteRow:\tdelete? "+pv.getRowId()+"=="+deleteRowId);
+			logger.debug("->deleteRow:\tdelete? "+pv.getRowId()+"=="+deleteRowId);
 			if(pv.getRowId()==deleteRowId){
 				cantidadEliminada= pv.getCantidad();
 				codigoEliminado = pv.getProductoCodigoBarras();
@@ -273,7 +273,7 @@ public class PedidoVentaMB{
 		}
 		if(indexDelete >=0) {
 			entityList.remove(indexDelete);
-			logger.finer("->deleteRow:delete index:"+indexDelete);
+			logger.debug("->deleteRow:delete index:"+indexDelete);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ELIMINAR PRODUCTO",  "SE ELIMINÓ CORRECTAMENTE "+cantidadEliminada+" x ["+codigoEliminado+"].") );
 		
@@ -295,7 +295,7 @@ public class PedidoVentaMB{
 		
 
 	public void setResultadoBusquedaSelected(String resultadoBusquedaSelected) {
-		logger.finer("->setResultadoBusquedaSelected("+resultadoBusquedaSelected+")");
+		logger.debug("->setResultadoBusquedaSelected("+resultadoBusquedaSelected+")");
 		this.resultadoBusquedaSelected = resultadoBusquedaSelected;
 		
 		for(EntradaSalidaDetalleQuickView x:resultadoBusqueda){
@@ -328,7 +328,7 @@ public class PedidoVentaMB{
 	}
 	
 	public void conservarBusquedaChanged(){
-		logger.finer("->conservarBusquedaChanged:conservarBusqueda="+conservarBusqueda);
+		logger.debug("->conservarBusquedaChanged:conservarBusqueda="+conservarBusqueda);
 	}
 	
 	public void onRowReorder(ReorderEvent event) {
@@ -361,7 +361,7 @@ public class PedidoVentaMB{
 		try {
 			clientes = ClienteDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			clientes = new ArrayList<ClienteQuickView>();
 		}
 		return clientes;
@@ -381,7 +381,7 @@ public class PedidoVentaMB{
 	}
 
 	public void setCantidadAgregarCodigo(int cantidadAgregarCodigo) {
-		logger.finer("->setCantidadAgregarCodigo:cantidadAgregarCodigo("+this.cantidadAgregarCodigo+")="+cantidadAgregarCodigo);
+		logger.debug("->setCantidadAgregarCodigo:cantidadAgregarCodigo("+this.cantidadAgregarCodigo+")="+cantidadAgregarCodigo);
 		this.cantidadAgregarCodigo = cantidadAgregarCodigo;
 	}
 	
@@ -394,15 +394,15 @@ public class PedidoVentaMB{
 	}
 	
 	public void agregarCodigo() {
-		logger.finer("->agregarCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
+		logger.debug("->agregarCodigo:cantidadAgregarCodigo="+cantidadAgregarCodigo+", codigo="+codigo);
 		
 		EntradaSalidaDetalleQuickView dvpAdd = null;
 		try {
 			dvpAdd = ProductoDAO.getInstance().findByCodigo(tipoAlmacen,codigo);
 			if(dvpAdd != null){
-				logger.finer("->agregarCodigo:dvpAdd="+dvpAdd);
+				logger.debug("->agregarCodigo:dvpAdd="+dvpAdd);
 
-				logger.finer("->agregarCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
+				logger.debug("->agregarCodigo:OK +"+cantidadAgregarCodigo+" x "+dvpAdd);
 
 				dvpAdd.setCantidad(cantidadAgregarCodigo);
 
@@ -435,7 +435,7 @@ public class PedidoVentaMB{
 
 			}
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"AGREGAR PRODUCTO",  "OCURRIÓ UN ERROR AL BUSCAR.") );
 
@@ -446,12 +446,12 @@ public class PedidoVentaMB{
 	}
 	
 	public void actualizarTotales(){
-		logger.finer("->actualizarTotales:");
+		logger.debug("->actualizarTotales:");
 		entradaSalidaFooter.calculaTotalesDesde(entradaSalida, entityList);
 	}
 
 	public void onClienteListChange() {
-		logger.finer("->onClienteListChange:clienteId="+entradaSalida.getClienteId());
+		logger.debug("->onClienteListChange:clienteId="+entradaSalida.getClienteId());
 		clienteSeleccionado = null;
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(entradaSalida.getClienteId())){
@@ -462,7 +462,7 @@ public class PedidoVentaMB{
 	}
 	
 	public void seleccionaCliente(int clienteIdChoiced){
-		logger.finer("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
+		logger.debug("->seleccionaCliente:clienteIdChoiced="+clienteIdChoiced);
 		for(Cliente c:getClientes()){
 			if(c.getId().equals(clienteIdChoiced)){
 				entradaSalida.setClienteId(c.getId());
@@ -479,7 +479,7 @@ public class PedidoVentaMB{
 		try {
 			formaDePagos = FormaDePagoDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());			
+			logger.error(de.getMessage());			
 		}
 		if(formaDePagos != null){
 			formaDePagoList.add(new SelectItem(0,"--SELECCIONE--"));			
@@ -491,7 +491,7 @@ public class PedidoVentaMB{
 	}
 
 	public void onFormaDePagoListChange() {
-		logger.finer("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+entradaSalida.getFormaDePagoId());
+		logger.debug("->onFormaDePagoListChange:entradaSalida.getFormaDePagoId()="+entradaSalida.getFormaDePagoId());
 	}
 	
 	public List<SelectItem> getMetodoDePagoList() {
@@ -500,7 +500,7 @@ public class PedidoVentaMB{
 		try {
 			metodoDePagos = MetodoDePagoDAO.getInstance().findAll();
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 		}
 		if(metodoDePagos != null){
 			metodoDePagoList.add(new SelectItem(0,"--SELECCIONE--"));			
@@ -512,7 +512,7 @@ public class PedidoVentaMB{
 	}
 
 	public void onMetodoDePagoListChange() {
-		logger.finer("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+entradaSalida.getMetodoDePagoId());
+		logger.debug("->onMetodoDePagoListChange:entradaSalida.getMetodoDePagoId()="+entradaSalida.getMetodoDePagoId());
 	}
 	
 	protected ArrayList<SelectItem> descuentoEspecialList;
@@ -529,7 +529,7 @@ public class PedidoVentaMB{
 	}
 
 	public void onDescuentoEspecialListChange() {
-		logger.finer("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+entradaSalida.getPorcentajeDescuentoExtra());
+		logger.debug("->onDescuentoEspecialListChange:PorcentajeDescuentoExtra="+entradaSalida.getPorcentajeDescuentoExtra());
 		actualizarTotales();
 	}
 
@@ -570,22 +570,22 @@ public class PedidoVentaMB{
 	}
 
 	public void comentariosChanged() {
-		logger.finer("->comentariosChanged:comentarios="+entradaSalida.getComentarios());		
+		logger.debug("->comentariosChanged:comentarios="+entradaSalida.getComentarios());		
 	}
 
 	public void onResultadoBusquedaChange() {
-		logger.finer("->onResultadoBusquedaChange:resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.debug("->onResultadoBusquedaChange:resultadoBusquedaSelected="+resultadoBusquedaSelected);
 	}
 	
 	public void agregarSeleccionadoDeBusqueda() {
-		logger.finer("->agregarSeleccionadoDeBusqueda:"+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
+		logger.debug("->agregarSeleccionadoDeBusqueda:"+cantidadAgregarBusqueda+" x resultadoBusquedaSelected="+resultadoBusquedaSelected);
 		EntradaSalidaDetalleQuickView dvpAdd=null;
 		for(EntradaSalidaDetalleQuickView pv:resultadoBusqueda){
 			if(pv.getProductoCodigoBarras().equals(resultadoBusquedaSelected)){
 				try {
 					dvpAdd = (EntradaSalidaDetalleQuickView) BeanUtils.cloneBean(pv);
 				} catch (Exception ex) {
-					logger.log(Level.SEVERE,"UPS, no se pudede clonar", ex);
+					logger.error("UPS, no se pudede clonar", ex);
 				}
 				dvpAdd.setRowId(System.currentTimeMillis());
 				dvpAdd.setAlmacenId(tipoAlmacen);
@@ -594,7 +594,7 @@ public class PedidoVentaMB{
 			}
 		}
 		if(dvpAdd != null) {
-			logger.finer("->agregarSeleccionadoDeBusqueda:OK +"+cantidadAgregarBusqueda+" x "+dvpAdd);
+			logger.debug("->agregarSeleccionadoDeBusqueda:OK +"+cantidadAgregarBusqueda+" x "+dvpAdd);
 			entityList.add(dvpAdd);
 			
 			FacesContext context = FacesContext.getCurrentInstance();         
@@ -613,13 +613,13 @@ public class PedidoVentaMB{
 	}
 	
 	public void setTipoAlmacen(int tipoAlmacen) {
-		logger.finer("->setTipoAlmacen:tipoAlmacen="+tipoAlmacen);
+		logger.debug("->setTipoAlmacen:tipoAlmacen="+tipoAlmacen);
 		this.tipoAlmacen = tipoAlmacen;
 	}
 
 	
 	public void onTipoAlmacenChange() {
-		logger.finer("->onTipoAlmacenChange:tipoAlmacen="+tipoAlmacen);
+		logger.debug("->onTipoAlmacenChange:tipoAlmacen="+tipoAlmacen);
 		cantidadAgregarBusqueda = 1;
 		cantidadAgregarCodigo   = 1;
 		cadenaBusqueda ="";
@@ -660,7 +660,7 @@ public class PedidoVentaMB{
 	}
 	
 	protected void validacion(){
-		logger.finer("->validacion");
+		logger.debug("->validacion");
 		
 	}
 	
@@ -686,7 +686,7 @@ public class PedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO EL PEDIDO #"+entradaSalida.getId()) );
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GUARDAR",  "OCURRIÓ UN ERROR AL GUARDAR.") );
 		}
@@ -694,12 +694,12 @@ public class PedidoVentaMB{
 	}
 	
 	public void cancelar() {
-		logger.finer("->cancelar");
+		logger.debug("->cancelar");
 		reset();
 	}
 	
 	public void cerrar() {
-		logger.finer("->cerrar");
+		logger.debug("->cerrar");
 		reset();
 	}
 
@@ -708,11 +708,11 @@ public class PedidoVentaMB{
 	}
 	
 	public void onComentariosChange() {
-		logger.finer("->onComentariosChange:comentarios="+entradaSalida.getComentarios());
+		logger.debug("->onComentariosChange:comentarios="+entradaSalida.getComentarios());
 	}
 	
 	public void onCondicionesChange() {
-		logger.finer("->onCondicionesChange:CondicionesDePago="+entradaSalida.getCondicionesDePago());
+		logger.debug("->onCondicionesChange:CondicionesDePago="+entradaSalida.getCondicionesDePago());
 	}
 	
 	public String getImporteDesglosado(double f){
@@ -732,7 +732,7 @@ public class PedidoVentaMB{
 	}
 	
 	public void onAutorizaDescuentoChange(){
-		logger.finer("autorizaDescuento="+this.autorizaDescuento);
+		logger.debug("autorizaDescuento="+this.autorizaDescuento);
 		if(this.autorizaDescuento){
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"DESCUENTO",  " SE AUTORIZÓ LA POLITICA DE DESCUENTO") );

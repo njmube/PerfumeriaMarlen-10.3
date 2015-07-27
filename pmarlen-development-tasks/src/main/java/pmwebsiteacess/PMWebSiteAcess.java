@@ -23,8 +23,8 @@ import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -82,7 +82,7 @@ public class PMWebSiteAcess {
 			});
 	
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}
 	}
 	
@@ -159,9 +159,9 @@ public class PMWebSiteAcess {
 			is.close();
 			logger.info("-------------------------------->");
 		} catch (MalformedURLException me) {
-			logger.log(Level.SEVERE, "la URL esta mal:", me);
+			logger.error("la URL esta mal:", me);
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}		
 		
 		return PHPSessionID;
@@ -221,9 +221,9 @@ public class PMWebSiteAcess {
 			is.close();
 			logger.info("-------------------------------->");
 		} catch (MalformedURLException me) {
-			logger.log(Level.SEVERE, "la URL esta mal:", me);
+			logger.error("la URL esta mal:", me);
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}		
 		
 		return result;
@@ -290,9 +290,9 @@ public class PMWebSiteAcess {
 			is.close();
 			logger.info("-------------------------------->");
 		} catch (MalformedURLException me) {
-			logger.log(Level.SEVERE, "la URL esta mal:", me);
+			logger.error("la URL esta mal:", me);
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}		
 		
 		return result;
@@ -386,9 +386,9 @@ public class PMWebSiteAcess {
 			is.close();
 			logger.info("-------------------------------->");
 		} catch (MalformedURLException me) {
-			logger.log(Level.SEVERE, "la URL esta mal:", me);
+			logger.error("la URL esta mal:", me);
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}		
 		
 		return result;
@@ -432,7 +432,7 @@ public class PMWebSiteAcess {
 			saveEdit(PHPSessionID, id, name, password, forgeryPT, URL_EMAIL_EDIT);
 			
 		} catch (Exception ioe) {
-			logger.log(Level.SEVERE, "Errror:", ioe);
+			logger.error("Errror:", ioe);
 		}
 	}
 	private static final String PASSWORD = "A9cD0H6NKEuM";

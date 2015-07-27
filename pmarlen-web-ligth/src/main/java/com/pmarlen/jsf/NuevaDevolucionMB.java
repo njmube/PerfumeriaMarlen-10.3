@@ -27,8 +27,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -64,7 +64,7 @@ public class NuevaDevolucionMB extends PedidoVentaMB{
 
 	@Override
 	public String reset() {
-		logger.finer("->EntradaSalidaDetalleMB: rest.");
+		logger.debug("->EntradaSalidaDetalleMB: rest.");
 		init();
 		return "/pages/nuevaDevolucion";
 	}
@@ -111,7 +111,7 @@ public class NuevaDevolucionMB extends PedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE CREO LA DEVOLUCIÓN #"+entradaSalida.getId()) );
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GUARDAR",  "OCURRIÓ UN ERROR AL GUARDAR.") );
 		}

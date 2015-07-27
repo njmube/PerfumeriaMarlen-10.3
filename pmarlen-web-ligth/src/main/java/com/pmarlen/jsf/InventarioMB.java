@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -88,7 +88,7 @@ public class InventarioMB  {
 				entityList = AlmacenProductoDAO.getInstance().findAllByAlmacen(almacenId);				
 			}catch(DAOException de){
 				entityList = new ArrayList<AlmacenProductoQuickView>();
-				logger.severe(de.getMessage());
+				logger.error(de.getMessage());
 			}		
 		}
 		return entityList;
@@ -106,7 +106,7 @@ public class InventarioMB  {
 			try {
 				almacenes=(List<Almacen>) AlmacenDAO.getInstance().findBySucursal(sucursalId);
 			}catch(DAOException de){
-				logger.severe(de.getMessage());			
+				logger.error(de.getMessage());			
 			}
 			if(almacenes != null){
 				//almacenList.add(new SelectItem(0,"--SELECCIONE--"));			
@@ -160,7 +160,7 @@ public class InventarioMB  {
 			yAxis.setMax(max);
 			*/
 		}catch(DAOException de){
-			logger.severe(de.getMessage());			
+			logger.error(de.getMessage());			
 		}
 	}
 
@@ -283,7 +283,7 @@ public class InventarioMB  {
 				FacesContext context = FacesContext.getCurrentInstance();         
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"ACTUALIZAR PRECIO",  "SE HA ACTUALIZADO EL PRECIO DE ESTE PRODUCTO PARA TIPO DE ALMACEN SELECCIONADO") );			
 			}catch(Exception e){
-				logger.log(Level.SEVERE, "en el DAO", e);
+				logger.error("en el DAO", e);
 				FacesContext context = FacesContext.getCurrentInstance();         
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ACTUALIZAR PRECIO",  "OCURRIO UN ERROR AL ACTUALIZAR") );			
 			}
@@ -308,7 +308,7 @@ public class InventarioMB  {
 	}
 
 	public void setViewRows(int viewRows) {
-		logger.fine("->setViewRows("+viewRows+")");
+		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
 	

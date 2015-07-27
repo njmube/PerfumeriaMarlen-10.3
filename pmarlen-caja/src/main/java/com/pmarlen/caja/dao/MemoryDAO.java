@@ -21,11 +21,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
+import org.apache.log4j.Logger;
 /**
  *
  * @author alfredo
@@ -65,7 +63,7 @@ public class MemoryDAO {
 				logger.info("->ok, Properties read:"+properties);
 				exsistFile = true;
 			}catch(IOException ioe){				
-				logger.log(Level.WARNING, "Can`t read File for properties", ioe);
+				logger.error( "Can`t read File for properties", ioe);
 			}
 		}
 	}
@@ -76,7 +74,7 @@ public class MemoryDAO {
 			properties.store(new FileOutputStream(propertiesFileNAme), "Persisted");
 			logger.info("->ok, writing.");
 		}catch(IOException ioe){
-			logger.log(Level.WARNING, "Can`t create File for properties", ioe);
+			logger.error( "Can`t create File for properties", ioe);
 		}
 	}
 
@@ -109,7 +107,7 @@ public class MemoryDAO {
 				}
 				readLocally();
 			}catch(IOException ioe){
-				logger.log(Level.SEVERE,"downoload",ioe);
+				logger.error("downoload",ioe);
 			}
 		}
 		return paqueteSinc;
@@ -127,11 +125,11 @@ public class MemoryDAO {
 				FramePrincipalControl.getInstance().getFramePrincipal().setConectado();
 				//FramePrincipalControl.getInstance().getFramePrincipal().repaint();
 			}catch(MalformedURLException e){
-				logger.log(Level.SEVERE,"URL: downoload",e);
+				logger.error("URL: downoload",e);
 				FramePrincipalControl.getInstance().getFramePrincipal().setDesconectado();
 				break;
 			}catch(Exception e){
-				logger.log(Level.SEVERE,"X: downoload",e);
+				logger.error("X: downoload",e);
 				FramePrincipalControl.getInstance().getFramePrincipal().setDesconectado();
 			}
 			
@@ -139,7 +137,7 @@ public class MemoryDAO {
 				logger.info("\t----------------->> while running, sleep,.....");
 				Thread.sleep(60000L);
 			}catch(Exception e){
-				logger.log(Level.SEVERE,"downoload",e);
+				logger.error("downoload",e);
 			}
 		}
 	}
@@ -245,7 +243,7 @@ public class MemoryDAO {
 			}
 			
 		} catch (Exception ex) {
-			logger.log(Level.SEVERE, null, ex);
+			logger.error(null, ex);
 		}
 
 	}

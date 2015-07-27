@@ -26,9 +26,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;	
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 /**
  * Class for AlmacenProductoDAO of Table ALMACEN_PRODUCTO.
  * 
@@ -48,7 +46,7 @@ public class AlmacenProductoDAO {
 	private static AlmacenProductoDAO instance;
 
 	private AlmacenProductoDAO(){	
-		logger.fine("created AlmacenProductoDAO.");
+		logger.debug("created AlmacenProductoDAO.");
 	}
 
 	public static AlmacenProductoDAO getInstance() {
@@ -90,7 +88,7 @@ public class AlmacenProductoDAO {
 				throw new EntityNotFoundException("ALMACEN_PRODUCTO NOT FOUND FOR PRODUCTO_CODIGO_BARRAS="+x.getProductoCodigoBarras());
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -99,7 +97,7 @@ public class AlmacenProductoDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -168,7 +166,7 @@ GROUP BY AP.ALMACEN_ID;
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -177,7 +175,7 @@ GROUP BY AP.ALMACEN_ID;
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -344,7 +342,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -353,7 +351,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -386,7 +384,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 				}
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -394,7 +392,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -420,7 +418,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -428,7 +426,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -447,7 +445,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -455,7 +453,7 @@ ORDER BY P.NOMBRE,P.PRESENTACION
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

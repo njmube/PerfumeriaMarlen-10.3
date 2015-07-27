@@ -21,8 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Blob;
 import java.sql.Timestamp;	
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 import com.pmarlen.backend.model.*;
 import com.tracktopell.jdbc.DataSourceFacade;
@@ -46,7 +45,7 @@ public class EventoSincronizacionDAO {
 	private static EventoSincronizacionDAO instance;
 
 	private EventoSincronizacionDAO(){	
-		logger.fine("created EventoSincronizacionDAO.");
+		logger.debug("created EventoSincronizacionDAO.");
 	}
 
 	public static EventoSincronizacionDAO getInstance() {
@@ -91,7 +90,7 @@ public class EventoSincronizacionDAO {
 				throw new EntityNotFoundException("EVENTO_SINCRONIZACION NOT FOUND FOR ID="+x.getId());
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -100,7 +99,7 @@ public class EventoSincronizacionDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -131,7 +130,7 @@ public class EventoSincronizacionDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -140,7 +139,7 @@ public class EventoSincronizacionDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -175,7 +174,7 @@ public class EventoSincronizacionDAO {
 				}
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -183,7 +182,7 @@ public class EventoSincronizacionDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -213,7 +212,7 @@ public class EventoSincronizacionDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -221,7 +220,7 @@ public class EventoSincronizacionDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -240,7 +239,7 @@ public class EventoSincronizacionDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -248,7 +247,7 @@ public class EventoSincronizacionDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

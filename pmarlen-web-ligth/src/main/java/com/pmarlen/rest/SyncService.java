@@ -23,8 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -60,7 +60,7 @@ public class SyncService {
 				l.add(is.generateFaccadeForREST());
 			}
 		} catch (DAOException ex) {
-			logger.log(Level.SEVERE, null, ex);
+			logger.error (null, ex);
 			throw new WebApplicationException(ex, Response.Status.INTERNAL_SERVER_ERROR);
 		}
 		return l;
@@ -89,7 +89,7 @@ public class SyncService {
 			
 			logger.info("-->> ok, get data, return SyncDTOPackage{"+s+"} for JSON prsing.");
 		} catch (Exception ex) {
-			logger.log(Level.SEVERE, null, ex);
+			logger.error (null, ex);
 			throw new WebApplicationException(ex, Response.Status.INTERNAL_SERVER_ERROR);
 		}
 		return s;

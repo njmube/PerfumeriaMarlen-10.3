@@ -13,8 +13,8 @@ import java.io.Serializable;
 
 import java.text.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -74,7 +74,7 @@ public class SessionUserMB implements Serializable{
 						}
 					}
 				} catch(DAOException de){
-					logger.severe(de.getMessage());
+					logger.error(de.getMessage());
 				}
 				
 			}

@@ -21,8 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Blob;
 import java.sql.Timestamp;	
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 import com.pmarlen.backend.model.*;
 import com.tracktopell.jdbc.DataSourceFacade;
@@ -46,7 +45,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 	private static MovimientoOperativoAlmacenDetalleDAO instance;
 
 	private MovimientoOperativoAlmacenDetalleDAO(){	
-		logger.fine("created MovimientoOperativoAlmacenDetalleDAO.");
+		logger.debug("created MovimientoOperativoAlmacenDetalleDAO.");
 	}
 
 	public static MovimientoOperativoAlmacenDetalleDAO getInstance() {
@@ -88,7 +87,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 				throw new EntityNotFoundException("MOVIMIENTO_OPERATIVO_ALMACEN_DETALLE NOT FOUND FOR ID="+x.getId());
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -97,7 +96,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -125,7 +124,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -134,7 +133,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -166,7 +165,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 				}
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -174,7 +173,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -201,7 +200,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -209,7 +208,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -228,7 +227,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -236,7 +235,7 @@ public class MovimientoOperativoAlmacenDetalleDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

@@ -4,7 +4,7 @@
  */
 package com.pmarlen.caja.view;
 
-import com.pmarlen.backend.model.DetalleProductoTableModel;
+import com.pmarlen.caja.model.DetalleProductoTableModel;
 import com.pmarlen.caja.model.PedidoVentaDetalleTableModel;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;

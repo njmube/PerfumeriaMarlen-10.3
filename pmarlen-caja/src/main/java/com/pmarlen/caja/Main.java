@@ -22,12 +22,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -63,7 +62,7 @@ public class Main {
 			JDialog.setDefaultLookAndFeelDecorated(true);
 
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "setLookAndFeel:", e);
+			logger.error( "setLookAndFeel:", e);
 		}
 
 		if (!MemoryDAO.isExsistFile()) {

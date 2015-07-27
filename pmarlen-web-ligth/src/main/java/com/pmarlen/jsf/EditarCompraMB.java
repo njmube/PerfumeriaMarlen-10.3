@@ -32,8 +32,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -91,7 +91,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			}
 			logger.info("entityList:<<<---------");
 		}catch(DAOException de){
-			logger.severe(de.getMessage());
+			logger.error(de.getMessage());
 			entradaSalida = new EntradaSalidaQuickView();
 			entradaSalida.setId(0);
 			entradaSalidaFooter= new EntradaSalidaFooter();
@@ -140,7 +140,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"GUARDAR",  "SE ACTUALIZÓ CORRECTAMENTE LA COMPRA #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->guardar: Exception", e);
+			logger.error("->guardar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"GUARDAR",  "HUBO UN ERROR AL GUARDAR.") );
 		}
@@ -157,7 +157,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"VERIFICAR",  "SE VERIFICÓ CORRECTAMENTE LA COMPRA #"+entradaSalida.getId()+".") );
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"VERFICAR",  "HUBO UN ERROR AL VERIFICAR.") );
 		}		
@@ -173,7 +173,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"SURTIR",  "SE SURTIÓ CORRECTAMENTE LA COMPRA #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL SURTIR.") );
 		}		
@@ -188,7 +188,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR",  "CANCELAR PENDIENTE COMPRA #"+entradaSalida.getId()+".") );			
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"SURTIR",  "HUBO UN ERROR AL CANCELAR.") );
 		}		
@@ -201,7 +201,7 @@ public class EditarCompraMB extends EditarPedidoVentaMB{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"CANCELAR CAMBIOS",  "SE CANCELARON LOS CAMBIOS Y RECARGÓ LA COMPRA #"+entradaSalida.getId()+".") );
 			reset();
 		}catch(Exception e){
-			logger.log(Level.SEVERE, "->verificar: Exception", e);
+			logger.error("->verificar: Exception", e);
 			FacesContext context = FacesContext.getCurrentInstance();         
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"CANCELAR CAMBIOS",  "HUBO UN ERROR AL CANCELAR CAMBIOS.") );
 		}		

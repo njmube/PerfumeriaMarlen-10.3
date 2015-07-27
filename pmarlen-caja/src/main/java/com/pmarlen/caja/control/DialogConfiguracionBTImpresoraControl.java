@@ -4,8 +4,8 @@
  */
 package com.pmarlen.caja.control;
 
-import com.pmarlen.backend.model.BTDevice;
-import com.pmarlen.backend.model.BTDeviceListModel;
+import com.pmarlen.caja.model.BTDevice;
+import com.pmarlen.caja.model.BTDeviceListModel;
 import com.pmarlen.ticket.bluetooth.RemoteDeviceDiscovery;
 import com.pmarlen.ticket.bluetooth.TicketBlueToothPrinter;
 import com.pmarlen.caja.view.DialogConfiguracionBTImpresora;

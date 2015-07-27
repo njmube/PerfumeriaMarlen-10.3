@@ -21,8 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Blob;
 import java.sql.Timestamp;	
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 import com.pmarlen.backend.model.*;
 import com.tracktopell.jdbc.DataSourceFacade;
@@ -46,7 +45,7 @@ public class UsuarioPerfilDAO {
 	private static UsuarioPerfilDAO instance;
 
 	private UsuarioPerfilDAO(){	
-		logger.fine("created UsuarioPerfilDAO.");
+		logger.debug("created UsuarioPerfilDAO.");
 	}
 
 	public static UsuarioPerfilDAO getInstance() {
@@ -85,7 +84,7 @@ public class UsuarioPerfilDAO {
 				throw new EntityNotFoundException("USUARIO_PERFIL NOT FOUND FOR PERFIL="+x.getPerfil());
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -94,7 +93,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -122,7 +121,7 @@ public class UsuarioPerfilDAO {
 				r.add(x);
 			}
 		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if (rs != null) {
@@ -131,7 +130,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				} catch (SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:" + ex.getMessage());
 				}
 			}
@@ -156,7 +155,7 @@ public class UsuarioPerfilDAO {
 				r.add(x);
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InQuery:" + ex.getMessage());
 		} finally {
 			if(rs != null) {
@@ -165,7 +164,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -194,7 +193,7 @@ public class UsuarioPerfilDAO {
 				}
 			}
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -202,7 +201,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -226,7 +225,7 @@ public class UsuarioPerfilDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -234,7 +233,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}
@@ -253,7 +252,7 @@ public class UsuarioPerfilDAO {
 			
 			r = ps.executeUpdate();						
 		}catch(SQLException ex) {
-			logger.log(Level.SEVERE, "SQLException:", ex);
+			logger.error("SQLException:", ex);
 			throw new DAOException("InUpdate:" + ex.getMessage());
 		} finally {
 			if(ps != null) {
@@ -261,7 +260,7 @@ public class UsuarioPerfilDAO {
 					ps.close();
 					conn.close();
 				}catch(SQLException ex) {
-					logger.log(Level.SEVERE, "clossing, SQLException:" + ex.getMessage());
+					logger.error("clossing, SQLException:" + ex.getMessage());
 					throw new DAOException("Closing:"+ex.getMessage());
 				}
 			}

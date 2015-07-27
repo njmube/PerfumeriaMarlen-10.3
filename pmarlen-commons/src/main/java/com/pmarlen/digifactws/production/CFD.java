@@ -6,8 +6,6 @@ import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -25,8 +23,7 @@ import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
@@ -48,7 +45,7 @@ public class CFD
 {
 
     private final static URL CFD_WSDL_LOCATION;
-    private final static Logger logger = Logger.getLogger(com.pmarlen.digifactws.production.CFD.class.getName());
+    private final static Logger logger = Logger.getLogger(CFD.class.getName());
 
     static {
 		trustAllHttps();
@@ -58,8 +55,8 @@ public class CFD
             baseUrl = com.pmarlen.digifactws.production.CFD.class.getResource(".");
             url = new URL(baseUrl, "https://cfd.sicofi.com.mx/sicofiWSv2/cfd.asmx?WSDL");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'https://cfd.sicofi.com.mx/sicofiWSv2/cfd.asmx?WSDL', retrying as a local file");
-            logger.warning(e.getMessage());
+            logger.warn("Failed to create URL for the wsdl Location: 'https://cfd.sicofi.com.mx/sicofiWSv2/cfd.asmx?WSDL', retrying as a local file");
+            logger.warn(e.getMessage());
         }
         CFD_WSDL_LOCATION = url;
     }
@@ -80,7 +77,7 @@ public class CFD
 			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 			logger.info("------------trustAllHttps----------END");
 		}catch(Exception ex){
-			logger.log(Level.SEVERE, null, ex);
+			logger.error("trustAllThhps:", ex);
 		}
 	}
 

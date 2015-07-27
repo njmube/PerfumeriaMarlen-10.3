@@ -4,7 +4,7 @@
  */
 package com.pmarlen.ticket.bluetooth;
 
-import com.pmarlen.backend.model.BTDevice;
+import com.pmarlen.caja.model.BTDevice;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.bluetooth.DeviceClass;
