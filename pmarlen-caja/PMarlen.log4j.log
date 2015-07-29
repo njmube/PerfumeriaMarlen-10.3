@@ -1,0 +1,5 @@
+2015-07-29 00:02:20 INFO  Main:159 - -->> close ?
+2015-07-29 00:02:20 INFO  Main:50 - ==========================================================>>>
+2015-07-29 00:02:20 INFO  Main:54 - <<<==========================================================
+2015-07-29 00:02:23 INFO  Main:57 - L&Fs:[javax.swing.UIManager$LookAndFeelInfo[Metal javax.swing.plaf.metal.MetalLookAndFeel], javax.swing.UIManager$LookAndFeelInfo[Nimbus javax.swing.plaf.nimbus.NimbusLookAndFeel], javax.swing.UIManager$LookAndFeelInfo[CDE/Motif com.sun.java.swing.plaf.motif.MotifLookAndFeel], javax.swing.UIManager$LookAndFeelInfo[Mac OS X com.apple.laf.AquaLookAndFeel]]
+2015-07-29 00:02:23 INFO  Main:69 - ==========================================================>>> 1 Time

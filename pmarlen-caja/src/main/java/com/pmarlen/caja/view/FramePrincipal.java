@@ -7,6 +7,8 @@ package com.pmarlen.caja.view;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -35,10 +37,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         panelProductos = new PanelProductos();
         panelVentas = new PanelVentas();
         statusPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        statusConeccion = new javax.swing.JLabel();
+        statusWest = new javax.swing.JTextField();
+        statusCenter = new javax.swing.JTextField();
+        statusConeccion = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         productosMenu = new javax.swing.JMenuItem();
@@ -75,20 +76,17 @@ public class FramePrincipal extends javax.swing.JFrame {
         statusPanel.setPreferredSize(new java.awt.Dimension(42, 35));
         statusPanel.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        statusPanel.add(jPanel1);
+        statusWest.setEditable(false);
+        statusWest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        statusPanel.add(statusWest);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        statusPanel.add(jPanel2);
+        statusCenter.setEditable(false);
+        statusCenter.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        statusPanel.add(statusCenter);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        statusConeccion.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        statusConeccion.setForeground(new java.awt.Color(153, 153, 0));
-        statusConeccion.setText("...CONECTANDO");
-        jPanel3.add(statusConeccion);
-
-        statusPanel.add(jPanel3);
+        statusConeccion.setEditable(false);
+        statusConeccion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        statusPanel.add(statusConeccion);
 
         getContentPane().add(statusPanel, java.awt.BorderLayout.SOUTH);
 
@@ -187,9 +185,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu configMenu;
     private javax.swing.JMenuItem impresoraBTMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem negocioConfigMenu;
     private javax.swing.JPanel panelProductos;
@@ -198,8 +193,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panels;
     private javax.swing.JMenuItem productosMenu;
     private javax.swing.JMenuItem salirMenu;
-    private javax.swing.JLabel statusConeccion;
+    private javax.swing.JTextField statusCenter;
+    private javax.swing.JTextField statusConeccion;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JTextField statusWest;
     private javax.swing.JMenuItem usuarioAdminMenu;
     private javax.swing.JMenuItem usuarioCajaMenu;
     private javax.swing.JMenuItem ventaActualMenu;
@@ -343,25 +340,38 @@ public class FramePrincipal extends javax.swing.JFrame {
 		return configMenu;
 	}
 
-	public JLabel getStatusConeccion() {
+	public JTextField getStatusConeccion() {
 		return statusConeccion;
 	}
 	
+	
 	public void setConectado(){
-		statusConeccion.setForeground(Color.GREEN);
-		for(int i=0; i< 200; i++) {
-			statusConeccion.setText("CONECTADO ("+i+")");			
-			statusConeccion.updateUI();
-		}
+		
+		SwingUtilities.invokeLater(
+		new Runnable() {
+			public void run() {
+				statusConeccion.setForeground(Color.GREEN);
+				//for(int i=0; i< 200; i++) {
+				statusConeccion.setText("CONECTADO :)");
+				System.err.println("===>> CONECTADO :)");
+				statusConeccion.updateUI();
+				//}
+			}
+		});
 	}
 	
 	public void setDesconectado(){
-		statusConeccion.setForeground(Color.RED);
-		for(int i=0; i< 200; i++) {
-			statusConeccion.setText("DESCONECTADO ("+i+")");
-			
-			statusConeccion.updateUI();
-		}
+		SwingUtilities.invokeLater(
+		new Runnable() {
+			public void run() {
+				statusConeccion.setForeground(Color.RED);
+				//for(int i=0; i< 200; i++) {
+				statusConeccion.setText("DESCONECTADO :(");
+				System.err.println("===>> DESCONECTADO :(");
+				statusConeccion.updateUI();
+				//}
+			}
+		});	
 	}
 	
 	public void setFont(Font font){

@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -129,8 +130,11 @@ public class ApplicationLogic {
 		try{
 			url = new URL(MemoryDAO.getServerContext()+URI_VERSION_FILE);
 			logger.info("url="+url);
-			is = url.openStream();
+			URLConnection conn = url.openConnection();
+			conn.setConnectTimeout(5000);
+			is = conn.getInputStream();
 		}catch(IOException ioe){
+			logger.error("Can'nt connect:", ioe);
 			return false;
 		}
 		br = new BufferedReader(new InputStreamReader(is));
