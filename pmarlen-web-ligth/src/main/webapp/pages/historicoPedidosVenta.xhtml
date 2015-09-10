@@ -19,12 +19,12 @@
 
 			<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 
-				<p:dataTable  var="pv" value="#{historicoPedidosVentaMB.pedidosVentas}"
-							  paginator="true"
+				<p:dataTable  var="pv" value="#{historicoPedidosVentaMB.lazyModel}"
+							  paginator="true" lazy="true"
 							  id="pvTable" emptyMessage="-- SIN ELEMENTOS --" 							  
 							  rows="#{historicoPedidosVentaMB.viewRows}"
 							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{historicoPedidosVentaMB.sizeList}]"
-							  rowsPerPageTemplate="25,100,250,500">
+							  rowsPerPageTemplate="10,25,100">
 					
 					<f:facet name="header">
 						<h:panelGroup>
