@@ -198,7 +198,7 @@ hr{
   margin-bottom: 5px;
 }
 
-.footer-bar {
+.footer-bar-UnitTest {
 	background: none repeat scroll 0 0 red;
     border-top: 3px solid orange;
 	color: yellow;
@@ -214,7 +214,7 @@ hr{
 	display: block;
 }
 
-.footer-bar-deve {
+.footer-bar-Development {
 	background: none repeat scroll 0 0 green;
     border-top: 3px solid orange;
 	color: yellow;
@@ -230,7 +230,7 @@ hr{
 	display: block;
 }
 
-.footer-bar-test {
+.footer-bar-SystemTest {
 	background: none repeat scroll 0 0 orange;
     border-top: 3px solid orange;
 	color: yellow;
@@ -246,7 +246,7 @@ hr{
 	display: block;
 }
 
-.footer-bar-prod {
+.footer-bar-Production {
 	background: none repeat scroll 0 0 darkblue;
     border-top: 3px solid orange;
 	color: yellow;

@@ -25,6 +25,7 @@
 		
 		<environment.stage>Development</environment.stage>
 		<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+		<environment.webdescriptor.session-timeout>10</environment.webdescriptor.session-timeout>
 		<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 		<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
 		<environment.jdbc.db>PMDB103_DEVE</environment.jdbc.db>
@@ -257,6 +258,7 @@
 			<properties>
 				<environment.stage>Development</environment.stage>
 				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.webdescriptor.session-timeout>10</environment.webdescriptor.session-timeout>
 				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
 				<environment.jdbc.db>PMDB103_DEVE</environment.jdbc.db>
@@ -290,7 +292,8 @@
 			
 			<properties>
 				<environment.stage>Production</environment.stage>
-				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.webdescriptor.enviId>Production</environment.webdescriptor.enviId>
+				<environment.webdescriptor.session-timeout>60</environment.webdescriptor.session-timeout>
 				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
 				<environment.jdbc.db>PMDB103_PROD</environment.jdbc.db>
@@ -325,6 +328,7 @@
 			<properties>
 				<environment.stage>Production</environment.stage>
 				<environment.webdescriptor.enviId>Production</environment.webdescriptor.enviId>
+				<environment.webdescriptor.session-timeout>60</environment.webdescriptor.session-timeout>
 				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_PROD?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
 				<environment.jdbc.db>PMDB103_PROD</environment.jdbc.db>
@@ -358,7 +362,8 @@
 			
 			<properties>
 				<environment.stage>SystemTest</environment.stage>
-				<environment.webdescriptor.enviId>Development</environment.webdescriptor.enviId>
+				<environment.webdescriptor.enviId>SystemTest</environment.webdescriptor.enviId>
+				<environment.webdescriptor.session-timeout>15</environment.webdescriptor.session-timeout>
 				<environment.jdbc.url>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;amp;useOldAliasMetadataBehavior=true&amp;amp;autoReconnect=true</environment.jdbc.url>
 				<environment.jdbc.urlNotScapped>jdbc:mysql://localhost/PMDB103_DEVE?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;autoReconnect=true</environment.jdbc.urlNotScapped>
 				<environment.jdbc.db>PMDB103_DEVE</environment.jdbc.db>
