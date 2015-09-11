@@ -31,6 +31,7 @@ public class SessionUserMB implements Serializable{
 	private static final transient Logger logger = Logger.getLogger(SessionUserMB.class.getSimpleName());
 	private static final transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 	private long timeOutSession;
+	private int  realTimeOutSessionInSeconds;
 	private UsuarioQuickView usuarioAuthenticated;
 	
 	@PostConstruct
@@ -59,6 +60,8 @@ public class SessionUserMB implements Serializable{
 				logger.info("==>> UsuarioAuthenticated : Session[" + sessionId + "] new                ?" + session.isNew());
 				
 				timeOutSession = session.getMaxInactiveInterval()*1000 - 5000;
+				realTimeOutSessionInSeconds = session.getMaxInactiveInterval();
+				
 				try {
 					usuarioAuthenticated = UsuarioDAO.getInstance().findBy(remoteUser);
 					if (!session.isNew()) {
@@ -95,6 +98,18 @@ public class SessionUserMB implements Serializable{
 
 	public long getTimeOutSession() {
 		return timeOutSession;
+	}
+	
+	public int getTimeOutSessionInMinutes() {
+		return realTimeOutSessionInSeconds/60;
+	}
+	
+	public int getTimeOutSessionInSeconds() {
+		return realTimeOutSessionInSeconds;
+	}
+	
+	public int getTimeOutSessionInSecondsOfMinutes() {
+		return realTimeOutSessionInSeconds%60;
 	}
 	
 	public String getSessionTimeOutMinus3SecsToDisplay() {

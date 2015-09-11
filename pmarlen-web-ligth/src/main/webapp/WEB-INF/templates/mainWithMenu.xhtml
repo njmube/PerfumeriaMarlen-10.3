@@ -171,7 +171,9 @@
 			
 			<h:panelGroup class="footer-bar-#{systemInfoMB.environment}">
 				<h:form>
-					<h:panelGrid columns="2" columnClasses="columnWidth95 centerAlign, columnWidth5 rightAlign" width="100%">
+					<h:panelGrid columns="3" columnClasses="columnWidth5 leftAlign,columnWidth90 centerAlign, columnWidth5 rightAlign" width="100%">
+						<span id="txtTimeoutClock" class="txtTimeoutClock" style="color: greenyellow;" title="TIEMPO RESTANTE PARA EXPIRE LA SESI&Oacute;N"></span>
+						
 						<h:outputText	value="Perfumeria Marlen, Sistema de Adminisraci&oacute;n de Almacen Ver. #{systemInfoMB.systemVersion} / Construido: #{systemInfoMB.buildTimestamp}" 
 										title="( #{systemInfoMB.environment} ) Git RevID: #{systemInfoMB.gitSHA1}" />
 						<h:outputText id="txtFoter" class="txtFoter" value="#{systemInfoMB.sessionDate}" style="color: greenyellow;" title="HORA DEL SISTEMA, VERDE: ESTA EN LINEA, ROJO: DESCONECTADO" />
@@ -179,6 +181,7 @@
 					
 					<p:poll interval="120" listener="#{systemInfoMB.updateTime}" update="txtFoter" onerror="errorGetTime();" onsuccess="successGetTime()" rendered="false" />
 					<script>
+						
 						var informeDescinetado = false;
 						function errorGetTime(){							
 							$(".txtFoter").css({ "color": 'red'});
@@ -193,6 +196,42 @@
 							informeDescinetado = false;
 							$(".txtFoter").css({ "color": 'greenyellow'});
 						}
+						
+						var endTime, hours, mins, msLeft, time;
+						var elementObject;
+						
+						function twoDigits( n ) {
+							return (n &lt;= 9)? ("0" + n) : n;
+						}
+						function updateTimer(){
+							
+							msLeft = endTime - (+new Date);
+							if ( msLeft &lt; 1000 ) {
+								elementObject.text("--:--");
+							} else {
+								time = new Date( msLeft );
+								hours = time.getUTCHours();
+								mins = time.getUTCMinutes();
+									
+								elementObject.text("" +(hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() ));
+								
+								setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+							}
+						}
+						function countdown( elementClass, minutes, seconds ) {
+							
+							elementObject = $(elementClass);
+							
+							elementObject.text("##:##");
+							
+							endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+							updateTimer();
+						}
+
+						$.ready(new function(){
+							countdown(".txtTimeoutClock" ,#{sessionUserMB.timeOutSessionInMinutes}, #{sessionUserMB.timeOutSessionInSecondsOfMinutes});
+						});
+						
 					</script>					
 					
 					
