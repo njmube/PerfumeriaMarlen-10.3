@@ -19,8 +19,8 @@
 
 			<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 
-				<p:dataTable  var="pv" value="#{devolucionesVentaMB.devoluciones}"
-							  paginator="true"
+				<p:dataTable  var="pv" value="#{devolucionesVentaMB.lazyModel}"
+							  paginator="true" lazy="true"
 							  id="pvTable" emptyMessage="-- SIN ELEMENTOS --" 							  
 							  rows="#{devolucionesVentaMB.viewRows}"
 							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{devolucionesVentaMB.sizeList}]"

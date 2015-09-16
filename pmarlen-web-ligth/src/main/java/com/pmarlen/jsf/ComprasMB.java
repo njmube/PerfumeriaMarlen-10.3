@@ -12,6 +12,7 @@ import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.jsf.model.EntradaSalidaLazyDataModel;
 import com.pmarlen.model.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,47 +36,36 @@ public class ComprasMB  {
 	@ManagedProperty(value = "#{editarCompraMB}")
 	private EditarCompraMB editarCompraMB;
 	
-	ArrayList<EntradaSalidaQuickView> compras;
-	private int viewRows;
+	private EntradaSalidaLazyDataModel lazyModel;	private int viewRows;
 	
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA,1,true);
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		compras = null;		
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA,1,true);
 	}
 
 	public void setEditarCompraMB(EditarCompraMB editarCompraMB) {
 		this.editarCompraMB = editarCompraMB;
 	}
-
-	public ArrayList<EntradaSalidaQuickView> getCompras() {
-		logger.debug("->getCompraes");
-		if(compras == null){
-			try {
-				compras = EntradaSalidaDAO.getInstance().findAllActiveDevs();
-				if(compras != null){
-					logger.info("->refrescar:compras.size()="+compras.size());
-				}
-			} catch (DAOException ex) {
-				logger.error(ex.getMessage());
-			}
-		}
-		return compras;
-	}
 	
-	public void editar(int compraId){
-		logger.debug("->editar:compraId="+compraId);
-		editarCompraMB.editar(compraId);
+	public void editar(int id){
+		logger.info("->editar:id="+id);
+		editarCompraMB.editar(id);
 	}
-	
+	public String editarPedidoAction(int pedidoVentaId){
+		logger.info("->editarPedidoAction:pedidoVentaId="+pedidoVentaId);
+		return editarCompraMB.editar(pedidoVentaId);
+	}
+		
 	public int getSizeList(){
 		logger.debug("->getSizeList()");
-		return getCompras().size();
+		return lazyModel.getRowCount();
 	}
 
 	public int getViewRows() {
@@ -87,8 +77,13 @@ public class ComprasMB  {
 		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
+
 	public String getImporteMoneda(double f){
 		return Constants.getImporteMoneda(f);
+	}
+
+	public EntradaSalidaLazyDataModel getLazyModel() {
+		return lazyModel;
 	}
 
 }

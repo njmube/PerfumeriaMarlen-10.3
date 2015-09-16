@@ -19,12 +19,12 @@
 
 			<h:panelGrid columns="1" cellpadding="0" id="panel3" columnClasses="leftAlign" width="100%" >						
 
-				<p:dataTable  var="pv" value="#{comprasMB.compras}"
-							  paginator="true"
+				<p:dataTable  var="pv" value="#{comprasMB.lazyModel}"
+							  paginator="true" lazy="true"
 							  id="pvTable" emptyMessage="-- SIN ELEMENTOS --" 							  
 							  rows="#{comprasMB.viewRows}"
 							  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} [#{comprasMB.sizeList}]"
-							  rowsPerPageTemplate="25,100,250,500">
+							  rowsPerPageTemplate="10,25,100">
 					
 					<f:facet name="header">
 						OPCIONES :		

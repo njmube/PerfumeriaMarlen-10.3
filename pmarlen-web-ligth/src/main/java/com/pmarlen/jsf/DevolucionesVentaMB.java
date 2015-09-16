@@ -12,6 +12,7 @@ import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.jsf.model.EntradaSalidaLazyDataModel;
 import com.pmarlen.model.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,49 +36,36 @@ public class DevolucionesVentaMB  {
 	@ManagedProperty(value = "#{editarDevolucionMB}")
 	private EditarDevolucionMB editarDevolucionMB;
 	
-	ArrayList<EntradaSalidaQuickView> devoluciones;
-	private int viewRows;
+	private EntradaSalidaLazyDataModel lazyModel;	private int viewRows;
 	
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,1,true);
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		devoluciones = null;
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_DEVOLUCION,1,true);
 	}
 
 	public void setEditarDevolucionMB(EditarDevolucionMB editarDevolucionMB) {
 		this.editarDevolucionMB = editarDevolucionMB;
 	}
-
-	public ArrayList<EntradaSalidaQuickView> getDevoluciones() {
-		logger.debug("->getDevoluciones");
-		if(devoluciones == null){
-			try {
-				devoluciones = EntradaSalidaDAO.getInstance().findAllActiveDevs();
-				if(devoluciones != null){
-					logger.info("->refrescar:devoluciones.size()="+devoluciones.size());
-				}				
-			}catch(DAOException de){
-				devoluciones = new ArrayList<EntradaSalidaQuickView>();
-				logger.error(de.getMessage());
-			}
-
-		}
-		return devoluciones;
-	}
 	
-	public void editar(int devolucionId){
-		logger.debug("->editar:devolucionId="+devolucionId);
-		editarDevolucionMB.editar(devolucionId);
+	public void editar(int id){
+		logger.info("->editar:id="+id);
+		editarDevolucionMB.editar(id);
 	}
-	
+	public String editarPedidoAction(int pedidoVentaId){
+		logger.info("->editarPedidoAction:pedidoVentaId="+pedidoVentaId);
+		return editarDevolucionMB.editar(pedidoVentaId);
+	}
+		
 	public int getSizeList(){
 		logger.debug("->getSizeList()");
-		return getDevoluciones().size();
+		return lazyModel.getRowCount();
 	}
 
 	public int getViewRows() {
@@ -89,8 +77,13 @@ public class DevolucionesVentaMB  {
 		logger.debug("->setViewRows("+viewRows+")");
 		this.viewRows = viewRows;
 	}
+
 	public String getImporteMoneda(double f){
 		return Constants.getImporteMoneda(f);
+	}
+
+	public EntradaSalidaLazyDataModel getLazyModel() {
+		return lazyModel;
 	}
 
 }

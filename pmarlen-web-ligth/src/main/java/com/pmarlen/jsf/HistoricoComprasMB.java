@@ -12,6 +12,7 @@ import com.pmarlen.backend.model.MetodoDePago;
 import com.pmarlen.backend.model.Producto;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaDetalleQuickView;
 import com.pmarlen.backend.model.quickviews.EntradaSalidaQuickView;
+import com.pmarlen.jsf.model.EntradaSalidaLazyDataModel;
 import com.pmarlen.model.Constants;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,52 +33,37 @@ import org.primefaces.event.ReorderEvent;
 public class HistoricoComprasMB  {
 	private transient static Logger logger = Logger.getLogger(HistoricoComprasMB.class.getSimpleName());
 	
-	@ManagedProperty(value = "#{editarCompraMB}")
-	private EditarCompraMB editarCompraMB;
+	private EntradaSalidaLazyDataModel lazyModel;
+		
+	@ManagedProperty(value = "#{editarComprasMB}")
+	private EditarCompraMB editarComprasMB;
 	
-	ArrayList<EntradaSalidaQuickView> compras;
 	private int viewRows;
 	
 	@PostConstruct
 	public void init(){
 		logger.info("->init:");
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA,1,false);
 		viewRows = 25;
 	}
 	
 	public void refrescar(){
 		logger.info("->refrescar:");
-		compras = null;		
+		lazyModel = new EntradaSalidaLazyDataModel(Constants.TIPO_MOV_ENTRADA_ALMACEN_COMPRA,1,false);
 	}
 
-	public void setEditarCompraMB(EditarCompraMB editarCompraMB) {
-		this.editarCompraMB = editarCompraMB;
+	public void setEditarComprasMB(EditarCompraMB editarComprasMB) {
+		this.editarComprasMB = editarComprasMB;
+	}
+	
+	public void editarCompra(int devolucionId){
+		logger.debug("->editar:devolucionId="+devolucionId);
+		editarComprasMB.editar(devolucionId);
 	}
 
-	public ArrayList<EntradaSalidaQuickView> getCompras() {
-		logger.debug("->getCompras");
-		if(compras == null){
-			try {
-				compras = EntradaSalidaDAO.getInstance().findAllHistoricoCompras();
-				logger.info("->refrescar:compras.size()="+compras.size());
-				if(compras != null){
-					logger.debug("compras.size()="+compras.size());				 
-				}
-			}catch(DAOException de){
-				compras = new ArrayList<EntradaSalidaQuickView>();
-				logger.error(de.getMessage());
-			}
-		}
-		return compras;
-	}
-	
-	public void editarCompra(int pedidoVentaId){
-		logger.debug("->editarPedido:pedidoVentaId="+pedidoVentaId);
-		editarCompraMB.editar(pedidoVentaId);
-	}
-	
 	public int getSizeList(){
 		logger.debug("->getSizeList()");
-		return getCompras().size();
+		return lazyModel.getRowCount();
 	}
 
 	public int getViewRows() {
@@ -92,5 +78,8 @@ public class HistoricoComprasMB  {
 	public String getImporteMoneda(double f){
 		return Constants.getImporteMoneda(f);
 	}
-
+	
+	public EntradaSalidaLazyDataModel getLazyModel() {
+		return lazyModel;
+	}
 }

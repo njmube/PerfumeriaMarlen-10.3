@@ -22,18 +22,18 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import org.apache.log4j.Logger;
 import org.primefaces.event.ReorderEvent;
 
 @ManagedBean(name="sesionesActivasMB")
-@SessionScoped
+@ViewScoped
 public class SesionesActivasMB {
 	private transient static Logger logger = Logger.getLogger("sesionesActivasMB");
 	private int noPedidoBuscar;
