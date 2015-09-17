@@ -208,6 +208,7 @@
 							msLeft = endTime - (+new Date);
 							if ( msLeft &lt; 1000 ) {
 								elementObject.text("--:--");
+								window.location = "#{request.contextPath}/logout";
 							} else {
 								time = new Date( msLeft );
 								hours = time.getUTCHours();
